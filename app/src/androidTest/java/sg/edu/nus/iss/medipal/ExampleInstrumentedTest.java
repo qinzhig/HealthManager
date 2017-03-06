@@ -1,4 +1,4 @@
-package iss.nus.edu.sg.medipal_ft01;
+package sg.edu.nus.iss.medipal;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

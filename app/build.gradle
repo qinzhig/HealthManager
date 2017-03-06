@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "iss.nus.edu.sg.medipal_ft01"
+        applicationId "sg.edu.nus.iss.medipal"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1

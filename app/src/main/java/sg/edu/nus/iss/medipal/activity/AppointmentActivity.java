@@ -1,13 +1,15 @@
-package iss.nus.edu.sg.medipal_ft01;
+package sg.edu.nus.iss.medipal.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import sg.edu.nus.iss.medipal.R;
+
+public class AppointmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.appointment_main);
     }
 }
