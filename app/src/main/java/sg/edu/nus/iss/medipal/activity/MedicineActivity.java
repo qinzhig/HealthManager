@@ -9,6 +9,13 @@ import android.view.View;
 
 import sg.edu.nus.iss.medipal.R;
 
+/**
+ * Created by : Qin Zhi Guo on 10-03-2017.
+ * Description : Activity Class to control and show the medicine info
+ * Modified by :
+ * Reason for modification :
+ */
+
 public class MedicineActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +27,8 @@ public class MedicineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("Medicine");
 
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        //Set the back array in toolbar to available
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

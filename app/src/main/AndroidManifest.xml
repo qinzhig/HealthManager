@@ -3,7 +3,6 @@
     package="sg.edu.nus.iss.medipal">
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,12 +27,18 @@
             android:label="@string/title_activity_medicine"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.AddMedicineActivity"
             android:label="AddMedicine"
+            android:parentActivityName=".activity.MedicineActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".activity.AddCategoryActivity"
+            android:lable="AddCategory"
+            android:parentActivityName=".activity.MedicineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".activity.MedicineActivity"/>
+            />
 
     </application>
 

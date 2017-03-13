@@ -15,6 +15,13 @@ import java.util.Calendar;
 
 import sg.edu.nus.iss.medipal.R;
 
+/**
+ * Created by : Qin Zhi Guo on 10-03-2017.
+ * Description : Activity Class to add medicine
+ * Modified by :
+ * Reason for modification :
+ */
+
 public class AddMedicineActivity extends AppCompatActivity {
 
     int year_expire,month_expire,day_expire;
