@@ -13,4 +13,5 @@
             android:id="@+id/nav_notifications"
             android:title="@string/notifications" />
     </group>
+
 </menu>

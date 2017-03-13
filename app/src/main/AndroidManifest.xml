@@ -3,24 +3,38 @@
     package="sg.edu.nus.iss.medipal">
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="sg.edu.nus.iss.medipal.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="sg.edu.nus.iss.medipal.activity.AppointmentActivity"
+        <activity
+            android:name=".activity.AppointmentActivity"
             android:label="Appointments"
-            android:parentActivityName=".activity.MainActivity">
-        </activity>
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.MedicineActivity"
+            android:label="@string/title_activity_medicine"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.AddMedicineActivity"
+            android:label="AddMedicine"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:parentActivityName=".activity.MedicineActivity"/>
+
     </application>
 
 </manifest>

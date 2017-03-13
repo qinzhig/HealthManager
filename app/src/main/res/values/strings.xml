@@ -7,4 +7,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="openDrawer">open_drawer</string>
     <string name="closeDrawer">close_drawer</string>
+    <string name="title_activity_medicine">MedicineActivity</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_setting">Setting Application</string>
+    <string name="spinner_medicine_hint">Select a category</string>
 </resources>

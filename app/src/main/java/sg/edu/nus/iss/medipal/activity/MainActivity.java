@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_appointments) {
             Intent i = new Intent(getApplicationContext(),AppointmentActivity.class);
             startActivity(i);
+        }else if(id == R.id.nav_medicine){
+            Intent intent_medicine= new Intent(getApplicationContext(),MedicineActivity.class);
+            startActivity(intent_medicine);
         }
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
