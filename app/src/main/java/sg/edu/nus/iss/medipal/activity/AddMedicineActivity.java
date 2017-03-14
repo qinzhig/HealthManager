@@ -48,6 +48,9 @@ public class AddMedicineActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine Successfully!",Toast.LENGTH_SHORT);
                 toast.show();
+
+                finish();
+
             }
         });
 

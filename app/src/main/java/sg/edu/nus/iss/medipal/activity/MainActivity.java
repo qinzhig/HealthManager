@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -86,5 +88,23 @@ public class MainActivity extends AppCompatActivity
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+    @Override protected void onStop() {
+        super.onStop();
     }
 }

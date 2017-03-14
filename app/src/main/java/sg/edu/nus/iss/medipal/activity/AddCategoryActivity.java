@@ -37,6 +37,8 @@ public class AddCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
                 toast.show();
+
+                finish();
             }
         });
     }
