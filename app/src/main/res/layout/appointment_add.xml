@@ -4,12 +4,61 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:text="Appointment title"
+        android:hint="Appointment title"
         android:theme="@style/EditTextStyle"/>
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="Location"
+        android:theme="@style/EditTextStyle"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:focusable="false"
+            android:hint="date"
+            android:inputType="none"
+            android:theme="@style/EditTextStyle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="59dp"
+            android:ems="5"
+            android:focusable="false"
+            android:hint="time"
+            android:inputType="none"
+            android:theme="@style/EditTextStyle" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="description"
+        android:theme="@style/EditTextStyle"/>
+
+
 
 </LinearLayout>
