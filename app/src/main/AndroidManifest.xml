@@ -19,10 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.AppointmentActivity"
-            android:label="Appointments"
-            android:parentActivityName=".activity.MainActivity" />
-        <activity
             android:name=".activity.MedicineActivity"
             android:label="@string/title_activity_medicine"
             android:parentActivityName=".activity.MainActivity"
@@ -35,7 +31,7 @@
 
         <activity
             android:name=".activity.AddCategoryActivity"
-            android:lable="AddCategory"
+            android:label="AddCategory"
             android:parentActivityName=".activity.MedicineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />

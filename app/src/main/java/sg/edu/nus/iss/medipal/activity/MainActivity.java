@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,14 +69,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
+        Fragment fragment;
         if (id == R.id.nav_appointments) {
-            Intent i = new Intent(getApplicationContext(),AppointmentActivity.class);
-            startActivity(i);
+            //use the appointment view to show in the main page
+            fragment = new AppointmentFragment();
+            //move this to outside when all other modules are implemented using fragments
+            //populate the selected view(fragment) in the main page using fragment manager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+
         }else if(id == R.id.nav_medicine){
             Intent intent_medicine= new Intent(getApplicationContext(),MedicineActivity.class);
             startActivity(intent_medicine);
         }
+
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
         return true;
