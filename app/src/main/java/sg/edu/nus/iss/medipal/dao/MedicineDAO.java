@@ -54,6 +54,15 @@ public class MedicineDAO extends DataBaseUtility {
         return retCode;
     }
 
+    public long delete(Medicine medicine) throws SQLException
+    {
+        long retCode=0;
+
+        //Delete the medicine from SQLite
+
+        return retCode;
+    }
+
     //method to update the medicine table
     public long update(Medicine medicine) {
         //return value
