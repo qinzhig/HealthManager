@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".activity.AddAppointmentActivity">
+
+
+<item
+    android:id="@+id/action_close"
+    android:orderInCategory="200"
+    android:title="Close"
+    app:showAsAction="always"
+    app:actionLayout="@layout/divider_view"
+    />
+
+    <item
+    android:id="@+id/action_done"
+    android:orderInCategory="300"
+    android:title="Done"
+    android:icon="@drawable/tickmark"
+    app:showAsAction="always"
+    />
+
+</menu>
