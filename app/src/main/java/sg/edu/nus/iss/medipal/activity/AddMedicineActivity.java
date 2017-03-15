@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,11 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
+import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.R;
 
 /**
@@ -24,8 +29,14 @@ import sg.edu.nus.iss.medipal.R;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
-    int year_expire,month_expire,day_expire;
+    private EditText et_name,et_des,et_quanity,et_dosage,et_date;
+    private Spinner spinner;
     Button button_save;
+
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
+    Calendar currentDate = Calendar.getInstance();
+    Calendar selectedDate = Calendar.getInstance();
+
     private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
     ArrayAdapter array_adpater;
 
@@ -40,26 +51,17 @@ public class AddMedicineActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        button_save = (Button) findViewById(R.id.button_save);
-
-        button_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine Successfully!",Toast.LENGTH_SHORT);
-                toast.show();
-
-                finish();
-
-            }
-        });
+        et_name = (EditText) findViewById(R.id.et_name);
+        et_des = (EditText) findViewById(R.id.et_des);
+        et_quanity = (EditText) findViewById(R.id.et_quantity);
+        et_dosage = (EditText) findViewById(R.id.et_dosage);
 
         //Spinner action
-        Spinner spn= (Spinner) findViewById(R.id.spinner);
+        spinner= (Spinner) findViewById(R.id.spinner_category);
         array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_category);
-        spn.setAdapter(array_adpater);
+        spinner.setAdapter(array_adpater);
 
-        spn.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 String medcine_category = m_category[arg2];
@@ -74,26 +76,50 @@ public class AddMedicineActivity extends AppCompatActivity {
         });
 
         //Expire date setting
-        DatePicker datepicker_expire=(DatePicker)findViewById(R.id.datePicker);
-        Calendar ca=Calendar.getInstance();
-        year_expire=ca.get(Calendar.YEAR);
-        month_expire=ca.get(Calendar.MONTH);
-        day_expire=ca.get(Calendar.DAY_OF_MONTH);
+        et_date = (EditText) findViewById(R.id.et_date);
 
-        datepicker_expire.init(year_expire,month_expire,day_expire,new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear,
-                                      int dayOfMonth) {
-                // TODO Auto-generated method stub
-                year_expire=year;
-                month_expire=monthOfYear+1;
-                day_expire=dayOfMonth;
-                Toast.makeText(getApplicationContext(), "Expire Date：" + year_expire + "-" + month_expire + "-" + day_expire,
-                        Toast.LENGTH_SHORT).show();
+        et_date.setText(dateFormatter.format(selectedDate.getTime()));
+        et_date.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener onDateSetListener =
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(year, monthOfYear, dayOfMonth);
+                                selectedDate = calendar;
+                                et_date.setText(dateFormatter.format(calendar.getTime()));
+                            }
+                        };
+                DatePickerDialog datePickerDialog =
+                        new DatePickerDialog(AddMedicineActivity.this, onDateSetListener,
+                                currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH),
+                                currentDate.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
             }
         });
 
 
 
+        button_save = (Button) findViewById(R.id.button_save);
+
+        button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+//                        spinner.getId(),0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),
+//                        et_date.getText().toString(),10,getApplicationContext());
+
+                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
+
+                Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine Successfully!",Toast.LENGTH_SHORT);
+                toast.show();
+
+
+                finish();
+
+            }
+        });
     }
 }

@@ -51,4 +51,8 @@ public class Category {
     public void setCategory_des(String category_des) {
         this.category_des = category_des;
     }
+
+    public String toString () {
+        return (getCategory_name());
+    }
 }

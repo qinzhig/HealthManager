@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.medipal.pojo;
 
-import java.util.Date;
-
 /**
  * Created by zhiguo on 13/3/17.
  * Description : Define Medicine class details
@@ -17,11 +15,11 @@ public class Medicine {
     private boolean reminder;
     private int quantity;
     private int dosage;
-    private Date dateIssued;
+    private String dateIssued;
     private int expireFactor;
 
 
-    public Medicine(int id,String medicine_name, String medicine_des, int cateId, int reminderId, Boolean reminder, int quantity, int dosage, Date dateIssued, int expireFactor){
+    public Medicine(int id,String medicine_name, String medicine_des, int cateId, int reminderId, Boolean reminder, int quantity, int dosage, String dateIssued, int expireFactor){
 
         this.id=id;
         this.medicine_name=medicine_name;
@@ -100,11 +98,11 @@ public class Medicine {
         this.dosage = dosage;
     }
 
-    public Date getDateIssued() {
+    public String getDateIssued() {
         return dateIssued;
     }
 
-    public void setDateIssued(Date dateIssued) {
+    public void setDateIssued(String dateIssued) {
         this.dateIssued = dateIssued;
     }
 
@@ -116,6 +114,9 @@ public class Medicine {
         this.expireFactor = expireFactor;
     }
 
+    public String toString () {
+        return (getMedicine_name());
+    }
 
 
 }

@@ -30,13 +30,13 @@
         </android.support.v7.widget.Toolbar>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Medicine Name" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -44,55 +44,71 @@
 
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_des"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Medicine Description" />
 
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/et_des"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Description" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/spinner_medicine_hint" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tv_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quantity"/>
+
+
+        <EditText
+            android:id="@+id/et_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Quantity"/>
+
+        <TextView
+            android:id="@+id/tv_dosage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dosage"/>
 
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/et_dosage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="pills"/>
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="ExpireDate"/>
 
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/et_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false"/>
+            android:focusable="false"
+            android:inputType="datetime"
+            />
 
 
     </LinearLayout>

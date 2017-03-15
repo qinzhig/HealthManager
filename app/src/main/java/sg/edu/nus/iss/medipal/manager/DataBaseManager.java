@@ -36,10 +36,10 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String CREATE_MEDICINE_TABLE = "CREATE TABLE "
             + MEDICINE_TABLE + "(" + MEDICINE_ID + " INTEGER PRIMARY KEY, "
             + MEDICINE_NAME + " TEXT, " + MEDICINE_DES + " TEXT, "
-            + MEDICINE_CATID + " INTEGER," + MEDICINE_REMID+ "INTEGER,"
-            + MEDICINE_REM + "INTEGER," + MEDICINE_QUANTITY + "INTEGER,"
-            + MEDICINE_DOSAGE + "INTEGER," + MEDICINE_DATEISSUED + "TEXT,"
-            + MEDICINE_EXPIREFACTOR + "INTEGER"+")";
+            + MEDICINE_CATID + " INTEGER, " + MEDICINE_REMID+ " INTEGER, "
+            + MEDICINE_REM + " INTEGER, " + MEDICINE_QUANTITY + " INTEGER, "
+            + MEDICINE_DOSAGE + " INTEGER, " + MEDICINE_DATEISSUED + " TEXT, "
+            + MEDICINE_EXPIREFACTOR + " INTEGER "+")";
 
     //variables used to create category table query
     public static final String CATEGORY_TABLE = "category";
