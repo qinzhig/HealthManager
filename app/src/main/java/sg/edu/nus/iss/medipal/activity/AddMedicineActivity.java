@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.application.App;
 
 /**
  * Created by : Qin Zhi Guo on 10-03-2017.
@@ -107,11 +107,11 @@ public class AddMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-//                        spinner.getId(),0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),
-//                        et_date.getText().toString(),10,getApplicationContext());
+                App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+                        spinner.getId(),0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),
+                        et_date.getText().toString(),10,getApplicationContext());
 
-                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
+//                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 
                 Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine Successfully!",Toast.LENGTH_SHORT);
                 toast.show();
