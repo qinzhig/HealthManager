@@ -1,12 +1,57 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.AppointmentManager;
+import sg.edu.nus.iss.medipal.pojo.Appointment;
 
-public class AddAppointmentActivity extends AppCompatActivity {
+/**
+ * Created by : Navi on 04-03-2017.
+ * Description : This is the main view for adding Appointment
+ * Modified by :
+ * Reason for modification :
+ */
+
+public class AddAppointmentActivity extends AppCompatActivity  implements View.OnClickListener{
+
+    private EditText appointmentTitle,
+                     appointmentLocation,
+                     appointmentdate,
+                     appointmentTime,
+                     appointmentDesc;
+
+    private Spinner appointmentRemainder;
+
+    private int day,month,year,hour,minute;
+
+    static String[] SPINNERLIST = {"No Remainder",
+                                   "15 Minutes Before",
+                                   "30 Minutes Before",
+                                   "1 Hour Before",
+                                   "4 Hours Before",
+                                   "12 Hours Before",
+                                   "1 Day Before"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,8 +60,110 @@ public class AddAppointmentActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tb_addapp);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(null);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        appointmentTitle = (EditText)findViewById(R.id.title);
+        appointmentLocation = (EditText)findViewById(R.id.location);
+        appointmentdate = (EditText)findViewById(R.id.date);
+        appointmentTime = (EditText)findViewById(R.id.time);
+        appointmentDesc = (EditText)findViewById(R.id.description);
+        appointmentRemainder = (Spinner) findViewById(R.id.remainder);
+
+        populateRemainderSpinner();
+
+        appointmentdate.setOnClickListener(this);
+        appointmentTime.setOnClickListener(this);
 
     }
+
+    private void populateRemainderSpinner() {
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,SPINNERLIST);
+        appointmentRemainder.setAdapter(spinnerAdapter);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        final Calendar calender;
+
+        if (v == appointmentdate) {
+            calender = Calendar.getInstance();
+            day = calender.get(Calendar.DAY_OF_MONTH);
+            month = calender.get(Calendar.MONTH);
+            year = calender.get(Calendar.YEAR);
+
+            DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    appointmentdate.setText(dayOfMonth+"-"+month+"-"+year);
+                }
+            }, day, month, year);
+            datePicker.updateDate(year, month, day);
+            datePicker.show();
+        }
+        else if(v == appointmentTime)
+        {
+            calender = Calendar.getInstance();
+            hour = calender.get(Calendar.HOUR_OF_DAY);
+            minute = calender.get(Calendar.MINUTE);
+
+            TimePickerDialog timePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    int hour = hourOfDay % 12;
+                    appointmentTime.setText(String.format("%02d:%02d %s", hour == 0 ? 12 : hour,
+                            minute, hourOfDay < 12 ? "AM" : "PM"));
+                }
+            }, hour,minute,false);
+            timePicker.updateTime(hour,minute);
+            timePicker.show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       getMenuInflater().inflate(R.menu.toolbar_action_items,menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_close);
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_close)
+        {
+            finish();
+        }
+        else if (id == R.id.action_done)
+        {
+            Toast.makeText(this,"adding",Toast.LENGTH_LONG).show();
+            saveAppointmentDetails();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveAppointmentDetails() {
+        String title = appointmentTitle.getText().toString();
+        String location = appointmentLocation.getText().toString();
+        String datetime = appointmentdate.getText().toString() + " " +appointmentTime.getText().toString();
+        String description = appointmentDesc.getText().toString();
+        String remainderTime = appointmentRemainder.getSelectedItem().toString();
+
+        AppointmentManager appointmentManager = new AppointmentManager(title,location,datetime,description,remainderTime,this);
+
+        appointmentManager.addAppointment();
+
+    }
+
+
 }
