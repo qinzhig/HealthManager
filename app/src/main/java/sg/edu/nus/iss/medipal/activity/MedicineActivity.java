@@ -20,12 +20,17 @@ import sg.edu.nus.iss.medipal.adapter.MedicineAdapter;
 
 public class MedicineActivity extends AppCompatActivity {
 
+
+    Toolbar toolbar;
+    ListView lv;
+    MedicineAdapter m_adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_medicine);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_medicine);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Medicine");
 
@@ -33,9 +38,9 @@ public class MedicineActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ListView lv= (ListView) findViewById(R.id.lv_medicine);
+        lv= (ListView) findViewById(R.id.lv_medicine);
 
-        MedicineAdapter m_adapter = new MedicineAdapter(this);
+        m_adapter = new MedicineAdapter(this);
         lv.setAdapter(m_adapter);
 
 
@@ -50,6 +55,17 @@ public class MedicineActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if(m_adapter != null)
+        {
+            m_adapter.refreshMedicines();
+        }
+
     }
 
 }
