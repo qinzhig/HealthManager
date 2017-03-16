@@ -45,7 +45,6 @@ public class AppointmentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -99,7 +98,7 @@ public class AppointmentFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
-        if (requestCode == 101) {
+        if (requestCode == 101 || requestCode == 102) {
             if (resultCode == 0) {
                 appointmentList.clear();
                 appointmentList = appointmentManager.getAppointments();

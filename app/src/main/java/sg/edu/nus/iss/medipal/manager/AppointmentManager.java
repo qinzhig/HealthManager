@@ -88,6 +88,43 @@ public class AppointmentManager {
 
     }
 
+    public boolean saveAppointment(String id)
+    {
+        Long appointmentId;
+        Calendar reminderDate;
+        appointment.setId(Integer.getInteger(id));
+        appointmentId = appointmentDAO.update(appointment);
+        if(appointmentId == Long.getLong(id))
+        {
+            reminderDate = determineReminderTime(remainderInterval,appointment.getAppointment());
+            if(reminderDate != null) {
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+                Intent alertIntent = new Intent(context, RemindAlarmReceiver.class);
+                alertIntent.putExtra("Id", Integer.toString(appointmentId.intValue()));
+
+                PendingIntent broadcast = PendingIntent.getBroadcast(context, appointmentId.intValue(), alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                //Log.d("check",Long.toString(date.getTime()));
+                //Log.d("check",
+                //      Long.toString(reminderDate.get(Calendar.DAY_OF_MONTH))+" "+Long.toString(reminderDate.get(Calendar.MONTH))+" "+Long.toString(reminderDate.get(Calendar.YEAR))+" "+Long.toString(reminderDate.get(Calendar.HOUR_OF_DAY))+" "+Long.toString(reminderDate.get(Calendar.MINUTE)));
+                //Log.d("doublecheck",Long.toString(new GregorianCalendar().getTimeInMillis() + (60*1000)));
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderDate.getTimeInMillis(), broadcast);
+                //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
+            }
+            //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(appointmentTitle);
+            jsonArray.put(remainderInterval);
+            appointmentPreference.storeAppointmentInfo(Integer.toString(appointmentId.intValue()), jsonArray.toString());
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
      public boolean deleteAppointment(String appointmentId)
     {
         appointmentDAO.deleteAppointment(appointmentId);

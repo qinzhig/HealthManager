@@ -39,6 +39,10 @@
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+        <activity android:name=".activity.EditAppointmentActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <receiver android:name="sg.edu.nus.iss.medipal.service.RemindAlarmReceiver">
         </receiver>
     </application>

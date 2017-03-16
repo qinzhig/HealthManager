@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 import sg.edu.nus.iss.medipal.R;
@@ -41,6 +43,8 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
 
     private Spinner appointmentRemainder;
 
+    private String id, title, location, date, time, desc, remainder;
+
     private int day,month,year,hour,minute;
 
     static String[] SPINNERLIST = {"No Remainder",
@@ -59,6 +63,17 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(null);
 
+        Bundle intentExtras = getIntent().getExtras();
+        id = intentExtras.getString("Id");
+        title = intentExtras.getString("title");
+        location = intentExtras.getString("location");
+        date = intentExtras.getString("date");
+        time = intentExtras.getString("time");
+        desc = intentExtras.getString("desc");
+        remainder = intentExtras.getString("remainder");
+
+        Log.d("editAppointment",id+" "+title+" "+location+" "+date+" "+time+" "+desc+" "+remainder);
+
         appointmentTitle = (EditText)findViewById(R.id.title);
         appointmentLocation = (EditText)findViewById(R.id.location);
         appointmentdate = (EditText)findViewById(R.id.date);
@@ -67,8 +82,15 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
         appointmentRemainder = (Spinner) findViewById(R.id.remainder);
         toolbarTitle = (TextView) findViewById(R.id.tb_app_title);
 
+
         toolbarTitle.setText("Edit Appointment");
         populateRemainderSpinner();
+
+        appointmentTitle.setText(title);
+        appointmentLocation.setText(location);
+        appointmentdate.setText(date);
+        appointmentTime.setText(time);
+        appointmentDesc.setText(desc);
 
         appointmentdate.setOnClickListener(this);
         appointmentTime.setOnClickListener(this);
@@ -76,9 +98,12 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
     }
 
     private void populateRemainderSpinner() {
+        int pos=0;
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,SPINNERLIST);
         appointmentRemainder.setAdapter(spinnerAdapter);
 
+        pos=Arrays.asList(SPINNERLIST).indexOf(remainder);
+        appointmentRemainder.setSelection(pos);
     }
 
     @Override
@@ -169,7 +194,7 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
 
             String datetime = date+ " " +time;
             AppointmentManager appointmentManager = new AppointmentManager(title,location,datetime,description,remainderTime,this);
-            if(appointmentManager.addAppointment())
+            if(appointmentManager.saveAppointment(id))
             {
                 new Handler().postDelayed(new Runnable() {
                                               @Override
@@ -179,7 +204,7 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
                                                   Toast.makeText(EditAppointmentActivity.this,"Success",Toast.LENGTH_LONG).show();
                                               }
                                           },
-                        1000);
+                        2000);
             }
             else{
                 Toast.makeText(this,"something went wrong :-(",Toast.LENGTH_LONG).show();
@@ -220,7 +245,7 @@ public class EditAppointmentActivity extends AppCompatActivity  implements View.
         }
 
         if (desc.isEmpty()) {
-            appointmentDesc.setError("Please enter notes about the appointements");
+            appointmentDesc.setError("Please enter notes about the appointment");
             valid = false;
         } else {
             appointmentDesc.setError(null);
