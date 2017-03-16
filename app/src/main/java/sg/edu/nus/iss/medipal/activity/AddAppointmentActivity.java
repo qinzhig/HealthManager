@@ -2,6 +2,7 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -94,7 +95,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
             DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    appointmentdate.setText(dayOfMonth+"-"+month+"-"+year);
+                    appointmentdate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
                 }
             }, day, month, year);
             datePicker.updateDate(year, month, day);
@@ -145,7 +146,6 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
         }
         else if (id == R.id.action_done)
         {
-            Toast.makeText(this,"adding",Toast.LENGTH_LONG).show();
             saveAppointmentDetails();
         }
 
@@ -155,15 +155,72 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
     private void saveAppointmentDetails() {
         String title = appointmentTitle.getText().toString();
         String location = appointmentLocation.getText().toString();
-        String datetime = appointmentdate.getText().toString() + " " +appointmentTime.getText().toString();
+        String date = appointmentdate.getText().toString();
+        String time = appointmentTime.getText().toString();
         String description = appointmentDesc.getText().toString();
         String remainderTime = appointmentRemainder.getSelectedItem().toString();
 
-        AppointmentManager appointmentManager = new AppointmentManager(title,location,datetime,description,remainderTime,this);
+        if(validate(title,location,date,time,description,remainderTime))
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Saving...");
+            progressDialog.show();
 
-        appointmentManager.addAppointment();
-
+            String datetime = date+ " " +time;
+            AppointmentManager appointmentManager = new AppointmentManager(title,location,datetime,description,remainderTime,this);
+            if(appointmentManager.addAppointment())
+            {
+                progressDialog.dismiss();
+                finish();
+                Toast.makeText(this,"Success",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(this,"something went wrong :-(",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 
+    private boolean validate(String title, String location, String date, String time, String desc, String remainder) {
+        boolean valid = true;
+
+        if (title.isEmpty()) {
+            appointmentTitle.setError("Please enter a title for appointment");
+            valid = false;
+        } else {
+            appointmentTitle.setError(null);
+        }
+
+        if (location.isEmpty()) {
+            appointmentLocation.setError("Please enter the location for appointment");
+            valid = false;
+        } else {
+            appointmentLocation.setError(null);
+        }
+
+        if (date.isEmpty()) {
+            appointmentdate.setError("Please select a date");
+            valid = false;
+        } else {
+            appointmentdate.setError(null);
+        }
+
+        if (time.isEmpty()) {
+            appointmentTime.setError("Please select a time");
+            valid = false;
+        } else {
+            appointmentTime.setError(null);
+        }
+
+        if (desc.isEmpty()) {
+            appointmentDesc.setError("Please enter notes about the appointements");
+            valid = false;
+        } else {
+            appointmentDesc.setError(null);
+        }
+
+        return valid;
+    }
 }

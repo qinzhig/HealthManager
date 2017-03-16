@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
 
 /**
@@ -21,7 +23,7 @@ import sg.edu.nus.iss.medipal.pojo.Appointment;
  */
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
-
+    private PreferenceManager appointmentPreference;
     private Context mContext;
     private List<Appointment> appointmentList;
 
@@ -43,6 +45,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public AppointmentAdapter(Context mContext, List<Appointment> appointmentList) {
         this.mContext = mContext;
         this.appointmentList = appointmentList;
+        appointmentPreference = new PreferenceManager(mContext);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(final AppointmentViewHolder holder, int position) {
         Appointment appointment = appointmentList.get(position);
-        holder.title.setText("Appointment Tittle");
+        holder.title.setText(appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId())));
         holder.datetime.setText(appointment.getAppointment());
         holder.location.setText(appointment.getLocation());
         holder.description.setText(appointment.getDescription());

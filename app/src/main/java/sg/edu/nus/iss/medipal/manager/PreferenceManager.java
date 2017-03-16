@@ -29,11 +29,36 @@ public class PreferenceManager {
 
     private static final String PREF_NAME = "medipalStoredPreferences";
 
-
+    /*
+    constructor
+    */
     public PreferenceManager(Context context){
         this.context = context;
         sharedPref = context.getSharedPreferences(PREF_NAME,PRIVATE_MODE);
         preferenceEditor = sharedPref.edit();
+    }
+
+    /*
+      Create login session
+     */
+    public void storeAppointmentInfo(String appointmentId,String appointmentTitle){
+        //Store the notification Id and title as key-value pair
+        preferenceEditor.putString(appointmentId, appointmentTitle);
+        // commit changes
+        preferenceEditor.commit();
+    }
+
+    public String getAppointmentInfo(String appointmentId)
+    {
+        return sharedPref.getString(appointmentId, null);
+    }
+
+    public void deleteAppointmentInfo(String appointmentId)
+    {
+        //Remove the appointment details stored using the Id
+        preferenceEditor.remove(appointmentId);
+        // commit changes
+        preferenceEditor.commit();
     }
 
 }

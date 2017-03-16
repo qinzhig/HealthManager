@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.nus.iss.medipal">
-
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +38,7 @@
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+        <receiver android:name="sg.edu.nus.iss.medipal.service.RemindAlarmReceiver">
+        </receiver>
     </application>
-
 </manifest>

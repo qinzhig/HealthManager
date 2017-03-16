@@ -60,10 +60,10 @@ public class AppointmentFragment extends Fragment {
         //get the appointment details from the appointment table
         appointmentList = appointmentDAO.getAppointments();
 
-        appointmentList = new ArrayList<Appointment>();
+       /* appointmentList = new ArrayList<Appointment>();
         appointmentList.add(new Appointment(1,"Singapore","01-04-2017","Test Appointment 1"));
         appointmentList.add(new Appointment(2,"Singapore","02-04-2017","Test Appointment 2"));
-
+        */
 
         if(appointmentList.isEmpty())
         {
