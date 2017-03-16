@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -133,6 +134,9 @@ public class MedicineDAO extends DataBaseUtility {
             int expirefactor=cursor.getInt(9);
 
             Medicine medicinenode = new Medicine(id,name,des,catid,remid,rem,quantity,dosage,date,expirefactor);
+
+            Log.v("DEBUG","-------------------------DAO++++++++++++++++++++++ "+medicinenode.toString());
+
             medicines.add(medicinenode);
 
         }

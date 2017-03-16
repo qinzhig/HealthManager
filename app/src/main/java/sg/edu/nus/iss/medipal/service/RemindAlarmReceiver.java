@@ -10,6 +10,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
@@ -41,17 +44,25 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+        String storedString = remainderPreference.getAppointmentInfo(notificationId);
+        try {
+            JSONArray jsonArray = new JSONArray(storedString);
+
+            Notification notification = builder.setContentTitle(jsonArray.getString(0))
+                    .setContentText("New Notification From Demo App..")
+                    .setTicker("New Message Alert!")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent).build();
+
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(0, notification);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
-        Notification notification = builder.setContentTitle(remainderPreference.getAppointmentInfo(notificationId))
-                .setContentText("New Notification From Demo App..")
-                .setTicker("New Message Alert!")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent).build();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
 
     }
 }

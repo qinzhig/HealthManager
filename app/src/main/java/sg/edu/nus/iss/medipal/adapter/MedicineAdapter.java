@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
@@ -29,12 +29,16 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
         super(context, R.layout.medicine_category_row_layout);
         this.context=context;
+        refreshMedicines();
     }
 
-    public void refreshMedicines() throws ExecutionException, InterruptedException {
+    public void refreshMedicines() {
 
         medicines.clear();
+
         medicines.addAll(App.hm.getMedicines(this.context));
+
+        Log.v("DEBUG",".............MedicineAdapter+++++++++++++++++++++++++++++++++++++++++++++ Size = "+medicines.size());
 
         notifyDataSetChanged();
     }
@@ -69,15 +73,13 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 App.hm.deleteMedicine(medicine.getId(),context);
-                try {
-                    refreshMedicines();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                refreshMedicines();
             }
         });
+
+        refreshMedicines();
+
+        Log.v("DEBUG",".............++++++++++++++++++++++++++++++++++++++++++++++ Size = "+medicines.size());
 
         return convertView;
 

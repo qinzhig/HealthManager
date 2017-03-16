@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.pojo;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,15 +50,15 @@ public class HealthManager {
     }
 
     //SQLite get medicine list
-    public List<Medicine> getMedicines(Context context) throws ExecutionException, InterruptedException {
+    public List<Medicine> getMedicines(Context context) {
         taskListMedicine = new ListMedicine(context);
         taskListMedicine.execute((Void)null);
 
-        try{
+        try {
             medicines = taskListMedicine.get();
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }catch (ExecutionException e){
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -65,7 +66,8 @@ public class HealthManager {
             medicines = new ArrayList<Medicine>();
         }
 
-        return new ArrayList<Medicine>( medicines);
+        Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
+        return  medicines;
 
     }
 
