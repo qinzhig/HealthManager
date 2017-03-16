@@ -70,7 +70,6 @@ public class AppointmentDAO extends DataBaseUtility {
         retCode = database.update(DataBaseManager.APPOINTMENT_TABLE, values,
                 WHERE_ID_EQUALS,
                 new String[] { String.valueOf(appointment.getId()) });
-
         return retCode;
 
     }
@@ -99,6 +98,12 @@ public class AppointmentDAO extends DataBaseUtility {
             appointments.add(appointment);
 
         }
+
         return appointments;
+    }
+
+    public void deleteAppointment(String appointmentId) {
+
+        database.delete(DataBaseManager.APPOINTMENT_TABLE, DataBaseManager.APPMNT_ID+"= ?" , new String[]{appointmentId});
     }
 }

@@ -9,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,10 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddAppointmentActivity;
 import sg.edu.nus.iss.medipal.adapter.AppointmentAdapter;
 import sg.edu.nus.iss.medipal.dao.AppointmentDAO;
+import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by : Navi on 06-03-2017.
@@ -34,7 +39,7 @@ public class AppointmentFragment extends Fragment {
     private RecyclerView appointmentsView;
     private AppointmentAdapter appointmentAdapter;
     private List<Appointment> appointmentList;
-    private AppointmentDAO appointmentDAO;
+    private AppointmentManager appointmentManager;
     private Context mContext;
 
     @Override
@@ -55,10 +60,10 @@ public class AppointmentFragment extends Fragment {
 
         //get reference to the current context(
         mContext = appointmentFragment.getContext();
-        //get the reference to appointmentDAO object
-        appointmentDAO = new AppointmentDAO(mContext);
+        //get the reference to appointmentManager object
+        appointmentManager = new AppointmentManager(mContext);
         //get the appointment details from the appointment table
-        appointmentList = appointmentDAO.getAppointments();
+        appointmentList = appointmentManager.getAppointments();
 
        /* appointmentList = new ArrayList<Appointment>();
         appointmentList.add(new Appointment(1,"Singapore","01-04-2017","Test Appointment 1"));
@@ -83,13 +88,26 @@ public class AppointmentFragment extends Fragment {
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, AddAppointmentActivity.class));
+                startActivityForResult(new Intent(mContext, AddAppointmentActivity.class),101);
             }
         });
 
         return appointmentFragment;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
+        if (requestCode == 101) {
+            if (resultCode == 0) {
+                appointmentList.clear();
+                appointmentList = appointmentManager.getAppointments();
+                appointmentAdapter = new AppointmentAdapter(mContext, appointmentList);
+                appointmentsView.setAdapter(appointmentAdapter);
+            }
+        }
+    }
 
     private void populateRecyclerView() {
         //the recycler view will use linear layout to show the cards (later can be changed if needed)
