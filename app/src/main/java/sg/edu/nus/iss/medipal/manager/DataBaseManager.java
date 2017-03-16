@@ -68,6 +68,36 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + APPMNT_LOCATION + " TEXT, " + APPMNT_DATETIME + " TEXT, "
             + APPMNT_DESCRIPTION + " TEXT" + ")";
 
+    //variables used to create ice table query
+    public static final String ICE_TABLE = "ice";
+    public static final String ICE_ID = "id";
+    public static final String ICE_NAME = "name";
+    public static final String ICE_CONTACTNUMBER = "contactnumber";
+    public static final String ICE_CONTACTTYPE = "contacttype";
+    public static final String ICE_DESCRIPTION = "description";
+
+    //appointment table create query
+    public static final String CREATE_ICE_TABLE = "CREATE TABLE "
+            + ICE_TABLE + "(" + ICE_ID + " INTEGER PRIMARY KEY, "
+            + ICE_NAME + " TEXT, " + ICE_CONTACTNUMBER + " TEXT, "
+            + ICE_CONTACTTYPE + " INTEGER, "+ ICE_DESCRIPTION + " TEXT" + ")";
+
+    //variables used to create measurement table query
+    public static final String MEASUREMENT_TABLE = "measurement";
+    public static final String MEASUREMENT_ID = "id";
+    public static final String MEASUREMENT_SYSTOLIC = "systolic";
+    public static final String MEASUREMENT_DIASTOLIC = "diastolic";
+    public static final String MEASUREMENT_PULSE = "pulse";
+    public static final String MEASUREMENT_TEMPERATURE = "temperature";
+    public static final String MEASUREMENT_WEIGHT = "weight";
+    public static final String MEASUREMENT_MEASUREDON = "measuredon";
+
+    public static final String CREATE_MEASUREMENT_TABLE = "CREATE TABLE "
+            + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
+            + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
+            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " FLOAT, "
+            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " DATETIME" + ")";
+
     //To store current DB instance
     private static DataBaseManager instance;
 
@@ -96,6 +126,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_MEDICINE_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_APPOINTMENT_TABLE);
+        db.execSQL(CREATE_ICE_TABLE);
+        db.execSQL(CREATE_MEASUREMENT_TABLE);
     }
 
     @Override
@@ -109,5 +141,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MEDICINE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
         onCreate(db);
     }}
