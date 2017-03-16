@@ -1,12 +1,11 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,33 +14,30 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
-import sg.edu.nus.iss.medipal.pojo.Appointment;
 
 /**
- * Created by : Navi on 04-03-2017.
- * Description : This is the main view for adding Appointment
+ * Created by : Navi on 16-03-2017.
+ * Description : This is the main view for editing Appointment
  * Modified by :
  * Reason for modification :
  */
 
-public class AddAppointmentActivity extends AppCompatActivity  implements View.OnClickListener{
+public class EditAppointmentActivity extends AppCompatActivity  implements View.OnClickListener{
 
     private EditText appointmentTitle,
                      appointmentLocation,
                      appointmentdate,
                      appointmentTime,
                      appointmentDesc;
+    private TextView toolbarTitle;
 
     private Spinner appointmentRemainder;
 
@@ -69,7 +65,9 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
         appointmentTime = (EditText)findViewById(R.id.time);
         appointmentDesc = (EditText)findViewById(R.id.description);
         appointmentRemainder = (Spinner) findViewById(R.id.remainder);
+        toolbarTitle = (TextView) findViewById(R.id.tb_app_title);
 
+        toolbarTitle.setText("Edit Appointment");
         populateRemainderSpinner();
 
         appointmentdate.setOnClickListener(this);
@@ -178,7 +176,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
                                               public void run() {
                                                   progressDialog.dismiss();
                                                   finish();
-                                                  Toast.makeText(AddAppointmentActivity.this,"Success",Toast.LENGTH_LONG).show();
+                                                  Toast.makeText(EditAppointmentActivity.this,"Success",Toast.LENGTH_LONG).show();
                                               }
                                           },
                         1000);
