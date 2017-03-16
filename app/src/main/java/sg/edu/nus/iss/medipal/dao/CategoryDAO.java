@@ -48,6 +48,17 @@ public class CategoryDAO extends DataBaseUtility {
         return retCode;
     }
 
+    //Category  are not allowed to deleted after added in database
+//    public long delete(Category category) throws SQLException
+//    {
+//        long retCode=0;
+//
+//        //Delete the medicine from SQLite
+//        retCode =   database.delete(DataBaseManager.MEDICINE_TABLE,WHERE_ID_EQUALS,new String[] { String.valueOf(category.getId()) });
+//
+//        return retCode;
+//    }
+
     //method to update the category table
     public long update(Category category) {
         //return value
@@ -61,10 +72,14 @@ public class CategoryDAO extends DataBaseUtility {
         values.put(DataBaseManager.CATEGORY_DES, category.getCategory_des());
 
         //method returns number of rows affected. so if it is zero some error handling needs to be done by caller
-        retCode = database.update(DataBaseManager.CATEGORY_TABLE, values,
-                WHERE_ID_EQUALS,
-                new String[] { String.valueOf(category.getId()) });
-
+        try {
+            retCode = database.update(DataBaseManager.CATEGORY_TABLE, values,
+                    WHERE_ID_EQUALS,
+                    new String[]{String.valueOf(category.getId())});
+        }catch (SQLException sqlE){
+            sqlE.printStackTrace(); //unexpected error while inserting.
+            retCode = -1; //set return value to error code so that caller can handle error
+        }
         return retCode;
 
     }

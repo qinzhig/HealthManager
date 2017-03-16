@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
@@ -38,7 +37,7 @@ public class MedicineDAO extends DataBaseUtility {
         values.put(DataBaseManager.MEDICINE_REM, medicine.isReminder() ? 1:0);
         values.put(DataBaseManager.MEDICINE_QUANTITY, medicine.getQuantity());
         values.put(DataBaseManager.MEDICINE_DOSAGE, medicine.getDosage());
-        values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued().toString());
+        values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued());
         values.put(DataBaseManager.MEDICINE_EXPIREFACTOR,medicine.getExpireFactor());
 
 
@@ -59,7 +58,12 @@ public class MedicineDAO extends DataBaseUtility {
         long retCode=0;
 
         //Delete the medicine from SQLite
-
+        try {
+            retCode = database.delete(DataBaseManager.MEDICINE_TABLE, WHERE_ID_EQUALS, new String[]{String.valueOf(medicine.getId())});
+        }catch (SQLException sqlE){
+            sqlE.printStackTrace(); //unexpected error while inserting.
+            retCode = -1; //set return value to error code so that caller can handle error
+        }
         return retCode;
     }
 
@@ -78,13 +82,18 @@ public class MedicineDAO extends DataBaseUtility {
         values.put(DataBaseManager.MEDICINE_REM, medicine.isReminder() ? 1:0);
         values.put(DataBaseManager.MEDICINE_QUANTITY, medicine.getQuantity());
         values.put(DataBaseManager.MEDICINE_DOSAGE, medicine.getDosage());
-        values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued().toString());
+        values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued());
         values.put(DataBaseManager.MEDICINE_EXPIREFACTOR,medicine.getExpireFactor());
 
         //method returns number of rows affected. so if it is zero some error handling needs to be done by caller
-        retCode = database.update(DataBaseManager.MEDICINE_TABLE, values,
-                WHERE_ID_EQUALS,
-                new String[] { String.valueOf(medicine.getId()) });
+        try {
+            retCode = database.update(DataBaseManager.MEDICINE_TABLE, values,
+                    WHERE_ID_EQUALS,
+                    new String[]{String.valueOf(medicine.getId())});
+        }catch (SQLException sqlE){
+            sqlE.printStackTrace(); //unexpected error while inserting.
+            retCode = -1; //set return value to error code so that caller can handle error
+        }
 
         return retCode;
 
@@ -120,7 +129,7 @@ public class MedicineDAO extends DataBaseUtility {
             if(cursor.getInt(5) == 0) { rem = false; } else{ rem = true; }
             int quantity=cursor.getInt(6);
             int dosage=cursor.getInt(7);
-            Date date = new Date(cursor.getString(8));
+            String date = cursor.getString(8);
             int expirefactor=cursor.getInt(9);
 
             Medicine medicinenode = new Medicine(id,name,des,catid,remid,rem,quantity,dosage,date,expirefactor);
