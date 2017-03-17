@@ -126,10 +126,10 @@ public class MainActivity extends AppCompatActivity
     @Override
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
+        Log.d("here ", Integer.toString(requestCode) + " " + Integer.toString(resultCode));
         if (requestCode == 101 || requestCode == 102) {
             if (resultCode == 0) {
-               // appointmentList.clear();
+                // appointmentList.clear();
                 //appointmentList = appointmentManager.getAppointments();
                 //LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //appointmentFragment = inflater.inflate(R.layout.appointment_main, null, false);
@@ -142,10 +142,11 @@ public class MainActivity extends AppCompatActivity
                 //move this to outside when all other modules are implemented using fragments
                 //populate the selected view(fragment) in the main page using fragment manager
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
 
             }
         }
+    }
 
     public void onIceSelected(DummyContent.DummyItem item)
     {
