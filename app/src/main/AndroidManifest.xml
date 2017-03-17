@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sg.edu.nus.iss.medipal">
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
     <application
         android:name=".application.App"
         android:allowBackup="true"
@@ -11,9 +13,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,19 +32,27 @@
             android:parentActivityName=".activity.MedicineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:name=".activity.EditMedicineActivity"
+            android:label="EditMedicine"
+            android:parentActivityName=".activity.MedicineActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
             android:name=".activity.AddCategoryActivity"
             android:label="AddCategory"
             android:parentActivityName=".activity.MedicineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.AddAppointmentActivity"
+        <activity
+            android:name=".activity.AddAppointmentActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".activity.EditAppointmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.EditAppointmentActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <receiver android:name="sg.edu.nus.iss.medipal.service.RemindAlarmReceiver">
-        </receiver>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver android:name=".service.RemindAlarmReceiver"></receiver>
+
+
     </application>
+
 </manifest>
