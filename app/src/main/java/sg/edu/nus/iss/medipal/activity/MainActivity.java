@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    NavigationView navigationView;
+    //NavigationView navigationView;
+    private boolean changeAppointmentFragment=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,26 +125,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(changeAppointmentFragment)
+        {
+            changeAppointmentFragment=false;
+            Fragment fragment = new AppointmentFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
+    }
+
+    @Override
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("here ", Integer.toString(requestCode) + " " + Integer.toString(resultCode));
         if (requestCode == 101 || requestCode == 102) {
             if (resultCode == 0) {
-                // appointmentList.clear();
-                //appointmentList = appointmentManager.getAppointments();
-                //LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                //appointmentFragment = inflater.inflate(R.layout.appointment_main, null, false);
-                //populateRecyclerView(appointmentFragment);
-
-                //Log.d("list",Boolean.toString(appointmentList.isEmpty()));
-                // Log.d("adapter",Boolean.toString(appointmentAdapter == null));
-
-                Fragment fragment = new AppointmentFragment();
-                //move this to outside when all other modules are implemented using fragments
-                //populate the selected view(fragment) in the main page using fragment manager
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-
+                changeAppointmentFragment = true;
             }
         }
     }

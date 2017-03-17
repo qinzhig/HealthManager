@@ -83,7 +83,7 @@ public class AppointmentFragment extends Fragment {
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(mContext, AddAppointmentActivity.class),101);
+                getActivity().startActivityForResult(new Intent(mContext, AddAppointmentActivity.class),101);
 
             }
         });
@@ -91,24 +91,6 @@ public class AppointmentFragment extends Fragment {
         return appointmentFragment;
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
-        if (requestCode == 101 || requestCode == 102) {
-            if (resultCode == 0) {
-                appointmentList.clear();
-                appointmentList = appointmentManager.getAppointments();
-                /*LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                appointmentFragment = inflater.inflate(R.layout.appointment_main, null, false);*/
-                populateRecyclerView(appointmentFragment);
-
-                //Log.d("list",Boolean.toString(appointmentList.isEmpty()));
-               // Log.d("adapter",Boolean.toString(appointmentAdapter == null));
-
-            }
-        }
-    }
 
     private void populateRecyclerView(View fragment) {
         //get reference to the recyclerview
