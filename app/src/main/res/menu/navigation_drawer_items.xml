@@ -8,6 +8,13 @@
         <item
             android:id="@+id/nav_appointments"
             android:title="@string/appointments" />
+        <item
+            android:id="@+id/nav_measurement"
+            android:title="Measurements" />
+        <item
+            android:id="@+id/nav_ice"
+            android:title="ICEs" />
+
 
         <item
             android:id="@+id/nav_notifications"

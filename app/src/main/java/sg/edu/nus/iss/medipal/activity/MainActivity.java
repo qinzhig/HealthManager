@@ -21,9 +21,13 @@ import android.view.View;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
+import sg.edu.nus.iss.medipal.fragment.IceFragment;
+import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
+import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        IceFragment.OnListFragmentInteractionListener, MeasurementFragment.OnListFragmentInteractionListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -83,9 +87,17 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
 
-        }else if(id == R.id.nav_medicine){
-            Intent intent_medicine= new Intent(getApplicationContext(),MedicineActivity.class);
+        } else if(id == R.id.nav_medicine) {
+            Intent intent_medicine= new Intent(getApplicationContext(), MedicineActivity.class);
             startActivity(intent_medicine);
+        } else if (id == R.id.nav_measurement) {
+            fragment = new MeasurementFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else if (id == R.id.nav_ice) {
+            fragment = new IceFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
 
         //close drawer when an item is clicked.
@@ -112,6 +124,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
         if (requestCode == 101 || requestCode == 102) {
@@ -133,5 +146,16 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
+
+    public void onIceSelected(DummyContent.DummyItem item)
+    {
+
+    }
+
+    @Override
+    public void onMeasurementSelected(DummyContent.DummyItem item)
+    {
+
+
     }
 }
