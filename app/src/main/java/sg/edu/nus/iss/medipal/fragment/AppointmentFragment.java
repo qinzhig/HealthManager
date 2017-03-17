@@ -41,6 +41,7 @@ public class AppointmentFragment extends Fragment {
     private List<Appointment> appointmentList;
     private AppointmentManager appointmentManager;
     private Context mContext;
+    private View appointmentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,6 @@ public class AppointmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View appointmentFragment;
         FloatingActionButton aFab;
 
         //using the appointment_main xml to show in the main fragment
@@ -76,11 +76,7 @@ public class AppointmentFragment extends Fragment {
             txtView.setText("No appointments found");
         }
         else {
-            //get reference to the recyclerview
-            appointmentsView = (RecyclerView) appointmentFragment.findViewById(R.id.appointmentrecycler_view);
-
-            populateRecyclerView();
-
+            populateRecyclerView(appointmentFragment);
         }
 
         aFab = (FloatingActionButton)appointmentFragment.findViewById(R.id.fab);
@@ -88,6 +84,7 @@ public class AppointmentFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(mContext, AddAppointmentActivity.class),101);
+
             }
         });
 
@@ -102,13 +99,21 @@ public class AppointmentFragment extends Fragment {
             if (resultCode == 0) {
                 appointmentList.clear();
                 appointmentList = appointmentManager.getAppointments();
-                appointmentAdapter = new AppointmentAdapter(mContext, appointmentList);
-                appointmentsView.setAdapter(appointmentAdapter);
+                /*LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                appointmentFragment = inflater.inflate(R.layout.appointment_main, null, false);*/
+                populateRecyclerView(appointmentFragment);
+
+                //Log.d("list",Boolean.toString(appointmentList.isEmpty()));
+               // Log.d("adapter",Boolean.toString(appointmentAdapter == null));
+
             }
         }
     }
 
-    private void populateRecyclerView() {
+    private void populateRecyclerView(View fragment) {
+        //get reference to the recyclerview
+        appointmentsView = (RecyclerView) fragment.findViewById(R.id.appointmentrecycler_view);
+
         //the recycler view will use linear layout to show the cards (later can be changed if needed)
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         appointmentsView.setLayoutManager(mLayoutManager);

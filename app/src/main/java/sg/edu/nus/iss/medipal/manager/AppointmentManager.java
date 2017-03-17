@@ -67,9 +67,9 @@ public class AppointmentManager {
 
                 PendingIntent broadcast = PendingIntent.getBroadcast(context, appointmentId.intValue(), alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 //Log.d("check",Long.toString(date.getTime()));
-                //Log.d("check",
-                //      Long.toString(reminderDate.get(Calendar.DAY_OF_MONTH))+" "+Long.toString(reminderDate.get(Calendar.MONTH))+" "+Long.toString(reminderDate.get(Calendar.YEAR))+" "+Long.toString(reminderDate.get(Calendar.HOUR_OF_DAY))+" "+Long.toString(reminderDate.get(Calendar.MINUTE)));
-                //Log.d("doublecheck",Long.toString(new GregorianCalendar().getTimeInMillis() + (60*1000)));
+                Log.d("check",
+                     Long.toString(reminderDate.get(Calendar.DAY_OF_MONTH))+" "+Long.toString(reminderDate.get(Calendar.MONTH))+" "+Long.toString(reminderDate.get(Calendar.YEAR))+" "+Long.toString(reminderDate.get(Calendar.HOUR_OF_DAY))+" "+Long.toString(reminderDate.get(Calendar.MINUTE)));
+                Log.d("doublecheck",Long.toString(new GregorianCalendar().getTimeInMillis() + (60*1000)));
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderDate.getTimeInMillis(), broadcast);
                 //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
             }
@@ -94,6 +94,8 @@ public class AppointmentManager {
         Calendar reminderDate;
         appointment.setId(Integer.getInteger(id));
         appointmentId = appointmentDAO.update(appointment);
+
+        Log.d("save appointment",Long.toString(appointmentId)+" "+id);
         if(appointmentId == Long.getLong(id))
         {
             reminderDate = determineReminderTime(remainderInterval,appointment.getAppointment());
@@ -150,10 +152,10 @@ public class AppointmentManager {
             try {
                 c = Calendar.getInstance();
                 Date date = df.parse(appointment);
-                //Log.d("date", df.format(date));
+                Log.d("date", df.format(date));
                 c.setTime(date);
                 c.add(Calendar.MINUTE, -interval);
-                //Log.d("c date", df.format(c.getTime()));
+                Log.d("c date", df.format(c.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

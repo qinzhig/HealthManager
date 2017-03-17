@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -106,5 +109,29 @@ public class MainActivity extends AppCompatActivity
     }
     @Override protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("here ",Integer.toString(requestCode)+" "+Integer.toString(resultCode));
+        if (requestCode == 101 || requestCode == 102) {
+            if (resultCode == 0) {
+               // appointmentList.clear();
+                //appointmentList = appointmentManager.getAppointments();
+                //LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //appointmentFragment = inflater.inflate(R.layout.appointment_main, null, false);
+                //populateRecyclerView(appointmentFragment);
+
+                //Log.d("list",Boolean.toString(appointmentList.isEmpty()));
+                // Log.d("adapter",Boolean.toString(appointmentAdapter == null));
+
+                Fragment fragment = new AppointmentFragment();
+                //move this to outside when all other modules are implemented using fragments
+                //populate the selected view(fragment) in the main page using fragment manager
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+
+            }
+        }
     }
 }

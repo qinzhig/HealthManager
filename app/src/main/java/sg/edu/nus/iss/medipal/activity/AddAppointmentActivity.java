@@ -177,6 +177,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
                                               @Override
                                               public void run() {
                                                   progressDialog.dismiss();
+                                                  setResult(101);
                                                   finish();
                                                   Toast.makeText(AddAppointmentActivity.this,"Success",Toast.LENGTH_LONG).show();
                                               }
