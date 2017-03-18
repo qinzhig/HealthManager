@@ -92,11 +92,11 @@ public class AppointmentManager {
     {
         Long appointmentId;
         Calendar reminderDate;
-        appointment.setId(Integer.getInteger(id));
+        appointment.setId(Integer.valueOf(id));
         appointmentId = appointmentDAO.update(appointment);
 
         Log.d("save appointment",Long.toString(appointmentId)+" "+id);
-        if(appointmentId == Long.getLong(id))
+        if(appointmentId == Long.valueOf(id))
         {
             reminderDate = determineReminderTime(remainderInterval,appointment.getAppointment());
             if(reminderDate != null) {
@@ -134,9 +134,15 @@ public class AppointmentManager {
         return true;
     }
 
-    public ArrayList<Appointment> getAppointments()
+    public ArrayList<Appointment> getAppointments(int position)
     {
-        ArrayList<Appointment> appointmentList = appointmentDAO.getAppointments();
+        Boolean deciderFlag;
+        if(position == 0)
+            deciderFlag=true;
+        else
+            deciderFlag = false;
+
+        ArrayList<Appointment> appointmentList = appointmentDAO.getAppointments(deciderFlag);
         return appointmentList;
     }
     /*

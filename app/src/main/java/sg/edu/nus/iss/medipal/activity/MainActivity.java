@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        String Title;
         Fragment fragment;
         if (id == R.id.nav_personalBio) {
             Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
         } else if (id == R.id.nav_appointments) {
+            resetTitle("Appointments");
             //use the appointment view to show in the main page
             fragment = new AppointmentFragment();
             //move this to outside when all other modules are implemented using fragments
@@ -112,8 +114,14 @@ public class MainActivity extends AppCompatActivity
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
+
+    private void resetTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();

@@ -208,14 +208,14 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
             appointmentLocation.setError(null);
         }
 
-        if (date.isEmpty()) {
+        if (date.isEmpty() && isValidDate(date)) {
             appointmentdate.setError("Please select a date");
             valid = false;
         } else {
             appointmentdate.setError(null);
         }
 
-        if (time.isEmpty()) {
+        if (time.isEmpty() && isValidTime(date,time)) {
             appointmentTime.setError("Please select a time");
             valid = false;
         } else {
