@@ -1,11 +1,13 @@
 package sg.edu.nus.iss.medipal.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by zhiguo on 13/3/17.
  * Description : Define Medicine class details
  */
 
-public class Medicine {
+public class Medicine implements Serializable {
 
     private int id;
     private String medicine_name;
@@ -115,7 +117,7 @@ public class Medicine {
     }
 
     public String toString () {
-        return (getMedicine_name());
+        return ("ID: "+getId()+" /Name: "+getMedicine_name()+" /Des: "+getMedicine_des()+" /catId: "+getCateId()+" /quantity: "+getQuantity()+" /Dosage: "+getDosage()+" /reminderId: "+getReminderId()+" /Date: "+getDateIssued()+" /expireFactor: "+getExpireFactor());
     }
 
 

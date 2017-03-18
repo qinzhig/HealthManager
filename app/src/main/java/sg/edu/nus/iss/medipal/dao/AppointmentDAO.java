@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class AppointmentDAO extends DataBaseUtility {
 
         //Insert into appointment table. If insertion is successfull then the method returns the row ID, else -1
         try {
+
             retCode = database.insertOrThrow(DataBaseManager.APPOINTMENT_TABLE, null, values);
         }
         catch (SQLException sqlE)
@@ -46,6 +48,8 @@ public class AppointmentDAO extends DataBaseUtility {
             sqlE.printStackTrace(); //unexpected error while inserting.
             retCode = -1; //set return value to error code so that caller can handle error
         }
+
+        Log.d("insert","Insert Successfull");
         return retCode;
     }
 
@@ -89,6 +93,7 @@ public class AppointmentDAO extends DataBaseUtility {
 
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
+            Log.d("Inside getApp","Inside");
             int id = cursor.getInt(0);
             String location = cursor.getString(1);
             String datetime = cursor.getString(2);

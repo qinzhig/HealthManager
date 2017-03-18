@@ -23,19 +23,18 @@ public class ListCategory extends AsyncTask<Void, Void, ArrayList<Category>> {
 
     @Override
     protected ArrayList<Category> doInBackground(Void... arg0) {
-        ArrayList<Category> categoryList = categoryDAO.getCategorys();
-        return categoryList;
+        categorys = categoryDAO.getCategorys();
+        return categorys;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Category> memList) {
-        categorys = memList;
+    protected void onPostExecute(ArrayList<Category> categoryList) {
+        categorys = categoryList;
 
-        if (memList == null) { categorys = new ArrayList<Category>(); }
+        if (categoryList == null) { categorys = new ArrayList<Category>(); }
+
+        categoryDAO.close();
 
     }
 
-    public ArrayList<Category> getCategoryList() {
-        return this.categorys;
-    }
 }

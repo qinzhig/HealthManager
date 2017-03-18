@@ -13,6 +13,7 @@ import sg.edu.nus.iss.medipal.asynTask.AddMedicine;
 import sg.edu.nus.iss.medipal.asynTask.DeleteMedicine;
 import sg.edu.nus.iss.medipal.asynTask.ListCategory;
 import sg.edu.nus.iss.medipal.asynTask.ListMedicine;
+import sg.edu.nus.iss.medipal.asynTask.UpdateMedicine;
 
 /**
  * Created by zhiguo on 15/3/17.
@@ -25,7 +26,9 @@ public class HealthManager {
 
     private AddMedicine     taskAddMedicine;
     private ListMedicine    taskListMedicine;
+    private UpdateMedicine  taskUpdateMedicine;
     private DeleteMedicine  taskDeleteMedicine;
+
     private AddCategory     taskAddCategory;
     private ListCategory    taskListCategory;
 
@@ -80,6 +83,20 @@ public class HealthManager {
 
         taskAddMedicine = new AddMedicine(context);
         taskAddMedicine.execute(medicine);
+
+        return medicine;
+
+    }
+
+    //SQLite add medicine
+    public Medicine updateMedicine(int id, String medicine_name, String medicine_des, int cateId,
+                                int reminderId, Boolean reminder, int quantity, int dosage,
+                                String dateIssued, int expireFactor,Context context){
+
+        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage, dateIssued, expireFactor);
+
+        taskUpdateMedicine = new UpdateMedicine(context);
+        taskUpdateMedicine.execute(medicine);
 
         return medicine;
 

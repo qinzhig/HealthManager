@@ -182,7 +182,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
                                                   Toast.makeText(AddAppointmentActivity.this,"Success",Toast.LENGTH_LONG).show();
                                               }
                                           },
-                        1000);
+                        2000);
             }
             else{
                 Toast.makeText(this,"something went wrong :-(",Toast.LENGTH_LONG).show();
@@ -223,7 +223,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
         }
 
         if (desc.isEmpty()) {
-            appointmentDesc.setError("Please enter notes about the appointements");
+            appointmentDesc.setError("Please enter notes about the appointment");
             valid = false;
         } else {
             appointmentDesc.setError(null);

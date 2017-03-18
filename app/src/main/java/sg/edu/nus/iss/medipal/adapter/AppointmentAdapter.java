@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.medipal.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.EditAppointmentActivity;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
@@ -32,7 +34,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private PreferenceManager appointmentPreference;
     private Context mContext;
     private List<Appointment> appointmentList;
-    public String appointmentId;
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView datetime;
@@ -53,6 +54,23 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             edit = (ImageView) view.findViewById(R.id.edit);
             delete = (ImageView) view.findViewById(R.id.delete);
 
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent appointmentEdit = new Intent(mContext, EditAppointmentActivity.class);
+                    appointmentEdit.putExtra("Id",title.getTag().toString());
+                    appointmentEdit.putExtra("title",title.getText().toString());
+                    String dttime = datetime.getText().toString();
+                    String dt[] = dttime.split(" ",2);
+                    appointmentEdit.putExtra("date",dt[0]);
+                    appointmentEdit.putExtra("time",dt[1]);
+                    appointmentEdit.putExtra("location",location.getText().toString());
+                    appointmentEdit.putExtra("remainder",remainder.getTag().toString());
+                    appointmentEdit.putExtra("desc",description.getText().toString());
+                    ((Activity)mContext).startActivityForResult(appointmentEdit,102);
+                }
+            });
+
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -62,7 +80,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     AppointmentManager appointmentManager = new AppointmentManager(mContext);
-                                    appointmentManager.deleteAppointment(appointmentId);
+                                    appointmentManager.deleteAppointment(title.getTag().toString());
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -89,12 +107,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(final AppointmentViewHolder holder, int position) {
-        String  storedString,
-                title = null,
-                remainder = null;
+        String storedString, remainder = null,remainderDesc = null, title = null;
+
         Appointment appointment = appointmentList.get(position);
-        appointmentId =Integer.toString(appointment.getId());
-        storedString = appointmentPreference.getAppointmentInfo(appointmentId);
+
+        storedString = appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId()));
         try {
             JSONArray jsonArray = new JSONArray(storedString);
 
@@ -102,19 +119,21 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             remainder = jsonArray.getString(1);
 
             if(remainder.equals("No Remainder"))
-                remainder = "No remainder set";
+                remainderDesc = "No remainder set";
             else
-                remainder ="Remainder set "+remainder.toLowerCase();
+                remainderDesc ="Remainder set "+remainder.toLowerCase();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         holder.title.setText(title);
+        holder.title.setTag(appointment.getId());
         holder.datetime.setText(appointment.getAppointment());
         holder.location.setText(appointment.getLocation());
         holder.description.setText(appointment.getDescription());
-        holder.remainder.setText(remainder);
+        holder.remainder.setText(remainderDesc);
+        holder.remainder.setTag(remainder);
     }
 
     @Override

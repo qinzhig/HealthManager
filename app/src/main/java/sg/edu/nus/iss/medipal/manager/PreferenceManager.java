@@ -41,9 +41,9 @@ public class PreferenceManager {
     /*
       Create login session
      */
-    public void storeAppointmentInfo(String appointmentId,String appointmentTitle){
+    public void storeAppointmentInfo(String appointmentId,String appointmentInfo){
         //Store the notification Id and title as key-value pair
-        preferenceEditor.putString(appointmentId, appointmentTitle);
+        preferenceEditor.putString(appointmentId, appointmentInfo);
         // commit changes
         preferenceEditor.commit();
     }

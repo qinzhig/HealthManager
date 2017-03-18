@@ -17,6 +17,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="?attr/actionBarSize"
+            android:focusableInTouchMode="true"
             >
             <TextView
                 android:id="@+id/tb_app_title"

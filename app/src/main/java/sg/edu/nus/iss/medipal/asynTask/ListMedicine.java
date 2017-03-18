@@ -31,23 +31,14 @@ public class ListMedicine extends AsyncTask<Void, Void, ArrayList<Medicine>> {
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Medicine> medicineList) {
+    protected void onPostExecute(ArrayList<Medicine> medicines) {
 
-//        Log.v("DEBUG","-------------------------Async onPostExcute Start++++++++++++++++++++++ ");
-//        if (medicineList == null)
-//        {
-//            medicines = new ArrayList<Medicine>();
-//        }
-//        medicines = medicineList;
-//        Log.v("DEBUG","-------------------------Async onPostExcute++++++++++++++++++++++ "+medicines.size());
+        Log.v("DEBUG","-------------------------Async onPostExcute Start++++++++++++++++++++++ ");
+
+        if(medicines == null){ medicines = new ArrayList<Medicine>();}
+        medicineDAO.close();
+        Log.v("DEBUG","-------------------------Async onPostExcute++++++++++++++++++++++ "+medicines.size());
 
     }
 
-    public ArrayList<Medicine> getMedicineList() {
-
-        Log.v("DEBUG","-------------------------Async getMedicineList Start++++++++++++++++++++++ "+medicines.size());
-
-        Log.v("DEBUG","-------------------------Async getMedicineList++++++++++++++++++++++ "+medicines.toString());
-        return this.medicines;
-    }
 }
