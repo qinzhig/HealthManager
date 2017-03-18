@@ -32,7 +32,7 @@ public class EditMedicineActivity extends AppCompatActivity {
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
 
-    private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
+    //private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
     ArrayAdapter array_adpater;
 
     String medcine_category;
@@ -100,16 +100,18 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
+        final String[] m_list = App.hm.getCategoryNameList(getApplicationContext());
+
         //Spinner action
         spinner= (Spinner) findViewById(R.id.spinner_category);
-        array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_category);
+        array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
         spinner.setSelection(medicine.getCateId());
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                medcine_category = m_category[arg2];
+                medcine_category = m_list[arg2];
                 arg0.setVisibility(View.VISIBLE);
 
                 position=arg2;

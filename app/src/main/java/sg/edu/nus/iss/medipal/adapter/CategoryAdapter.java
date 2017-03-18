@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Category;
 
 /**
@@ -28,9 +27,10 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
 
         super(context, R.layout.medicine_category_row_layout);
         this.context=context;
+        refreshCategorys();
     }
 
-    public void refreshCategorys() throws ExecutionException, InterruptedException {
+    public void refreshCategorys() {
 
         categorys.clear();
         categorys.addAll(App.hm.getCategorys(this.context));
@@ -63,7 +63,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
         }
 
         final Category category = categorys.get(position);
-        viewHolder.tvName.setText(category.toString());
+        viewHolder.tvName.setText(category.getCategory_name());
 
         return convertView;
 

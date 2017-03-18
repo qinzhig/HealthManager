@@ -8,22 +8,21 @@ import sg.edu.nus.iss.medipal.dao.CategoryDAO;
 import sg.edu.nus.iss.medipal.pojo.Category;
 
 /**
- * Created by zhiguo on 14/3/17.
+ * Created by zhiguo on 18/3/17.
  */
 
-public class AddCategory extends AsyncTask<Category, Void, Long> {
-
+public class UpdateCategory extends AsyncTask<Category, Void, Long> {
 
     Category category = null;
     private CategoryDAO categoryDAO;
 
-    public AddCategory(Context context) {
+    public UpdateCategory(Context context) {
         this.categoryDAO = new CategoryDAO(context);
     }
 
     @Override
     protected Long doInBackground(Category... params) {
-        long result = categoryDAO.insert(params[0]);
+        long result = categoryDAO.update(params[0]);
         return result;
     }
 
@@ -31,7 +30,7 @@ public class AddCategory extends AsyncTask<Category, Void, Long> {
     protected void onPostExecute(Long result) {
         if (result != -1)
         {
-            Log.v("DBSave","____________________++++++++++++++++++++Add Category successfully!");
+            Log.v("DBSave","____________________-------------------Update Medicine successfully!");
         }
 
         if (categoryDAO != null)
@@ -40,5 +39,4 @@ public class AddCategory extends AsyncTask<Category, Void, Long> {
         }
 
     }
-
 }

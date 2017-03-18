@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import sg.edu.nus.iss.medipal.R;
@@ -18,6 +19,9 @@ import sg.edu.nus.iss.medipal.R;
 
 public class AddCategoryActivity extends AppCompatActivity {
 
+    private EditText et_name,et_code,et_des;
+    private Button button_save;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,11 @@ public class AddCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Button button_save = (Button)findViewById(R.id.button_save);
+        et_name = (EditText) findViewById(R.id.et_name);
+        et_code = (EditText) findViewById(R.id.et_code);
+        et_des = (EditText) findViewById(R.id.et_des);
+
+        button_save = (Button)findViewById(R.id.button_save);
 
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override

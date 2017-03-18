@@ -133,7 +133,7 @@ public class HealthManager {
     }
 
     //SQLite get Category list
-    public List<Category> getCategorys(Context context) throws ExecutionException, InterruptedException {
+    public ArrayList<Category> getCategorys(Context context) {
         taskListCategory = new ListCategory(context);
         taskListCategory.execute((Void)null);
 
@@ -149,7 +149,28 @@ public class HealthManager {
             categorys = new ArrayList<Category>();
         }
 
-        return new ArrayList<Category>(categorys);
+        return categorys;
+
+    }
+
+    public String[] getCategoryNameList(Context context){
+
+        String c_name[]= new String[getCategorys(context).size()];
+        Iterator<Category> c_list = getCategorys(context).iterator();
+
+        for(int i =0;c_list.hasNext();i++){
+
+            Category c = c_list.next();
+            if( c.getCategory_name() != null)
+            {
+                c_name[i]=c.getCategory_name();
+
+                Log.v("TAG","---------------HealthManager "+c_name[i]);
+            }
+        }
+
+
+        return c_name;
 
     }
 

@@ -66,7 +66,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     //medicine SQLite table creation SQL
     public static final String CREATE_MEDICINE_TABLE = "CREATE TABLE "
             + MEDICINE_TABLE + "(" + MEDICINE_ID + " INTEGER PRIMARY KEY, "
-            + MEDICINE_NAME + " TEXT, " + MEDICINE_DES + " TEXT, "
+            + MEDICINE_NAME + " TEXT  UNIQUE, " + MEDICINE_DES + " TEXT, "
             + MEDICINE_CATID + " INTEGER, " + MEDICINE_REMID+ " INTEGER, "
             + MEDICINE_REM + " INTEGER, " + MEDICINE_QUANTITY + " INTEGER, "
             + MEDICINE_DOSAGE + " INTEGER, " + MEDICINE_DATEISSUED + " TEXT, "
@@ -82,8 +82,18 @@ public class DataBaseManager extends SQLiteOpenHelper {
     //category SQLite table creating SQL
     public static final String CREATE_CATEGORY_TABLE = "CREATE TABLE "
             + CATEGORY_TABLE + "(" + CATEGORY_ID + " INTEGER PRIMARY KEY, "
-            + CATEGORY_NAME+ " TEXT, " + CATEGORY_CODE + " TEXT, "
+            + CATEGORY_NAME+ " TEXT  UNIQUE, " + CATEGORY_CODE + " TEXT, "
             + CATEGORY_DES + " TEXT" + ")";
+
+    public static final String INSERT_PREDEFINED_CATEGORY1 = "INSERT INTO "
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Supplement','SUP','sup')";
+    public static final String INSERT_PREDEFINED_CATEGORY2 = "INSERT INTO "
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Chronic', 'CHR', 'chr')";
+    public static final String INSERT_PREDEFINED_CATEGORY3 = "INSERT INTO "
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc')";
+    public static final String INSERT_PREDEFINED_CATEGORY4 = "INSERT INTO "
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Complete Course', 'COM', 'com')";
+
 
     //variables used for to form create appointment table query
     public static final String APPOINTMENT_TABLE = "appointment";
@@ -98,6 +108,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + APPOINTMENT_TABLE + "(" + APPMNT_ID + " INTEGER PRIMARY KEY, "
             + APPMNT_LOCATION + " TEXT, " + APPMNT_DATETIME + " TEXT, "
             + APPMNT_DESCRIPTION + " TEXT" + ")";
+
 
     //variables used to create ice table query
     public static final String ICE_TABLE = "ice";
@@ -154,6 +165,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+
         Log.d("oncreate",CREATE_HEALTHBIO_TABLE);
         db.execSQL(CREATE_PERSONALBIO_TABLE);
         db.execSQL(CREATE_HEALTHBIO_TABLE);
@@ -162,6 +174,12 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENT_TABLE);
         db.execSQL(CREATE_ICE_TABLE);
         db.execSQL(CREATE_MEASUREMENT_TABLE);
+
+        //Initalize the pre-defined medicine category to SQLite
+        db.execSQL(INSERT_PREDEFINED_CATEGORY1);
+        db.execSQL(INSERT_PREDEFINED_CATEGORY2);
+        db.execSQL(INSERT_PREDEFINED_CATEGORY3);
+        db.execSQL(INSERT_PREDEFINED_CATEGORY4);
     }
 
     @Override
