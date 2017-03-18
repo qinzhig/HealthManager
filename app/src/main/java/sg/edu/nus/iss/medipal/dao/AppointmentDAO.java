@@ -94,7 +94,7 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
                         DataBaseManager.APPMNT_DATETIME,
                         DataBaseManager.APPMNT_DESCRIPTION }, null, null, null,
                 null, null);
-        String currentDate = MediPalUtility.covertDateToString(Calendar.getInstance().getTime(),"yyyyMddHHmm");
+        String currentDate = MediPalUtility.convertDateToString(Calendar.getInstance().getTime(),"yyyyMddHHmm");
         Log.d("currentdateTime",currentDate);
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {

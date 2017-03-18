@@ -26,7 +26,8 @@ import java.util.GregorianCalendar;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
-import sg.edu.nus.iss.medipal.pojo.Appointment;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
+
 
 /**
  * Created by : Navi on 04-03-2017.
@@ -162,7 +163,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
         String description = appointmentDesc.getText().toString();
         String remainderTime = appointmentRemainder.getSelectedItem().toString();
 
-        if(validate(title,location,date,time,description,remainderTime))
+        if(validate(title,location,date,time,description))
         {
             final ProgressDialog progressDialog = new ProgressDialog(this,
                     R.style.AppTheme_Dark_Dialog);
@@ -191,7 +192,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
     }
 
 
-    private boolean validate(String title, String location, String date, String time, String desc, String remainder) {
+    private boolean validate(String title, String location, String date, String time, String desc) {
         boolean valid = true;
 
         if (title.isEmpty()) {
@@ -208,17 +209,26 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
             appointmentLocation.setError(null);
         }
 
-        if (date.isEmpty() && isValidDate(date)) {
+        if (date.isEmpty()) {
             appointmentdate.setError("Please select a date");
             valid = false;
-        } else {
+        } else if(!MediPalUtility.isValidDate(date)) {
+            appointmentdate.setError("Please select a future date");
+            valid = false;
+        }
+        else{
             appointmentdate.setError(null);
         }
 
-        if (time.isEmpty() && isValidTime(date,time)) {
+        if (time.isEmpty()) {
             appointmentTime.setError("Please select a time");
             valid = false;
-        } else {
+        }
+        else if(!MediPalUtility.isValidTime(date,time)){
+            appointmentTime.setError("Please select a future date");
+            valid = false;
+        }
+        else {
             appointmentTime.setError(null);
         }
 
