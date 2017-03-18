@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_editpb"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            >
+            <TextView
+                android:id="@+id/tb_app_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="Edit Personal Bio"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/nameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/nameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Name"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/dobView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DOB" />
+
+        <EditText
+            android:id="@+id/dobEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Date of Birth"
+            android:inputType="date"
+            android:focusable="false"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/idNoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID Number" />
+
+        <EditText
+            android:id="@+id/idNoEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="ID Number"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/addressView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address" />
+
+        <EditText
+            android:id="@+id/addressEdit"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:minLines="1"
+            android:gravity="top|left"
+            android:maxLines="3"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:scrollbars="vertical"
+            android:hint="Address"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/postalView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Postal Code" />
+
+        <EditText
+            android:id="@+id/postalEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:hint="Postal Code"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/heightView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Height" />
+
+        <EditText
+            android:id="@+id/heightEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:hint="Height"
+            android:theme="@style/EditTextStyle"/>
+
+        <TextView
+            android:id="@+id/bloodTypeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Blood Type" />
+
+        <EditText
+            android:id="@+id/bloodTypeEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Blood Type"
+            android:theme="@style/EditTextStyle"/>
+
+    </LinearLayout>

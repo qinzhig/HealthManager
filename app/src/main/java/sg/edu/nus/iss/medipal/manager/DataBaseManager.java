@@ -18,6 +18,37 @@ public class DataBaseManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "medipalFT01DB";
     private static final int DATABASE_VERSION = 1;
 
+    //variables for Personal Bio table
+    public static final String PERSONALBIO_TABLE = "personalbio";
+    public static final String PERSONALBIO_ID = "id";
+    public static final String PERSONALBIO_NAME = "name";
+    public static final String PERSONALBIO_DOB = "dob";
+    public static final String PERSONALBIO_IDNO = "idno";
+    public static final String PERSONALBIO_ADDRESS = "address";
+    public static final String PERSONALBIO_POSTALCODE = "postalcode";
+    public static final String PERSONALBIO_HEIGHT = "height";
+    public static final String PERSONALBIO_BLOODTYPE = "bloodtype";
+
+    // Create query for Personal Bio table
+    public static final String CREATE_PERSONALBIO_TABLE = "CREATE TABLE "
+            + PERSONALBIO_TABLE + "(" + PERSONALBIO_ID + " INTEGER PRIMARY KEY, "
+            + PERSONALBIO_NAME + " TEXT, " + PERSONALBIO_DOB + " DATE, "
+            + PERSONALBIO_IDNO + " TEXT, " + PERSONALBIO_ADDRESS+ " TEXT, "
+            + PERSONALBIO_POSTALCODE + " INTEGER, " + PERSONALBIO_HEIGHT + " INTEGER, "
+            + PERSONALBIO_BLOODTYPE + " TEXT "+")";
+
+    //variables for Health Bio table
+    public static final String HEALTHBIO_TABLE = "healthbio";
+    public static final String HEALTHBIO_ID = "id";
+    public static final String HEALTHBIO_CONDITION = "condition";
+    public static final String HEALTHBIO_STARTDATE = "startdate";
+    public static final String HEALTHBIO_CONDITIONTYPE = "conditiontype";
+
+    // Create query for Health Bio table
+    public static final String CREATE_HEALTHBIO_TABLE = "CREATE TABLE "
+            + HEALTHBIO_TABLE + "(" + HEALTHBIO_ID + " INTEGER PRIMARY KEY, "
+            + HEALTHBIO_CONDITION + " TEXT, " + HEALTHBIO_STARTDATE + " DATE, "
+            + HEALTHBIO_CONDITIONTYPE + " TEXT "+")";
 
     //variables used to create medicine table query
     public static final String MEDICINE_TABLE = "medicine";
@@ -123,6 +154,9 @@ public class DataBaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        Log.d("oncreate",CREATE_HEALTHBIO_TABLE);
+        db.execSQL(CREATE_PERSONALBIO_TABLE);
+        db.execSQL(CREATE_HEALTHBIO_TABLE);
         db.execSQL(CREATE_MEDICINE_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_APPOINTMENT_TABLE);
@@ -138,6 +172,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
 
         //the following code makes sure that the tables are recreated each time when db is upgraded.
         //If existing data needs to be preserved then following code needs to be changed accordingly
+        db.execSQL("DROP TABLE IF EXISTS " + PERSONALBIO_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + HEALTHBIO_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MEDICINE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);

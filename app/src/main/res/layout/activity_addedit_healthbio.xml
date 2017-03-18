@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_addhb"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            >
+            <TextView
+                android:id="@+id/tb_app_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="Add Health Bio"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/conditionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Condition" />
+
+    <EditText
+        android:id="@+id/conditionEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Condition/Allergies"
+        android:theme="@style/EditTextStyle" />
+
+    <TextView
+        android:id="@+id/startDateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Date" />
+
+    <EditText
+        android:id="@+id/startDateEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:focusable="false"
+        android:hint="Condition/Allergy Start Date"
+        android:theme="@style/EditTextStyle" />
+
+    <TextView
+        android:id="@+id/conditionTypeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Condition Type" />
+
+    <Spinner
+        android:id="@+id/conditionTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextStyle"/>
+
+</LinearLayout>
+

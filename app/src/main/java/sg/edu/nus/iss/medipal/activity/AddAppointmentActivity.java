@@ -139,6 +139,7 @@ public class AddAppointmentActivity extends AppCompatActivity  implements View.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         int id = item.getItemId();
 
         if(id == R.id.action_close)

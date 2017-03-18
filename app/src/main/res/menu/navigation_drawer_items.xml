@@ -2,6 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_personalBio"
+            android:title="@string/personalBio" />
+
+        <item
+            android:id="@+id/nav_healthBio"
+            android:title="@string/healthBio" />
+
         <item
             android:id="@+id/nav_medicine"
             android:title="@string/medication" />

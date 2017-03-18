@@ -18,6 +18,7 @@ import android.view.View;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
+import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private DrawerLayout drawer;
     NavigationView navigationView;
+    private boolean changeAppointmentFragment;
+    private boolean refreshHealthBioFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Fragment fragment;
-        if (id == R.id.nav_appointments) {
+        if (id == R.id.nav_personalBio) {
+            Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
+            startActivity(personalBioIntent);
+        } else if (id == R.id.nav_healthBio) {
+            fragment = new HealthBioFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        } else if (id == R.id.nav_appointments) {
             //use the appointment view to show in the main page
             fragment = new AppointmentFragment();
             //move this to outside when all other modules are implemented using fragments
@@ -106,5 +116,37 @@ public class MainActivity extends AppCompatActivity
     }
     @Override protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Fragment fragment = null;
+        if(changeAppointmentFragment)
+        {
+            changeAppointmentFragment=false;
+            fragment = new AppointmentFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
+        else if(refreshHealthBioFragment){
+            fragment = new HealthBioFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101 || requestCode == 102) {
+            if (resultCode == 0) {
+                changeAppointmentFragment = true;
+            }
+        }
+        else if(requestCode == 1 || requestCode == 2){
+            if (resultCode == 0) {
+                refreshHealthBioFragment = true;
+            }
+        }
     }
 }
