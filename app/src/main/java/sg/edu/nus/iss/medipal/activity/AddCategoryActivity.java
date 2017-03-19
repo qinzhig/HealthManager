@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.application.App;
 
 /**
  * Created by : Qin Zhi Guo on 12-03-2017.
@@ -43,6 +44,8 @@ public class AddCategoryActivity extends AppCompatActivity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),getApplicationContext());
+
                 Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
                 toast.show();
 

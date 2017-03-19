@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
 
     static class ViewHolder{
         TextView tvName;
-        //Button btnRemove;
+        Button btnUpdate;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent){
@@ -56,7 +57,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
             convertView = inflater.inflate(R.layout.medicine_category_row_layout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
-            //viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_remove);
+            viewHolder.btnUpdate = (Button) convertView.findViewById(R.id.btn_update);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

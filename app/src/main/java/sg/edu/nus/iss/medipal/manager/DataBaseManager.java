@@ -94,6 +94,20 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String INSERT_PREDEFINED_CATEGORY4 = "INSERT INTO "
             + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Complete Course', 'COM', 'com')";
 
+    //variables used to create reminder table query
+    public static final String REMINDER_TABLE = "reminder";
+    public static final String REMINDER_ID = "id";
+    public static final String REMINDER_FREQUENCY = "frequency";
+    public static final String REMINDER_TIME = "starttime";
+    public static final String REMINDER_INTERVAL = "interval";
+
+
+    //reminder SQLite table creating SQL
+    public static final String CREATE_REMINDER_TABLE = "CREATE TABLE "
+            + REMINDER_TABLE + "(" + REMINDER_ID + " INTEGER PRIMARY KEY, "
+            + REMINDER_FREQUENCY + " INTEGER, " + REMINDER_TIME + " TEXT, "
+            + REMINDER_INTERVAL + " INTEGER" + ")";
+
 
     //variables used for to form create appointment table query
     public static final String APPOINTMENT_TABLE = "appointment";
@@ -171,6 +185,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_HEALTHBIO_TABLE);
         db.execSQL(CREATE_MEDICINE_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
+        db.execSQL(CREATE_REMINDER_TABLE);
         db.execSQL(CREATE_APPOINTMENT_TABLE);
         db.execSQL(CREATE_ICE_TABLE);
         db.execSQL(CREATE_MEASUREMENT_TABLE);
@@ -194,6 +209,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + HEALTHBIO_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MEDICINE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + REMINDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
