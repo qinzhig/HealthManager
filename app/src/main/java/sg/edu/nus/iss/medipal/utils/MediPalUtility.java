@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * Created by Divahar on 3/17/2017.
- * Mpdified by Naval on 3/18/2017 - added
+ * Modified by Naval on 3/18/2017
  */
 
 public class MediPalUtility {
@@ -54,8 +54,13 @@ public class MediPalUtility {
             HourAdd=12;
         }
         Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
+        String hourString;
+        if(hour<10)
+            hourString="0"+hour.toString();
+        else
+            hourString=hour.toString();
 
-        String convertedDateTime = dateSplit[2]+dateSplit[1]+dateSplit[0]+hour.toString()+timeSubSplit[1];
+        String convertedDateTime = dateSplit[2]+dateSplit[1]+dateSplit[0]+hourString+timeSubSplit[1];
 
         return Long.valueOf(convertedDateTime);
     }
@@ -96,7 +101,7 @@ public class MediPalUtility {
         String timeSubSplit[] = timeSplit[0].split(":");
         String convertedTime = timeSubSplit[0]+timeSubSplit[1];
 
-        if(Long.valueOf(currentDate) == Long.valueOf(convertedDate))
+        if(currentDate.equals(convertedDate))
         {
             Integer HourAdd = 0;
             if(timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
@@ -106,7 +111,9 @@ public class MediPalUtility {
                 HourAdd=12;
             }
             Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
-            currentTime = hour.toString()+timeSubSplit[1];
+            convertedTime = hour.toString()+timeSubSplit[1];
+            Log.d("CurrentTime",currentTime);
+            Log.d("CoonvertTime",convertedTime);
             retVal = (Long.valueOf(currentTime) < Long.valueOf(convertedTime));
         }
         else if(Long.valueOf(currentDate) < Long.valueOf(convertedDate)){
@@ -120,4 +127,54 @@ public class MediPalUtility {
         return retVal;
     }
 
+    //method to get the date and time on which a remainder needs to be set
+    public static Calendar determineReminderTime(String remainderInterval, String appointmentDate)  {
+        //Log.d("date:",appointment);
+        Integer interval = decodeRemainderInterval(remainderInterval);
+        //Log.d("interval:",interval.toString());
+        Calendar c = null;
+        if(interval != 0) {
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+            try {
+                c = Calendar.getInstance();
+                Date date = df.parse(appointmentDate);
+                //Log.d("date", df.format(date));
+                c.setTime(date);
+                c.add(Calendar.MINUTE, -interval);
+                //Log.d("c date", df.format(c.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return c;
+    }
+
+    //method to get the interval in minutes to be used to set a reminder
+    public static Integer decodeRemainderInterval(String remainderInterval) {
+        Integer retVal = 0;
+        switch (remainderInterval){
+            case "No Remainder":
+                retVal = 0;
+                break;
+            case "15 Minutes Before":
+                retVal = 15;
+                break;
+            case "30 Minutes Before":
+                retVal = 30;
+                break;
+            case "1 Hour Before":
+                retVal = 60;
+                break;
+            case "4 Hours Before":
+                retVal = 240;
+                break;
+            case "12 Hours Before":
+                retVal = 720;
+                break;
+            case "1 Day Before":
+                retVal = 1440;
+                break;
+        }
+        return retVal;
+    }
 }

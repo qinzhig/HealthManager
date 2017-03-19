@@ -97,6 +97,4 @@ public class AppointmentFragment extends Fragment {
         mAppBarLayout.removeView(tabLayout);
         super.onDestroyView();
     }
-
-
-    }
+}

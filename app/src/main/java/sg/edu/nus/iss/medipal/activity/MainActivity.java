@@ -32,9 +32,8 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    NavigationView navigationView;
-    private boolean changeAppointmentFragment;
     private boolean refreshHealthBioFragment;
+    private boolean refreshAppointmentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +59,11 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -145,9 +142,9 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Fragment fragment = null;
-        if(changeAppointmentFragment)
+        if(refreshAppointmentFragment)
         {
-            changeAppointmentFragment=false;
+            refreshAppointmentFragment=false;
             fragment = new AppointmentFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
@@ -165,7 +162,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("here ", Integer.toString(requestCode) + " " + Integer.toString(resultCode));
         if (requestCode == 101 || requestCode == 102) {
             if (resultCode == 0) {
-                changeAppointmentFragment = true;
+                refreshAppointmentFragment = true;
             }
         }
         else if(requestCode == 1 || requestCode == 2){
