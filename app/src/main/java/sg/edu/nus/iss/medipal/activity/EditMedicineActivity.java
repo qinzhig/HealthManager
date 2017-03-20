@@ -26,8 +26,8 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 public class EditMedicineActivity extends AppCompatActivity {
 
-    private EditText et_name,et_des,et_quanity,et_dosage,et_date;
-    private Spinner spinner;
+    private EditText et_name,et_des,et_quanity,et_date,et_cquantity,et_threshold;
+    private Spinner spinner,spinner_dosage;
     Button button_update;
     ImageButton button_add_category;
 
@@ -41,7 +41,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
     String medcine_category;
     Medicine medicine;
-    int position;
+    int position,dosage_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,9 @@ public class EditMedicineActivity extends AppCompatActivity {
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
         et_quanity = (EditText) findViewById(R.id.et_quantity);
-        et_dosage = (EditText) findViewById(R.id.et_dosage);
         et_date = (EditText) findViewById(R.id.et_date);
+        et_cquantity = (EditText) findViewById(R.id.et_cquantity);
+        et_threshold = (EditText) findViewById(R.id.et_threshold);
 
 
         Log.v("TAG","----------->EditMedicine Object medicine:  "+medicine.toString());
@@ -75,12 +76,14 @@ public class EditMedicineActivity extends AppCompatActivity {
         Log.v("TAG","----------------------- EditMedicineActivityexpireFactor = " + medicine.getExpireFactor());
 
 
+
+
         //Set the default data for every elements
         et_name.setText(medicine.getMedicine_name());
         et_des.setText(medicine.getMedicine_des());
         et_quanity.setText(Integer.toString(medicine.getQuantity()));
-        et_dosage.setText(Integer.toString(medicine.getDosage()));
-
+        et_cquantity.setText(Integer.toString(medicine.getConsumequantity()));
+        et_threshold.setText(Integer.toString(medicine.getThreshold()));
 
         et_date.setText(medicine.getDateIssued());
         et_date.setText(dateFormatter.format(selectedDate.getTime()));
@@ -143,6 +146,34 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
+
+        spinner_dosage = (Spinner) findViewById(R.id.spinner_dosage);
+        ArrayAdapter<CharSequence> adapter_dosage = ArrayAdapter.createFromResource(this,
+                R.array.dosage, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter_dosage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner_dosage.setAdapter(adapter_dosage);
+        spinner_dosage.setSelection(medicine.getDosage());
+
+
+        spinner_dosage.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+                arg0.setVisibility(View.VISIBLE);
+
+                dosage_position=arg2;
+
+                Toast toast = Toast.makeText(EditMedicineActivity.this,"Dosage Selected",Toast.LENGTH_SHORT);
+                toast.show();
+                //position= Arrays.asList(m_category).indexOf(medcine_category);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
         //Set the Save Button Name to Update
         button_update = (Button) findViewById(R.id.button_save);
         button_update.setText("Update");
@@ -152,8 +183,8 @@ public class EditMedicineActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 App.hm.updateMedicine(medicine.getId(),et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),
-                        et_date.getText().toString(),10,getApplicationContext());
+                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                        Integer.valueOf(et_cquantity.getText().toString().trim()),Integer.valueOf(et_threshold.getText().toString().trim()),et_date.getText().toString(),10,getApplicationContext());
 
 //                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 
