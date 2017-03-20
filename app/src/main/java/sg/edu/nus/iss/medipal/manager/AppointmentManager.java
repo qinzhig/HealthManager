@@ -35,15 +35,19 @@ public class AppointmentManager {
     private Appointment appointment;
     private AppointmentDAO appointmentDAO;
     private String appointmentTitle;
-    private String remainderInterval;
+    private String[] remainderIntervals;
     private Context context;
+
+    public static final Integer REMAINDER_ID_OFFSET = 100000 ;
 
     PreferenceManager appointmentPreference;
 
     //constructor 1 for setting all the parameters
-    public AppointmentManager(String title, String location, String datetime, String description, String remainderInterval, Context context) {
+    public AppointmentManager(String title, String location, String datetime, String description, String[] remainderIntervals, Context context) {
         this.context = context;
-        this.remainderInterval = remainderInterval;
+        this.remainderIntervals = new String[2];
+        this.remainderIntervals[0] = remainderIntervals[0];
+        this.remainderIntervals[1] = remainderIntervals[1];
         this.appointmentTitle = title;
         appointment = new Appointment(null, location, datetime, description);
         appointmentDAO = new AppointmentDAO(context);
@@ -68,18 +72,23 @@ public class AppointmentManager {
                 Integer resultIntValue = resultValue.intValue();
                 Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
 
-                if (resultStatus) {
-
-                    //get the remainder date based on the remainderInterval given by user
-                    Calendar remainderDate = MediPalUtility.determineReminderTime(remainderInterval, appointment.getAppointment());
-                    //set remainder if provided
-                    if (remainderDate != null) {
-                        setupAlarmForReminder(remainderDate, resultIntValue);
-                    }
-
+                if (resultStatus && remainderIntervals != null) {
+                    int newId = resultIntValue + REMAINDER_ID_OFFSET;
+                        Calendar remainderDateOne, remainderDateTwo;
+                        //get the remainder date based on the remainderInterval given by user and set remainder if provided
+                        if (!remainderIntervals[0].equalsIgnoreCase("No Pre-Test Remainders set.")) {
+                            remainderDateOne = MediPalUtility.determineReminderTime(remainderIntervals[0], appointment.getAppointment());
+                            setupAlarmForReminder(remainderDateOne, resultIntValue);
+                        }
+                        if (!remainderIntervals[1].equalsIgnoreCase("No Appointment Remainders set.")) {
+                            remainderDateTwo = MediPalUtility.determineReminderTime(remainderIntervals[1], appointment.getAppointment());
+                            setupAlarmForReminder(remainderDateTwo, newId);
+                        }
                     //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
-                    storeAppointmentPreference(resultIntValue);
-                } else {
+                    storeAppointmentPreference(resultIntValue, remainderIntervals[0]);
+                    storeAppointmentPreference(newId, remainderIntervals[1]);
+                }
+                else {
                     //uphandled exceptions. lets hope this does not happen during grading...
                     Toast.makeText(context, "something went wrong :-(", Toast.LENGTH_LONG).show();
                 }
@@ -105,7 +114,7 @@ public class AppointmentManager {
     }
 
     //store the remainder details in shared preferences
-    private void storeAppointmentPreference(Integer resultValue) {
+    private void storeAppointmentPreference(Integer resultValue, String remainderInterval) {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(appointmentTitle);
         jsonArray.put(remainderInterval);
@@ -123,16 +132,22 @@ public class AppointmentManager {
                 Integer resultIntValue = resultValue.intValue();
                 Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
 
-                if (resultStatus) {
-                    //get the remainder date based on the remainderInterval given by user
-                    Calendar remainderDate = MediPalUtility.determineReminderTime(remainderInterval, appointment.getAppointment());
-                    //set remainder if provided
-                    if (remainderDate != null) {
-                        setupAlarmForReminder(remainderDate, appointmentID);
+                if (resultStatus && remainderIntervals != null) {
+                    int newId = appointmentID + REMAINDER_ID_OFFSET;
+                    Calendar remainderDateOne, remainderDateTwo;
+                    //get the remainder date based on the remainderInterval given by user and set remainder if provided
+                    if (!remainderIntervals[0].equalsIgnoreCase("No Pre-Test Remainders set.")) {
+                        remainderDateOne = MediPalUtility.determineReminderTime(remainderIntervals[0], appointment.getAppointment());
+                        setupAlarmForReminder(remainderDateOne, appointmentID);
                     }
-
+                    if (!remainderIntervals[1].equalsIgnoreCase("No Appointment Remainders set.")) {
+                        remainderDateTwo = MediPalUtility.determineReminderTime(remainderIntervals[1], appointment.getAppointment());
+                        setupAlarmForReminder(remainderDateTwo, newId);
+                    }
                     //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
-                    storeAppointmentPreference(appointmentID);
+                    storeAppointmentPreference(appointmentID, remainderIntervals[0]);
+                    storeAppointmentPreference(newId, remainderIntervals[1]);
+
                 } else {
                     //uphandled exceptions. lets hope this does not happen during grading...
                     Toast.makeText(context, "something went wrong :-(", Toast.LENGTH_LONG).show();

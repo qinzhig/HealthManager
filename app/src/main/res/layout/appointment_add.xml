@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:hint="Location"
+        android:hint="Clinic Location"
         android:theme="@style/EditTextStyle"/>
 
     <RelativeLayout
@@ -58,9 +58,9 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="5"
+            android:ems="7"
             android:focusable="false"
-            android:hint="date"
+            android:hint="Date"
             android:inputType="none"
             android:theme="@style/EditTextStyle"
             android:layout_alignParentTop="true"
@@ -72,10 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="59dp"
-            android:ems="5"
+            android:layout_marginEnd="40dp"
+            android:ems="7"
             android:focusable="false"
-            android:hint="time"
+            android:hint="Time"
             android:inputType="none"
             android:theme="@style/EditTextStyle" />
     </RelativeLayout>
@@ -86,14 +86,34 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:hint="description"
+        android:hint="Description(Pre-test Requirements)"
         android:theme="@style/EditTextStyle"/>
 
-    <Spinner
-        android:id="@+id/remainder"
+    <Switch
+        android:id="@+id/remainder_switch1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/EditTextStyle"/>
+        android:text="Remainder for Pre-test Checkup"
+        android:checked="false"/>
+
+    <Spinner
+        android:id="@+id/remainder_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextStyle" />
+
+    <Switch
+        android:id="@+id/remainder_switch2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remainder for Appointment"
+        android:checked="false"/>
+
+    <Spinner
+        android:id="@+id/remainder_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextStyle" />
 
 </LinearLayout>
 </ScrollView>

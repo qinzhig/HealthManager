@@ -85,10 +85,10 @@ public class HealthManager {
 
     //SQLite add medicine
     public Medicine addMedicine(int id, String medicine_name, String medicine_des, int cateId,
-                                int reminderId, Boolean reminder, int quantity, int dosage,
+                                int reminderId, Boolean reminder, int quantity, int dosage,int cquantity,int threshold,
                                 String dateIssued, int expireFactor,Context context){
 
-        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage, dateIssued, expireFactor);
+        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage,cquantity,threshold,dateIssued, expireFactor);
 
         taskAddMedicine = new AddMedicine(context);
         taskAddMedicine.execute(medicine);
@@ -99,10 +99,10 @@ public class HealthManager {
 
     //SQLite add medicine
     public Medicine updateMedicine(int id, String medicine_name, String medicine_des, int cateId,
-                                int reminderId, Boolean reminder, int quantity, int dosage,
+                                int reminderId, Boolean reminder, int quantity, int dosage,int cquantity,int threshold,
                                 String dateIssued, int expireFactor,Context context){
 
-        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage, dateIssued, expireFactor);
+        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage,cquantity,threshold, dateIssued, expireFactor);
 
         taskUpdateMedicine = new UpdateMedicine(context);
         taskUpdateMedicine.execute(medicine);
@@ -163,9 +163,9 @@ public class HealthManager {
     }
 
     //SQLite add medicine
-    public Category updateCategory(int id, String name, String code, String des,Context context){
+    public Category updateCategory(int id, String name, String code, String des,boolean remind,Context context){
 
-        Category category = new Category(id, name, code,des);
+        Category category = new Category(id, name, code,des,remind);
 
         taskUpdateCategory = new UpdateCategory(context);
         taskUpdateCategory.execute(category);
@@ -196,9 +196,9 @@ public class HealthManager {
     }
 
     //SQLite add medicine
-    public Category addCategory(int id, String category_name,String category_code,String category_des,Context context){
+    public Category addCategory(int id, String category_name,String category_code,String category_des,boolean remind,Context context){
 
-        Category category = new Category(id, category_name,category_code,category_des);
+        Category category = new Category(id, category_name,category_code,category_des,remind);
 
         taskAddCategory = new AddCategory(context);
         taskAddCategory.execute(category);

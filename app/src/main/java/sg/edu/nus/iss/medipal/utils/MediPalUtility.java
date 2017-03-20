@@ -50,7 +50,7 @@ public class MediPalUtility {
         if(timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
             timeSubSplit[0]="00";
         }
-        else if(timeSplit[1].equalsIgnoreCase("PM")){
+        else if(timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))){
             HourAdd=12;
         }
         Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
@@ -107,11 +107,18 @@ public class MediPalUtility {
             if(timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
                 timeSubSplit[0]="00";
             }
-            else if(timeSplit[1].equalsIgnoreCase("PM")){
+            else if(timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))){
                 HourAdd=12;
             }
             Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
-            convertedTime = hour.toString()+timeSubSplit[1];
+
+            String hourString;
+            if(hour<10)
+                hourString="0"+hour.toString();
+            else
+                hourString=hour.toString();
+
+            convertedTime = hourString+timeSubSplit[1];
             Log.d("CurrentTime",currentTime);
             Log.d("CoonvertTime",convertedTime);
             retVal = (Long.valueOf(currentTime) < Long.valueOf(convertedTime));
@@ -174,7 +181,17 @@ public class MediPalUtility {
             case "1 Day Before":
                 retVal = 1440;
                 break;
+            case "2 Day Before":
+                retVal = 2880;
+                break;
+            case "4 Day Before":
+                retVal = 5760;
+                break;
+            case "1 Week Before":
+                retVal = 10080;
+                break;
         }
         return retVal;
     }
 }
+

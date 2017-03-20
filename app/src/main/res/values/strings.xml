@@ -14,7 +14,7 @@
     <string name="menu_search">Search</string>
     <string name="menu_add">Add</string>
     <string name="menu_setting">Setting Application</string>
-    <string name="spinner_medicine_hint">Select a category</string>
+    <string name="spinner_medicine_hint">Category</string>
 
     <dimen name="img_width_height">120dp</dimen>
     <dimen name="slide_title">30dp</dimen>
@@ -24,6 +24,13 @@
     <dimen name="dots_margin_bottom">20dp</dimen>
 
     <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="settings_about">About</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_startup">Show Help at StartUp</string>
+
 
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
@@ -44,6 +51,26 @@
 
 
     <string name="edit_appointment_title">Edit Appointment</string>
+
+    <!--Dosage units item list -->
+    <string-array name="dosage">
+        <item>pills</item>
+        <item>cc</item>
+        <item>ml</item>
+        <item>gr</item>
+        <item>mg</item>
+        <item>drops</item>
+        <item>pieces</item>
+        <item>puffs</item>
+        <item>units</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+        <item>patch</item>
+        <item>mcg</item>
+        <item>l</item>
+        <item>meq</item>
+        <item>spray</item>
+    </string-array>
 
 </resources>
 

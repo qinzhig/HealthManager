@@ -38,6 +38,8 @@ public class MedicineDAO extends DataBaseUtility {
         values.put(DataBaseManager.MEDICINE_REM, medicine.isReminder() ? 1:0);
         values.put(DataBaseManager.MEDICINE_QUANTITY, medicine.getQuantity());
         values.put(DataBaseManager.MEDICINE_DOSAGE, medicine.getDosage());
+        values.put(DataBaseManager.MEDICINE_CQUANTITY, medicine.getConsumequantity());
+        values.put(DataBaseManager.MEDICINE_THRESHOLD, medicine.getThreshold());
         values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued());
         values.put(DataBaseManager.MEDICINE_EXPIREFACTOR,medicine.getExpireFactor());
 
@@ -83,6 +85,8 @@ public class MedicineDAO extends DataBaseUtility {
         values.put(DataBaseManager.MEDICINE_REM, medicine.isReminder() ? 1:0);
         values.put(DataBaseManager.MEDICINE_QUANTITY, medicine.getQuantity());
         values.put(DataBaseManager.MEDICINE_DOSAGE, medicine.getDosage());
+        values.put(DataBaseManager.MEDICINE_CQUANTITY, medicine.getConsumequantity());
+        values.put(DataBaseManager.MEDICINE_THRESHOLD, medicine.getThreshold());
         values.put(DataBaseManager.MEDICINE_DATEISSUED, medicine.getDateIssued());
         values.put(DataBaseManager.MEDICINE_EXPIREFACTOR,medicine.getExpireFactor());
 
@@ -115,6 +119,8 @@ public class MedicineDAO extends DataBaseUtility {
                         DataBaseManager.MEDICINE_REM,
                         DataBaseManager.MEDICINE_QUANTITY,
                         DataBaseManager.MEDICINE_DOSAGE,
+                        DataBaseManager.MEDICINE_CQUANTITY,
+                        DataBaseManager.MEDICINE_THRESHOLD,
                         DataBaseManager.MEDICINE_DATEISSUED,
                         DataBaseManager.MEDICINE_EXPIREFACTOR,
                         }, null, null, null, null, null);
@@ -130,10 +136,12 @@ public class MedicineDAO extends DataBaseUtility {
             if(cursor.getInt(5) == 0) { rem = false; } else{ rem = true; }
             int quantity=cursor.getInt(6);
             int dosage=cursor.getInt(7);
-            String date = cursor.getString(8);
-            int expirefactor=cursor.getInt(9);
+            int cquantity = cursor.getInt(8);
+            int threshold = cursor.getInt(9);
+            String date = cursor.getString(10);
+            int expirefactor=cursor.getInt(11);
 
-            Medicine medicinenode = new Medicine(id,name,des,catid,remid,rem,quantity,dosage,date,expirefactor);
+            Medicine medicinenode = new Medicine(id,name,des,catid,remid,rem,quantity,dosage,cquantity,threshold,date,expirefactor);
 
             Log.v("DEBUG","-------------------------DAO++++++++++++++++++++++ "+medicinenode.toString());
 

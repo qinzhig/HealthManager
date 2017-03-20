@@ -66,7 +66,7 @@
                 android:textSize="@dimen/desc_size" />
 
             <TextView
-                android:id="@+id/appointmentremainder"
+                android:id="@+id/appointmentremainder_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/appointmentlocation"
@@ -80,7 +80,17 @@
                 android:id="@+id/appointmentdescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appointmentremainder"
+                android:layout_below="@id/appointmentremainder_one"
+                android:paddingBottom="@dimen/datetime_padding"
+                android:layout_toEndOf="@+id/thumbnail"
+                android:paddingLeft="@dimen/datetime_padding"
+                android:paddingRight="@dimen/datetime_padding"
+                android:textSize="@dimen/desc_size" />
+            <TextView
+                android:id="@+id/appointmentremainder_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/appointmentdescription"
                 android:paddingBottom="@dimen/datetime_padding"
                 android:layout_toEndOf="@+id/thumbnail"
                 android:paddingLeft="@dimen/datetime_padding"
@@ -96,7 +106,7 @@
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
                 android:layout_marginEnd="5dp"
-                android:layout_below="@+id/appointmentdescription"
+                android:layout_below="@+id/appointmentremainder_two"
                 android:layout_toStartOf="@+id/delete" />
             <ImageView
                 android:id="@+id/delete"
@@ -109,7 +119,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/appointmentdescription" />
+                android:layout_below="@+id/appointmentremainder_two" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
