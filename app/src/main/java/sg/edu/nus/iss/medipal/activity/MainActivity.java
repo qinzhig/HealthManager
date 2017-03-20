@@ -112,6 +112,11 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
+        else if(id == R.id.nav_reports){
+            fragment = new ReportFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
