@@ -152,8 +152,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 App.hm.addReminder(0,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
 
                 App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),
-                        et_date.getText().toString(),10,getApplicationContext());
+                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),1,3,et_date.getText().toString(),10,getApplicationContext());
 
 //                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 

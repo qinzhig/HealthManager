@@ -85,10 +85,10 @@ public class HealthManager {
 
     //SQLite add medicine
     public Medicine addMedicine(int id, String medicine_name, String medicine_des, int cateId,
-                                int reminderId, Boolean reminder, int quantity, int dosage,
+                                int reminderId, Boolean reminder, int quantity, int dosage,int cquantity,int threshold,
                                 String dateIssued, int expireFactor,Context context){
 
-        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage, dateIssued, expireFactor);
+        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage,cquantity,threshold,dateIssued, expireFactor);
 
         taskAddMedicine = new AddMedicine(context);
         taskAddMedicine.execute(medicine);
@@ -99,10 +99,10 @@ public class HealthManager {
 
     //SQLite add medicine
     public Medicine updateMedicine(int id, String medicine_name, String medicine_des, int cateId,
-                                int reminderId, Boolean reminder, int quantity, int dosage,
+                                int reminderId, Boolean reminder, int quantity, int dosage,int cquantity,int threshold,
                                 String dateIssued, int expireFactor,Context context){
 
-        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage, dateIssued, expireFactor);
+        Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage,cquantity,threshold, dateIssued, expireFactor);
 
         taskUpdateMedicine = new UpdateMedicine(context);
         taskUpdateMedicine.execute(medicine);
