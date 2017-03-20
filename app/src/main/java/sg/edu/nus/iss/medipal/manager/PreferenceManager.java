@@ -1,9 +1,4 @@
 package sg.edu.nus.iss.medipal.manager;
-
-/**
- * Created by issuser on 15/3/2017.
- */
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -38,9 +33,12 @@ public class PreferenceManager {
         preferenceEditor = sharedPref.edit();
     }
 
-    /*
-      Create login session
-     */
+    public void setSplashScreenPref(String displayAtStart){
+        preferenceEditor.putString("SPLASH_SCREEN", displayAtStart);
+        preferenceEditor.commit();
+    }
+
+
     public void storeAppointmentInfo(String appointmentId,String appointmentInfo){
         //Store the notification Id and title as key-value pair
         preferenceEditor.putString(appointmentId, appointmentInfo);

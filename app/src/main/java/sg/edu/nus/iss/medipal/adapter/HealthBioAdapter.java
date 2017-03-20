@@ -100,6 +100,7 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
         }
         else{
             conditionType = "Allergy";
+
         }
         holder.conditionType.setText(conditionType);
         holder.condition.setTag(healthBio.getId());
