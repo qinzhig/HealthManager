@@ -11,14 +11,23 @@ public class Category {
     private String category_name;
     private String category_code;
     private String category_des;
+    private Boolean remind;
 
-    public Category(int id,String category_name,String category_code,String category_des) {
+    public Category(int id,String category_name,String category_code,String category_des,boolean remind) {
         this.id=id;
         this.category_name=category_name;
         this.category_code=category_code;
         this.category_des=category_des;
+        this.remind=remind;
     }
 
+    public Boolean getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Boolean remind) {
+        this.remind = remind;
+    }
 
     public int getId() {
         return id;
