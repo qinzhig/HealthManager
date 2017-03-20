@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/settings_togglehelp"
+        android:title="@string/settings_startup"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/settings_help"
+        android:title="@string/settings_help"
+        android:orderInCategory="200"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/settings_about"
+        android:title="@string/settings_about"
+        android:orderInCategory="300"
+        app:showAsAction="never"/>
+</menu>
+
+
+
+
+
