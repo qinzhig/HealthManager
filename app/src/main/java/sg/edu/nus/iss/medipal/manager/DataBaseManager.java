@@ -90,13 +90,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + CATEGORY_DES + " TEXT, " + CATEGORY_REMIND + " INTEGER " + ")";
 
     public static final String INSERT_PREDEFINED_CATEGORY1 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Supplement','SUP','sup',0)";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Supplement','SUP','sup',0)";
     public static final String INSERT_PREDEFINED_CATEGORY2 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Chronic', 'CHR', 'chr',1)";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Chronic', 'CHR', 'chr',1)";
     public static final String INSERT_PREDEFINED_CATEGORY3 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc',1)";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc',1)";
     public static final String INSERT_PREDEFINED_CATEGORY4 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Complete Course', 'COM', 'com',1)";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Complete Course', 'COM', 'com',1)";
 
     //variables used to create reminder table query
     public static final String REMINDER_TABLE = "reminder";

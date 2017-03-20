@@ -97,6 +97,7 @@ public class CategoryDAO extends DataBaseUtility {
                         DataBaseManager.CATEGORY_NAME,
                         DataBaseManager.CATEGORY_CODE,
                         DataBaseManager.CATEGORY_DES,
+                        DataBaseManager.CATEGORY_REMIND,
                 }, null, null, null, null, null);
 
         //loop through each result set to populate the appointment pojo and add to the list each time
