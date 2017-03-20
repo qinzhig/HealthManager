@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,13 +57,13 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
 
     private Boolean switchOneValue, switchTwoValue;
 
-    // static String[] SPINNERLIST = {"No Remainder",
-   static String[] SPINNERLISTTWO = {"15 Minutes Before",
+    static String[] SPINNERLISTTWO = {"15 Minutes Before",
                                    "30 Minutes Before",
                                    "1 Hour Before",
                                    "4 Hours Before",
                                    "12 Hours Before",
                                    "1 Day Before"};
+
     static String[] SPINNERLISTONE = {"12 Hours Before",
             "1 Day Before",
             "2 Day Before",
@@ -112,17 +113,21 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             remainderOne = intentExtras.getString("remainderOne");
             remainderTwo = intentExtras.getString("remainderTwo");
 
+            Log.d("rem 1 and 2",remainderOne+remainderTwo);
+
             if(!remainderOne.equalsIgnoreCase("No Pre-Test Remainders set.")) {
                 switchOne.setChecked(true);
+                switchOneValue = true;
                 appointmentRemainderOne.setEnabled(true);
                 int pos = Arrays.asList(SPINNERLISTONE).indexOf(remainderOne);
                 appointmentRemainderOne.setSelection(pos);
             }
             if(!remainderTwo.equalsIgnoreCase("No Appointment Remainders set.")) {
                 switchTwo.setChecked(true);
+                switchTwoValue = true;
                 appointmentRemainderTwo.setEnabled(true);
                 int pos = Arrays.asList(SPINNERLISTTWO).indexOf(remainderTwo);
-                appointmentRemainderOne.setSelection(pos);
+                appointmentRemainderTwo.setSelection(pos);
             }
 
             toolbarTitle = (TextView) findViewById(R.id.tb_app_title);
@@ -133,7 +138,6 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             appointmentDate.setText(date);
             appointmentTime.setText(time);
             appointmentDesc.setText(desc);
-
         }
 
         //listeners for date and time pickers
@@ -268,9 +272,9 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             remainderTime[0] = appointmentRemainderOne.getSelectedItem().toString();
 
         if(switchTwoValue)
-            remainderTime[1] = appointmentRemainderOne.getSelectedItem().toString();
+            remainderTime[1] = appointmentRemainderTwo.getSelectedItem().toString();
 
-
+        Log.d("rem-1 and-2",remainderTime[0]+remainderTime[1]);
         //apply input validations
         if(validate(title,location,date,time,description))
         {

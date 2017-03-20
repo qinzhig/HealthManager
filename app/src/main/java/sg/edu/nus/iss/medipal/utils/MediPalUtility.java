@@ -99,6 +99,8 @@ public class MediPalUtility {
 
         String timeSplit[] = time.split(" ");
         String timeSubSplit[] = timeSplit[0].split(":");
+        if(Integer.valueOf(timeSubSplit[0])<10)
+            timeSubSplit[0]="0"+timeSubSplit[0];
         String convertedTime = timeSubSplit[0]+timeSubSplit[1];
 
         if(currentDate.equals(convertedDate))
