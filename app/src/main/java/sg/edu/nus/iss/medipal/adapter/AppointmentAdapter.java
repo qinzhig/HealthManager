@@ -47,7 +47,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         public TextView title;
         public TextView datetime;
         public TextView location;
-        public TextView remainder;
+        public TextView remainderOne;
+        public TextView remainderTwo;
         public TextView description;
         public ImageView edit;
         public ImageView delete;
@@ -64,7 +65,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             //edit features are to made available for active(upcoming) appointments only
             if(fragmentPosition == UPCOMING_APPOINTMENTS) {
                 edit = (ImageView) view.findViewById(R.id.edit);
-                remainder = (TextView) view.findViewById(R.id.appointmentremainder);
+                remainderOne = (TextView) view.findViewById(R.id.appointmentremainder_one);
+                remainderTwo = (TextView) view.findViewById(R.id.appointmentremainder_two);
                 //listener for editing appointments
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -80,7 +82,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         appointmentEdit.putExtra("date", dt[0]);
                         appointmentEdit.putExtra("time", dt[1]);
                         appointmentEdit.putExtra("location", location.getText().toString());
-                        appointmentEdit.putExtra("remainder", remainder.getTag().toString());
+                        appointmentEdit.putExtra("remainderOne", remainderOne.getTag().toString());
+                        appointmentEdit.putExtra("remainderTwo", remainderTwo.getTag().toString());
                         appointmentEdit.putExtra("desc", description.getText().toString());
                         ((Activity)mContext).startActivityForResult(appointmentEdit,102);
                     }
@@ -136,33 +139,53 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     //used to populate the view elements with adapter data
     @Override
     public void onBindViewHolder(final AppointmentViewHolder holder, int position) {
-        String storedString, remainder = null,remainderDesc = null, title = null;
+        String storedStringOne,storedStringTwo, remainderOne = null,remainderTwo = null,remainderOneDesc = null, remainderTwoDesc = null,title = null;
         //get appointment data from list using current position as index
         Appointment appointment = appointmentList.get(position);
 
         //Appointment title and remainder details are stored in shared preferences as we do not have fields for it in db table
-        storedString = appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId()));
-        if(storedString != null) {
+        storedStringOne = appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId()));
+        storedStringTwo = appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId() + AppointmentManager.REMAINDER_ID_OFFSET));
+        if(storedStringOne != null) {
             try {
-                JSONArray jsonArray = new JSONArray(storedString);
+                JSONArray jsonArray = new JSONArray(storedStringOne);
                 //get appointment title and remainder info
                 title = jsonArray.getString(0);
-                remainder = jsonArray.getString(1);
-
-                if (remainder.equals("No Remainder"))
-                    remainderDesc = "No remainder set";
+                remainderOne = jsonArray.getString(1);
+                if(remainderOne.equalsIgnoreCase("No Pre-Test Remainders set."))
+                    remainderOneDesc = remainderOne;
                 else
-                    remainderDesc = "Remainder set " + remainder.toLowerCase();
+                    remainderOneDesc = "Pre-Test Remainder set " + remainderOne.toLowerCase();
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         else
+            remainderOneDesc = "No Appointment Remainder set";
+
+        if(storedStringTwo != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(storedStringTwo);
+                //get appointment title and remainder info
+                title = jsonArray.getString(0);
+                remainderTwo = jsonArray.getString(1);
+                if (remainderTwo.equalsIgnoreCase("No Appointment Remainders set."))
+                    remainderTwoDesc = remainderTwo;
+                else
+                    remainderTwoDesc = "Appointment Remainder set " + remainderTwo.toLowerCase();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            remainderTwoDesc = "No Pre-Test Remainder set";
+
+        if((storedStringOne == null) &&(storedStringTwo == null))
         {
             //foolproofing- flow will come here if user manually clears the app data
             title = "Title not Found";
-            remainderDesc = "No remainder found";
         }
 
         //populate the view elements
@@ -172,8 +195,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             holder.location.setText(appointment.getLocation());
             holder.description.setText(appointment.getDescription());
             if(fragmentPosition == UPCOMING_APPOINTMENTS) {
-                holder.remainder.setText(remainderDesc);
-                holder.remainder.setTag(remainder);
+                holder.remainderOne.setText(remainderOneDesc);
+                holder.remainderOne.setTag(remainderOne);
+                holder.remainderTwo.setText(remainderTwoDesc);
+                holder.remainderTwo.setTag(remainderTwo);
             }
     }
 

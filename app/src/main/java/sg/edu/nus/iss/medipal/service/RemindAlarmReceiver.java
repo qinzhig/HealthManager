@@ -45,24 +45,25 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         String storedString = remainderPreference.getAppointmentInfo(notificationId);
-        try {
-            JSONArray jsonArray = new JSONArray(storedString);
+        if(storedString != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(storedString);
 
-            Notification notification = builder.setContentTitle(jsonArray.getString(0))
-                    .setContentText("New Notification From Demo App..")
-                    .setTicker("New Message Alert!")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent).build();
+                Notification notification = builder.setContentTitle(jsonArray.getString(0))
+                        .setContentText("New Notification From Demo App..")
+                        .setTicker("New Message Alert!")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent).build();
 
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(0, notification);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
-
-
 
     }
 }

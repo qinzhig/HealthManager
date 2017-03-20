@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -39,20 +41,33 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
 
     private EditText appointmentTitle,
                      appointmentLocation,
-                     appointmentdate,
+                     appointmentDate,
                      appointmentTime,
                      appointmentDesc;
-    private Spinner appointmentRemainder;
-    boolean isEdit;
-    private String id, remainder;
 
-    static String[] SPINNERLIST = {"No Remainder",
-                                   "15 Minutes Before",
+    private Spinner appointmentRemainderOne;
+    private Spinner appointmentRemainderTwo;
+
+    private Switch switchOne;
+    private Switch switchTwo;
+
+    private boolean isEdit;
+    private String id, remainderOne,remainderTwo;
+
+    private Boolean switchOneValue, switchTwoValue;
+
+    // static String[] SPINNERLIST = {"No Remainder",
+   static String[] SPINNERLISTTWO = {"15 Minutes Before",
                                    "30 Minutes Before",
                                    "1 Hour Before",
                                    "4 Hours Before",
                                    "12 Hours Before",
                                    "1 Day Before"};
+    static String[] SPINNERLISTONE = {"12 Hours Before",
+            "1 Day Before",
+            "2 Day Before",
+            "4 Day Before",
+            "1 Week Before"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +90,13 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         //get reference to view elements
         appointmentTitle = (EditText)findViewById(R.id.title);
         appointmentLocation = (EditText)findViewById(R.id.location);
-        appointmentdate = (EditText)findViewById(R.id.date);
+        appointmentDate = (EditText)findViewById(R.id.date);
         appointmentTime = (EditText)findViewById(R.id.time);
         appointmentDesc = (EditText)findViewById(R.id.description);
-        appointmentRemainder = (Spinner) findViewById(R.id.remainder);
+        switchOne = (Switch)findViewById(R.id.remainder_switch1);
+        switchTwo = (Switch)findViewById(R.id.remainder_switch2);
+        appointmentRemainderOne = (Spinner) findViewById(R.id.remainder_1);
+        appointmentRemainderTwo = (Spinner) findViewById(R.id.remainder_2);
 
         populateRemainderSpinner();
 
@@ -91,39 +109,72 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             date = intentExtras.getString("date");
             time = intentExtras.getString("time");
             desc = intentExtras.getString("desc");
-            remainder = intentExtras.getString("remainder");
+            remainderOne = intentExtras.getString("remainderOne");
+            remainderTwo = intentExtras.getString("remainderTwo");
+
+            if(!remainderOne.equalsIgnoreCase("No Pre-Test Remainders set.")) {
+                switchOne.setChecked(true);
+                appointmentRemainderOne.setEnabled(true);
+                int pos = Arrays.asList(SPINNERLISTONE).indexOf(remainderOne);
+                appointmentRemainderOne.setSelection(pos);
+            }
+            if(!remainderTwo.equalsIgnoreCase("No Appointment Remainders set.")) {
+                switchTwo.setChecked(true);
+                appointmentRemainderTwo.setEnabled(true);
+                int pos = Arrays.asList(SPINNERLISTTWO).indexOf(remainderTwo);
+                appointmentRemainderOne.setSelection(pos);
+            }
 
             toolbarTitle = (TextView) findViewById(R.id.tb_app_title);
             toolbarTitle.setText(R.string.edit_appointment_title);
 
             appointmentTitle.setText(title);
             appointmentLocation.setText(location);
-            appointmentdate.setText(date);
+            appointmentDate.setText(date);
             appointmentTime.setText(time);
             appointmentDesc.setText(desc);
+
         }
 
         //listeners for date and time pickers
-        appointmentdate.setOnClickListener(this);
+        appointmentDate.setOnClickListener(this);
         appointmentTime.setOnClickListener(this);
+
+        switchOne.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switchOneValue = isChecked;
+                appointmentRemainderOne.setEnabled(isChecked);
+            }
+        });
+
+        switchTwo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switchTwoValue = isChecked;
+                appointmentRemainderTwo.setEnabled(isChecked);
+            }
+        });
     }
 
     //used to populate the remainder spinner
     private void populateRemainderSpinner() {
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,SPINNERLIST);
-        appointmentRemainder.setAdapter(spinnerAdapter);
-
-        if(isEdit) {
-            int pos = Arrays.asList(SPINNERLIST).indexOf(remainder);
-            appointmentRemainder.setSelection(pos);
-        }
+        ArrayAdapter<String> spinnerAdapterOne = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,SPINNERLISTONE);
+        ArrayAdapter<String> spinnerAdapterTwo = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line,SPINNERLISTTWO);
+        appointmentRemainderOne.setAdapter(spinnerAdapterOne);
+        appointmentRemainderTwo.setAdapter(spinnerAdapterTwo);
+        switchOneValue = false;
+        switchTwoValue = false;
+        appointmentRemainderOne.setEnabled(false);
+        appointmentRemainderTwo.setEnabled(false);
     }
 
     @Override
     public void onClick(View v) {
         final Calendar calender;
         int day,month,year,hour,minute;
-        if (v == appointmentdate) {
+        if (v == appointmentDate) {
+            appointmentDate.setError(null);
             calender = Calendar.getInstance();
             day = calender.get(Calendar.DAY_OF_MONTH);
             month = calender.get(Calendar.MONTH);
@@ -132,7 +183,7 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    appointmentdate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
+                    appointmentDate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
                 }
             }, day, month, year);
             datePicker.updateDate(year, month, day);
@@ -140,6 +191,7 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         }
         else if(v == appointmentTime)
         {
+            appointmentTime.setError(null);
             calender = Calendar.getInstance();
             hour = calender.get(Calendar.HOUR_OF_DAY);
             minute = calender.get(Calendar.MINUTE);
@@ -207,10 +259,17 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         //get entered values
         String title = appointmentTitle.getText().toString();
         String location = appointmentLocation.getText().toString();
-        String date = appointmentdate.getText().toString();
+        String date = appointmentDate.getText().toString();
         String time = appointmentTime.getText().toString();
         String description = appointmentDesc.getText().toString();
-        String remainderTime = appointmentRemainder.getSelectedItem().toString();
+        String[] remainderTime = {"No Pre-Test Remainders set.","No Appointment Remainders set."};
+
+        if(switchOneValue)
+            remainderTime[0] = appointmentRemainderOne.getSelectedItem().toString();
+
+        if(switchTwoValue)
+            remainderTime[1] = appointmentRemainderOne.getSelectedItem().toString();
+
 
         //apply input validations
         if(validate(title,location,date,time,description))
@@ -246,14 +305,14 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         }
 
         if (date.isEmpty()) {
-            appointmentdate.setError("Please select a date");
+            appointmentDate.setError("Please select a date");
             valid = false;
         } else if(!MediPalUtility.isValidDate(date)) {  //to see if date selected is less than current date
-            appointmentdate.setError("Please select a future date");
+            appointmentDate.setError("Please select a future date");
             valid = false;
         }
         else{
-            appointmentdate.setError(null);
+            appointmentDate.setError(null);
         }
 
         if (time.isEmpty()) {
