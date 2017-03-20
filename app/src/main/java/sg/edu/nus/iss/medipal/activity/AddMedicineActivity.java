@@ -33,8 +33,8 @@ import sg.edu.nus.iss.medipal.application.App;
 
 public class AddMedicineActivity extends AppCompatActivity {
 
-    private EditText et_name,et_des,et_quanity,et_dosage,et_date,et_frequency,et_interval,et_stime;
-    private Spinner spinner;
+    private EditText et_name,et_des,et_quanity,et_date,et_frequency,et_interval,et_stime,et_cquantity,et_threshold;
+    private Spinner spinner,spinner_dosage;
     Button button_save;
     ImageButton button_add_category;
 
@@ -46,7 +46,7 @@ public class AddMedicineActivity extends AppCompatActivity {
    // private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
 
     ArrayAdapter array_adpater;
-    int position=0;
+    int position=0,dosage_position=0;
     String medcine_category;
     String[] m_list;
     private int hour,minute;
@@ -66,7 +66,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
         et_quanity = (EditText) findViewById(R.id.et_quantity);
-        et_dosage = (EditText) findViewById(R.id.et_dosage);
 
         m_list = App.hm.getCategoryNameList(getApplicationContext());
         //Spinner action
@@ -90,6 +89,37 @@ public class AddMedicineActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+
+        et_cquantity = (EditText) findViewById(R.id.et_cquantity);
+        et_threshold = (EditText) findViewById(R.id.et_threshold);
+
+        spinner_dosage = (Spinner) findViewById(R.id.spinner_dosage);
+        ArrayAdapter<CharSequence> adapter_dosage = ArrayAdapter.createFromResource(this,
+                R.array.dosage, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter_dosage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner_dosage.setAdapter(adapter_dosage);
+
+        spinner_dosage.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+                arg0.setVisibility(View.VISIBLE);
+
+                dosage_position=arg2;
+
+                Toast toast = Toast.makeText(AddMedicineActivity.this,"Dosage Selected",Toast.LENGTH_SHORT);
+                toast.show();
+                //position= Arrays.asList(m_category).indexOf(medcine_category);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+
 
         //Expire date setting
         et_date = (EditText) findViewById(R.id.et_date);
@@ -152,7 +182,9 @@ public class AddMedicineActivity extends AppCompatActivity {
                 App.hm.addReminder(0,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
 
                 App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), Integer.valueOf(et_dosage.getText().toString().trim()),1,3,et_date.getText().toString(),10,getApplicationContext());
+                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()),
+                        spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
+                        Integer.valueOf(et_threshold.getText().toString().trim()),et_date.getText().toString(),24,getApplicationContext());
 
 //                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 

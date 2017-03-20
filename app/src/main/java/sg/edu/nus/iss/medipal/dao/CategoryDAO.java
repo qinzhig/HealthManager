@@ -34,6 +34,7 @@ public class CategoryDAO extends DataBaseUtility {
         values.put(DataBaseManager.CATEGORY_NAME, category.getCategory_name());
         values.put(DataBaseManager.CATEGORY_CODE, category.getCategory_code());
         values.put(DataBaseManager.CATEGORY_DES, category.getCategory_des());
+        values.put(DataBaseManager.CATEGORY_REMIND, category.getRemind()? 1:0);
 
 
         //Insert data into category table. If insertion is successfull then the method returns the row ID, else -1
@@ -70,6 +71,7 @@ public class CategoryDAO extends DataBaseUtility {
         values.put(DataBaseManager.CATEGORY_NAME, category.getCategory_name());
         values.put(DataBaseManager.CATEGORY_CODE, category.getCategory_code());
         values.put(DataBaseManager.CATEGORY_DES, category.getCategory_des());
+        values.put(DataBaseManager.CATEGORY_REMIND, category.getRemind()? 1:0);
 
         //method returns number of rows affected. so if it is zero some error handling needs to be done by caller
         try {
@@ -95,6 +97,7 @@ public class CategoryDAO extends DataBaseUtility {
                         DataBaseManager.CATEGORY_NAME,
                         DataBaseManager.CATEGORY_CODE,
                         DataBaseManager.CATEGORY_DES,
+                        DataBaseManager.CATEGORY_REMIND,
                 }, null, null, null, null, null);
 
         //loop through each result set to populate the appointment pojo and add to the list each time
@@ -103,8 +106,10 @@ public class CategoryDAO extends DataBaseUtility {
             String name = cursor.getString(1);
             String code = cursor.getString(2);
             String des=cursor.getString(3);
+            boolean rem;
+            if(cursor.getInt(4) == 0) { rem = false; } else{ rem = true; }
 
-            Category category = new Category(id,name,code,des);
+            Category category = new Category(id,name,code,des,rem);
             categorys.add(category);
 
         }

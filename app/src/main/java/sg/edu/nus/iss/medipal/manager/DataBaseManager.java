@@ -81,21 +81,22 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String CATEGORY_NAME = "category";
     public static final String CATEGORY_CODE = "code";
     public static final String CATEGORY_DES = "description";
+    public static final String CATEGORY_REMIND = "remind";
 
     //category SQLite table creating SQL
     public static final String CREATE_CATEGORY_TABLE = "CREATE TABLE "
             + CATEGORY_TABLE + "(" + CATEGORY_ID + " INTEGER PRIMARY KEY, "
             + CATEGORY_NAME+ " TEXT  UNIQUE, " + CATEGORY_CODE + " TEXT, "
-            + CATEGORY_DES + " TEXT" + ")";
+            + CATEGORY_DES + " TEXT, " + CATEGORY_REMIND + " INTEGER " + ")";
 
     public static final String INSERT_PREDEFINED_CATEGORY1 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Supplement','SUP','sup')";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Supplement','SUP','sup',0)";
     public static final String INSERT_PREDEFINED_CATEGORY2 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Chronic', 'CHR', 'chr')";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Chronic', 'CHR', 'chr',1)";
     public static final String INSERT_PREDEFINED_CATEGORY3 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc')";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc',1)";
     public static final String INSERT_PREDEFINED_CATEGORY4 = "INSERT INTO "
-            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + ")" + " VALUES" + "('Complete Course', 'COM', 'com')";
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Complete Course', 'COM', 'com',1)";
 
     //variables used to create reminder table query
     public static final String REMINDER_TABLE = "reminder";

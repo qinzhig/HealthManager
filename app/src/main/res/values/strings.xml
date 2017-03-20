@@ -13,7 +13,7 @@
     <string name="menu_search">Search</string>
     <string name="menu_add">Add</string>
     <string name="menu_setting">Setting Application</string>
-    <string name="spinner_medicine_hint">Select a category</string>
+    <string name="spinner_medicine_hint">Category</string>
 
     <dimen name="img_width_height">120dp</dimen>
     <dimen name="slide_title">30dp</dimen>
@@ -51,6 +51,25 @@
 
     <string name="edit_appointment_title">Edit Appointment</string>
 
+    <!--Dosage units item list -->
+    <string-array name="dosage">
+        <item>pills</item>
+        <item>cc</item>
+        <item>ml</item>
+        <item>gr</item>
+        <item>mg</item>
+        <item>drops</item>
+        <item>pieces</item>
+        <item>puffs</item>
+        <item>units</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+        <item>patch</item>
+        <item>mcg</item>
+        <item>l</item>
+        <item>meq</item>
+        <item>spray</item>
+    </string-array>
 
 </resources>
 
