@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
 import sg.edu.nus.iss.medipal.utils.DataBaseUtility;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by : Navi on 06-03-2017.
@@ -69,7 +72,7 @@ public class AppointmentDAO extends DataBaseUtility {
             values.put(DataBaseManager.APPMNT_DATETIME,appointment.getAppointment());
         if(appointment.getDescription() != null)
             values.put(DataBaseManager.APPMNT_DESCRIPTION, appointment.getDescription());
-
+Log.d("id in dao",String.valueOf(appointment.getId()));
         //method returns number of rows affected. so if it is zero some error handling needs to be done by caller
         retCode = database.update(DataBaseManager.APPOINTMENT_TABLE, values,
                 WHERE_ID_EQUALS,
@@ -79,7 +82,8 @@ public class AppointmentDAO extends DataBaseUtility {
     }
 
     //get list of appointments
-    public ArrayList<Appointment> getAppointments() {
+    public ArrayList<Appointment> getAppointments(Boolean deciderFlag) {
+        Boolean check = deciderFlag;
         ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
         //similiar to query "select * from appointments"
@@ -89,26 +93,41 @@ public class AppointmentDAO extends DataBaseUtility {
                         DataBaseManager.APPMNT_LOCATION,
                         DataBaseManager.APPMNT_DATETIME,
                         DataBaseManager.APPMNT_DESCRIPTION }, null, null, null,
-                null, null);
-
+                null, DataBaseManager.APPMNT_ID);
+        String currentDate = MediPalUtility.convertDateToString(Calendar.getInstance().getTime(),"yyyyMddHHmm");
+        Log.d("currentdateTime",currentDate);
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
-            Log.d("Inside getApp","Inside");
-            int id = cursor.getInt(0);
-            String location = cursor.getString(1);
+
             String datetime = cursor.getString(2);
-            String desc = cursor.getString(3);
+            Long storedTime = MediPalUtility.convertDateTimeToNumber(datetime);
+            Log.d("dateTime",storedTime.toString() );
+            if(deciderFlag)
+            {
+                check = deciderFlag & (Long.valueOf(currentDate) <= storedTime);
+            }
+            else
+            {
+                check =  deciderFlag | (Long.valueOf(currentDate) > storedTime);
+            }
+            if(check){
+                Log.d("Inside getAppDao", "Inside");
+                int id = cursor.getInt(0);
+                String location = cursor.getString(1);
+                String desc = cursor.getString(3);
 
-            Appointment appointment = new Appointment(id,location,datetime,desc);
-            appointments.add(appointment);
-
+                Appointment appointment = new Appointment(id, location, datetime, desc);
+                appointments.add(appointment);
+            }
         }
 
         return appointments;
     }
 
-    public void deleteAppointment(String appointmentId) {
 
-        database.delete(DataBaseManager.APPOINTMENT_TABLE, DataBaseManager.APPMNT_ID+"= ?" , new String[]{appointmentId});
+    public int deleteAppointment(String appointmentId) {
+        int noRowsDeleted;
+        noRowsDeleted = database.delete(DataBaseManager.APPOINTMENT_TABLE, DataBaseManager.APPMNT_ID+"= ?" , new String[]{appointmentId});
+        return noRowsDeleted;
     }
 }

@@ -37,7 +37,7 @@
             android:text="Category Name" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -52,7 +52,7 @@
 
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/et_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -67,7 +67,7 @@
 
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/et_des"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

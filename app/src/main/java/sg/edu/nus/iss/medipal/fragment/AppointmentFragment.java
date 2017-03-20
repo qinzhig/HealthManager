@@ -1,32 +1,22 @@
 package sg.edu.nus.iss.medipal.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddAppointmentActivity;
-import sg.edu.nus.iss.medipal.adapter.AppointmentAdapter;
-import sg.edu.nus.iss.medipal.dao.AppointmentDAO;
-import sg.edu.nus.iss.medipal.manager.AppointmentManager;
-import sg.edu.nus.iss.medipal.pojo.Appointment;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by : Navi on 06-03-2017.
@@ -36,13 +26,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class AppointmentFragment extends Fragment {
-    private RecyclerView appointmentsView;
-    private AppointmentAdapter appointmentAdapter;
-    private List<Appointment> appointmentList;
-    private AppointmentManager appointmentManager;
-    private Context mContext;
-    private View appointmentFragment;
-
+    AppBarLayout mAppBarLayout;
+    TabLayout tabLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,57 +37,64 @@ public class AppointmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FloatingActionButton aFab;
+        View view = inflater.inflate(R.layout.appointment_tabview,container,false);
 
-        //using the appointment_main xml to show in the main fragment
-        appointmentFragment = inflater.inflate(R.layout.appointment_main, container, false);
+        tabLayout = (TabLayout) view.findViewById(R.id.appointment_tabs);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.appointment_viewpager);
+        ((ViewGroup)tabLayout.getParent()).removeView(tabLayout);
+        mAppBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appointment_appbar);
+        mAppBarLayout.addView(tabLayout,
+                new LinearLayoutCompat.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        //get reference to the current context(
-        mContext = appointmentFragment.getContext();
-        //get the reference to appointmentManager object
-        appointmentManager = new AppointmentManager(mContext);
-        //get the appointment details from the appointment table
-        appointmentList = appointmentManager.getAppointments();
-
-       /* appointmentList = new ArrayList<Appointment>();
-        appointmentList.add(new Appointment(1,"Singapore","01-04-2017","Test Appointment 1"));
-        appointmentList.add(new Appointment(2,"Singapore","02-04-2017","Test Appointment 2"));
-        */
-
-        if(appointmentList.isEmpty())
-        {
-            appointmentFragment = inflater.inflate(R.layout.message_placeholder,container,false);
-            TextView txtView = (TextView) appointmentFragment.findViewById(R.id.placeholdertext);
-            txtView.setText("No appointments found");
-        }
-        else {
-            populateRecyclerView(appointmentFragment);
-        }
-
-        aFab = (FloatingActionButton)appointmentFragment.findViewById(R.id.fab);
-        aFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().startActivityForResult(new Intent(mContext, AddAppointmentActivity.class),101);
-
-            }
-        });
-
-        return appointmentFragment;
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        return view;
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter  adapter = new ViewPagerAdapter (getChildFragmentManager());
+        adapter.addFragment(new AppointmentsTabFragment(), "Upcoming");
+        adapter.addFragment(new AppointmentsTabFragment(), "Past");
+        viewPager.setAdapter(adapter);
+    }
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    private void populateRecyclerView(View fragment) {
-        //get reference to the recyclerview
-        appointmentsView = (RecyclerView) fragment.findViewById(R.id.appointmentrecycler_view);
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
 
-        //the recycler view will use linear layout to show the cards (later can be changed if needed)
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-        appointmentsView.setLayoutManager(mLayoutManager);
+        @Override
+        public Fragment getItem(int position) {
+            Bundle fragmentBundle = new Bundle();
+            fragmentBundle.putInt("position",position);
+            Fragment fragment = mFragmentList.get(position);
+            fragment.setArguments(fragmentBundle);
+            return fragment;
+        }
 
-        //set the adapter with the appointment list
-        appointmentAdapter = new AppointmentAdapter(mContext, appointmentList);
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
 
-        appointmentsView.setAdapter(appointmentAdapter);
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+
+    }
+    @Override
+    public void onDestroyView() {
+        mAppBarLayout.removeView(tabLayout);
+        super.onDestroyView();
     }
 }

@@ -18,14 +18,15 @@ import org.json.JSONException;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.EditAppointmentActivity;
+import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
+import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
 
 /**
  * Created by : Navi on 14-03-2017.
- * Description : This is the recycler adapter for appointment activity
+ * Description : This is the recycler adapter for showing appointments
  * Modified by :
  * Reason for modification :
  */
@@ -34,6 +35,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private PreferenceManager appointmentPreference;
     private Context mContext;
     private List<Appointment> appointmentList;
+    private Integer fragmentPosition;
+
+    //callback listener to communicate with the parent activity
+    private AdapterCallbackInterface mCallback;
+
+    private static final int UPCOMING_APPOINTMENTS = 0;
+
+    //custom view holder to show the appointment details as card
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView datetime;
@@ -43,34 +52,41 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         public ImageView edit;
         public ImageView delete;
 
-
         public AppointmentViewHolder(View view) {
             super(view);
+            //get reference to the card view elements
             title = (TextView) view.findViewById(R.id.appointmenttitle);
             datetime = (TextView) view.findViewById(R.id.appointmentdatetime);
             location = (TextView) view.findViewById(R.id.appointmentlocation);
-            remainder = (TextView) view.findViewById(R.id.appointmentremainder);
             description = (TextView) view.findViewById(R.id.appointmentdescription);
-            edit = (ImageView) view.findViewById(R.id.edit);
             delete = (ImageView) view.findViewById(R.id.delete);
 
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent appointmentEdit = new Intent(mContext, EditAppointmentActivity.class);
-                    appointmentEdit.putExtra("Id",title.getTag().toString());
-                    appointmentEdit.putExtra("title",title.getText().toString());
-                    String dttime = datetime.getText().toString();
-                    String dt[] = dttime.split(" ",2);
-                    appointmentEdit.putExtra("date",dt[0]);
-                    appointmentEdit.putExtra("time",dt[1]);
-                    appointmentEdit.putExtra("location",location.getText().toString());
-                    appointmentEdit.putExtra("remainder",remainder.getTag().toString());
-                    appointmentEdit.putExtra("desc",description.getText().toString());
-                    ((Activity)mContext).startActivityForResult(appointmentEdit,102);
-                }
-            });
-
+            //edit features are to made available for active(upcoming) appointments only
+            if(fragmentPosition == UPCOMING_APPOINTMENTS) {
+                edit = (ImageView) view.findViewById(R.id.edit);
+                remainder = (TextView) view.findViewById(R.id.appointmentremainder);
+                //listener for editing appointments
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //passing the current information to the activity for showing in view
+                        Intent appointmentEdit = new Intent(mContext, AddEditAppointmentActivity.class);
+                        //flag to tell activity to show edit view
+                        appointmentEdit.putExtra("isEdit",true);
+                        appointmentEdit.putExtra("Id", title.getTag().toString());
+                        appointmentEdit.putExtra("title", title.getText().toString());
+                        String dttime = datetime.getText().toString();
+                        String dt[] = dttime.split(" ", 2);
+                        appointmentEdit.putExtra("date", dt[0]);
+                        appointmentEdit.putExtra("time", dt[1]);
+                        appointmentEdit.putExtra("location", location.getText().toString());
+                        appointmentEdit.putExtra("remainder", remainder.getTag().toString());
+                        appointmentEdit.putExtra("desc", description.getText().toString());
+                        ((Activity)mContext).startActivityForResult(appointmentEdit,102);
+                    }
+                });
+            }
+            //listener for deleting the appointments
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,7 +96,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     AppointmentManager appointmentManager = new AppointmentManager(mContext);
+                                    //delete from db and shared preferences
                                     appointmentManager.deleteAppointment(title.getTag().toString());
+                                    //refreshing the current view
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -90,50 +108,73 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             });
         }
     }
-
-    public AppointmentAdapter(Context mContext, List<Appointment> appointmentList) {
+    //constructor for adapter
+    public AppointmentAdapter(Context mContext, List<Appointment> appointmentList, Integer fragmentPosition, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
         this.appointmentList = appointmentList;
         appointmentPreference = new PreferenceManager(mContext);
+        this.mCallback = mCallback;
+        this.fragmentPosition = fragmentPosition;
     }
 
+    //called once in beginning to load the view
     @Override
     public AppointmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.appointment_card, parent, false);
-
+        View itemView;
+        if(fragmentPosition == UPCOMING_APPOINTMENTS) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.appointment_card_current, parent, false);
+        }
+        else
+        {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.appointment_card_past, parent, false);
+        }
         return new AppointmentViewHolder(itemView);
     }
 
+    //used to populate the view elements with adapter data
     @Override
     public void onBindViewHolder(final AppointmentViewHolder holder, int position) {
         String storedString, remainder = null,remainderDesc = null, title = null;
-
+        //get appointment data from list using current position as index
         Appointment appointment = appointmentList.get(position);
 
+        //Appointment title and remainder details are stored in shared preferences as we do not have fields for it in db table
         storedString = appointmentPreference.getAppointmentInfo(Integer.toString(appointment.getId()));
-        try {
-            JSONArray jsonArray = new JSONArray(storedString);
+        if(storedString != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(storedString);
+                //get appointment title and remainder info
+                title = jsonArray.getString(0);
+                remainder = jsonArray.getString(1);
 
-            title = jsonArray.getString(0);
-            remainder = jsonArray.getString(1);
+                if (remainder.equals("No Remainder"))
+                    remainderDesc = "No remainder set";
+                else
+                    remainderDesc = "Remainder set " + remainder.toLowerCase();
 
-            if(remainder.equals("No Remainder"))
-                remainderDesc = "No remainder set";
-            else
-                remainderDesc ="Remainder set "+remainder.toLowerCase();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            //foolproofing- flow will come here if user manually clears the app data
+            title = "Title not Found";
+            remainderDesc = "No remainder found";
         }
 
-        holder.title.setText(title);
-        holder.title.setTag(appointment.getId());
-        holder.datetime.setText(appointment.getAppointment());
-        holder.location.setText(appointment.getLocation());
-        holder.description.setText(appointment.getDescription());
-        holder.remainder.setText(remainderDesc);
-        holder.remainder.setTag(remainder);
+        //populate the view elements
+            holder.title.setText(title);
+            holder.title.setTag(appointment.getId());
+            holder.datetime.setText(appointment.getAppointment());
+            holder.location.setText(appointment.getLocation());
+            holder.description.setText(appointment.getDescription());
+            if(fragmentPosition == UPCOMING_APPOINTMENTS) {
+                holder.remainder.setText(remainderDesc);
+                holder.remainder.setTag(remainder);
+            }
     }
 
     @Override
@@ -141,9 +182,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return appointmentList.size();
     }
 
-    public void delete(int position) { //removes the row
+    //refresh recycler view
+    public void delete(int position) {
         appointmentList.remove(position);
         notifyItemRemoved(position);
+        //callback to main activity if all the adapter data is deleted
+        if(appointmentList.size() == 0)
+        {
+            mCallback.refreshView();
+        }
     }
-
 }

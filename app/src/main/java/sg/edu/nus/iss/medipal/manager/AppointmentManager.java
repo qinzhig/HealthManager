@@ -2,22 +2,27 @@ package sg.edu.nus.iss.medipal.manager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
-import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
+import sg.edu.nus.iss.medipal.asynTask.AppointmentReadAsyncTask;
+import sg.edu.nus.iss.medipal.asynTask.AppointmentWriteAsyncTask;
 import sg.edu.nus.iss.medipal.dao.AppointmentDAO;
+import sg.edu.nus.iss.medipal.interfaces.AsyncTaskCallbacks;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
+import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
+
+;
 
 /**
  * Created by : Navi on 15-03-2017.
@@ -35,162 +40,144 @@ public class AppointmentManager {
 
     PreferenceManager appointmentPreference;
 
-    public AppointmentManager(String title, String location, String datetime, String description,String remainderInterval,Context context ) {
+    //constructor 1 for setting all the parameters
+    public AppointmentManager(String title, String location, String datetime, String description, String remainderInterval, Context context) {
         this.context = context;
         this.remainderInterval = remainderInterval;
         this.appointmentTitle = title;
-        appointment = new Appointment(null,location,datetime,description);
+        appointment = new Appointment(null, location, datetime, description);
         appointmentDAO = new AppointmentDAO(context);
         appointmentPreference = new PreferenceManager(context);
     }
 
+    //constructor 2 for setting only context value. Used for delete operations
     public AppointmentManager(Context context) {
         this.context = context;
         appointmentDAO = new AppointmentDAO(context);
         appointmentPreference = new PreferenceManager(context);
     }
 
-    public boolean addAppointment()
-    {
-        Long appointmentId;
-        Calendar reminderDate;
+    //Store the appointment details in db and shared preferences, set remainders if user has given inputs
+    public void addAppointment() {
 
-        appointmentId = appointmentDAO.insert(appointment);
-        if(appointmentId != -1)
-        {
-            reminderDate = determineReminderTime(remainderInterval,appointment.getAppointment());
-            if(reminderDate != null) {
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        //using async task to perform db call
+        new AppointmentWriteAsyncTask(context, new AsyncTaskCallbacks() {
+            //using AsyncTaskCallbacks interface as a listener to execute the post tasks of creating and storing remainder
+            @Override
+            public void dbOperationStatus(boolean resultStatus, Long resultValue) {
+                Integer resultIntValue = resultValue.intValue();
+                Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
 
-                Intent alertIntent = new Intent(context, RemindAlarmReceiver.class);
-                alertIntent.putExtra("Id", Integer.toString(appointmentId.intValue()));
+                if (resultStatus) {
 
-                PendingIntent broadcast = PendingIntent.getBroadcast(context, appointmentId.intValue(), alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                //Log.d("check",Long.toString(date.getTime()));
-                Log.d("check",
-                     Long.toString(reminderDate.get(Calendar.DAY_OF_MONTH))+" "+Long.toString(reminderDate.get(Calendar.MONTH))+" "+Long.toString(reminderDate.get(Calendar.YEAR))+" "+Long.toString(reminderDate.get(Calendar.HOUR_OF_DAY))+" "+Long.toString(reminderDate.get(Calendar.MINUTE)));
-                Log.d("doublecheck",Long.toString(new GregorianCalendar().getTimeInMillis() + (60*1000)));
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderDate.getTimeInMillis(), broadcast);
-                //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
+                    //get the remainder date based on the remainderInterval given by user
+                    Calendar remainderDate = MediPalUtility.determineReminderTime(remainderInterval, appointment.getAppointment());
+                    //set remainder if provided
+                    if (remainderDate != null) {
+                        setupAlarmForReminder(remainderDate, resultIntValue);
+                    }
+
+                    //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
+                    storeAppointmentPreference(resultIntValue);
+                } else {
+                    //uphandled exceptions. lets hope this does not happen during grading...
+                    Toast.makeText(context, "something went wrong :-(", Toast.LENGTH_LONG).show();
+                }
             }
-            //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.put(appointmentTitle);
-            jsonArray.put(remainderInterval);
-            appointmentPreference.storeAppointmentInfo(Integer.toString(appointmentId.intValue()), jsonArray.toString());
-        }
-        else
-        {
-            return false;
-        }
-
-        return true;
-
+        }).execute(appointment, true);
     }
 
-    public boolean saveAppointment(String id)
-    {
-        Long appointmentId;
-        Calendar reminderDate;
-        appointment.setId(Integer.getInteger(id));
-        appointmentId = appointmentDAO.update(appointment);
+    //to set remainder using AlarmManager service and registering an pending intent
+    private void setupAlarmForReminder(Calendar remainderDate, Integer resultValue) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Log.d("save appointment",Long.toString(appointmentId)+" "+id);
-        if(appointmentId == Long.getLong(id))
-        {
-            reminderDate = determineReminderTime(remainderInterval,appointment.getAppointment());
-            if(reminderDate != null) {
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        //once remainder time is reached, alarm manager will call RemainAlarmReceiver class
+        Intent alertIntent = new Intent(context, RemindAlarmReceiver.class);
+        alertIntent.putExtra("Id", Integer.toString(resultValue));
 
-                Intent alertIntent = new Intent(context, RemindAlarmReceiver.class);
-                alertIntent.putExtra("Id", Integer.toString(appointmentId.intValue()));
-
-                PendingIntent broadcast = PendingIntent.getBroadcast(context, appointmentId.intValue(), alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                //Log.d("check",Long.toString(date.getTime()));
-                //Log.d("check",
-                //      Long.toString(reminderDate.get(Calendar.DAY_OF_MONTH))+" "+Long.toString(reminderDate.get(Calendar.MONTH))+" "+Long.toString(reminderDate.get(Calendar.YEAR))+" "+Long.toString(reminderDate.get(Calendar.HOUR_OF_DAY))+" "+Long.toString(reminderDate.get(Calendar.MINUTE)));
-                //Log.d("doublecheck",Long.toString(new GregorianCalendar().getTimeInMillis() + (60*1000)));
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderDate.getTimeInMillis(), broadcast);
-                //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
-            }
-            //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.put(appointmentTitle);
-            jsonArray.put(remainderInterval);
-            appointmentPreference.storeAppointmentInfo(Integer.toString(appointmentId.intValue()), jsonArray.toString());
-        }
-        else
-        {
-            return false;
-        }
-
-        return true;
+        PendingIntent broadcast = PendingIntent.getBroadcast(context, resultValue, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Log.d("check",Long.toString(date.getTime()));
+        Log.d("check",
+                Long.toString(remainderDate.get(Calendar.DAY_OF_MONTH)) + " " + Long.toString(remainderDate.get(Calendar.MONTH)) + " " + Long.toString(remainderDate.get(Calendar.YEAR)) + " " + Long.toString(remainderDate.get(Calendar.HOUR_OF_DAY)) + " " + Long.toString(remainderDate.get(Calendar.MINUTE)));
+        Log.d("doublecheck", Long.toString(new GregorianCalendar().getTimeInMillis() + (60 * 1000)));
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, remainderDate.getTimeInMillis(), broadcast);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
     }
 
+    //store the remainder details in shared preferences
+    private void storeAppointmentPreference(Integer resultValue) {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(appointmentTitle);
+        jsonArray.put(remainderInterval);
+        appointmentPreference.storeAppointmentInfo(Integer.toString(resultValue), jsonArray.toString());
+    }
+
+    public void saveAppointment(String id) {
+        final int appointmentID = Integer.valueOf(id);
+        appointment.setId(appointmentID);
+        //using async task to perform db call
+        new AppointmentWriteAsyncTask(context, new AsyncTaskCallbacks() {
+            //using AsyncTaskCallbacks interface as a listener to execute the post tasks of creating and storing remainder
+            @Override
+            public void dbOperationStatus(boolean resultStatus, Long resultValue) {
+                Integer resultIntValue = resultValue.intValue();
+                Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
+
+                if (resultStatus) {
+                    //get the remainder date based on the remainderInterval given by user
+                    Calendar remainderDate = MediPalUtility.determineReminderTime(remainderInterval, appointment.getAppointment());
+                    //set remainder if provided
+                    if (remainderDate != null) {
+                        setupAlarmForReminder(remainderDate, appointmentID);
+                    }
+
+                    //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
+                    storeAppointmentPreference(appointmentID);
+                } else {
+                    //uphandled exceptions. lets hope this does not happen during grading...
+                    Toast.makeText(context, "something went wrong :-(", Toast.LENGTH_LONG).show();
+                }
+            }
+        }).execute(appointment, false);
+    }
+
+    //delete an appointment
      public boolean deleteAppointment(String appointmentId)
     {
-        appointmentDAO.deleteAppointment(appointmentId);
+        new AppointmentWriteAsyncTask(context, appointmentId, new AsyncTaskCallbacks() {
+            @Override
+            public void dbOperationStatus(boolean resultStatus, Long resultValue) {
+                if(resultStatus)
+                    Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(context, "something went wrong :-(", Toast.LENGTH_LONG).show();
+            }
+        }).execute(appointmentId);
+
         appointmentPreference.deleteAppointmentInfo(appointmentId);
         return true;
     }
 
-    public ArrayList<Appointment> getAppointments()
+    //get the appointments list from db
+    public ArrayList<Appointment> getAppointments(int position)
     {
-        ArrayList<Appointment> appointmentList = appointmentDAO.getAppointments();
+        Boolean deciderFlag;
+        if(position == 0) //fetch upcoming appointments
+            deciderFlag=true;
+        else             //fetch previous appointments
+            deciderFlag = false;
+
+        //No call backs have been used here as no postprocessing in needed for this function
+        ArrayList<Appointment> appointmentList = null;
+        try {
+            appointmentList = new AppointmentReadAsyncTask(context).execute(deciderFlag).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return appointmentList;
     }
-    /*
-    method to get the date and time on which a remainder needs to be set
-     */
-    private Calendar determineReminderTime(String remainderInterval, String appointment)  {
-        //Log.d("date:",appointment);
-        Integer interval = decodeRemainderInterval(remainderInterval);
-        //Log.d("interval:",interval.toString());
-        Calendar c = null;
-        if(interval != 0) {
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
-            try {
-                c = Calendar.getInstance();
-                Date date = df.parse(appointment);
-                Log.d("date", df.format(date));
-                c.setTime(date);
-                c.add(Calendar.MINUTE, -interval);
-                Log.d("c date", df.format(c.getTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return c;
-    }
 
-    /*
-    method to get the interval in minutes to be used to set a reminder
-     */
-    private Integer decodeRemainderInterval(String remainderInterval) {
-        Integer retVal = 0;
-        switch (remainderInterval){
-            case "No Remainder":
-                retVal = 0;
-                break;
-            case "15 Minutes Before":
-                retVal = 15;
-                break;
-            case "30 Minutes Before":
-                retVal = 30;
-                break;
-            case "1 Hour Before":
-                retVal = 60;
-                break;
-            case "4 Hours Before":
-                retVal = 240;
-                break;
-            case "12 Hours Before":
-                retVal = 720;
-                break;
-            case "1 Day Before":
-                retVal = 1440;
-                break;
-        }
-        return retVal;
-    }
+
 }

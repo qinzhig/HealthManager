@@ -10,10 +10,13 @@ import java.util.concurrent.ExecutionException;
 
 import sg.edu.nus.iss.medipal.asynTask.AddCategory;
 import sg.edu.nus.iss.medipal.asynTask.AddMedicine;
+import sg.edu.nus.iss.medipal.asynTask.AddReminder;
 import sg.edu.nus.iss.medipal.asynTask.DeleteMedicine;
 import sg.edu.nus.iss.medipal.asynTask.ListCategory;
 import sg.edu.nus.iss.medipal.asynTask.ListMedicine;
+import sg.edu.nus.iss.medipal.asynTask.UpdateCategory;
 import sg.edu.nus.iss.medipal.asynTask.UpdateMedicine;
+import sg.edu.nus.iss.medipal.asynTask.UpdateReminder;
 
 /**
  * Created by zhiguo on 15/3/17.
@@ -23,6 +26,7 @@ public class HealthManager {
 
     private ArrayList<Medicine> medicines;
     private ArrayList<Category> categorys;
+    private ArrayList<Reminder> reminders;
 
     private AddMedicine     taskAddMedicine;
     private ListMedicine    taskListMedicine;
@@ -31,11 +35,16 @@ public class HealthManager {
 
     private AddCategory     taskAddCategory;
     private ListCategory    taskListCategory;
+    private UpdateCategory  taskUpdateCategory;
+
+    private AddReminder     taskAddReminder;
+    private UpdateReminder  taskUpdateReminder;
+
 
     public HealthManager(){
         this.medicines  =   new ArrayList<Medicine>();
-        this.categorys =   new ArrayList<Category>();
-
+        this.categorys  =   new ArrayList<Category>();
+        this.reminders  =   new ArrayList<Reminder>();
     }
 
     public Medicine getMedicine(int id){
@@ -133,7 +142,7 @@ public class HealthManager {
     }
 
     //SQLite get Category list
-    public List<Category> getCategorys(Context context) throws ExecutionException, InterruptedException {
+    public ArrayList<Category> getCategorys(Context context) {
         taskListCategory = new ListCategory(context);
         taskListCategory.execute((Void)null);
 
@@ -149,7 +158,40 @@ public class HealthManager {
             categorys = new ArrayList<Category>();
         }
 
-        return new ArrayList<Category>(categorys);
+        return categorys;
+
+    }
+
+    //SQLite add medicine
+    public Category updateCategory(int id, String name, String code, String des,Context context){
+
+        Category category = new Category(id, name, code,des);
+
+        taskUpdateCategory = new UpdateCategory(context);
+        taskUpdateCategory.execute(category);
+
+        return category;
+
+    }
+
+    public String[] getCategoryNameList(Context context){
+
+        String c_name[]= new String[getCategorys(context).size()];
+        Iterator<Category> c_list = getCategorys(context).iterator();
+
+        for(int i =0;c_list.hasNext();i++){
+
+            Category c = c_list.next();
+            if( c.getCategory_name() != null)
+            {
+                c_name[i]=c.getCategory_name();
+
+                Log.v("TAG","---------------HealthManager "+c_name[i]);
+            }
+        }
+
+
+        return c_name;
 
     }
 
@@ -162,6 +204,49 @@ public class HealthManager {
         taskAddCategory.execute(category);
 
         return category;
+
+    }
+
+
+
+
+    //--------------------------------------Reminder-----------------------------------
+    public Reminder getReminder(int id){
+
+        Iterator<Reminder> i = reminders.iterator();
+
+        while(i.hasNext()){
+            Reminder c = i.next();
+            if( c.getId() == id)
+            {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
+    public Reminder updateReminder(int id, int fre, String stime, int interval,Context context){
+
+            Reminder reminder = new Reminder(id, fre, stime,interval);
+
+            taskUpdateReminder = new UpdateReminder(context);
+            taskUpdateReminder.execute(reminder);
+
+            return reminder;
+
+    }
+
+
+    //SQLite add reminder
+    public Reminder addReminder(int id, int frequency,String stime,int interval,Context context){
+
+        Reminder reminder = new Reminder(id, frequency,stime,interval);
+
+        taskAddReminder = new AddReminder(context);
+        taskAddReminder.execute(reminder);
+
+        return reminder;
 
     }
 

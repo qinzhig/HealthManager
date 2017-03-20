@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.application.App;
 
 /**
  * Created by : Qin Zhi Guo on 12-03-2017.
@@ -17,6 +19,9 @@ import sg.edu.nus.iss.medipal.R;
  */
 
 public class AddCategoryActivity extends AppCompatActivity {
+
+    private EditText et_name,et_code,et_des;
+    private Button button_save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +35,17 @@ public class AddCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Button button_save = (Button)findViewById(R.id.button_save);
+        et_name = (EditText) findViewById(R.id.et_name);
+        et_code = (EditText) findViewById(R.id.et_code);
+        et_des = (EditText) findViewById(R.id.et_des);
+
+        button_save = (Button)findViewById(R.id.button_save);
 
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),getApplicationContext());
+
                 Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
                 toast.show();
 

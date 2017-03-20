@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,13 +29,15 @@ public class EditMedicineActivity extends AppCompatActivity {
     private EditText et_name,et_des,et_quanity,et_dosage,et_date;
     private Spinner spinner;
     Button button_update;
+    ImageButton button_add_category;
 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
 
-    private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
+    //private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
     ArrayAdapter array_adpater;
+    String[] m_list;
 
     String medcine_category;
     Medicine medicine;
@@ -100,16 +104,18 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
+        m_list = App.hm.getCategoryNameList(getApplicationContext());
+
         //Spinner action
         spinner= (Spinner) findViewById(R.id.spinner_category);
-        array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_category);
+        array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
         spinner.setSelection(medicine.getCateId());
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                medcine_category = m_category[arg2];
+                medcine_category = m_list[arg2];
                 arg0.setVisibility(View.VISIBLE);
 
                 position=arg2;
@@ -120,6 +126,20 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
+
+        button_add_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent_add_category= new Intent(getApplicationContext(), AddCategoryActivity.class);
+                startActivity(intent_add_category);
+
+                finish();
+
             }
         });
 

@@ -14,6 +14,7 @@
     <string name="menu_add">Add</string>
     <string name="menu_setting">Setting Application</string>
     <string name="spinner_medicine_hint">Select a category</string>
+
     <dimen name="img_width_height">120dp</dimen>
     <dimen name="slide_title">30dp</dimen>
     <dimen name="slide_desc">16dp</dimen>
@@ -40,8 +41,9 @@
     <string name="slide_4_desc">MediPal..!!!</string>
     <string name="title_activity_help">activity_help</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="edit_appointment_title">Edit Appointment</string>
+
 </resources>
 
 
