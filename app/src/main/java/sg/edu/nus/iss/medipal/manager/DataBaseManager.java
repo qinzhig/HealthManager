@@ -60,6 +60,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String MEDICINE_REM = "remind";
     public static final String MEDICINE_QUANTITY = "quantity";
     public static final String MEDICINE_DOSAGE = "dosage";
+    public static final String MEDICINE_CQUANTITY = "consumequantity";
+    public static final String MEDICINE_THRESHOLD = "threshold";
     public static final String MEDICINE_DATEISSUED = "dateissued";
     public static final String MEDICINE_EXPIREFACTOR = "expirefactor";
 
@@ -69,7 +71,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + MEDICINE_NAME + " TEXT  UNIQUE, " + MEDICINE_DES + " TEXT, "
             + MEDICINE_CATID + " INTEGER, " + MEDICINE_REMID+ " INTEGER, "
             + MEDICINE_REM + " INTEGER, " + MEDICINE_QUANTITY + " INTEGER, "
-            + MEDICINE_DOSAGE + " INTEGER, " + MEDICINE_DATEISSUED + " TEXT, "
+            + MEDICINE_DOSAGE + " INTEGER, " + MEDICINE_CQUANTITY + " INTEGER, "
+            + MEDICINE_THRESHOLD + " INTEGER, " + MEDICINE_DATEISSUED + " TEXT, "
             + MEDICINE_EXPIREFACTOR + " INTEGER "+")";
 
     //variables used to create category table query

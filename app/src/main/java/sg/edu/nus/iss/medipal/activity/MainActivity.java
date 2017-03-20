@@ -26,6 +26,7 @@ import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
+import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
@@ -83,8 +84,11 @@ public class MainActivity extends AppCompatActivity
         String Title;
         Fragment fragment;
         if (id == R.id.nav_personalBio) {
-            Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
-            startActivity(personalBioIntent);
+            /*Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
+            startActivity(personalBioIntent);*/
+            fragment = new PersonalBioFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
         } else if (id == R.id.nav_healthBio) {
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -172,6 +176,10 @@ public class MainActivity extends AppCompatActivity
                 refreshHealthBioFragment = true;
             }
         }
+    }
+
+    public void setActionBarTitle(String title){
+        toolbar.setTitle(title);
     }
 
     public void onIceSelected(DummyContent.DummyItem item)

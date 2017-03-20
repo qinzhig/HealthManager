@@ -17,11 +17,13 @@ public class Medicine implements Serializable {
     private boolean reminder;
     private int quantity;
     private int dosage;
+    private int consumequantity;
+    private int threshold;
     private String dateIssued;
     private int expireFactor;
 
 
-    public Medicine(int id,String medicine_name, String medicine_des, int cateId, int reminderId, Boolean reminder, int quantity, int dosage, String dateIssued, int expireFactor){
+    public Medicine(int id, String medicine_name, String medicine_des, int cateId, int reminderId, Boolean reminder, int quantity, int dosage, int cquantity, int threshold, String dateIssued, int expireFactor){
 
         this.id=id;
         this.medicine_name=medicine_name;
@@ -31,9 +33,28 @@ public class Medicine implements Serializable {
         this.reminder=reminder;
         this.quantity=quantity;
         this.dosage=dosage;
+        this.consumequantity=cquantity;
+        this.threshold=threshold;
         this.dateIssued=dateIssued;
         this.expireFactor=expireFactor;
     }
+
+    public int getConsumequantity() {
+        return consumequantity;
+    }
+
+    public void setConsumequantity(int consumequantity) {
+        this.consumequantity = consumequantity;
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
+
 
     public int getId() {
         return id;

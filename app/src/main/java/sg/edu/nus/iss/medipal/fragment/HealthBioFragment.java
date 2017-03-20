@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
+import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.adapter.HealthBioAdapter;
 import sg.edu.nus.iss.medipal.manager.HealthBioManager;
 import sg.edu.nus.iss.medipal.pojo.HealthBio;
@@ -44,6 +45,7 @@ public class HealthBioFragment extends Fragment {
         healthBioManager =
                 new HealthBioManager();
         healthBioList = healthBioManager.getHealthBio(getContext());
+        ((MainActivity) getActivity()).setActionBarTitle("MediPal_FT01 - Health Bio");
 
         if(healthBioList.isEmpty())
         {
