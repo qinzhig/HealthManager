@@ -27,10 +27,5 @@
         android:id="@+id/appointment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <FrameLayout
-            android:id="@+id/appointmentviewplaceholder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </FrameLayout>
 
 </LinearLayout>

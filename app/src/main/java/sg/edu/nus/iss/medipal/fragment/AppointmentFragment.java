@@ -7,8 +7,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 
 /**
  * Created by : Navi on 06-03-2017.
@@ -59,6 +62,8 @@ public class AppointmentFragment extends Fragment {
         adapter.addFragment(new AppointmentsTabFragment(), "Past");
         viewPager.setAdapter(adapter);
     }
+
+
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

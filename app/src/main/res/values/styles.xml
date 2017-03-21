@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -52,9 +53,9 @@
     </style>
 
 
-
     <style name="TextInputLayout.hint" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textSize">16sp</item>
     </style>
+
 </resources>
