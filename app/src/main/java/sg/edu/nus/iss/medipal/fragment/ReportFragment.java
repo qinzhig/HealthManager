@@ -1,10 +1,8 @@
-package sg.edu.nus.iss.medipal.activity;
+package sg.edu.nus.iss.medipal.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,11 +14,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.manager.ReportManager;
 
 
@@ -32,6 +30,7 @@ public class ReportFragment extends Fragment {
 
     private TableLayout tableLayout;
     private View reportFragment;
+    private static String[] healthBioArr = {"Condition", "Start Date", "Condition Type"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,40 +54,27 @@ public class ReportFragment extends Fragment {
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String columnString =   "\"PersonName\",\"Gender\",\"Street1\",\"postOffice\",\"Age\"";
-                String dataString   =   "\"dd\"";
-                String combinedString = columnString + "\n" + dataString;
 
-                File file   = null;
-                File root   = Environment.getExternalStorageDirectory();
-                if (root.canWrite()){
-                    File dir    =   new File (root.getAbsolutePath() + "/sample");
-                    dir.mkdirs();
-                    file   =   new File(dir, "Data.csv");
-                    FileOutputStream out   =   null;
-                    try {
-                        out = new FileOutputStream(file);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        out.write(combinedString.getBytes());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                addContentToCsv();
+
+                File csvFile = null;
+                FileOutputStream outputStream;
+                try {
+                    csvFile = new File(getContext().getExternalCacheDir(), "Reports.csv");
+                    outputStream = new FileOutputStream(csvFile);
+                    outputStream.write(addContentToCsv().getBytes());
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-            Uri u1  =   null;
-            u1  =   Uri.fromFile(file);
+                Uri reportFile = null;
+                reportFile = Uri.fromFile(csvFile);
 
-                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Medipal - Reports");
-                emailIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Medipal - Reports");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Hi, <br><br><br> Please find the medical report attached <br><br><br> Cheers, Team - Medipal FT 01"));
+                emailIntent.putExtra(Intent.EXTRA_STREAM, reportFile);
                 emailIntent.setType("text/html");
                 startActivity(Intent.createChooser(emailIntent, "Send mail:"));
             }
@@ -98,15 +84,20 @@ public class ReportFragment extends Fragment {
     }
 
     private void populateHealthBioTable() {
-        String[] headerArr = {"Condition", "Start Date", "Condition Type"};
 
         TableRow rowHeader =
-                ReportManager.addHeaders(headerArr, getContext());
+                ReportManager.addHeaders(healthBioArr, getContext());
 
         tableLayout.addView(rowHeader);
 
         tableLayout =
                 ReportManager.addContent(getContext(), tableLayout);
+    }
+
+    private String addContentToCsv() {
+
+        return ReportManager.
+                addHealthBioToCsv(healthBioArr, getContext());
     }
 
 }

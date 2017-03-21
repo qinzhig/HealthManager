@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -31,58 +32,67 @@ public class HelpActivity extends AppCompatActivity {
     private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
+    private PreferenceManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_help);
+        prefManager = new PreferenceManager(getApplicationContext());
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        if(null==prefManager.getSplashScreenPref()) {
+            setContentView(R.layout.activity_help);
+            viewPager = (ViewPager) findViewById(R.id.view_pager);
+            dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
+            btnSkip = (Button) findViewById(R.id.btn_skip);
+            btnNext = (Button) findViewById(R.id.btn_next);
 
 
-        // layouts of all welcome sliders
-        // add few more layouts if you want
-        layouts = new int[]{
-                R.layout.help_screen_1,
-                R.layout.help_screen_2,
-                R.layout.help_screen_3,
-                R.layout.help_screen_4};
+            // layouts of all welcome sliders
+            // add few more layouts if you want
+            layouts = new int[]{
+                    R.layout.help_screen_1,
+                    R.layout.help_screen_2,
+                    R.layout.help_screen_3,
+                    R.layout.help_screen_4};
 
-        // adding bottom dots
-        addBottomDots(0);
+            // adding bottom dots
+            addBottomDots(0);
 
-        // making notification bar transparent
-        changeStatusBarColor();
+            // making notification bar transparent
+            changeStatusBarColor();
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+            myViewPagerAdapter = new MyViewPagerAdapter();
+            viewPager.setAdapter(myViewPagerAdapter);
+            viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchHomeScreen();
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                } else {
+            btnSkip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    prefManager.setSplashScreenPref("true");
                     launchHomeScreen();
                 }
-            }
-        });
+            });
+
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // checking for last page
+                    // if last page home screen will be launched
+                    int current = getItem(+1);
+                    if (current < layouts.length) {
+                        // move to next screen
+                        viewPager.setCurrentItem(current);
+                    } else {
+                        prefManager.setSplashScreenPref("true");
+                        launchHomeScreen();
+                    }
+                }
+            });
+        }
+        else{
+            launchHomeScreen();
+        }
     }
 
     private void addBottomDots(int currentPage) {

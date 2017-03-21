@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.medipal.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +14,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
@@ -27,6 +24,7 @@ import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
+import sg.edu.nus.iss.medipal.fragment.ReportFragment;
 import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //set up navigation drawer for shpwing the menu items
+        //set up navigation drawer for showing the menu items
         setupNavDrawer();
 
         //setup listener for navigation drawer menu item clicks
@@ -207,7 +205,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.settings_togglehelp)
+        if(id == R.id.helpswitch)
         {
             return true;
         }

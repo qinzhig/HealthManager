@@ -4,17 +4,19 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -30,11 +32,15 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class AddEditPersonalBioActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText name, dob, idNo, address, postalCode, height, bloodType;
+    private EditText name, dob, idNo, address, postalCode, height;
+    private Spinner bloodGrp;
     private PersonalBioManager personalBioManager;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar selectedDate = Calendar.getInstance();
     Calendar currentCal = Calendar.getInstance();
+    private String nameStr, idNoStr, addressStr, postalCodeStr, heightStr, bloodTypeStr;
+    private Date dobDt;
+    private static String[] BLOOD_GRP = {"O+ve", "O-ve", "A+ve", "A-ve", "B+ve", "B-ve", "AB+ve", "AB-ve"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,11 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
         address = (EditText) findViewById(R.id.addressEdit);
         postalCode = (EditText) findViewById(R.id.postalEdit);
         height = (EditText) findViewById(R.id.heightEdit);
-        bloodType = (EditText) findViewById(R.id.bloodTypeEdit);
+        bloodGrp = (Spinner) findViewById(R.id.bloodGrpSpinner);
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.
+                R.layout.simple_dropdown_item_1line, BLOOD_GRP);
+        bloodGrp.setAdapter(spinnerAdapter);
 
         PersonalBio personalBio =
                 new PersonalBioManager().getpersonalBio(this);
@@ -64,7 +74,7 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
             address.setText(personalBio.getAddress());
             postalCode.setText(String.valueOf(personalBio.getPostalCode()));
             height.setText(String.valueOf(personalBio.getHeight()));
-            bloodType.setText(personalBio.getBloodType());
+            bloodGrp.setSelection(Arrays.asList(bloodGrp).indexOf(personalBio.getBloodType().toString()));
         }
 
         dob.setOnClickListener(this);
@@ -116,43 +126,46 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
             finish();
         } else if (id == R.id.action_done) {
 
-            if (null != name.getTag()) {
-                updatePersonalBio();
-            } else {
-                addPersonalBio();
+            nameStr = name.getText().toString();
+            dobDt = MediPalUtility
+                    .covertStringToDate(dob.getText().toString());
+            idNoStr = idNo.getText().toString();
+            addressStr = address.getText().toString();
+            postalCodeStr = postalCode.getText().toString();
+            heightStr = height.getText().toString();
+            bloodTypeStr = bloodGrp.getSelectedItem().toString();
+
+            if (validatePersonalBio(nameStr, dob.getText().toString(), idNoStr, addressStr,
+                    postalCodeStr, heightStr)) {
+                if (null != name.getTag()) {
+                    updatePersonalBio();
+                } else {
+                    addPersonalBio();
+                }
+
+                final ProgressDialog progressDialog = new ProgressDialog(this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+
+                new Handler().postDelayed(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  progressDialog.dismiss();
+                                                  finish();
+                                                  Toast.makeText(AddEditPersonalBioActivity.this, "Success", Toast.LENGTH_LONG).show();
+                                              }
+                                          },
+                        1000);
+
             }
-
-            final ProgressDialog progressDialog = new ProgressDialog(this,
-                    R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Saving...");
-            progressDialog.show();
-
-            new Handler().postDelayed(new Runnable() {
-                                          @Override
-                                          public void run() {
-                                              progressDialog.dismiss();
-                                              finish();
-                                              Toast.makeText(AddEditPersonalBioActivity.this, "Success", Toast.LENGTH_LONG).show();
-                                          }
-                                      },
-                    1000);
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void addPersonalBio() {
-
-        String nameStr = name.getText().toString();
-        Date dobDt = MediPalUtility
-                .covertStringToDate(dob.getText().toString());
-        String idNoStr = idNo.getText().toString();
-        String addressStr = address.getText().toString();
-        String postalCodeStr = postalCode.getText().toString();
-        String heightStr = height.getText().toString();
-        String bloodTypeStr = bloodType.getText().toString();
 
         personalBioManager = new PersonalBioManager();
         personalBioManager.addpersonalBio(nameStr, dobDt, idNoStr,
@@ -162,19 +175,61 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
 
     private void updatePersonalBio() {
 
-        String nameStr = name.getText().toString();
-        int id = Integer.valueOf(name.getTag().toString());
-        Date dobDt = MediPalUtility
-                .covertStringToDate(dob.getText().toString());
-        String idNoStr = idNo.getText().toString();
-        String addressStr = address.getText().toString();
-        String postalCodeStr = postalCode.getText().toString();
-        String heightStr = height.getText().toString();
-        String bloodTypeStr = bloodType.getText().toString();
-
         personalBioManager = new PersonalBioManager();
-        personalBioManager.updatepersonalBio(id, nameStr, dobDt, idNoStr,
+        personalBioManager.updatepersonalBio(Integer.valueOf(name.getTag().toString()), nameStr, dobDt, idNoStr,
                 addressStr, postalCodeStr, heightStr, bloodTypeStr, this);
 
+    }
+
+    private boolean validatePersonalBio(String nameStr, String dobDt, String idNoStr,
+                                        String addressStr, String postalCodeStr, String heightStr) {
+        boolean isValid = true;
+
+        if (nameStr.isEmpty()) {
+            name.setError("Please enter Name");
+            isValid = false;
+        } else {
+            name.setError(null);
+        }
+
+        if (dobDt.isEmpty()) {
+            dob.setError("Please select Date of Birth");
+            isValid = false;
+        } else if (!MediPalUtility.isNotFutureDate(dobDt)) {
+            dob.setError("Date of Birth cannot be in future");
+            isValid = false;
+        } else {
+            dob.setError(null);
+        }
+
+        if (idNoStr.isEmpty()) {
+            idNo.setError("Please enter ID Number");
+            isValid = false;
+        } else {
+            idNo.setError(null);
+        }
+
+        if (addressStr.isEmpty()) {
+            address.setError("Please enter Address");
+            isValid = false;
+        } else {
+            address.setError(null);
+        }
+
+        if (postalCodeStr.isEmpty()) {
+            postalCode.setError("Please enter Postal Code");
+            isValid = false;
+        } else {
+            postalCode.setError(null);
+        }
+
+        if (heightStr.isEmpty()) {
+            height.setError("Please enter Height");
+            isValid = false;
+        } else {
+            height.setError(null);
+        }
+
+        return isValid;
     }
 }

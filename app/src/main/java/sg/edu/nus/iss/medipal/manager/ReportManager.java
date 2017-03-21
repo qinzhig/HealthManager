@@ -18,6 +18,8 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class ReportManager {
 
+    private static HealthBioManager healthBioManager = null;
+
     public static TableRow addHeaders(String[] headerArr,
                                       Context context) {
 
@@ -41,9 +43,9 @@ public class ReportManager {
     }
 
     public static TableLayout addContent(Context context,
-                                      TableLayout tableLayout) {
+                                         TableLayout tableLayout) {
 
-        HealthBioManager healthBioManager
+        healthBioManager
                 = new HealthBioManager();
 
         List<HealthBio> healthBioList =
@@ -78,6 +80,50 @@ public class ReportManager {
         }
 
         return tableLayout;
+    }
+
+    public static String addHealthBioToCsv(String[] headerArr,
+                                           Context context) {
+        StringBuilder healthBioStr = new StringBuilder();
+        for (String header : headerArr) {
+            healthBioStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                healthBioStr.append(",");
+            }
+        }
+
+        healthBioStr.append("\n");
+
+        healthBioManager =
+                new HealthBioManager();
+
+        List<HealthBio> healthBioList =
+                healthBioManager.getHealthBio(context);
+
+        for (HealthBio healthBio : healthBioList) {
+            String condition = healthBio.getCondition();
+            String strtDate = MediPalUtility.
+                    covertDateToString(healthBio.getStartDate());
+            String conditionType = "";
+            if (healthBio.getConditionType() == 'C') {
+                conditionType = "Condition";
+            } else {
+                conditionType = "Allergy";
+            }
+
+            healthBioStr.append(condition).append(",");
+            healthBioStr.append(strtDate).append(",");
+            healthBioStr.append(conditionType);
+
+            healthBioStr.append("\n");
+        }
+
+        return healthBioStr.toString();
+
+        /*String columnString = "\"Condition\",\"Start Date\",\"Condition Type\"";
+        String dataString = "\"dd\"";
+        String combinedString = columnString + "\n" + dataString;*/
     }
 }
 

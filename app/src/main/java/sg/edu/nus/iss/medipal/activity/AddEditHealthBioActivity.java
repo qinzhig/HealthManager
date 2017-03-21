@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -37,8 +36,9 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar selectedDate = Calendar.getInstance();
     Calendar currentCal = Calendar.getInstance();
-
-    static String[] CONDITION_TYPE = {"Condition", "Allergy"};
+    private String conditionStr, conditionTypeStr;
+    private Date startDt;
+    private static String[] CONDITION_TYPE = {"Condition", "Allergy"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,39 +119,41 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
             finish();
         } else if (id == R.id.action_done) {
 
-            if (null != condition.getTag()) {
-                updateHealthBio();
-            } else {
-                addHealthBio();
+            conditionStr = condition.getText().toString();
+            startDt = MediPalUtility
+                    .covertStringToDate(startDate.getText().toString());
+            conditionTypeStr = conditionType.getSelectedItem().toString();
+
+            if (validateHealthBio(conditionStr, startDate.getText().toString())) {
+                if (null != condition.getTag()) {
+                    updateHealthBio();
+                } else {
+                    addHealthBio();
+                }
+
+                final ProgressDialog progressDialog = new ProgressDialog(this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+
+                new Handler().postDelayed(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  progressDialog.dismiss();
+                                                  finish();
+                                                  Toast.makeText(AddEditHealthBioActivity.this, "Success", Toast.LENGTH_LONG).show();
+                                              }
+                                          },
+                        1000);
+
             }
-
-            final ProgressDialog progressDialog = new ProgressDialog(this,
-                    R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Saving...");
-            progressDialog.show();
-
-            new Handler().postDelayed(new Runnable() {
-                                          @Override
-                                          public void run() {
-                                              progressDialog.dismiss();
-                                              finish();
-                                              Toast.makeText(AddEditHealthBioActivity.this, "Success", Toast.LENGTH_LONG).show();
-                                          }
-                                      },
-                    1000);
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void addHealthBio() {
-
-        String conditionStr = condition.getText().toString();
-        Date startDt = MediPalUtility
-                .covertStringToDate(startDate.getText().toString());
-        String conditionTypeStr = conditionType.getSelectedItem().toString();
 
         HealthBioManager healthBioManager
                 = new HealthBioManager();
@@ -161,14 +163,33 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
 
     private void updateHealthBio() {
 
-        String conditionStr = condition.getText().toString();
-        Date startDt = MediPalUtility
-                .covertStringToDate(startDate.getText().toString());
-        String conditionTypeStr = conditionType.getSelectedItem().toString();
-
         HealthBioManager healthBioManager
                 = new HealthBioManager();
         healthBioManager.updateHealthBio(condition.getTag().toString(), conditionStr
                 , startDt, conditionTypeStr.charAt(0), this);
     }
+
+    private boolean validateHealthBio(String conditionInp, String startDateInp) {
+        boolean isValid = true;
+
+        if (conditionInp.isEmpty()) {
+            condition.setError("Please enter Condition title");
+            isValid = false;
+        } else {
+            condition.setError(null);
+        }
+
+        if (startDateInp.isEmpty()) {
+            startDate.setError("Please select Start Date of the Condition");
+            isValid = false;
+        } else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
+            startDate.setError("Start Date cannot be in future");
+            isValid = false;
+        } else {
+            startDate.setError(null);
+        }
+
+        return isValid;
+    }
+
 }

@@ -130,13 +130,11 @@
             android:layout_height="wrap_content"
             android:text="Blood Type" />
 
-        <EditText
-            android:id="@+id/bloodTypeEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Blood Type"
-            android:theme="@style/EditTextStyle"/>
+    <Spinner
+        android:id="@+id/bloodGrpSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/EditTextStyle"/>
 
     </LinearLayout>
 </ScrollView>
