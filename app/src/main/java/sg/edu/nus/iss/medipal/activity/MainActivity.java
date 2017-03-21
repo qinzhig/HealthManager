@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity
 
         if(id == R.id.helpswitch)
         {
+            item.setChecked(!item.isChecked());
             return true;
         }
 

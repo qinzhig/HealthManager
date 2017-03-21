@@ -5,8 +5,10 @@
     <item
         android:id="@+id/settings_togglehelp"
         android:title="@string/settings_startup"
+        android:checkable="true"
         android:orderInCategory="100"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+         />
 
     <item
         android:id="@+id/settings_help"

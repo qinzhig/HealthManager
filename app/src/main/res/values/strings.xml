@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MediPal_FT01 - Home</string>
+    <string name="app_name">MediPal-FT01</string>
     <string name="personalBio">Personal Bio</string>
     <string name="healthBio">Health Bio</string>
     <string name="medication">Medications</string>
