@@ -2,7 +2,6 @@ package sg.edu.nus.iss.medipal.manager;
 
 import android.content.Context;
 
-import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.dao.IceDAO;

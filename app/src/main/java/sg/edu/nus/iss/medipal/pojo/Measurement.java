@@ -5,8 +5,6 @@ import java.util.Date;
 /**
  * Created by levis on 3/16/2017.
  * Description : Class to hold measurement table data
- * Modified by :
- * Reason for modification :
  */
 
 public class Measurement {

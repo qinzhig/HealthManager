@@ -112,9 +112,8 @@
                 android:layout_below="@+id/measurementlistitem_pulse"
                 android:layout_alignStart="@+id/measurementlistitem_pulse" />
 
-
             <ImageView
-                android:id="@+id/edit"
+                android:id="@+id/measurement_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -124,10 +123,10 @@
                 android:scaleType="fitXY"
                 android:layout_marginEnd="5dp"
                 android:layout_below="@+id/measurementlistitem_temperature"
-                android:layout_toStartOf="@+id/delete" />
+                android:layout_toStartOf="@+id/measurement_delete" />
 
             <ImageView
-                android:id="@+id/delete"
+                android:id="@+id/measurement_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -138,7 +137,9 @@
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/measurementlistitem_temperature" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

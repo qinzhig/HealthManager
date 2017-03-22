@@ -77,7 +77,12 @@
         <activity
             android:name=".activity.AddConsumption"
             android:label="ADD"></activity>
-        <activity android:name=".activity.IceActivity"></activity>
+
+        <activity
+            android:name=".activity.IceActivity"
+            android:label="AddEditICE"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

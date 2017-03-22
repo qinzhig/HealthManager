@@ -28,7 +28,6 @@ import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.ReportFragment;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -254,16 +253,6 @@ public class MainActivity extends AppCompatActivity
 
     public void setActionBarTitle(String title){
         toolbar.setTitle(title);
-    }
-
-    public void onIceSelected(DummyContent.DummyItem item)
-    {
-
-    }
-
-    public void onMeasurementSelected(DummyContent.DummyItem item)
-    {
-
     }
 
     @Override

@@ -1,7 +1,9 @@
 package sg.edu.nus.iss.medipal.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.IceActivity;
 import sg.edu.nus.iss.medipal.adapter.MeasurementAdapter;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
@@ -54,6 +55,16 @@ public class MeasurementFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measurement_list, container, false);
+
+        FloatingActionButton aFab = (FloatingActionButton)view.findViewById(R.id.measurement_fab);
+        aFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iceIntent = new Intent(getContext(), IceActivity.class);
+                iceIntent.putExtra("isEdit", false);
+                startActivityForResult(iceIntent, 1);
+            }
+        });
 
 
         return view;

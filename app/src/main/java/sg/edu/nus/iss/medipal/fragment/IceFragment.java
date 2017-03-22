@@ -39,10 +39,21 @@ public class IceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_ice_list, container, false);
 
-        View iceFragment = inflater.inflate(R.layout.fragment_ice_list, container, false);
+        _iceManager = new IceManager();
+        _iceList = _iceManager.getIce(getContext());
 
-        FloatingActionButton aFab = (FloatingActionButton)iceFragment.findViewById(R.id.ice_fab);
+        if(_iceList.isEmpty()) {
+            TextView txtView = (TextView) view.findViewById(R.id.icelist_placeholder);
+            txtView.setText("No Contact(ICE) found");
+            txtView.setVisibility(View.VISIBLE);
+        } else {
+            _iceView = (RecyclerView) view.findViewById(R.id.icerecycler_view);
+            populateRecyclerView();
+        }
+
+        FloatingActionButton aFab = (FloatingActionButton)view.findViewById(R.id.ice_fab);
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,19 +63,7 @@ public class IceFragment extends Fragment {
             }
         });
 
-        _iceManager = new IceManager();
-        _iceList = _iceManager.getIce(getContext());
-
-        if(_iceList.isEmpty()) {
-            iceFragment = inflater.inflate(R.layout.message_placeholder,container,false);
-            TextView txtView = (TextView) iceFragment.findViewById(R.id.placeholdertext);
-            txtView.setText("No Contact(ICE) found");
-        } else {
-            _iceView = (RecyclerView) iceFragment.findViewById(R.id.icerecycler_view);
-            populateRecyclerView();
-        }
-
-        return iceFragment;
+        return view;
     }
 
     private void populateRecyclerView() {
