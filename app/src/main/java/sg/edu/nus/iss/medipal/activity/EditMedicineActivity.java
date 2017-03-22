@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -27,6 +29,7 @@ import java.util.Locale;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
+import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 public class EditMedicineActivity extends AppCompatActivity {
 
@@ -39,11 +42,13 @@ public class EditMedicineActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
+    Calendar calender = Calendar.getInstance();
 
     //private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
     ArrayAdapter array_adpater;
     String[] m_list;
     Medicine medicine;
+    Reminder reminder;
 
     private Switch switch_remind;
     private boolean remind_status;
@@ -65,6 +70,7 @@ public class EditMedicineActivity extends AppCompatActivity {
         toolbar.setTitle("Update Medicine");
 
         medicine = (Medicine) getIntent().getSerializableExtra("medicineInfo");
+        reminder = App.hm.getReminder(medicine.getReminderId(),getApplicationContext());
 
         //Get the intentExtras data
         //Bundle intentExtras = getIntent().getExtras();
@@ -90,8 +96,9 @@ public class EditMedicineActivity extends AppCompatActivity {
         if(medicine.isReminder()){
             remind_status = true;
 
-            et_frequency.setText("2");
-            et_interval.setText("8");
+            et_frequency.setText(reminder.getFrequency());
+            et_interval.setText(reminder.getInterval());
+            et_stime.setText(reminder.getStartTime());
 
         }else{
             remind_status = false;
@@ -101,8 +108,8 @@ public class EditMedicineActivity extends AppCompatActivity {
             et_interval.setVisibility(View.INVISIBLE);
             et_stime.setVisibility(View.INVISIBLE);
 
-            et_frequency.setText("2");
-            et_interval.setText("8");
+            et_frequency.setText("0");
+            et_interval.setText("0");
         }
 
 
@@ -122,9 +129,6 @@ public class EditMedicineActivity extends AppCompatActivity {
                     et_interval.setVisibility(View.VISIBLE);
                     et_stime.setVisibility(View.VISIBLE);
 
-                    //----------------Call Reminder to update the data here----------
-                    et_frequency.setText("2");
-                    et_interval.setText("8");
 
                 }else{
                     switch_remind.setText(" OFF ");
@@ -305,6 +309,32 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
+        //Set Listener for start time TimePicker
+        et_stime.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+
+                calender.setTimeInMillis(System.currentTimeMillis());
+                int mHour = calender.get(Calendar.HOUR_OF_DAY);
+                int mMinute = calender.get(Calendar.MINUTE);
+                new TimePickerDialog(EditMedicineActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view,
+                                                  int hourOfDay, int minute) {
+                                calender.setTimeInMillis(System.currentTimeMillis());
+                                calender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calender.set(Calendar.MINUTE, minute);
+                                calender.set(Calendar.SECOND, 0); // 设为 0
+                                calender.set(Calendar.MILLISECOND, 0); // 设为 0
+
+                                et_stime.setText(hourOfDay+":"+minute);
+                            }
+                        }, mHour, mMinute, true).show();
+            }
+        });
+
+
         //Set the Save Button Name to Update
         button_update = (Button) findViewById(R.id.button_save);
         button_update.setText("Update");
@@ -313,18 +343,44 @@ public class EditMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+                int reminderid = (int)( (Math.random()*9 + 1) * 10000);
+
+                boolean no_input_empty;
+
+                //Validation to make sure the user has input every thing without empty left
+                if((et_cquantity.getText().length() >0 && et_quanity.getText().length()>0 && et_threshold.getText().length()>0)){
+                    no_input_empty = true;
+                }else{
+                    no_input_empty = false;
+                    Toast toast = Toast.makeText(EditMedicineActivity.this, "Some section is empty here!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                if( no_input_empty && input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
                         Integer.valueOf(et_quanity.getText().toString().trim()),Integer.valueOf(et_cquantity.getText().toString().trim()),
                         Integer.valueOf(et_threshold.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),
                         Integer.valueOf(et_interval.getText().toString().trim()))) {
 
-                    App.hm.addReminder(0,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
+
+                    if(medicine.isReminder()){
+                        //If the medicine already exist a reminder,just update the reminder related info
+                        App.hm.updateReminder(medicine.getReminderId(),Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
+
+                        App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
+                                position, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
+                                et_date_get.getText().toString(), expire_factor, getApplicationContext());
+                    }else {
+                        //If the medicine doesn't own a reminder and user just add a reminder for this medicine,try to add a new reminder for this medicine
+                        App.hm.addReminder(reminderid, Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
+
+                        App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
+                                position, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
+                                et_date_get.getText().toString(), expire_factor, getApplicationContext());
+                    }
 
 
-                    App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                            position, 0, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
-                            Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
-                            et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
 //                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 
