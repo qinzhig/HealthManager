@@ -1,10 +1,10 @@
-package sg.edu.nus.iss.medipal.fragment;
+package sg.edu.nus.iss.medipal.adapter;
 
-import android.app.Activity;
+/**
+ * Created by levis on 3/23/2017.
+ */
+
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
-
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
-import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
 
@@ -81,10 +77,10 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     }
 
     @Override
-    public IceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IceAdapter.IceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_ice_listitem, parent, false);
 
-        return new IceViewHolder(itemView);
+        return new IceAdapter.IceViewHolder(itemView);
     }
 
     @Override
