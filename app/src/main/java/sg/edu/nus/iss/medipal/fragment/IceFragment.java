@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
+import sg.edu.nus.iss.medipal.adapter.IceAdapter;
 import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
 

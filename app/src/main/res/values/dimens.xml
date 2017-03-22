@@ -23,4 +23,6 @@
     <dimen name="desc_size">14sp</dimen>
     <dimen name="title_size">16sp</dimen>
 
+    <dimen name="measurement_listitem_size">150dp</dimen>
+
 </resources>

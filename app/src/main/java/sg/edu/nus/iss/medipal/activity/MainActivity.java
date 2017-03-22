@@ -31,8 +31,7 @@ import sg.edu.nus.iss.medipal.fragment.ReportFragment;
 import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        MeasurementFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawer;

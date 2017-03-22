@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/thumbnail"
+                android:id="@+id/icethumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -28,7 +28,7 @@
                 android:scaleType="fitXY" />
 
             <TextView
-                android:id="@+id/condition"
+                android:id="@+id/icelistitemname_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/title_padding"
@@ -39,26 +39,26 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/thumbnail" />
+                android:layout_toEndOf="@+id/icethumbnail" />
 
             <TextView
-                android:id="@+id/startDate"
+                android:id="@+id/icelistitemcontactnumber_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/condition"
+                android:layout_below="@id/icelistitemname_view"
                 android:paddingBottom="@dimen/title_padding"
-                android:layout_toEndOf="@+id/thumbnail"
+                android:layout_toEndOf="@+id/icethumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
                 android:textSize="@dimen/datetime_size" />
 
             <TextView
-                android:id="@+id/conditionType"
+                android:id="@+id/icelistitemcontacttype_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/startDate"
+                android:layout_below="@id/icelistitemcontactnumber_view"
                 android:paddingBottom="@dimen/title_padding"
-                android:layout_toEndOf="@+id/thumbnail"
+                android:layout_toEndOf="@+id/icethumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
                 android:maxLines="1"
@@ -66,7 +66,7 @@
                 android:textSize="@dimen/desc_size" />
 
             <ImageView
-                android:id="@+id/edit"
+                android:id="@+id/iceedit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -75,10 +75,11 @@
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
                 android:layout_marginEnd="5dp"
-                android:layout_below="@+id/conditionType"
-                android:layout_toStartOf="@+id/delete" />
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/icedelete" />
+
             <ImageView
-                android:id="@+id/delete"
+                android:id="@+id/icedelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -88,7 +89,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/conditionType" />
+                android:layout_below="@+id/icelistitemcontacttype_view" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

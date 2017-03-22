@@ -29,11 +29,11 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         public IceViewHolder(View view) {
             super(view);
 
-            _name = (TextView) view.findViewById(R.id.condition);
-            _contactNo = (TextView) view.findViewById(R.id.startDate);
-            _contactType = (TextView) view.findViewById(R.id.conditionType);
-            _edit = (ImageView) view.findViewById(R.id.edit);
-            _delete = (ImageView) view.findViewById(R.id.delete);
+            _name = (TextView) view.findViewById(R.id.icelistitemname_view);
+            _contactNo = (TextView) view.findViewById(R.id.icelistitemcontactnumber_view);
+            _contactType = (TextView) view.findViewById(R.id.icelistitemcontacttype_view);
+            _edit = (ImageView) view.findViewById(R.id.iceedit);
+            _delete = (ImageView) view.findViewById(R.id.icedelete);
 
             /*
             edit.setOnClickListener(new View.OnClickListener() {
