@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
 import sg.edu.nus.iss.medipal.activity.AddEditPersonalBioActivity;
 import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.manager.PersonalBioManager;
@@ -53,7 +53,8 @@ public class PersonalBioFragment extends Fragment{
             name.setText(personalBio.getName());
             name.setTag(personalBio.getId());
             dob.setText(MediPalUtility.
-                    covertDateToString(personalBio.getDob()));
+                    convertDateToString(personalBio.getDob(),
+                            "dd MMM yyyy"));
             idNo.setText(personalBio.getIdNo());
             address.setText(personalBio.getAddress());
             postalCode.setText(String.valueOf(personalBio.getPostalCode()));

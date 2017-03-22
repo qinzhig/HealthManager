@@ -28,7 +28,8 @@ public class PersonalBioDAO extends DataBaseUtility {
         long retCode = 0;
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseManager.PERSONALBIO_NAME, personalBio.getName());
-        contentValues.put(DataBaseManager.PERSONALBIO_DOB, MediPalUtility.covertDateToString(personalBio.getDob()));
+        contentValues.put(DataBaseManager.PERSONALBIO_DOB, MediPalUtility.convertDateToString(personalBio.getDob(),
+                "dd MMM yyyy"));
         contentValues.put(DataBaseManager.PERSONALBIO_IDNO, personalBio.getIdNo());
         contentValues.put(DataBaseManager.PERSONALBIO_ADDRESS, personalBio.getAddress());
         contentValues.put(DataBaseManager.PERSONALBIO_POSTALCODE, personalBio.getPostalCode());
@@ -50,7 +51,8 @@ public class PersonalBioDAO extends DataBaseUtility {
         long retCode = 0;
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseManager.PERSONALBIO_NAME, personalBio.getName());
-        contentValues.put(DataBaseManager.PERSONALBIO_DOB, MediPalUtility.covertDateToString(personalBio.getDob()));
+        contentValues.put(DataBaseManager.PERSONALBIO_DOB, MediPalUtility.convertDateToString(personalBio.getDob(),
+                "dd MMM yyyy"));
         contentValues.put(DataBaseManager.PERSONALBIO_IDNO, personalBio.getIdNo());
         contentValues.put(DataBaseManager.PERSONALBIO_ADDRESS, personalBio.getAddress());
         contentValues.put(DataBaseManager.PERSONALBIO_POSTALCODE, personalBio.getPostalCode());
@@ -86,7 +88,8 @@ public class PersonalBioDAO extends DataBaseUtility {
         while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
-            Date dob = MediPalUtility.covertStringToDate(cursor.getString(2));
+            Date dob = MediPalUtility.convertStringToDate(cursor.getString(2),
+                    "dd MMM yyyy");
             String idNo = cursor.getString(3);
             String address = cursor.getString(4);
             int postalCode = Integer.valueOf(cursor.getString(5));
