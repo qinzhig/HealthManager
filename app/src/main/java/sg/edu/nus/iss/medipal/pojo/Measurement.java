@@ -18,6 +18,15 @@ public class Measurement {
     private Integer _weight;
     private Date _measuredOn;
 
+    public Measurement(Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
+        this._systolic = systolic;
+        this._diastolic = diastolic;
+        this._pulse = pulse;
+        this._temperature = temperature;
+        this._weight = weight;
+        this._measuredOn = mesuredOn;
+    }
+
     public Measurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
         this._id = id;
         this._systolic = systolic;

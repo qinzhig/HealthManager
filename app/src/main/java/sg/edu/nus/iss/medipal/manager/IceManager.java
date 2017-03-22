@@ -32,7 +32,7 @@ public class IceManager {
         return _iceDAO.delete(id);
     }
 
-    public long updateHealthBio(String id, String name, String contactNo, int contactType, String description, Context context) {
+    public long updateIce(String id, String name, String contactNo, int contactType, String description, Context context) {
         _iceDAO = new IceDAO(context);
         Ice ice = new Ice(Integer.valueOf(id), name, contactNo, contactType, description);
         return _iceDAO.update(ice);
