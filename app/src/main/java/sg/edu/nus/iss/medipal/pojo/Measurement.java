@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.medipal.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by levis on 3/16/2017.
