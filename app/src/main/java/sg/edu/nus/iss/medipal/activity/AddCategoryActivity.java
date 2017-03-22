@@ -70,14 +70,46 @@ public class AddCategoryActivity extends AppCompatActivity{
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
 
-                Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
-                toast.show();
+                if(input_validate(et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim())){
+                    App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
 
-                finish();
+                    Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    finish();
+                }else{
+                    Toast toast = Toast.makeText(AddCategoryActivity.this,"Something incorrect with your input,please have a check!",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+
             }
         });
+    }
+
+    public boolean input_validate(String name,String code,String des){
+
+        boolean validate_status =true;
+
+        if(name.isEmpty()){
+            et_name.setError("Please input a Category Name!");
+            validate_status = false;
+        }
+
+        if(code.isEmpty() || code.length() != 3){
+            et_code.setError("Please input a 3  letter as Category Code!");
+            validate_status = false;
+        }
+
+        if(des.isEmpty()){
+            et_des.setError("Please input a Category Description!");
+            validate_status = false;
+        }
+
+
+        return validate_status;
+
     }
 
 }

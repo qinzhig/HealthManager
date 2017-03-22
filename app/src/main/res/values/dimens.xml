@@ -6,8 +6,8 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
-    <dimen name="profile_width">75dp</dimen>
-    <dimen name="profile_height">75dp</dimen>
+    <dimen name="profile_width">100dp</dimen>
+    <dimen name="profile_height">100dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="actionbar_size">16dp</dimen>
@@ -15,9 +15,12 @@
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>
     <dimen name="title_padding">10dp</dimen>
-    <dimen name="datetime_padding">5dp</dimen>
-    <dimen name="datetime_size">12dp</dimen>
-    <dimen name="desc_size">12dp</dimen>
-    <dimen name="title_size">15dp</dimen>
+    <dimen name="datetime_bottom_padding">1dp</dimen>
+    <dimen name="bottom_padding">5dp</dimen>
+    <dimen name="left_padding">5dp</dimen>
+    <dimen name="right_padding">5dp</dimen>
+    <dimen name="datetime_size">12sp</dimen>
+    <dimen name="desc_size">14sp</dimen>
+    <dimen name="title_size">16sp</dimen>
 
 </resources>

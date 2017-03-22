@@ -45,6 +45,9 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         String storedString = remainderPreference.getAppointmentInfo(notificationId);
+        Log.d("Notification",notificationId);
+        Log.d("Notification string",storedString);
+
         if(storedString != null) {
             try {
                 JSONArray jsonArray = new JSONArray(storedString);
@@ -57,7 +60,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
                         .setContentIntent(pendingIntent).build();
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(0, notification);
+                notificationManager.notify(Integer.valueOf(notificationId), notification);
 
             } catch (JSONException e) {
                 e.printStackTrace();

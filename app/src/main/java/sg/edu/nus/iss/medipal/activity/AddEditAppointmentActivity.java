@@ -5,9 +5,13 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +49,9 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
                      appointmentTime,
                      appointmentDesc;
 
+    private TextInputLayout textInputLayoutTitle,textInputLayoutLocation,textInputLayoutDate,textInputLayoutTime,textInputLayoutDesc;
+
+
     private Spinner appointmentRemainderOne;
     private Spinner appointmentRemainderTwo;
 
@@ -56,13 +63,13 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
 
     private Boolean switchOneValue, switchTwoValue;
 
-    // static String[] SPINNERLIST = {"No Remainder",
-   static String[] SPINNERLISTTWO = {"15 Minutes Before",
+    static String[] SPINNERLISTTWO = {"15 Minutes Before",
                                    "30 Minutes Before",
                                    "1 Hour Before",
                                    "4 Hours Before",
                                    "12 Hours Before",
                                    "1 Day Before"};
+
     static String[] SPINNERLISTONE = {"12 Hours Before",
             "1 Day Before",
             "2 Day Before",
@@ -87,6 +94,13 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(null);
 
+        //get reference to view element layouts
+        textInputLayoutTitle = (TextInputLayout) findViewById(R.id.edit_text_title);
+        textInputLayoutLocation = (TextInputLayout) findViewById(R.id.edit_text_location);
+        textInputLayoutDate = (TextInputLayout) findViewById(R.id.edit_text_date);
+        textInputLayoutTime = (TextInputLayout) findViewById(R.id.edit_text_time);
+        textInputLayoutDesc = (TextInputLayout) findViewById(R.id.edit_text_desc);
+
         //get reference to view elements
         appointmentTitle = (EditText)findViewById(R.id.title);
         appointmentLocation = (EditText)findViewById(R.id.location);
@@ -98,6 +112,10 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         appointmentRemainderOne = (Spinner) findViewById(R.id.remainder_1);
         appointmentRemainderTwo = (Spinner) findViewById(R.id.remainder_2);
 
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
+
+        //populate the down down values for two spinners
         populateRemainderSpinner();
 
         //if edit view is to be shown then get data sent from parent through intent and populate view elements
@@ -112,17 +130,21 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             remainderOne = intentExtras.getString("remainderOne");
             remainderTwo = intentExtras.getString("remainderTwo");
 
+            Log.d("rem 1 and 2",remainderOne+remainderTwo);
+
             if(!remainderOne.equalsIgnoreCase("No Pre-Test Remainders set.")) {
                 switchOne.setChecked(true);
+                switchOneValue = true;
                 appointmentRemainderOne.setEnabled(true);
                 int pos = Arrays.asList(SPINNERLISTONE).indexOf(remainderOne);
                 appointmentRemainderOne.setSelection(pos);
             }
             if(!remainderTwo.equalsIgnoreCase("No Appointment Remainders set.")) {
                 switchTwo.setChecked(true);
+                switchTwoValue = true;
                 appointmentRemainderTwo.setEnabled(true);
                 int pos = Arrays.asList(SPINNERLISTTWO).indexOf(remainderTwo);
-                appointmentRemainderOne.setSelection(pos);
+                appointmentRemainderTwo.setSelection(pos);
             }
 
             toolbarTitle = (TextView) findViewById(R.id.tb_app_title);
@@ -133,7 +155,6 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             appointmentDate.setText(date);
             appointmentTime.setText(time);
             appointmentDesc.setText(desc);
-
         }
 
         //listeners for date and time pickers
@@ -153,6 +174,47 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 switchTwoValue = isChecked;
                 appointmentRemainderTwo.setEnabled(isChecked);
+            }
+        });
+    }
+
+    private void clearErrorOnTextInput() {
+
+        appointmentTitle.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutTitle.setError(null);
+            }
+        });
+
+        appointmentLocation.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutLocation.setError(null);
+            }
+        });
+        appointmentDate.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutDate.setError(null);
+            }
+        });
+        appointmentTime.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutTime.setError(null);
+            }
+        });
+
+        appointmentDesc.addTextChangedListener(new CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutDesc.setError(null);
             }
         });
     }
@@ -268,9 +330,9 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             remainderTime[0] = appointmentRemainderOne.getSelectedItem().toString();
 
         if(switchTwoValue)
-            remainderTime[1] = appointmentRemainderOne.getSelectedItem().toString();
+            remainderTime[1] = appointmentRemainderTwo.getSelectedItem().toString();
 
-
+        Log.d("rem-1 and-2",remainderTime[0]+remainderTime[1]);
         //apply input validations
         if(validate(title,location,date,time,description))
         {
@@ -291,50 +353,67 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         boolean valid = true;
 
         if (title.isEmpty()) {
-            appointmentTitle.setError("Please enter a title for appointment");
+
+            textInputLayoutTitle.setError("Please enter a title for appointment");
             valid = false;
         } else {
-            appointmentTitle.setError(null);
+            textInputLayoutTitle.setError(null);
         }
 
         if (location.isEmpty()) {
-            appointmentLocation.setError("Please enter the location for appointment");
+            textInputLayoutLocation.setError("Please enter the location for appointment");
             valid = false;
         } else {
-            appointmentLocation.setError(null);
+            textInputLayoutLocation.setError(null);
         }
 
         if (date.isEmpty()) {
-            appointmentDate.setError("Please select a date");
+            textInputLayoutDate.setError("Please select a date");
             valid = false;
         } else if(!MediPalUtility.isValidDate(date)) {  //to see if date selected is less than current date
-            appointmentDate.setError("Please select a future date");
+            textInputLayoutDate.setError("Please select a future date");
             valid = false;
         }
         else{
-            appointmentDate.setError(null);
+            textInputLayoutDate.setError(null);
         }
 
         if (time.isEmpty()) {
-            appointmentTime.setError("Please select a time");
+            textInputLayoutTime.setError("Please select a time");
             valid = false;
         }
         else if(!MediPalUtility.isValidTime(date,time)){ //to see if time selected is less than current time
-            appointmentTime.setError("Please select a future date");
+            textInputLayoutTime.setError("Please select a future date");
             valid = false;
         }
         else {
-            appointmentTime.setError(null);
+            textInputLayoutTime.setError(null);
         }
 
         if (desc.isEmpty()) {
-            appointmentDesc.setError("Please enter notes about the appointment");
+            textInputLayoutDesc.setError("Please enter notes about the appointment");
             valid = false;
         } else {
-            appointmentDesc.setError(null);
+            textInputLayoutDesc.setError(null);
         }
 
         return valid;
+    }
+
+    //custom class for textwatcher as only afterTextChanged method is required.
+    public class CustomTextWatcher implements TextWatcher{
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
     }
 
 }

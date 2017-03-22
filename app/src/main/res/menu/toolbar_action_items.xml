@@ -17,7 +17,7 @@ xmlns:tools="http://schemas.android.com/tools">
     android:id="@+id/action_done"
     android:orderInCategory="300"
     android:title="Done"
-    android:icon="@drawable/tickmark"
+    android:icon="@drawable/checkmark"
     app:showAsAction="always"
     />
 

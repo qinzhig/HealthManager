@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -52,21 +57,25 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         public TextView description;
         public ImageView edit;
         public ImageView delete;
+        public CardView cardView;
 
-        public AppointmentViewHolder(View view) {
+        private PopupWindow cardPopUp;
+
+        public AppointmentViewHolder(View view, final View popUp) {
             super(view);
             //get reference to the card view elements
+            cardView = (CardView)view.findViewById(R.id.card_view);
             title = (TextView) view.findViewById(R.id.appointmenttitle);
             datetime = (TextView) view.findViewById(R.id.appointmentdatetime);
             location = (TextView) view.findViewById(R.id.appointmentlocation);
             description = (TextView) view.findViewById(R.id.appointmentdescription);
             delete = (ImageView) view.findViewById(R.id.delete);
+            edit = (ImageView) view.findViewById(R.id.edit);
+            remainderOne = (TextView) view.findViewById(R.id.appointmentremainder_one);
+            remainderTwo = (TextView) view.findViewById(R.id.appointmentremainder_two);
 
             //edit features are to made available for active(upcoming) appointments only
             if(fragmentPosition == UPCOMING_APPOINTMENTS) {
-                edit = (ImageView) view.findViewById(R.id.edit);
-                remainderOne = (TextView) view.findViewById(R.id.appointmentremainder_one);
-                remainderTwo = (TextView) view.findViewById(R.id.appointmentremainder_two);
                 //listener for editing appointments
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -89,6 +98,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     }
                 });
             }
+            else
+            {
+                edit.setVisibility(View.GONE);
+                remainderOne.setVisibility(View.GONE);
+                remainderTwo.setVisibility(View.GONE);
+            }
             //listener for deleting the appointments
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,6 +124,29 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                             .show();
                 }
             });
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ((TextView)popUp.findViewById(R.id.appointmenttitle)).setText(title.getText());
+                    ((TextView)popUp.findViewById(R.id.appointmentdatetime)).setText(datetime.getText());
+                    ((TextView)popUp.findViewById(R.id.appointmentlocation)).setText(location.getText());
+                    ((TextView)popUp.findViewById(R.id.appointmentdescription)).setText(description.getText());
+                    ((TextView) popUp.findViewById(R.id.appointmentremainder_one)).setText(remainderOne.getText());
+                    ((TextView) popUp.findViewById(R.id.appointmentremainder_two)).setText(remainderTwo.getText());
+
+                    if(fragmentPosition != UPCOMING_APPOINTMENTS) {
+                        popUp.findViewById(R.id.appointmentremainder_one).setVisibility(View.GONE);
+                        popUp.findViewById(R.id.appointmentremainder_two).setVisibility(View.GONE);
+                        popUp.findViewById(R.id.title4).setVisibility(View.GONE);
+                        popUp.findViewById(R.id.title6).setVisibility(View.GONE);
+                    }
+
+                    cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
+                }
+            });
         }
     }
     //constructor for adapter
@@ -123,17 +161,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     //called once in beginning to load the view
     @Override
     public AppointmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
-        if(fragmentPosition == UPCOMING_APPOINTMENTS) {
-            itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.appointment_card_current, parent, false);
-        }
-        else
-        {
-            itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.appointment_card_past, parent, false);
-        }
-        return new AppointmentViewHolder(itemView);
+        View itemView  = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.appointment_card_list, parent, false);
+        View popUp = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.appointment_card_single, parent, false);
+
+        return new AppointmentViewHolder(itemView,popUp);
     }
 
     //used to populate the view elements with adapter data

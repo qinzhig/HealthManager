@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">MediPal_FT01 - Home</string>
+    <string name="app_name">MediPal-FT01</string>
     <string name="personalBio">Personal Bio</string>
     <string name="healthBio">Health Bio</string>
     <string name="medication">Medications</string>
     <string name="appointments">Appointments</string>
     <string name="notifications">Notifications</string>
+    <string name="reports">Reports</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="openDrawer">open_drawer</string>

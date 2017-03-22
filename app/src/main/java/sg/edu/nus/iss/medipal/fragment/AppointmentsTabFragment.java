@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,12 +103,15 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
 
     @Override
     public void refreshView() {
-        //if no appointments are found then the following message will be shown
-        LinearLayout linearLayout = (LinearLayout) appointmentFragment.findViewById(R.id.appointment_layout);
-        linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.white));
-        TextView txtView = (TextView) appointmentFragment.findViewById(R.id.placeholdertext);
-        txtView.setText("No appointments found");
-        txtView.setVisibility(View.VISIBLE);
-        appointmentsView.setVisibility(View.GONE);
+            //if no appointments are found then the following message will be shown
+            LinearLayout linearLayout = (LinearLayout) appointmentFragment.findViewById(R.id.appointment_layout);
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            TextView txtView = (TextView) appointmentFragment.findViewById(R.id.placeholdertext);
+            txtView.setText("No appointments found");
+            txtView.setVisibility(View.VISIBLE);
+            appointmentsView.setVisibility(View.GONE);
+
     }
+
+
 }

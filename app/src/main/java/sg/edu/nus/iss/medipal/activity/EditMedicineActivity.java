@@ -5,19 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
@@ -26,22 +30,28 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 public class EditMedicineActivity extends AppCompatActivity {
 
-    private EditText et_name,et_des,et_quanity,et_date,et_cquantity,et_threshold;
+    private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_cquantity,et_threshold,et_frequency,et_interval,et_stime;
     private Spinner spinner,spinner_dosage;
     Button button_update;
     ImageButton button_add_category;
+    TextView tv_reminder;
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
 
     //private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
     ArrayAdapter array_adpater;
     String[] m_list;
-
-    String medcine_category;
     Medicine medicine;
-    int position,dosage_position;
+
+    private Switch switch_remind;
+    private boolean remind_status;
+
+    int position=0,dosage_position=0,expire_factor;
+    String medcine_category;
+    Date date_get,date_expire;
+    private int hour,minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +74,73 @@ public class EditMedicineActivity extends AppCompatActivity {
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
         et_quanity = (EditText) findViewById(R.id.et_quantity);
-        et_date = (EditText) findViewById(R.id.et_date);
+        et_date_get = (EditText) findViewById(R.id.et_date_get);
+        et_date_expire = (EditText) findViewById(R.id.et_date_expire);
         et_cquantity = (EditText) findViewById(R.id.et_cquantity);
         et_threshold = (EditText) findViewById(R.id.et_threshold);
+        et_frequency = (EditText) findViewById(R.id.et_frequency);
+        et_interval = (EditText) findViewById(R.id.et_interval);
+        et_stime = (EditText) findViewById(R.id.et_stime);
+        tv_reminder = (TextView) findViewById(R.id.tv_reminder);
+
+        switch_remind = (Switch) findViewById(R.id.switch_remind);
+
+        switch_remind.setChecked(medicine.isReminder());
+
+        if(medicine.isReminder()){
+            remind_status = true;
+
+            et_frequency.setText("2");
+            et_interval.setText("8");
+
+        }else{
+            remind_status = false;
+
+            tv_reminder.setVisibility(View.INVISIBLE);
+            et_frequency.setVisibility(View.INVISIBLE);
+            et_interval.setVisibility(View.INVISIBLE);
+            et_stime.setVisibility(View.INVISIBLE);
+
+            et_frequency.setText("2");
+            et_interval.setText("8");
+        }
 
 
-        Log.v("TAG","----------->EditMedicine Object medicine:  "+medicine.toString());
-        Log.v("TAG","----------------------- EditMedicineActivity catId = " + Integer.toString(medicine.getCateId()));
-        Log.v("TAG","----------------------- EditMedicineActivity DES = " + medicine.getMedicine_des());
-        Log.v("TAG","----------------------- EditMedicineActivity Date = " + medicine.getDateIssued());
-        Log.v("TAG","----------------------- EditMedicineActivityexpireFactor = " + medicine.getExpireFactor());
+        //attach a listener to check for changes in state
+        switch_remind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
 
+                if(isChecked){
+                    switch_remind.setText(" ON ");
+                    remind_status = true;
+
+                    tv_reminder.setVisibility(View.VISIBLE);
+                    et_frequency.setVisibility(View.VISIBLE);
+                    et_interval.setVisibility(View.VISIBLE);
+                    et_stime.setVisibility(View.VISIBLE);
+
+                    //----------------Call Reminder to update the data here----------
+                    et_frequency.setText("2");
+                    et_interval.setText("8");
+
+                }else{
+                    switch_remind.setText(" OFF ");
+                    remind_status = false;
+
+                    tv_reminder.setVisibility(View.INVISIBLE);
+                    et_frequency.setVisibility(View.INVISIBLE);
+                    et_interval.setVisibility(View.INVISIBLE);
+                    et_stime.setVisibility(View.INVISIBLE);
+
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
+                }
+
+            }
+        });
 
 
         //Set the default data for every elements
@@ -85,9 +150,10 @@ public class EditMedicineActivity extends AppCompatActivity {
         et_cquantity.setText(Integer.toString(medicine.getConsumequantity()));
         et_threshold.setText(Integer.toString(medicine.getThreshold()));
 
-        et_date.setText(medicine.getDateIssued());
-        et_date.setText(dateFormatter.format(selectedDate.getTime()));
-        et_date.setOnClickListener(new View.OnClickListener() {
+
+        et_date_get.setText(medicine.getDateIssued());
+      //  et_date_get.setText(dateFormatter.format(selectedDate.getTime()));
+        et_date_get.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 DatePickerDialog.OnDateSetListener onDateSetListener =
                         new DatePickerDialog.OnDateSetListener() {
@@ -96,7 +162,8 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(year, monthOfYear, dayOfMonth);
                                 selectedDate = calendar;
-                                et_date.setText(dateFormatter.format(calendar.getTime()));
+                                et_date_get.setText(dateFormatter.format(calendar.getTime()));
+                                date_get=calendar.getTime();
                             }
                         };
                 DatePickerDialog datePickerDialog =
@@ -106,6 +173,70 @@ public class EditMedicineActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+
+        try {
+            date_get = dateFormatter.parse(medicine.getDateIssued());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar_tmp = Calendar.getInstance();
+
+        if(date_get != null){
+
+            calendar_tmp.setTime(date_get);
+            calendar_tmp.add(Calendar.MONTH,medicine.getExpireFactor());
+        }
+
+        //et_date_expire.setText(medicine.getExpireFactor());
+        et_date_expire.setText(dateFormatter.format(calendar_tmp.getTime()));
+        et_date_expire.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener onDateSetListener =
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(year, monthOfYear, dayOfMonth);
+                                selectedDate = calendar;
+                                et_date_expire.setText(dateFormatter.format(calendar.getTime()));
+                                date_expire=calendar.getTime();
+                            }
+                        };
+                DatePickerDialog datePickerDialog =
+                        new DatePickerDialog(EditMedicineActivity.this, onDateSetListener,
+                                currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH),
+                                currentDate.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
+
+
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        if(date_expire == null){
+            c1.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+        }else{
+            c1.setTime(date_expire);
+        }
+
+        if(date_get == null){
+            c2.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+        }else{
+            c2.setTime(date_get);
+        }
+
+        expire_factor = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
+
+        if(expire_factor < 0){
+            expire_factor = 0;
+        }else if(expire_factor > 23){
+            expire_factor = 24;
+        }else{
+            expire_factor = expire_factor + 1;
+        }
 
         m_list = App.hm.getCategoryNameList(getApplicationContext());
 
@@ -123,7 +254,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
                 position=arg2;
 
-                Toast toast = Toast.makeText(EditMedicineActivity.this,"Category Selected :"+medcine_category,Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(EditMedicineActivity.this,"Category Selected Item"+position,Toast.LENGTH_SHORT);
                 toast.show();
                 //position= Arrays.asList(m_category).indexOf(medcine_category);
             }
@@ -182,20 +313,85 @@ public class EditMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                App.hm.updateMedicine(medicine.getId(),et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                        position,0,false,Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
-                        Integer.valueOf(et_cquantity.getText().toString().trim()),Integer.valueOf(et_threshold.getText().toString().trim()),et_date.getText().toString(),10,getApplicationContext());
+                if(input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+                        Integer.valueOf(et_quanity.getText().toString().trim()),Integer.valueOf(et_cquantity.getText().toString().trim()),
+                        Integer.valueOf(et_threshold.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),
+                        Integer.valueOf(et_interval.getText().toString().trim()))) {
+
+                    App.hm.addReminder(0,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
+
+
+                    App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
+                            position, 0, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                            Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
+                            et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
 //                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 
-                Toast toast = Toast.makeText(EditMedicineActivity.this,"Update Medicine Successfully!",Toast.LENGTH_SHORT);
-                toast.show();
+                    Toast toast = Toast.makeText(EditMedicineActivity.this, "Update Medicine Successfully!", Toast.LENGTH_SHORT);
+                    toast.show();
 
 
-                finish();
+                    finish();
+                }else{
+                    Toast toast_error = Toast.makeText(EditMedicineActivity.this,"Some input incorrect,please check!",Toast.LENGTH_SHORT);
+                    toast_error.show();
+                }
 
             }
         });
+
+    }
+
+    public boolean input_validate(String name,String des,int quantity,int cquantity,int threshold,int frequency,int interval){
+
+        boolean validate_status =true;
+
+        if(name.isEmpty()){
+            et_name.setError("Please input a Medicine Name!");
+            validate_status = false;
+        }
+
+        if(des.isEmpty()){
+            et_des.setError("Please input a description for this medicine!");
+            validate_status = false;
+        }
+
+        if(quantity < 0){
+            et_quanity.setError("Please input a correct quantitu for this Medicine! ");
+            validate_status = false;
+        }
+
+        if(threshold >= quantity )
+        {
+            et_threshold.setError("Threshold medicine number overlap the Medicine Quantity!");
+            validate_status = false;
+        }
+        if(cquantity > quantity ){
+            et_cquantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
+            validate_status = false;
+        }
+
+        if(frequency < 0 || frequency > 24 )
+        {
+            et_frequency.setError("Too Much Consumpotion Frequency set here!");
+            validate_status = false;
+        }
+
+        if(interval < 0 || interval >24 ){
+
+            et_interval.setError("The interval hour exceed than 24 hours!");
+            validate_status = false;
+        }
+
+        if( frequency*interval >24 )
+        {
+            et_frequency.setError("Consumpition Setting exceed in one day!");
+            et_interval.setError("Consumpition Setting exceed in one day!");
+            validate_status = false;
+        }
+
+        return validate_status;
 
     }
 }

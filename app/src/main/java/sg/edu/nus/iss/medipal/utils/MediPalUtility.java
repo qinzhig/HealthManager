@@ -38,34 +38,51 @@ public class MediPalUtility {
         return convertedDate;
     }
 
-    public static Long convertDateTimeToNumber(String DateTime)
-    {
-        String dateTimeSplit[] =DateTime.split(" ", 2);
+    public static boolean isNotFutureDate(String date) {
+
+        boolean isValid = false;
+
+        try {
+            String dateSplit[] = date.split(" ");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMMdd");
+            Date varDate = dateFormat.parse(dateSplit[2] + dateSplit[1] + dateSplit[0]);
+            dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String convertedDate = dateFormat.format(varDate);
+            String currentDate = convertDateToString(Calendar.getInstance().getTime(), "yyyyMMdd");
+            isValid = (Long.valueOf(currentDate) >= Long.valueOf(convertedDate));
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+        return isValid;
+    }
+
+    public static Long convertDateTimeToNumber(String DateTime) {
+        String dateTimeSplit[] = DateTime.split(" ", 2);
 
         String dateSplit[] = dateTimeSplit[0].split("-");
         String timeSplit[] = dateTimeSplit[1].split(" ");
         String timeSubSplit[] = timeSplit[0].split(":");
 
         Integer HourAdd = 0;
-        if(timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
-            timeSubSplit[0]="00";
+        if (timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
+            timeSubSplit[0] = "00";
+        } else if (timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))) {
+            HourAdd = 12;
         }
-        else if(timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))){
-            HourAdd=12;
-        }
-        Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
+        Integer hour = (Integer.valueOf(timeSubSplit[0]) + HourAdd) % 24;
         String hourString;
-        if(hour<10)
-            hourString="0"+hour.toString();
+        if (hour < 10)
+            hourString = "0" + hour.toString();
         else
-            hourString=hour.toString();
+            hourString = hour.toString();
 
-        String convertedDateTime = dateSplit[2]+dateSplit[1]+dateSplit[0]+hourString+timeSubSplit[1];
+        String convertedDateTime = dateSplit[2] + dateSplit[1] + dateSplit[0] + hourString + timeSubSplit[1];
 
         return Long.valueOf(convertedDateTime);
     }
 
-    public static String convertDateToString(Date date,String format) {
+    public static String convertDateToString(Date date, String format) {
         SimpleDateFormat dateFormat = null;
         try {
             dateFormat = new SimpleDateFormat(
@@ -82,7 +99,7 @@ public class MediPalUtility {
         String convertedDate = dateSplit[2] + dateSplit[1] + dateSplit[0];
 
         String currentDate = convertDateToString(Calendar.getInstance().getTime(), "yyyyMdd");
-        Log.d("dates",currentDate+" "+convertedDate);
+        Log.d("dates", currentDate + " " + convertedDate);
         retVal = (Long.valueOf(currentDate) <= Long.valueOf(convertedDate));
 
         return retVal;
@@ -99,48 +116,47 @@ public class MediPalUtility {
 
         String timeSplit[] = time.split(" ");
         String timeSubSplit[] = timeSplit[0].split(":");
+
+        if(Integer.valueOf(timeSubSplit[0])<10)
+            timeSubSplit[0]="0"+timeSubSplit[0];
         String convertedTime = timeSubSplit[0]+timeSubSplit[1];
 
-        if(currentDate.equals(convertedDate))
-        {
+        if (currentDate.equals(convertedDate)) {
             Integer HourAdd = 0;
-            if(timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
-                timeSubSplit[0]="00";
+            if (timeSplit[1].equalsIgnoreCase("AM") && timeSubSplit[0].equalsIgnoreCase("12")) {
+                timeSubSplit[0] = "00";
+            } else if (timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))) {
+                HourAdd = 12;
             }
-            else if(timeSplit[1].equalsIgnoreCase("PM") && !(timeSubSplit[0].equalsIgnoreCase("12"))){
-                HourAdd=12;
-            }
-            Integer hour = (Integer.valueOf(timeSubSplit[0]) +  HourAdd) % 24 ;
+            Integer hour = (Integer.valueOf(timeSubSplit[0]) + HourAdd) % 24;
 
             String hourString;
-            if(hour<10)
-                hourString="0"+hour.toString();
+            if (hour < 10)
+                hourString = "0" + hour.toString();
             else
-                hourString=hour.toString();
+                hourString = hour.toString();
 
-            convertedTime = hourString+timeSubSplit[1];
-            Log.d("CurrentTime",currentTime);
-            Log.d("CoonvertTime",convertedTime);
+            convertedTime = hourString + timeSubSplit[1];
+            Log.d("CurrentTime", currentTime);
+            Log.d("CoonvertTime", convertedTime);
             retVal = (Long.valueOf(currentTime) < Long.valueOf(convertedTime));
-        }
-        else if(Long.valueOf(currentDate) < Long.valueOf(convertedDate)){
-            convertedDate = convertedDate+convertedTime;
-            String currentDateTime=currentDate+currentTime;
+        } else if (Long.valueOf(currentDate) < Long.valueOf(convertedDate)) {
+            convertedDate = convertedDate + convertedTime;
+            String currentDateTime = currentDate + currentTime;
             retVal = (Long.valueOf(currentDateTime) <= Long.valueOf(convertedDate));
-        }
-        else
-            retVal=false;
+        } else
+            retVal = false;
 
         return retVal;
     }
 
     //method to get the date and time on which a remainder needs to be set
-    public static Calendar determineReminderTime(String remainderInterval, String appointmentDate)  {
+    public static Calendar determineReminderTime(String remainderInterval, String appointmentDate) {
         //Log.d("date:",appointment);
         Integer interval = decodeRemainderInterval(remainderInterval);
         //Log.d("interval:",interval.toString());
         Calendar c = null;
-        if(interval != 0) {
+        if (interval != 0) {
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
             try {
                 c = Calendar.getInstance();
@@ -159,7 +175,7 @@ public class MediPalUtility {
     //method to get the interval in minutes to be used to set a reminder
     public static Integer decodeRemainderInterval(String remainderInterval) {
         Integer retVal = 0;
-        switch (remainderInterval){
+        switch (remainderInterval) {
             case "No Remainder":
                 retVal = 0;
                 break;
