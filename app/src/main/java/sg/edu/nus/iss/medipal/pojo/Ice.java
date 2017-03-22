@@ -1,10 +1,10 @@
 package sg.edu.nus.iss.medipal.pojo;
 
+import java.util.Date;
+
 /**
  * Created by levis on 3/16/2017.
  * Description : Class to hold ICE(In case of Emergency Contact) table data
- * Modified by :
- * Reason for modification :
  */
 
 public class Ice {
@@ -13,6 +13,13 @@ public class Ice {
     private String _contactNo;
     private Integer _contactType;
     private String _description;
+
+    public Ice(String name, String contactNo, Integer contactType, String description) {
+        this._name = name;
+        this._contactNo = contactNo;
+        this._contactType = contactType;
+        this._description = description;
+    }
 
     public Ice(Integer id, String name, String contactNo, Integer contactType, String description) {
         this._id = id;
@@ -51,4 +58,3 @@ public class Ice {
     public String getDescription() {return _description;}
     public void setDesciption(String description) {this._description = description;}
 }
-

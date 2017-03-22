@@ -1,110 +1,77 @@
 package sg.edu.nus.iss.medipal.fragment;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent.DummyItem;
+import sg.edu.nus.iss.medipal.activity.IceActivity;
+import sg.edu.nus.iss.medipal.manager.IceManager;
+import sg.edu.nus.iss.medipal.pojo.Ice;
 
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * Created by levis on 3/16/2017.
  */
+
 public class IceFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public IceFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static IceFragment newInstance(int columnCount) {
-        IceFragment fragment = new IceFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RecyclerView _iceView;
+    private List<Ice> _iceList;
+    private IceAdapter _iceAdapter;
+    private IceManager _iceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ice_list, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        View iceFragment = inflater.inflate(R.layout.fragment_ice_list, container, false);
+
+        FloatingActionButton aFab = (FloatingActionButton)iceFragment.findViewById(R.id.ice_fab);
+        aFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iceIntent = new Intent(getContext(), IceActivity.class);
+                iceIntent.putExtra("isEdit", false);
+                startActivityForResult(iceIntent, 1);
             }
-            recyclerView.setAdapter(new IceAdapter(DummyContent.ITEMS, mListener));
-        }
-        return view;
-    }
+        });
 
+        _iceManager = new IceManager();
+        _iceList = _iceManager.getIce(getContext());
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if(_iceList.isEmpty()) {
+            iceFragment = inflater.inflate(R.layout.message_placeholder,container,false);
+            TextView txtView = (TextView) iceFragment.findViewById(R.id.placeholdertext);
+            txtView.setText("No Contact(ICE) found");
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            _iceView = (RecyclerView) iceFragment.findViewById(R.id.icerecycler_view);
+            populateRecyclerView();
         }
+
+        return iceFragment;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    private void populateRecyclerView() {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        _iceView.setLayoutManager(mLayoutManager);
+
+        _iceAdapter = new IceAdapter(getContext(), _iceList);
+        _iceView.setAdapter(_iceAdapter);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onIceSelected(DummyItem item);
-    }
 }
