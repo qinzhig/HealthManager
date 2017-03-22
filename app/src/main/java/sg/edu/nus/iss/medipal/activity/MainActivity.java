@@ -20,6 +20,7 @@ import android.view.View;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
+import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
+        Log.d("Activity","started");
         //setup toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,6 +52,37 @@ public class MainActivity extends AppCompatActivity
         //setup listener for navigation drawer menu item clicks
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Bundle intentExtras = getIntent().getExtras();
+        if(intentExtras != null) {
+            Log.d("Activity","Bundle");
+            String notificationContent = intentExtras.getString("notification");
+            String notificationId = intentExtras.getString("Id");
+            Log.d("intent args",notificationContent +" " +notificationId);
+            if (notificationContent != null && notificationId != null) {
+                showFragment("Appointment", notificationContent, notificationId);
+                getIntent().removeExtra("notification");
+                getIntent().removeExtra("Id");
+            }
+        }
+    }
+
+    private void showFragment(String fragmentType, String notificationContent, String notificationId) {
+
+        if(fragmentType.equalsIgnoreCase("Appointment"))
+        {
+            Log.d("Activity","fragment load");
+            //use the appointment view to show in the main page
+            Fragment fragment = new AppointmentsTabFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("notification",notificationContent);
+            bundle.putString("Id",notificationId);
+            fragment.setArguments(bundle);
+            //move this to outside when all other modules are implemented using fragments
+            //populate the selected view(fragment) in the main page using fragment manager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
 
     }
 
@@ -205,7 +237,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.helpswitch)
+       // if(id == R.id.helpswitch)
+        if(id ==R.id.settings_togglehelp)
         {
             item.setChecked(!item.isChecked());
             return true;

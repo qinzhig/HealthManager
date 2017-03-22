@@ -86,8 +86,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         appointmentEdit.putExtra("isEdit",true);
                         appointmentEdit.putExtra("Id", title.getTag().toString());
                         appointmentEdit.putExtra("title", title.getText().toString());
-                        String dttime = datetime.getText().toString();
-                        String dt[] = dttime.split(" ", 2);
+                        String dtTime = datetime.getText().toString();
+                        String dt[] = dtTime.split(" ", 2);
                         appointmentEdit.putExtra("date", dt[0]);
                         appointmentEdit.putExtra("time", dt[1]);
                         appointmentEdit.putExtra("location", location.getText().toString());

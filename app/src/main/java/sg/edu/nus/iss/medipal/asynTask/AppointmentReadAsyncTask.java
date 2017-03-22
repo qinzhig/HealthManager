@@ -34,7 +34,13 @@ public class AppointmentReadAsyncTask extends AsyncTask<Object, Void, ArrayList<
 
     @Override
     protected ArrayList<Appointment> doInBackground(Object... args) {
-        appointmentList = appointmentDAO.getAppointments((Boolean) args[0]);
+        if(args.length == 1) {
+            appointmentList = appointmentDAO.getAppointments((Boolean) args[0]);
+        }
+        else
+        {
+            appointmentList = appointmentDAO.getAppointment((String) args[0]);
+        }
         return appointmentList;
     }
 
