@@ -183,7 +183,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     }
 
     //constructor
-    private DataBaseManager(Context context) {
+    public DataBaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

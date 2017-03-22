@@ -14,6 +14,7 @@ import sg.edu.nus.iss.medipal.asynTask.AddReminder;
 import sg.edu.nus.iss.medipal.asynTask.DeleteMedicine;
 import sg.edu.nus.iss.medipal.asynTask.ListCategory;
 import sg.edu.nus.iss.medipal.asynTask.ListMedicine;
+import sg.edu.nus.iss.medipal.asynTask.ListReminder;
 import sg.edu.nus.iss.medipal.asynTask.UpdateCategory;
 import sg.edu.nus.iss.medipal.asynTask.UpdateMedicine;
 import sg.edu.nus.iss.medipal.asynTask.UpdateReminder;
@@ -39,6 +40,7 @@ public class HealthManager {
 
     private AddReminder     taskAddReminder;
     private UpdateReminder  taskUpdateReminder;
+    private ListReminder    taskListReminder;
 
 
     public HealthManager(){
@@ -211,9 +213,10 @@ public class HealthManager {
 
 
     //--------------------------------------Reminder-----------------------------------
-    public Reminder getReminder(int id){
+    public Reminder getReminder(int id,Context context){
 
-        Iterator<Reminder> i = reminders.iterator();
+
+        Iterator<Reminder> i = getReminders(context).iterator();
 
         while(i.hasNext()){
             Reminder c = i.next();
@@ -224,6 +227,26 @@ public class HealthManager {
         }
 
         return null;
+    }
+
+    public ArrayList<Reminder> getReminders(Context context)
+    {
+        taskListReminder = new ListReminder(context);
+        taskListReminder.execute((Void)null);
+
+        try{
+            reminders = taskListReminder.get();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }catch (ExecutionException e){
+            e.printStackTrace();
+        }
+
+        if(reminders == null){
+            reminders = new ArrayList<Reminder>();
+        }
+
+        return reminders;
     }
 
     public Reminder updateReminder(int id, int fre, String stime, int interval,Context context){

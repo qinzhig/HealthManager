@@ -276,9 +276,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-       // if(id == R.id.helpswitch)
-        if(id ==R.id.settings_togglehelp)
+        
+        if(id == R.id.settings_togglehelp)
         {
             item.setChecked(!item.isChecked());
             return true;

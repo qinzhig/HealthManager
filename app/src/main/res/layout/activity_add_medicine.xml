@@ -194,7 +194,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tv_reminder_sw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Turn On/Off Reminder" />

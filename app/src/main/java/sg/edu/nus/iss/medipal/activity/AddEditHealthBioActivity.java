@@ -121,7 +121,7 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
 
             conditionStr = condition.getText().toString();
             startDt = MediPalUtility
-                    .covertStringToDate(startDate.getText().toString());
+                    .convertStringToDate(startDate.getText().toString(),"dd MMM yyyy");
             conditionTypeStr = conditionType.getSelectedItem().toString();
 
             if (validateHealthBio(conditionStr, startDate.getText().toString())) {

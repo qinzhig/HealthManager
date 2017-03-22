@@ -2,7 +2,6 @@ package sg.edu.nus.iss.medipal.utils;
 
 import android.util.Log;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,25 +14,27 @@ import java.util.Date;
 
 public class MediPalUtility {
 
-    public static String covertDateToString(Date date) {
+    public static String convertDateToString(Date date, String format) {
         SimpleDateFormat dateFormat = null;
         try {
             dateFormat = new SimpleDateFormat(
-                    "dd MMM yyyy");
+                    format);
         } catch (Exception exp) {
             exp.printStackTrace();
         }
         return dateFormat.format(date);
     }
 
-    public static Date covertStringToDate(String date) {
-        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+    public static Date convertStringToDate(String date, String format) {
+        SimpleDateFormat dateFormat = null;
         Date convertedDate = null;
+
         try {
-            convertedDate = df.parse(date);
-            String dateStr = df.format(convertedDate);
-        } catch (ParseException parseExp) {
-            parseExp.printStackTrace();
+            dateFormat = new SimpleDateFormat(
+                    format);
+            convertedDate = dateFormat.parse(date);
+        } catch (Exception exp) {
+            exp.printStackTrace();
         }
         return convertedDate;
     }
@@ -82,16 +83,6 @@ public class MediPalUtility {
         return Long.valueOf(convertedDateTime);
     }
 
-    public static String convertDateToString(Date date, String format) {
-        SimpleDateFormat dateFormat = null;
-        try {
-            dateFormat = new SimpleDateFormat(
-                    format);
-        } catch (Exception exp) {
-            exp.printStackTrace();
-        }
-        return dateFormat.format(date);
-    }
 
     public static Boolean isValidDate(String date) {
         Boolean retVal;
@@ -117,9 +108,9 @@ public class MediPalUtility {
         String timeSplit[] = time.split(" ");
         String timeSubSplit[] = timeSplit[0].split(":");
 
-        if(Integer.valueOf(timeSubSplit[0])<10)
-            timeSubSplit[0]="0"+timeSubSplit[0];
-        String convertedTime = timeSubSplit[0]+timeSubSplit[1];
+        if (Integer.valueOf(timeSubSplit[0]) < 10)
+            timeSubSplit[0] = "0" + timeSubSplit[0];
+        String convertedTime = timeSubSplit[0] + timeSubSplit[1];
 
         if (currentDate.equals(convertedDate)) {
             Integer HourAdd = 0;

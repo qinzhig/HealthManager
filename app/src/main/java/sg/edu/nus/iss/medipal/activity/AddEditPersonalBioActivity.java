@@ -69,7 +69,7 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
             name.setText(personalBio.getName());
             name.setTag(personalBio.getId());
             dob.setText(MediPalUtility.
-                    covertDateToString(personalBio.getDob()));
+                    convertDateToString(personalBio.getDob(),"dd MMM yyyy"));
             idNo.setText(personalBio.getIdNo());
             address.setText(personalBio.getAddress());
             postalCode.setText(String.valueOf(personalBio.getPostalCode()));
@@ -128,7 +128,7 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
 
             nameStr = name.getText().toString();
             dobDt = MediPalUtility
-                    .covertStringToDate(dob.getText().toString());
+                    .convertStringToDate(dob.getText().toString(),"dd MMM yyyy");
             idNoStr = idNo.getText().toString();
             addressStr = address.getText().toString();
             postalCodeStr = postalCode.getText().toString();
