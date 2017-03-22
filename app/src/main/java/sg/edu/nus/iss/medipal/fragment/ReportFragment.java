@@ -42,7 +42,6 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FloatingActionButton aFab;
         reportFragment = inflater.inflate(R.layout.fragment_report_view, container, false);
-        ((MainActivity) getActivity()).setActionBarTitle("MediPal_FT01 - Reports");
 
         // Reference to TableLayout
         tableLayout = (TableLayout) reportFragment.findViewById(R.id.reportable);
@@ -88,7 +87,7 @@ public class ReportFragment extends Fragment {
         TableRow rowHeader =
                 ReportManager.addHeaders(healthBioArr, getContext());
 
-        tableLayout.addView(rowHeader);
+        tableLayout.addView(rowHeader)  ;
 
         tableLayout =
                 ReportManager.addContent(getContext(), tableLayout);

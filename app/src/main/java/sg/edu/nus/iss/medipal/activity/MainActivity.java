@@ -22,6 +22,8 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
+import sg.edu.nus.iss.medipal.fragment.HomeFragment;
+import sg.edu.nus.iss.medipal.fragment.HomeTabFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
@@ -36,9 +38,11 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private boolean refreshHealthBioFragment;
     private boolean refreshAppointmentFragment;
+    private Boolean inHomeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        inHomeFragment=false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         Log.d("Activity","started");
@@ -65,10 +69,25 @@ public class MainActivity extends AppCompatActivity
                 getIntent().removeExtra("Id");
             }
         }
+        else
+        {
+            loadHomeFragment();
+        }
+    }
+
+    private void loadHomeFragment() {
+        Log.d("Activity","fragment home load");
+        //use the appointment view to show in the main page
+        Fragment fragment = new HomeFragment();
+        inHomeFragment=true;
+        //move this to outside when all other modules are implemented using fragments
+        //populate the selected view(fragment) in the main page using fragment manager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
     }
 
     private void showFragment(String fragmentType, String notificationContent, String notificationId) {
-
+        inHomeFragment=false;
         if(fragmentType.equalsIgnoreCase("Appointment"))
         {
             Log.d("Activity","fragment load");
@@ -113,17 +132,34 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String Title;
         Fragment fragment;
+        inHomeFragment=false;
+
+        if(id == R.id.nav_home){
+            resetTitle("Home");
+            fragment = new HomeFragment();
+            inHomeFragment=true;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
         if (id == R.id.nav_personalBio) {
-            /*Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
-            startActivity(personalBioIntent);*/
+            resetTitle("Personal Bio");
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
         } else if (id == R.id.nav_healthBio) {
+            resetTitle("Health Bio");
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
-        } else if (id == R.id.nav_appointments) {
+        } else if (id == R.id.nav_ice) {
+            resetTitle("Contacts(ICE)");
+            fragment = new IceFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }else if(id == R.id.nav_medicine) {
+            Intent intent_medicine= new Intent(getApplicationContext(), MedicineActivity.class);
+            startActivity(intent_medicine);
+        }else if (id == R.id.nav_appointments) {
             resetTitle("Appointments");
             //use the appointment view to show in the main page
             fragment = new AppointmentFragment();
@@ -132,19 +168,14 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
 
-        } else if(id == R.id.nav_medicine) {
-            Intent intent_medicine= new Intent(getApplicationContext(), MedicineActivity.class);
-            startActivity(intent_medicine);
-        } else if (id == R.id.nav_measurement) {
+        }else if (id == R.id.nav_measurement) {
+            resetTitle("Measurements");
             fragment = new MeasurementFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-        } else if (id == R.id.nav_ice) {
-            fragment = new IceFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
         else if(id == R.id.nav_reports){
+            resetTitle("Reports");
             fragment = new ReportFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -163,18 +194,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-
-        new AlertDialog.Builder(this)
+        if(inHomeFragment==true) {
+            new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                })
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                }
+            })
                 .setNegativeButton("No", null)
                 .show();
+        }
+        else{
+            loadHomeFragment();
+        }
     }
+
     @Override protected void onStop() {
         super.onStop();
     }
@@ -195,6 +231,10 @@ public class MainActivity extends AppCompatActivity
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
+        else{
+          //  if(inHomeFragment)
+           // loadHomeFragment();
         }
     }
 

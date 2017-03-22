@@ -45,7 +45,6 @@ public class HealthBioFragment extends Fragment {
         healthBioManager =
                 new HealthBioManager();
         healthBioList = healthBioManager.getHealthBio(getContext());
-        ((MainActivity) getActivity()).setActionBarTitle("MediPal_FT01 - Health Bio");
 
         if(healthBioList.isEmpty())
         {

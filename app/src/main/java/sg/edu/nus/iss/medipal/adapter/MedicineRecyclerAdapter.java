@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,25 +26,24 @@ import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
+import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
- * Created by : Navi on 14-03-2017.
- * Description : This is the recycler adapter for showing appointments
+ * Created by : Navi on 22-03-2017.
+ * Description : This is the recycler adapter for showing medicines
  * Modified by :
  * Reason for modification :
  */
-
-public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
+/*
+public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecyclerAdapter.MedicineViewHolder> {
     private PreferenceManager appointmentPreference;
     private Context mContext;
-    private List<Appointment> appointmentList;
+    private List<Medicine> medicineList;
     private Integer fragmentPosition;
-    private Boolean fromHomeFragment;
 
     //callback listener to communicate with the parent activity
     private AdapterCallbackInterface mCallback;
 
-    private static final int UPCOMING_APPOINTMENTS = 0;
 
     //custom view holder to show the appointment details as card
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
@@ -75,7 +72,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             remainderOne = (TextView) view.findViewById(R.id.appointmentremainder_one);
             remainderTwo = (TextView) view.findViewById(R.id.appointmentremainder_two);
 
-            if(fromHomeFragment != null && fromHomeFragment) {
+            if(fromHomeFragment) {
                 delete.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
             }
@@ -156,7 +153,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
     }
     //constructor for adapter
-    public AppointmentAdapter(Context mContext, List<Appointment> appointmentList, Integer fragmentPosition, AdapterCallbackInterface mCallback) {
+    public MedicineRecyclerAdapter(Context mContext, List<Appointment> appointmentList, Integer fragmentPosition, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
         this.appointmentList = appointmentList;
         appointmentPreference = new PreferenceManager(mContext);
@@ -260,4 +257,4 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             mCallback.refreshView();
         }
     }
-}
+}*/
