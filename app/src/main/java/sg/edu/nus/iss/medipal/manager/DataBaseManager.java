@@ -18,6 +18,20 @@ public class DataBaseManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "medipalFT01DB";
     private static final int DATABASE_VERSION = 1;
 
+    //variables used for to form create consumption table query
+    public static final String CONSUMPTION_TABLE = "consumption";
+    public static final String CONSUMPTION_ID = "id";
+    public static final String CONSUMPTION_MEIDICINE_ID = "medicine_id";
+    public static final String CONSUMPTION_QUANTITY = "quantity";
+    public static final String CONSUMEDON = "consumedOn";
+
+    //consumption table create query
+    public static final String CREATE_CONSUMPTION_TABLE = "CREATE TABLE "
+            + CONSUMPTION_TABLE + "(" + CONSUMPTION_ID + " INTEGER PRIMARY KEY, "
+            + CONSUMPTION_MEIDICINE_ID + " TEXT, " + CONSUMPTION_QUANTITY + " TEXT, "
+            + CONSUMEDON + " DATE" + ")";
+
+
     //variables for Personal Bio table
     public static final String PERSONALBIO_TABLE = "personalbio";
     public static final String PERSONALBIO_ID = "id";

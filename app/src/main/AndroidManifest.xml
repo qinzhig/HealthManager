@@ -62,6 +62,23 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.ConsumptionActivity"
+            android:label="Consumption"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.ConsumptionDetail"
+            android:label="consummption data"
+            android:parentActivityName=".activity.ConsumptionActivity" />
+        <activity
+            android:name=".activity.UncomsumedActivity"
+            android:label="Unconsumed History"
+            android:parentActivityName=".activity.ConsumptionDetail" />
+        <activity
+            android:name=".activity.AddConsumption"
+            android:label="ADD">
+        </activity>
+
     </application>
 
 </manifest>

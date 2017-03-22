@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sg.edu.nus.iss.medipal.activity.AddConsumption">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+
+
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicine_name"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/medicine_name"
+                android:textStyle="bold"/>
+            <Spinner
+                android:id="@+id/spn_medicine"
+                android:layout_below="@id/medicine_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                >
+            </Spinner>
+            <TextView
+                android:id="@+id/Quantity"
+                android:layout_below="@id/spn_medicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:textStyle="bold"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp" />
+            <TextView
+                android:id="@+id/Dosage"
+                android:layout_below="@id/Quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Dosage">
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:text="Date"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/et_select_date"
+                    android:hint="Date"
+                    android:layout_below="@id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_date"
+                    android:layout_alignStart="@id/tv_date"
+                    android:inputType="date"
+                    android:focusable="false"/>
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:text="Time"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignBaseline="@id/tv_date"/>
+                <EditText
+                    android:id="@+id/et_select_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/et_select_date"
+                    android:layout_toEndOf="@id/et_select_date"
+                    android:layout_alignStart="@id/tv_time"
+                    android:layout_alignLeft="@id/tv_time"
+                    android:focusable="false"
+                    android:layout_alignBaseline="@id/et_select_date"
+                    android:hint="Time"
+                    android:inputType="datetime"/>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
