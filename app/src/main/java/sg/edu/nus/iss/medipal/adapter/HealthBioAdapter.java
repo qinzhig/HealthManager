@@ -94,7 +94,7 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
         HealthBio healthBio = healthBioList.get(position);
         holder.condition.setText(healthBio.getCondition());
         holder.startDate.setText(MediPalUtility.
-                                    covertDateToString(healthBio.getStartDate()));
+                convertDateToString(healthBio.getStartDate(),"dd MMM yyyy"));
         if(healthBio.getConditionType()=='C'){
             conditionType = "Condition";
         }

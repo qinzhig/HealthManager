@@ -56,7 +56,7 @@ public class ReportManager {
             TableRow rowData = new TableRow(context);
             String condition = healthBio.getCondition();
             String strtDate = MediPalUtility.
-                    covertDateToString(healthBio.getStartDate());
+                    convertDateToString(healthBio.getStartDate(),"dd MMM yyyy");
             String conditionType = "";
             if (healthBio.getConditionType() == 'C') {
                 conditionType = "Condition";
@@ -104,7 +104,7 @@ public class ReportManager {
         for (HealthBio healthBio : healthBioList) {
             String condition = healthBio.getCondition();
             String strtDate = MediPalUtility.
-                    covertDateToString(healthBio.getStartDate());
+                    convertDateToString(healthBio.getStartDate(),"dd MMM yyyy");
             String conditionType = "";
             if (healthBio.getConditionType() == 'C') {
                 conditionType = "Condition";

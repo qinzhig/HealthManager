@@ -75,14 +75,18 @@ public class AppointmentManager {
                 if (resultStatus && remainderIntervals != null) {
                     int newId = resultIntValue + REMAINDER_ID_OFFSET;
                         Calendar remainderDateOne, remainderDateTwo;
+                    String notificationText;
                         //get the remainder date based on the remainderInterval given by user and set remainder if provided
                         if (!remainderIntervals[0].equalsIgnoreCase("No Pre-Test Remainders set.")) {
+                            notificationText = "Remainder for Pre-Test requirements";
                             remainderDateOne = MediPalUtility.determineReminderTime(remainderIntervals[0], appointment.getAppointment());
-                            setupAlarmForReminder(remainderDateOne, resultIntValue);
+
+                            setupAlarmForReminder(remainderDateOne, resultIntValue, notificationText);
                         }
                         if (!remainderIntervals[1].equalsIgnoreCase("No Appointment Remainders set.")) {
+                            notificationText = "Remainder for Appointment";
                             remainderDateTwo = MediPalUtility.determineReminderTime(remainderIntervals[1], appointment.getAppointment());
-                            setupAlarmForReminder(remainderDateTwo, newId);
+                            setupAlarmForReminder(remainderDateTwo, newId, notificationText);
                         }
                     //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
                     storeAppointmentPreference(resultIntValue, remainderIntervals[0]);
@@ -97,12 +101,13 @@ public class AppointmentManager {
     }
 
     //to set remainder using AlarmManager service and registering an pending intent
-    private void setupAlarmForReminder(Calendar remainderDate, Integer resultValue) {
+    private void setupAlarmForReminder(Calendar remainderDate, Integer resultValue,String notificationText) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         //once remainder time is reached, alarm manager will call RemainAlarmReceiver class
         Intent alertIntent = new Intent(context, RemindAlarmReceiver.class);
         alertIntent.putExtra("Id", Integer.toString(resultValue));
+        alertIntent.putExtra("notification", notificationText);
 
         PendingIntent broadcast = PendingIntent.getBroadcast(context, resultValue, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         //Log.d("check",Long.toString(date.getTime()));
@@ -135,14 +140,17 @@ public class AppointmentManager {
                 if (resultStatus && remainderIntervals != null) {
                     int newId = appointmentID + REMAINDER_ID_OFFSET;
                     Calendar remainderDateOne, remainderDateTwo;
+                    String notificationText;
                     //get the remainder date based on the remainderInterval given by user and set remainder if provided
                     if (!remainderIntervals[0].equalsIgnoreCase("No Pre-Test Remainders set.")) {
+                        notificationText = "Remainder for Pre-Test requirements";
                         remainderDateOne = MediPalUtility.determineReminderTime(remainderIntervals[0], appointment.getAppointment());
-                        setupAlarmForReminder(remainderDateOne, appointmentID);
+                        setupAlarmForReminder(remainderDateOne, appointmentID, notificationText);
                     }
                     if (!remainderIntervals[1].equalsIgnoreCase("No Appointment Remainders set.")) {
+                        notificationText = "Remainder for Appointment";
                         remainderDateTwo = MediPalUtility.determineReminderTime(remainderIntervals[1], appointment.getAppointment());
-                        setupAlarmForReminder(remainderDateTwo, newId);
+                        setupAlarmForReminder(remainderDateTwo, newId, notificationText);
                     }
                     //store the appointment Id,title and remainder in shared preferences. will be used in displaying remainders and appointments
                     storeAppointmentPreference(appointmentID, remainderIntervals[0]);
@@ -186,6 +194,21 @@ public class AppointmentManager {
         ArrayList<Appointment> appointmentList = null;
         try {
             appointmentList = new AppointmentReadAsyncTask(context).execute(deciderFlag).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return appointmentList;
+    }
+
+    //get the appointments list from db
+    public ArrayList<Appointment> getAppointment(String Id)
+    {
+        //No call backs have been used here as no postprocessing in needed for this function
+        ArrayList<Appointment> appointmentList = null;
+        try {
+            appointmentList = new AppointmentReadAsyncTask(context).execute(Id,false).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
