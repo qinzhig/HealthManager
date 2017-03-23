@@ -27,6 +27,7 @@ import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.ReportFragment;
 import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
+import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Log.d("Activity","started");
+        Log.d("Activity", "started");
         //setup toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,11 +55,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle intentExtras = getIntent().getExtras();
-        if(intentExtras != null) {
-            Log.d("Activity","Bundle");
+        if (intentExtras != null) {
+            Log.d("Activity", "Bundle");
             String notificationContent = intentExtras.getString("notification");
             String notificationId = intentExtras.getString("Id");
-            Log.d("intent args",notificationContent +" " +notificationId);
+            Log.d("intent args", notificationContent + " " + notificationId);
             if (notificationContent != null && notificationId != null) {
                 showFragment("Appointment", notificationContent, notificationId);
                 getIntent().removeExtra("notification");
@@ -69,19 +70,18 @@ public class MainActivity extends AppCompatActivity
 
     private void showFragment(String fragmentType, String notificationContent, String notificationId) {
 
-        if(fragmentType.equalsIgnoreCase("Appointment"))
-        {
-            Log.d("Activity","fragment load");
+        if (fragmentType.equalsIgnoreCase("Appointment")) {
+            Log.d("Activity", "fragment load");
             //use the appointment view to show in the main page
             Fragment fragment = new AppointmentsTabFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("notification",notificationContent);
-            bundle.putString("Id",notificationId);
+            bundle.putString("notification", notificationContent);
+            bundle.putString("Id", notificationId);
             fragment.setArguments(bundle);
             //move this to outside when all other modules are implemented using fragments
             //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
 
     }
@@ -114,15 +114,13 @@ public class MainActivity extends AppCompatActivity
         String Title;
         Fragment fragment;
         if (id == R.id.nav_personalBio) {
-            /*Intent personalBioIntent = new Intent(getApplicationContext(), AddEditPersonalBioActivity.class);
-            startActivity(personalBioIntent);*/
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_healthBio) {
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_appointments) {
             resetTitle("Appointments");
             //use the appointment view to show in the main page
@@ -130,10 +128,10 @@ public class MainActivity extends AppCompatActivity
             //move this to outside when all other modules are implemented using fragments
             //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
 
-        } else if(id == R.id.nav_medicine) {
-            Intent intent_medicine= new Intent(getApplicationContext(), MedicineActivity.class);
+        } else if (id == R.id.nav_medicine) {
+            Intent intent_medicine = new Intent(getApplicationContext(), MedicineActivity.class);
             startActivity(intent_medicine);
         } else if (id == R.id.nav_measurement) {
             fragment = new MeasurementFragment();
@@ -143,8 +141,7 @@ public class MainActivity extends AppCompatActivity
             fragment = new IceFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-        }
-        else if(id == R.id.nav_reports){
+        } else if (id == R.id.nav_reports) {
             fragment = new ReportFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -175,7 +172,9 @@ public class MainActivity extends AppCompatActivity
                 .setNegativeButton("No", null)
                 .show();
     }
-    @Override protected void onStop() {
+
+    @Override
+    protected void onStop() {
         super.onStop();
     }
 
@@ -183,64 +182,84 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Fragment fragment = null;
-        if(refreshAppointmentFragment)
-        {
-            refreshAppointmentFragment=false;
+        if (refreshAppointmentFragment) {
+            refreshAppointmentFragment = false;
             fragment = new AppointmentFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
-        }
-        else if(refreshHealthBioFragment){
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else if (refreshHealthBioFragment) {
             refreshHealthBioFragment = false;
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
     }
 
     @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("here ", Integer.toString(requestCode) + " " + Integer.toString(resultCode));
         if (requestCode == 101 || requestCode == 102) {
             if (resultCode == 0) {
                 refreshAppointmentFragment = true;
             }
-        }
-        else if(requestCode == 1 || requestCode == 2){
+        } else if (requestCode == 1 || requestCode == 2) {
             if (resultCode == 0) {
                 refreshHealthBioFragment = true;
             }
         }
     }
 
-    public void setActionBarTitle(String title){
+    public void setActionBarTitle(String title) {
         toolbar.setTitle(title);
     }
 
-    public void onIceSelected(DummyContent.DummyItem item)
-    {
+    public void onIceSelected(DummyContent.DummyItem item) {
 
     }
 
-    public void onMeasurementSelected(DummyContent.DummyItem item)
-    {
+    public void onMeasurementSelected(DummyContent.DummyItem item) {
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings_menu,menu);
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        PreferenceManager prefManager = new
+                PreferenceManager(getApplicationContext());
+
+        if (null != prefManager.getSplashScreenPref() &&
+                prefManager.getSplashScreenPref().equals("true")) {
+            menu.findItem(R.id.settings_togglehelp).setChecked(true);
+        } else {
+            menu.findItem(R.id.settings_togglehelp).setChecked(false);
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        PreferenceManager prefManager = new
+                PreferenceManager(getApplicationContext());
 
-        if(id ==R.id.settings_togglehelp)
-        {
-            item.setChecked(!item.isChecked());
-            return true;
+        if (id == R.id.settings_togglehelp) {
+
+            if (null != prefManager.getSplashScreenPref() &&
+                    prefManager.getSplashScreenPref().equals("true")) {
+                item.setChecked(false);
+                prefManager.setSplashScreenPref("false");
+            } else {
+                item.setChecked(true);
+                prefManager.setSplashScreenPref("true");
+            }
         }
 
         return super.onOptionsItemSelected(item);

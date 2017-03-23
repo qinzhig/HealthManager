@@ -2,8 +2,11 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,6 +26,7 @@ import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.PersonalBioManager;
+import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.PersonalBio;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
@@ -41,9 +45,11 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
     private String nameStr, idNoStr, addressStr, postalCodeStr, heightStr, bloodTypeStr;
     private Date dobDt;
     private static String[] BLOOD_GRP = {"O+ve", "O-ve", "A+ve", "A-ve", "B+ve", "B-ve", "AB+ve", "AB-ve"};
+    boolean isFirstTime = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addedit_personalbio);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.tb_editpb);
@@ -62,6 +68,11 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
                 R.layout.simple_dropdown_item_1line, BLOOD_GRP);
         bloodGrp.setAdapter(spinnerAdapter);
 
+        Bundle bundleVal = getIntent().getExtras();
+        if (bundleVal.containsKey("firstTime")) {
+            isFirstTime = bundleVal.getBoolean("firstTime");
+        }
+
         PersonalBio personalBio =
                 new PersonalBioManager().getpersonalBio(this);
 
@@ -69,7 +80,7 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
             name.setText(personalBio.getName());
             name.setTag(personalBio.getId());
             dob.setText(MediPalUtility.
-                    convertDateToString(personalBio.getDob(),"dd MMM yyyy"));
+                    convertDateToString(personalBio.getDob(), "dd MMM yyyy"));
             idNo.setText(personalBio.getIdNo());
             address.setText(personalBio.getAddress());
             postalCode.setText(String.valueOf(personalBio.getPostalCode()));
@@ -109,8 +120,21 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
         final MenuItem menuItem = menu.findItem(R.id.action_close);
         menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onClick(View view) {
+                if (isFirstTime) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setMessage("Are you sure you want to exit?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                } else {
+                    finish();
+                }
             }
         });
 
@@ -128,7 +152,7 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
 
             nameStr = name.getText().toString();
             dobDt = MediPalUtility
-                    .convertStringToDate(dob.getText().toString(),"dd MMM yyyy");
+                    .convertStringToDate(dob.getText().toString(), "dd MMM yyyy");
             idNoStr = idNo.getText().toString();
             addressStr = address.getText().toString();
             postalCodeStr = postalCode.getText().toString();
@@ -141,6 +165,12 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
                     updatePersonalBio();
                 } else {
                     addPersonalBio();
+                    if (isFirstTime) {
+                        PreferenceManager prefManager = new
+                                PreferenceManager(getApplicationContext());
+                        prefManager.setFirstTimeFlag("false");
+                    }
+
                 }
 
                 final ProgressDialog progressDialog = new ProgressDialog(this,
@@ -159,6 +189,12 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
                                           },
                         1000);
 
+            }
+
+            if(isFirstTime){
+                Intent addEditHealthBio = new Intent(getApplicationContext(), AddEditHealthBioActivity.class);
+                addEditHealthBio.putExtra("isEdit",false);
+                startActivity(addEditHealthBio);
             }
         }
 
