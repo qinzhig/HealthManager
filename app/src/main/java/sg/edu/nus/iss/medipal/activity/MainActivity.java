@@ -25,6 +25,7 @@ import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.HomeFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
+import sg.edu.nus.iss.medipal.fragment.MedicineFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.ReportFragment;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
@@ -155,10 +156,14 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_medicine) {
-            Intent intent_medicine = new Intent(getApplicationContext(), MedicineActivity.class);
-            startActivity(intent_medicine);
-        } else if (id == R.id.nav_measurement) {
-            fragment = new MeasurementFragment();
+            toolbar.findViewById(R.id.sv_medicine).setVisibility(View.VISIBLE);
+           // Intent intent_medicine = new Intent(getApplicationContext(), MedicineFragment.class);
+            //startActivity(intent_medicine);
+            resetTitle("Medications");
+            //use the appointment view to show in the main page
+            fragment = new MedicineFragment();
+            //move this to outside when all other modules are implemented using fragments
+            //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_ice) {
@@ -180,6 +185,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent_consumption);
         }
 
+        if(id != R.id.nav_medicine){
+            toolbar.findViewById(R.id.sv_medicine).setVisibility(View.GONE);
+        }
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
@@ -193,6 +201,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        toolbar.findViewById(R.id.sv_medicine).setVisibility(View.GONE);
         //super.onBackPressed();
         if (inHomeFragment == true) {
             new AlertDialog.Builder(this)
