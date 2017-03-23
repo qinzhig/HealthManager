@@ -59,12 +59,22 @@ public class IceFragment extends Fragment {
             public void onClick(View view) {
                 Intent iceIntent = new Intent(getContext(), IceActivity.class);
                 iceIntent.putExtra("isEdit", false);
-                startActivityForResult(iceIntent, 1);
+                getActivity().startActivityForResult(iceIntent, 404);
             }
         });
 
         return view;
     }
+
+    public void onResume()
+    {
+        super.onResume();
+
+        _iceList = _iceManager.getIces(getContext());
+
+        this.populateRecyclerView();
+    }
+
 
     private void populateRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
