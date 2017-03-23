@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private boolean refreshHealthBioFragment;
     private boolean refreshAppointmentFragment;
+    private boolean refreshPersonalBioFragment;
     private Boolean inHomeFragment;
 
     @Override
@@ -230,6 +231,12 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
         }
+        else if(refreshPersonalBioFragment){
+            refreshPersonalBioFragment = false;
+            fragment = new PersonalBioFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
+        }
         else{
           //  if(inHomeFragment)
            // loadHomeFragment();
@@ -247,6 +254,11 @@ public class MainActivity extends AppCompatActivity
         else if(requestCode == 1 || requestCode == 2){
             if (resultCode == 0) {
                 refreshHealthBioFragment = true;
+            }
+        }
+        else if(requestCode == 3){
+            if (resultCode == 0) {
+                refreshPersonalBioFragment = true;
             }
         }
     }

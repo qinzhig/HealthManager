@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +44,8 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
     private Date dobDt;
     private static String[] BLOOD_GRP = {"O+ve", "O-ve", "A+ve", "A-ve", "B+ve", "B-ve", "AB+ve", "AB-ve"};
 
+    private TextInputLayout textInputLayoutName,textInputLayoutDob,textInputLayoutIdno,textInputLayoutAddress,textInputLayoutPostal,textInputLayoutHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,17 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
         postalCode = (EditText) findViewById(R.id.postalEdit);
         height = (EditText) findViewById(R.id.heightEdit);
         bloodGrp = (Spinner) findViewById(R.id.bloodGrpSpinner);
+
+        //get reference to view element layouts
+        textInputLayoutName = (TextInputLayout) findViewById(R.id.nameView);
+        textInputLayoutDob = (TextInputLayout) findViewById(R.id.dobView);
+        textInputLayoutIdno = (TextInputLayout) findViewById(R.id.idNoView);
+        textInputLayoutAddress = (TextInputLayout) findViewById(R.id.addressView);
+        textInputLayoutPostal = (TextInputLayout) findViewById(R.id.postalView);
+        textInputLayoutHeight = (TextInputLayout) findViewById(R.id.heightView);
+
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.
                 R.layout.simple_dropdown_item_1line, BLOOD_GRP);
@@ -78,6 +93,55 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
         }
 
         dob.setOnClickListener(this);
+    }
+
+    private void clearErrorOnTextInput() {
+
+        name.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutName.setError(null);
+            }
+        });
+
+        dob.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutDob.setError(null);
+            }
+        });
+        idNo.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutIdno.setError(null);
+            }
+        });
+        address.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutAddress.setError(null);
+            }
+        });
+
+        postalCode.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutPostal.setError(null);
+            }
+        });
+
+        height.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    textInputLayoutHeight.setError(null);
+            }
+        });
     }
 
     @Override
@@ -186,48 +250,48 @@ public class AddEditPersonalBioActivity extends AppCompatActivity implements Vie
         boolean isValid = true;
 
         if (nameStr.isEmpty()) {
-            name.setError("Please enter Name");
+            textInputLayoutName.setError("Please enter Name");
             isValid = false;
         } else {
-            name.setError(null);
+            textInputLayoutName.setError(null);
         }
 
         if (dobDt.isEmpty()) {
-            dob.setError("Please select Date of Birth");
+            textInputLayoutDob.setError("Please select Date of Birth");
             isValid = false;
         } else if (!MediPalUtility.isNotFutureDate(dobDt)) {
-            dob.setError("Date of Birth cannot be in future");
+            textInputLayoutDob.setError("Date of Birth cannot be in future");
             isValid = false;
         } else {
-            dob.setError(null);
+            textInputLayoutDob.setError(null);
         }
 
         if (idNoStr.isEmpty()) {
-            idNo.setError("Please enter ID Number");
+            textInputLayoutIdno.setError("Please enter ID Number");
             isValid = false;
         } else {
-            idNo.setError(null);
+            textInputLayoutIdno.setError(null);
         }
 
         if (addressStr.isEmpty()) {
-            address.setError("Please enter Address");
+            textInputLayoutAddress.setError("Please enter Address");
             isValid = false;
         } else {
-            address.setError(null);
+            textInputLayoutAddress.setError(null);
         }
 
         if (postalCodeStr.isEmpty()) {
-            postalCode.setError("Please enter Postal Code");
+            textInputLayoutPostal.setError("Please enter Postal Code");
             isValid = false;
         } else {
-            postalCode.setError(null);
+            textInputLayoutPostal.setError(null);
         }
 
         if (heightStr.isEmpty()) {
-            height.setError("Please enter Height");
+            textInputLayoutHeight.setError("Please enter Height");
             isValid = false;
         } else {
-            height.setError(null);
+            textInputLayoutHeight.setError(null);
         }
 
         return isValid;
