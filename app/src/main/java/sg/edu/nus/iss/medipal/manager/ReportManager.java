@@ -13,7 +13,7 @@ import sg.edu.nus.iss.medipal.pojo.HealthBio;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
- * Created by divah on 3/20/2017.
+ * Created by Divahar on 3/20/2017.
  */
 
 public class ReportManager {
@@ -121,9 +121,6 @@ public class ReportManager {
 
         return healthBioStr.toString();
 
-        /*String columnString = "\"Condition\",\"Start Date\",\"Condition Type\"";
-        String dataString = "\"dd\"";
-        String combinedString = columnString + "\n" + dataString;*/
     }
 }
 
