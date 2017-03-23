@@ -327,15 +327,17 @@ public class HealthManager {
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
 
+                int repeat_reminderID = reminderId*100+i;
+
                 Intent intent = new Intent(context, RemindAlarmReceiver.class);
                 intent.setAction("MedicineReminder");
-                intent.putExtra("ConsumptionReminderId", Integer.toString(reminderId));
+                intent.putExtra("ConsumptionReminderId", Integer.toString(repeat_reminderID));
                 //intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
                 intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
 
                 Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0]+":"+Integer.toString(reminder_min) );
 
-                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,reminderId, intent,PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
 
                 //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),1000*15,pendingIntent);
