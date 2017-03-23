@@ -3,7 +3,7 @@
     package="sg.edu.nus.iss.medipal">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
     <application
         android:name=".application.App"
@@ -15,7 +15,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddEditPersonalBioActivity"
             android:label="Personal Bio"
@@ -54,14 +54,14 @@
         <receiver android:name=".service.RemindAlarmReceiver" />
 
         <activity
-            android:name="sg.edu.nus.iss.medipal.activity.HelpActivity"
+            android:name=".activity.HelpActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ConsumptionActivity"
             android:label="Consumption"
@@ -76,9 +76,13 @@
             android:parentActivityName=".activity.ConsumptionDetail" />
         <activity
             android:name=".activity.AddConsumption"
-            android:label="ADD">
-        </activity>
+            android:label="ADD"></activity>
 
+        <activity
+            android:name=".activity.IceActivity"
+            android:label="AddEditICE"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,12 +1,10 @@
 package sg.edu.nus.iss.medipal.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by levis on 3/16/2017.
  * Description : Class to hold measurement table data
- * Modified by :
- * Reason for modification :
  */
 
 public class Measurement {
@@ -17,6 +15,15 @@ public class Measurement {
     private Float _temperature;
     private Integer _weight;
     private Date _measuredOn;
+
+    public Measurement(Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
+        this._systolic = systolic;
+        this._diastolic = diastolic;
+        this._pulse = pulse;
+        this._temperature = temperature;
+        this._weight = weight;
+        this._measuredOn = mesuredOn;
+    }
 
     public Measurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
         this._id = id;

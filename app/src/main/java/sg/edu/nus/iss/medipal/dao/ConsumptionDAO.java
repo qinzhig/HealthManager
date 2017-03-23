@@ -26,6 +26,7 @@ public class ConsumptionDAO extends DataBaseUtility {
     private static final SimpleDateFormat formatter = new SimpleDateFormat("d-MMM-yyyy H:mm", Locale.CHINA);
 
 
+
     //method to insert into consumption table
     public long insert(Consumption consumption)throws SQLException
     {
@@ -34,7 +35,7 @@ public class ConsumptionDAO extends DataBaseUtility {
         ContentValues values = new ContentValues();
         values.put(DataBaseManager.CONSUMPTION_MEIDICINE_ID,consumption.getMedicineId());
         values.put(DataBaseManager.CONSUMPTION_QUANTITY,consumption.getQuality());
-        values.put(DataBaseManager.CONSUMEDON, String.valueOf(consumption.getConsumedOn()));
+        values.put(DataBaseManager.CONSUMEDON, consumption.getConsumedOn());
 
         //Insert into consumption table. If insertion is successfull then the method returns the row ID, else -1
         try {
@@ -68,6 +69,18 @@ public class ConsumptionDAO extends DataBaseUtility {
                 new String[] { String.valueOf(consumption.getId())});
         return retCode;
     }
+    //method to delete the consumption table
+    public long delete(Consumption consumption) throws SQLException
+    {
+        long retCode=0;
+        try {
+            retCode = database.delete(DataBaseManager.CONSUMPTION_TABLE, WHERE_ID_EQUALS, new String[]{String.valueOf(consumption.getId())});
+        }catch (SQLException sqlE){
+            sqlE.printStackTrace();
+            retCode = -1;
+        }
+        return retCode;
+    }
 
     //get list of consumption
     public ArrayList<Consumption> getConsumptions() {
@@ -85,13 +98,7 @@ public class ConsumptionDAO extends DataBaseUtility {
             int id = cursor.getInt(0);
             int CONSUMPTION_MEIDICINE_ID = cursor.getInt(1);
             int CONSUMPTION_QUANTITY = cursor.getInt(2);
-            Date CONSUMEDON = null;
-            try {
-                CONSUMEDON = formatter.parse(cursor.getString(3));
-            }catch (ParseException e) {
-                e.printStackTrace();
-            }
-
+            String CONSUMEDON = cursor.getString(3);
             Consumption consumption = new Consumption(id, CONSUMPTION_MEIDICINE_ID, CONSUMPTION_QUANTITY, CONSUMEDON);
             consumptions.add(consumption);
         }

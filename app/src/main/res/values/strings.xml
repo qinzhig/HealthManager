@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MediPal-FT01</string>
+    <string name="home">Home</string>
     <string name="personalBio">Personal Bio</string>
+    <string name="ice">Contacts(ICE)</string>
     <string name="healthBio">Health Bio</string>
     <string name="medication">Medications</string>
     <string name="appointments">Appointments</string>
@@ -49,6 +51,7 @@
     <string name="slide_4_desc">MediPal..!!!</string>
     <string name="title_activity_help">activity_help</string>
 
+    <string name="condition">Condition Type</string>
 
     <string name="edit_appointment_title">Edit Appointment</string>
 

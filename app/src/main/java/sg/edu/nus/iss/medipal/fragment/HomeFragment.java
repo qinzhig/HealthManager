@@ -25,7 +25,7 @@ import sg.edu.nus.iss.medipal.R;
  * Reason for modification :
  */
 
-public class AppointmentFragment extends Fragment {
+public class HomeFragment extends Fragment {
     AppBarLayout mAppBarLayout;
     TabLayout tabLayout;
     @Override
@@ -56,8 +56,8 @@ public class AppointmentFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter  adapter = new ViewPagerAdapter (getChildFragmentManager());
-        adapter.addFragment(new AppointmentsTabFragment(), "Upcoming");
-        adapter.addFragment(new AppointmentsTabFragment(), "Past");
+        adapter.addFragment(new HomeTabFragment(), "Medications");
+        adapter.addFragment(new HomeTabFragment(), "Appointments");
         viewPager.setAdapter(adapter);
     }
 

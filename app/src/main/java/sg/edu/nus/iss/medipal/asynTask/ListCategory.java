@@ -18,6 +18,7 @@ public class ListCategory extends AsyncTask<Void, Void, ArrayList<Category>> {
     private CategoryDAO categoryDAO;
 
     public ListCategory(Context context) {
+
         this.categoryDAO = new CategoryDAO(context);
     }
 

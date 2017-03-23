@@ -10,14 +10,15 @@ public class Consumption {
     private Integer id;
     private Integer medicineId;
     private Integer quantity;
-    private Date consumedOn;
+    private String consumedOn;
 
-    public Consumption(Integer id, Integer medicineId, Integer quantity, Date consumedOn) {
+    public Consumption(Integer id, Integer medicineId, Integer quantity, String consumedOn) {
         this.id = id;
         this.medicineId = medicineId;
         this.quantity = quantity;
         this.consumedOn = consumedOn;
     }
+
 
     public Integer getId() {
         return id;
@@ -43,11 +44,11 @@ public class Consumption {
         this.quantity = quality;
     }
 
-    public Date getConsumedOn() {
+    public String getConsumedOn() {
         return consumedOn;
     }
 
-    public void setConsumedOn(Date consumedOn) {
+    public void setConsumedOn(String consumedOn) {
         this.consumedOn = consumedOn;
     }
 

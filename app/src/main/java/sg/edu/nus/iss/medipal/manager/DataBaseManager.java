@@ -170,7 +170,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
             + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
             + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " FLOAT, "
-            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " DATETIME" + ")";
+            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " TEXT" + ")";
 
     //To store current DB instance
     private static DataBaseManager instance;
@@ -207,6 +207,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENT_TABLE);
         db.execSQL(CREATE_ICE_TABLE);
         db.execSQL(CREATE_MEASUREMENT_TABLE);
+        db.execSQL(CREATE_CONSUMPTION_TABLE);
 
         //Initalize the pre-defined medicine category to SQLite
         db.execSQL(INSERT_PREDEFINED_CATEGORY1);
@@ -229,7 +230,10 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + REMINDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_CONSUMPTION_TABLE );
+
+        db.execSQL("DROP TABLE IF EXISTS " + ICE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MEASUREMENT_TABLE);
+
         onCreate(db);
     }}
