@@ -108,7 +108,7 @@ public class EditMedicineActivity extends AppCompatActivity {
             et_interval.setVisibility(View.INVISIBLE);
             et_stime.setVisibility(View.INVISIBLE);
 
-            et_frequency.setText("0");
+            et_frequency.setText("1");
             et_interval.setText("0");
         }
 
@@ -139,8 +139,11 @@ public class EditMedicineActivity extends AppCompatActivity {
                     et_interval.setVisibility(View.INVISIBLE);
                     et_stime.setVisibility(View.INVISIBLE);
 
-                    et_frequency.setText("0");
+                    et_frequency.setText("1");
                     et_interval.setText("0");
+
+                    App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                            Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),getApplicationContext());
                 }
 
             }
@@ -248,7 +251,7 @@ public class EditMedicineActivity extends AppCompatActivity {
         spinner= (Spinner) findViewById(R.id.spinner_category);
         array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
-        spinner.setSelection(medicine.getCateId());
+        spinner.setSelection((medicine.getCateId()-1));
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
@@ -367,11 +370,11 @@ public class EditMedicineActivity extends AppCompatActivity {
                         App.hm.updateReminder(medicine.getReminderId(),Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
 
                         App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                                position, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                position+1, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
-                        App.hm.setMeidicineReminder(et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                        App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
                                 Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),getApplicationContext());
 
                     }else {
@@ -379,11 +382,11 @@ public class EditMedicineActivity extends AppCompatActivity {
                         App.hm.addReminder(reminderid, Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
 
                         App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                                position, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                position+1, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
-                        App.hm.setMeidicineReminder(et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                        App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
                                 Integer.valueOf(et_frequency.getText().toString().trim()), reminderid,getApplicationContext());
                     }
 

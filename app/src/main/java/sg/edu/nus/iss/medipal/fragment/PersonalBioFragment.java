@@ -69,19 +69,11 @@ public class PersonalBioFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent personalBioIntent = new Intent(getContext(), AddEditPersonalBioActivity.class);
+                personalBioIntent.putExtra("firstTime",false);
                 getActivity().startActivityForResult(personalBioIntent,3);
+
             }
         });
-
-
-       /* if (personalBio.isEmpty()) {
-            healthBioFragment = inflater.inflate(R.layout.message_placeholder, container, false);
-            TextView txtView = (TextView) healthBioFragment.findViewById(R.id.placeholdertext);
-            txtView.setText("No Health Bio found");
-        } else {
-            healthBioView = (RecyclerView) healthBioFragment.findViewById(R.id.hbrecycler_view);
-            populateRecyclerView();
-        }*/
 
         return personalBioFragment;
     }

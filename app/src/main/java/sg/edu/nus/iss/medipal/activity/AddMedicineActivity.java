@@ -342,12 +342,12 @@ public class AddMedicineActivity extends AppCompatActivity {
 
 
 
-                        App.hm.setMeidicineReminder(et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
+                        App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
 
                     }
 
                     App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                            position,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
+                            position+1,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
                             spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
                             Integer.valueOf(et_threshold.getText().toString().trim()),et_date_get.getText().toString(),expire_factor,getApplicationContext());
 
