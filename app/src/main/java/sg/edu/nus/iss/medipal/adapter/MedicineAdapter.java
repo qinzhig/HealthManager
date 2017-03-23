@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
@@ -57,8 +58,10 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         Button btnUpdate,btnRemove;
     }
 
+
+
     public View getView(final int position, View convertView, ViewGroup parent){
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if (convertView == null) {
             LayoutInflater inflater =
@@ -75,6 +78,19 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
         final Medicine medicine = medicines.get(position);
         viewHolder.tvName.setText(medicine.getMedicine_name());
+        viewHolder.tvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addConsumption = new Intent(context, AddConsumption.class);
+
+                addConsumption.putExtra("isEdit",true);
+                addConsumption.putExtra("medicine_name",viewHolder.tvName.getText().toString());
+                addConsumption.putExtra("quantity",medicine.getConsumequantity());
+                addConsumption.putExtra("medicine_id",medicine.getId());
+                ((Activity)context).startActivity(addConsumption);
+
+            }
+        });
 
         viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener(){
 

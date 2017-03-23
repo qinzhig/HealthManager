@@ -22,9 +22,11 @@ import java.util.List;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
 import sg.edu.nus.iss.medipal.adapter.AppointmentAdapter;
+import sg.edu.nus.iss.medipal.adapter.MedicineRecyclerAdapter;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.pojo.Appointment;
+import sg.edu.nus.iss.medipal.pojo.Category;
 import sg.edu.nus.iss.medipal.pojo.HealthBio;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
@@ -38,9 +40,8 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
 public class HomeTabFragment extends Fragment implements AdapterCallbackInterface {
     private RecyclerView listView;
     private AppointmentAdapter appointmentAdapter;
-   // private MedicineRecyclerAdapter medicineAdapter;
+    private MedicineRecyclerAdapter medicineAdapter;
     private List<Appointment> appointmentList;
-    private List<Medicine> medicineList;
     private AppointmentManager appointmentManager;
     private HealthManager medicineManager;
     private Context mContext;
@@ -98,20 +99,9 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
         }
         else
         {
-            medicineList = medicineManager.getMedicines(mContext);
-            if(medicineList == null || medicineList.isEmpty())
-            {
-                //show the "no appointments" message
-               // refreshView();
-            }
-            else{
-                //show the list view of appointments
-              //  populateMedicineRecyclerView();
-            }
+            populateMedicineRecyclerView();
+
         }
-
-
-
 
 
 
@@ -120,8 +110,8 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
 
     private void populateMedicineRecyclerView() {
         //populate the adapter with appointments lists
-        appointmentAdapter = new AppointmentAdapter(mContext, appointmentList,2,this);
-        listView.setAdapter(appointmentAdapter);
+        medicineAdapter = new MedicineRecyclerAdapter(mContext,medicineManager,this);
+        listView.setAdapter(medicineAdapter);
 
     }
 

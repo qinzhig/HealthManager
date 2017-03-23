@@ -136,9 +136,7 @@ public class MainActivity extends AppCompatActivity
             inHomeFragment = true;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-        }
-        if (id == R.id.nav_personalBio) {
-
+        } else if (id == R.id.nav_personalBio) {
             resetTitle("Personal Bio");
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -290,6 +288,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         PreferenceManager prefManager = new
                 PreferenceManager(getApplicationContext());
 
@@ -304,6 +303,7 @@ public class MainActivity extends AppCompatActivity
                 prefManager.setSplashScreenPref("true");
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
