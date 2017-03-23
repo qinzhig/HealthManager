@@ -76,13 +76,16 @@
             android:parentActivityName=".activity.ConsumptionDetail" />
         <activity
             android:name=".activity.AddConsumption"
-            android:label="ADD"></activity>
-
+            android:label="ADD" />
         <activity
             android:name=".activity.IceActivity"
             android:label="AddEditICE"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.EditConsumptionActivity"
+            android:parentActivityName=".activity.ConsumptionActivity">
+        </activity>
     </application>
 
 </manifest>

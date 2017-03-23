@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
+import sg.edu.nus.iss.medipal.activity.EditConsumptionActivity;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
+import sg.edu.nus.iss.medipal.activity.MainActivity;
+import sg.edu.nus.iss.medipal.activity.UncomsumedActivity;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
@@ -26,109 +33,94 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
  */
 
 public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
+
     private Context context;
     private List<Consumption>consumptions = new ArrayList<Consumption>();
-    ConsumptionManager consumptionManager ;
-    private List<Medicine> medicines = new ArrayList<>();
+    ConsumptionManager consumptionManager;
 
- public ConsumptionAdapter(Context context) {
-     super(context, R.layout.consumption_item);
-     consumptionManager = new ConsumptionManager(context);
-     this.context=context;
-     refreshConsumptions();
- }
 
- public void refreshConsumptions(){
-     consumptions.clear();
-     consumptions.addAll(consumptionManager.getConsumptions(this.context));
+    public ConsumptionAdapter(Context context){
 
-     Log.v("DEBUG",".............Consumptiondapter+++++++++++++++++++++++++++++++++++++++++++++ Size = "+consumptions.size());
+        super(context,R.layout.medicine_category_row_layout);
+        this.context=context;
+        consumptionManager = new ConsumptionManager(context);
+        refreshConsumptions();
 
-     notifyDataSetChanged();
- }
+    }
 
+    public void refreshConsumptions() {
+        consumptions.clear();
+        consumptions.addAll(consumptionManager.getConsumptions(this.context));
+
+        notifyDataSetChanged();
+    }
     public int getCount(){
         return  consumptions.size();
     }
 
     static class ViewHolder{
-        TextView item_name;
-        Button btn_updateconsumption,btn_removeconsumption;
+        TextView tvName;
+        Button btnUpdate,btnRemove;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent){
-        ConsumptionAdapter.ViewHolder viewHolder;
+        final ConsumptionAdapter.ViewHolder viewHolder;
 
-        if (convertView == null) {
+        Log.v("mateng i am in just in the view","_++_+_++_+_+_+_+_+_matneg i am in  just in the view_+_+_+_+_+_+_+_+_+_+_+_+");
+
+        if (convertView == null)
+        {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.consumption_item, parent, false);
+            convertView = inflater.inflate(R.layout.medicine_category_row_layout, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.item_name = (TextView) convertView.findViewById(R.id.item_name);
-            viewHolder.btn_updateconsumption = (Button) convertView.findViewById(R.id.btn_updateconsumption);
-            viewHolder.btn_removeconsumption = (Button) convertView.findViewById(R.id.btn_removeconsumption);
+            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.btnUpdate = (Button) convertView.findViewById(R.id.btn_update);
+            viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_remove);
             convertView.setTag(viewHolder);
-        } else {
+        }else {
             viewHolder = (ConsumptionAdapter.ViewHolder) convertView.getTag();
         }
-
-        final Medicine medicine = medicines.get(position);
         final Consumption consumption = consumptions.get(position);
-        viewHolder.item_name.setText(medicine.getMedicine_name());
+        Log.v("mateng","***********************position"+position);
+        Log.v("mateng","_+_+_+_+_+_+_++_++_+_+_+_+_+_+_+_ to string"+consumption.toString());
+        final int medicine_id = consumption.getMedicineId();
+        final HealthManager healthManager = new HealthManager();
+        Log.v("mateng","***********************"+healthManager.getMedicine(medicine_id,context));
+        Log.v("mateng","***********************"+medicine_id);
 
-        viewHolder.btn_updateconsumption.setOnClickListener(new View.OnClickListener(){
+        viewHolder.tvName.setText(healthManager.getMedicine(medicine_id,context).getMedicine_name());
+        viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            @Override public void onClick(View v) {
+                Intent updateConsumption = new Intent(context,EditConsumptionActivity.class);
 
-                Intent updateConsumption = new Intent(context, EditMedicineActivity.class);
+                updateConsumption.putExtra("medicine_name",viewHolder.tvName.getText().toString());
+                updateConsumption.putExtra("quantity",healthManager.getMedicine(medicine_id,context).getConsumequantity());
+                updateConsumption.putExtra("medicine_id",medicine_id);
+                Log.v("TAGdate_timeTAG","_+_+_+_+_+_+_+_+_+_()()()*(*&*&*&*&*&*&*&*&*&"+consumption.getConsumedOn());
+                updateConsumption.putExtra("date_time",consumption.getConsumedOn());
 
-                Bundle bundle = new Bundle();
-               // bundle.putSerializable("medicineInfo",medicine);
+                updateConsumption.putExtra("id",consumption.getId());
+                context.startActivity(updateConsumption);
 
-                updateConsumption.setClass(context,EditMedicineActivity.class);
-                updateConsumption.putExtras(bundle);
-
-                Log.v("TAG","--------------------ConsumotionAdapter Update   Object " + "Good night!");
-
-//                Log.v("TAG","--------------------MedicineAdapter Update   ID " + medicine.getId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update  name " + medicine.getMedicine_name() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   catId " + medicine.getCateId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   Quantity " + medicine.getQuantity() );
-
-
-
-                ((Activity)context).startActivity(updateConsumption);
-
-
-//                updateMedicine.putExtra("id",medicine.getId());
-//                updateMedicine.putExtra("name",medicine.getMedicine_name());
-//                updateMedicine.putExtra("description",medicine.getMedicine_des());
-//                updateMedicine.putExtra("catId",medicine.getCateId());
-//                updateMedicine.putExtra("reminderId",medicine.getReminderId());
-//                updateMedicine.putExtra("reminder",medicine.isReminder());
-//                updateMedicine.putExtra("quantity",medicine.getQuantity());
-//                updateMedicine.putExtra("dosage",medicine.getDosage());
-//                updateMedicine.putExtra("dateIssued",medicine.getDateIssued());
-//                updateMedicine.putExtra("expireFactor",medicine.getExpireFactor());
-
-
-
-
-                //((Activity)context).startActivityForResult(updateMedicine,201);
             }
         });
-
-        viewHolder.btn_removeconsumption.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("TAG","----------------------------+++++++++++++++++++++++++> Consumpition Adapter Removed!");
                 consumptionManager.deleteConsumption(consumption.getId(),context);
                 refreshConsumptions();
+
             }
         });
 
-
-        Log.v("DEBUG",".............++++++++++++++++++++++++++++++++++++++++++++++ Size = "+consumptions.size());
-
         return convertView;
+
+
+
 
     }
 

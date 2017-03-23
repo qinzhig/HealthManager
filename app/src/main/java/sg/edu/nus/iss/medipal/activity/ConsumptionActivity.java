@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.adapter.ConsumptionAdapter;
-import sg.edu.nus.iss.medipal.adapter.MedicineAdapter;
 
 public class ConsumptionActivity extends AppCompatActivity {
 
@@ -21,6 +20,8 @@ public class ConsumptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumption);
+
+        Log.v("mateng i am in the consumption actovity","_++_+_++_+_+_+_+_+_matneg i am in the consumption activity _+_+_+_+_+_+_+_+_+_+_+_+");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -32,7 +32,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
     public MedicineAdapter(Context context){
 
-      //  super(context, R.layout.medicine_category_row_layout);
         super(context,R.layout.medicine_category_row_layout);
         this.context=context;
         refreshMedicines();
@@ -77,6 +76,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         }
 
         final Medicine medicine = medicines.get(position);
+
         viewHolder.tvName.setText(medicine.getMedicine_name());
         viewHolder.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +98,8 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
                 Intent updateMedicine = new Intent(context, EditMedicineActivity.class);
 
+                Log.v("Tag","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+updateMedicine);
+
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("medicineInfo",medicine);
 
@@ -105,14 +107,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
                 updateMedicine.putExtras(bundle);
 
                 Log.v("TAG","--------------------MedicineAdapter Update   Object " + medicine.toString());
-
-//                Log.v("TAG","--------------------MedicineAdapter Update   ID " + medicine.getId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update  name " + medicine.getMedicine_name() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   catId " + medicine.getCateId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   Quantity " + medicine.getQuantity() );
-
-
-
                 ((Activity)context).startActivity(updateMedicine);
 
 

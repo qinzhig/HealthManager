@@ -19,6 +19,10 @@ public class Consumption {
         this.consumedOn = consumedOn;
     }
 
+    public Consumption() {
+
+    }
+
 
     public Integer getId() {
         return id;
@@ -44,7 +48,8 @@ public class Consumption {
         this.quantity = quality;
     }
 
-    public String getConsumedOn() {
+    public String getConsumedOn()
+    {
         return consumedOn;
     }
 
@@ -52,5 +57,14 @@ public class Consumption {
         this.consumedOn = consumedOn;
     }
 
+    @Override
+    public String toString() {
+        return "Consumption{" +
+                "id=" + id +
+                ", medicineId=" + medicineId +
+                ", quantity=" + quantity +
+                ", consumedOn='" + consumedOn + '\'' +
+                '}';
+    }
 
 }
