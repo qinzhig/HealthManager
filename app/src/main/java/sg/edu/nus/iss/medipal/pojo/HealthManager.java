@@ -56,8 +56,13 @@ public class HealthManager {
     }
 
     public Medicine getMedicine(int id,Context context){
-
-        Iterator<Medicine> i = getMedicines(context).iterator();
+        Iterator<Medicine> i;
+        if(medicines.isEmpty()) {
+            i = getMedicines(context).iterator();
+        }
+        else {
+            i = medicines.iterator();
+        }
 
         while(i.hasNext()){
             Medicine m = i.next();
@@ -137,13 +142,19 @@ public class HealthManager {
 
     public Category getCategory(int id,Context context){
 
-        Iterator<Category> i = getCategorys(context).iterator();
+        Iterator<Category> c;
+        if(medicines.isEmpty()) {
+            c = getCategorys(context).iterator();
+        }
+        else {
+            c = categorys.iterator();
+        }
 
-        while(i.hasNext()){
-            Category c = i.next();
-            if( c.getId() == id)
+        while(c.hasNext()){
+            Category c_node = c.next();
+            if( c_node.getId() == id)
             {
-                return c;
+                return c_node;
             }
         }
 
@@ -222,8 +233,14 @@ public class HealthManager {
     //--------------------------------------Reminder-----------------------------------
     public Reminder getReminder(int id,Context context){
 
+        Iterator<Reminder> i;
 
-        Iterator<Reminder> i = getReminders(context).iterator();
+        if(reminders.isEmpty()) {
+            i = getReminders(context).iterator();
+        }
+        else {
+            i = reminders.iterator();
+        }
 
         while(i.hasNext()){
             Reminder c = i.next();
