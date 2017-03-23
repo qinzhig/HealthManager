@@ -30,14 +30,35 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if("MedicineReminder".equals(intent.getAction()))
+        if(!intent.getStringExtra("ConsumptionReminderId").isEmpty())
         {
-
             Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
-
             Log.v("MedicineReminder","---------------------->+++++++++++Reminder Id=" + intent.getStringExtra("ConsumptionReminderId"));
-
             Log.v("MedicineReminder","---------------------->+++++++++++Reminder StartTime=" + intent.getStringExtra("StartTime"));
+
+            int cReminderID = Integer.valueOf(intent.getStringExtra("ConsumptionReminderId"));
+
+            Intent resultIntent = new Intent(context, MainActivity.class);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent medicinePendingIntent = stackBuilder.getPendingIntent(cReminderID, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+            Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
+                    .setContentText("Reminder for Consumpition")
+                    .setTicker("Notification for Appointment")
+                    .setSmallIcon(R.drawable.medicine)
+                    .setAutoCancel(true)
+                    .setContentIntent(medicinePendingIntent).build();
+
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotificationManager.notify(cReminderID, consumption_notification);
+
 
 
         }else {

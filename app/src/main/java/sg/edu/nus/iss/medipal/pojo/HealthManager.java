@@ -317,7 +317,7 @@ public class HealthManager {
                 calendar.setTimeInMillis(System.currentTimeMillis());
 
                 //Set a repeat reminder hour for the frequency alarm
-                int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
+                //int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
                 int reminder_min  = (Integer.valueOf(stime_hour_min[1]) + interval * i) % 60;
 
                 //calendar.set(Calendar.HOUR_OF_DAY, reminder_hour);
@@ -330,17 +330,25 @@ public class HealthManager {
                 int repeat_reminderID = reminderId*100+i;
 
                 Intent intent = new Intent(context, RemindAlarmReceiver.class);
-                intent.setAction("MedicineReminder");
+                //intent.setAction("MedicineReminder");
                 intent.putExtra("ConsumptionReminderId", Integer.toString(repeat_reminderID));
                 //intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
                 intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
 
-                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0]+":"+Integer.toString(reminder_min) );
+                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );
 
-                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
+                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
+
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
                 //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),1000*15,pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),1000*60*2,pendingIntent);
+
+                Log.v("ALARM","-------------------<<<<<<<<<<<<<<<< ALRAM TIME SET  + Start Time = " + calendar.getTimeInMillis() );
+
+
+
+
             }else{
 
             }
