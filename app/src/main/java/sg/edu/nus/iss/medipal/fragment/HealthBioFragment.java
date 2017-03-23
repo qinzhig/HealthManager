@@ -13,10 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.List;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
-import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.adapter.HealthBioAdapter;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.HealthBioManager;
@@ -65,6 +66,7 @@ public class HealthBioFragment extends Fragment implements AdapterCallbackInterf
             public void onClick(View view) {
                 Intent addHealthBioIntent = new Intent(getContext(), AddEditHealthBioActivity.class);
                 addHealthBioIntent.putExtra("isEdit",false);
+                addHealthBioIntent.putExtra("isFirstTime", false);
                 getActivity().startActivityForResult(addHealthBioIntent,1);
             }
         });

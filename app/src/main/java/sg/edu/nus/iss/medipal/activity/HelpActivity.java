@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +37,10 @@ public class HelpActivity extends AppCompatActivity {
 
         prefManager = new PreferenceManager(getApplicationContext());
 
-        if(null==prefManager.getSplashScreenPref()) {
+        if (null != prefManager.getSplashScreenPref()
+                && prefManager.getSplashScreenPref().equals("false")) {
+            launchHomeScreen();
+        } else {
             setContentView(R.layout.activity_help);
             viewPager = (ViewPager) findViewById(R.id.view_pager);
             dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -69,7 +69,6 @@ public class HelpActivity extends AppCompatActivity {
             btnSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prefManager.setSplashScreenPref("true");
                     launchHomeScreen();
                 }
             });
@@ -84,14 +83,10 @@ public class HelpActivity extends AppCompatActivity {
                         // move to next screen
                         viewPager.setCurrentItem(current);
                     } else {
-                        prefManager.setSplashScreenPref("true");
                         launchHomeScreen();
                     }
                 }
             });
-        }
-        else{
-            launchHomeScreen();
         }
     }
 
@@ -111,15 +106,24 @@ public class HelpActivity extends AppCompatActivity {
         }
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
-}
+    }
 
     private int getItem(int i) {
         return viewPager.getCurrentItem() + i;
     }
 
     private void launchHomeScreen() {
-        startActivity(new Intent(HelpActivity.this, MainActivity.class));
-        finish();
+
+        if (null!=prefManager.getFirstTimeFlag()
+                && prefManager.getFirstTimeFlag().equals("false")) {
+            startActivity(new Intent(HelpActivity.this, MainActivity.class));
+            finish();
+        } else {
+            Intent intent = new Intent(HelpActivity.this, AddEditPersonalBioActivity.class);
+            intent.putExtra("firstTime",true);
+            startActivity(intent);
+            finish();
+        }
     }
 
     //  viewpager change listener
@@ -163,40 +167,40 @@ public class HelpActivity extends AppCompatActivity {
         }
     }
 
-/**
- * View pager adapter
- */
-public class MyViewPagerAdapter extends PagerAdapter {
-    private LayoutInflater layoutInflater;
+    /**
+     * View pager adapter
+     */
+    public class MyViewPagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
 
-    public MyViewPagerAdapter() {
+        public MyViewPagerAdapter() {
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View view = layoutInflater.inflate(layouts[position], container, false);
+            container.addView(view);
+
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return layouts.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            return view == obj;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            View view = (View) object;
+            container.removeView(view);
+        }
     }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = layoutInflater.inflate(layouts[position], container, false);
-        container.addView(view);
-
-        return view;
-    }
-
-    @Override
-    public int getCount() {
-        return layouts.length;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object obj) {
-        return view == obj;
-    }
-
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
-        container.removeView(view);
-    }
-}
 }

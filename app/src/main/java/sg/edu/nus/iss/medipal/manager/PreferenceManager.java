@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * Created by : Navi on 04-03-2017.
  * Description : This is the container for shared preferences
@@ -41,6 +37,15 @@ public class PreferenceManager {
 
     public String getSplashScreenPref() {
         return sharedPref.getString("SPLASH_SCREEN", null);
+    }
+
+    public void setFirstTimeFlag(String firstTime) {
+        preferenceEditor.putString("FIRST_TIME", firstTime);
+        preferenceEditor.commit();
+    }
+
+    public String getFirstTimeFlag() {
+        return sharedPref.getString("FIRST_TIME", null);
     }
 
 

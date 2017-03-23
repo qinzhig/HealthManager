@@ -248,7 +248,7 @@ public class EditMedicineActivity extends AppCompatActivity {
         spinner= (Spinner) findViewById(R.id.spinner_category);
         array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
-        spinner.setSelection(medicine.getCateId());
+        spinner.setSelection((medicine.getCateId()-1));
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
