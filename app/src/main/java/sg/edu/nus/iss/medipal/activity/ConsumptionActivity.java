@@ -37,6 +37,7 @@ public class ConsumptionActivity extends AppCompatActivity {
         listView= (ListView) findViewById(R.id.showConsumptionall);
         consumptionAdapter = new ConsumptionAdapter(getApplicationContext());
         listView.setAdapter(consumptionAdapter);
+
     }
 
 

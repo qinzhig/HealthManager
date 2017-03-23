@@ -72,9 +72,9 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
             viewHolder = (ConsumptionAdapter.ViewHolder) convertView.getTag();
         }
 
-      //  final Medicine medicine = medicines.get(position);
+        final Medicine medicine = medicines.get(position);
         final Consumption consumption = consumptions.get(position);
-        viewHolder.item_name.setText("Thanks!");
+        viewHolder.item_name.setText(medicine.getMedicine_name());
 
         viewHolder.btn_updateconsumption.setOnClickListener(new View.OnClickListener(){
 

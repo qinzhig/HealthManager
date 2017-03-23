@@ -43,6 +43,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     private EditText view_Quantity;
     HealthManager healthmanager = new HealthManager();
     Medicine medicine;
+    private boolean isEdit = true;
 
 
 
@@ -62,6 +63,10 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String medicine_name;
+        int quantity;
+        int medicine_id;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_consumption);
         //initial a medicine
@@ -75,9 +80,18 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         view_Quantity = (EditText) findViewById(R.id.Dosage);
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
-        view_Medicine.setText(medicine.getMedicine_name());
+      //  view_Medicine.setText(medicine.getMedicine_name());
+        Bundle bundleMedicine = getIntent().getExtras();
+        medicine_name = bundleMedicine.getString("medicine_name");
+        medicine_id = bundleMedicine.getInt("medicine_id");
+        quantity = bundleMedicine.getInt("quantity");
+        view_Medicine.setText(medicine_name);
+        view_Quantity.setText(Integer.toString(quantity));
         Log.v("MT","------------------------Cquantity="+medicine.getConsumequantity());
-        view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
+        Log.v("mateng","***************************name"+medicine_name);
+        Log.v("mateng","***************************quantity"+quantity);
+        Log.v("mateng","***************************bundle"+bundleMedicine);
+     //   view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
 
     }
 
@@ -147,6 +161,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         if (id == R.id.action_close) {
             finish();
+
         }
         if (id == R.id.action_done) {
             saveConsumption();
@@ -167,7 +182,9 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
             Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
             toast.show();
-            finish();
+           // finish();
+            Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);
+            startActivity(i);
         }
 
 
