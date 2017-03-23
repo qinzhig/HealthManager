@@ -23,7 +23,6 @@ import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.HomeFragment;
-import sg.edu.nus.iss.medipal.fragment.HomeTabFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
@@ -139,8 +138,7 @@ public class MainActivity extends AppCompatActivity
             inHomeFragment=true;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder,fragment).commit();
-        }
-        if (id == R.id.nav_personalBio) {
+        } else if (id == R.id.nav_personalBio) {
             resetTitle("Personal Bio");
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();

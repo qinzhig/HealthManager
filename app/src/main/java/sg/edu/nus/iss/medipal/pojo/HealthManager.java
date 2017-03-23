@@ -300,7 +300,7 @@ public class HealthManager {
                 calendar.setTimeInMillis(System.currentTimeMillis());
 
                 //Set a repeat reminder hour for the frequency alarm
-                int reminder_hour = Integer.valueOf(stime_hour_min[0]) + interval * i;
+                int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
 
                 calendar.set(Calendar.HOUR_OF_DAY, reminder_hour);
                 calendar.set(Calendar.MINUTE, Integer.valueOf(stime_hour_min[1]));
@@ -314,7 +314,7 @@ public class HealthManager {
 
                 Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime );
 
-                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,0, intent,PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,reminderId, intent,PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
 
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
                 //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),1000*15,pendingIntent);
