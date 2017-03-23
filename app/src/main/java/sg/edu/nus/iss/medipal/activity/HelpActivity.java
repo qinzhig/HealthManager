@@ -69,7 +69,6 @@ public class HelpActivity extends AppCompatActivity {
             btnSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prefManager.setSplashScreenPref("true");
                     launchHomeScreen();
                 }
             });
@@ -84,7 +83,6 @@ public class HelpActivity extends AppCompatActivity {
                         // move to next screen
                         viewPager.setCurrentItem(current);
                     } else {
-                        prefManager.setSplashScreenPref("true");
                         launchHomeScreen();
                     }
                 }
