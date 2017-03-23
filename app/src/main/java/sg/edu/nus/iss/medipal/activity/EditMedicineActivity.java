@@ -39,7 +39,7 @@ public class EditMedicineActivity extends AppCompatActivity {
     ImageButton button_add_category;
     TextView tv_reminder;
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
     Calendar calender = Calendar.getInstance();
@@ -96,8 +96,8 @@ public class EditMedicineActivity extends AppCompatActivity {
         if(medicine.isReminder()){
             remind_status = true;
 
-            et_frequency.setText(reminder.getFrequency());
-            et_interval.setText(reminder.getInterval());
+            et_frequency.setText(Integer.toString(reminder.getFrequency()));
+            et_interval.setText(Integer.toString(reminder.getInterval()));
             et_stime.setText(reminder.getStartTime());
 
         }else{
@@ -370,6 +370,9 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 position, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
+
+                        App.hm.setMeidicineReminder(et_stime.getText().toString(),medicine.getReminderId(),getApplicationContext());
+
                     }else {
                         //If the medicine doesn't own a reminder and user just add a reminder for this medicine,try to add a new reminder for this medicine
                         App.hm.addReminder(reminderid, Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
@@ -378,6 +381,8 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 position, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
+
+                        App.hm.setMeidicineReminder(et_stime.getText().toString(),reminderid,getApplicationContext());
                     }
 
 
