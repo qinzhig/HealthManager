@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MediPal-FT01</string>
+    <string name="home">Home</string>
     <string name="personalBio">Personal Bio</string>
+    <string name="ice">Contacts(ICE)</string>
     <string name="healthBio">Health Bio</string>
     <string name="medication">Medications</string>
     <string name="appointments">Appointments</string>

@@ -125,6 +125,40 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
     }
 
 
+    //get the appointment based on ID
+    public ArrayList<Appointment> getAppointment(String Id) {
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+
+        String whereClause = "id = ?";
+        String[] whereArgs = new String[] {
+                Id,
+        };
+        Log.d("Inside getAppDao-single", "Oitside "+ Id);
+        //similiar to query "select * from appointments"
+        Cursor cursor = database.query(DataBaseManager.APPOINTMENT_TABLE,
+                new String[] {
+                        DataBaseManager.APPMNT_ID,
+                        DataBaseManager.APPMNT_LOCATION,
+                        DataBaseManager.APPMNT_DATETIME,
+                        DataBaseManager.APPMNT_DESCRIPTION }, whereClause, whereArgs, null,
+                null, DataBaseManager.APPMNT_ID);
+
+        //loop through each result set to populate the appointment pojo and add to the list each time
+        while (cursor.moveToNext()) {
+            Log.d("Inside getAppDao-single", "Inside");
+            String datetime = cursor.getString(2);
+            Long storedTime = MediPalUtility.convertDateTimeToNumber(datetime);
+            Log.d("dateTime",storedTime.toString() );
+            int id = cursor.getInt(0);
+            String location = cursor.getString(1);
+            String desc = cursor.getString(3);
+            Appointment appointment = new Appointment(id, location, datetime, desc);
+            appointments.add(appointment);
+        }
+
+        return appointments;
+    }
+
     public int deleteAppointment(String appointmentId) {
         int noRowsDeleted;
         noRowsDeleted = database.delete(DataBaseManager.APPOINTMENT_TABLE, DataBaseManager.APPMNT_ID+"= ?" , new String[]{appointmentId});

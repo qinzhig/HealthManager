@@ -170,7 +170,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
             + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
             + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " FLOAT, "
-            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " DATETIME" + ")";
+            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " TEXT" + ")";
 
     //To store current DB instance
     private static DataBaseManager instance;
@@ -183,7 +183,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     }
 
     //constructor
-    private DataBaseManager(Context context) {
+    public DataBaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -230,8 +230,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + REMINDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
+<<<<<<< HEAD
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " +CREATE_CONSUMPTION_TABLE );
+=======
+        db.execSQL("DROP TABLE IF EXISTS " + ICE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MEASUREMENT_TABLE);
+>>>>>>> a96cf8409eb4ca2b18d8280eb21ca63e92ba364e
         onCreate(db);
     }}

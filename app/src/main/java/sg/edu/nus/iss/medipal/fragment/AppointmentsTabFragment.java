@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,23 +50,56 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FloatingActionButton aFab;
-        //get the tab position past from parent view(AppointmentFragment) - upcoming or past
+        //get the tab position past from parent view(AppointmentFragment) - upcoming / past / notification content
         final Bundle args = getArguments();
-        final int tabPosition = args.getInt("position");
+        int tabPosition = -1;
+        String notificationContent = null;
+        String notificationId = null;
 
+        FloatingActionButton aFab;
         //using the appointment_main xml to show in the main fragment
         appointmentFragment = inflater.inflate(R.layout.appointment_main, container, false);
-
         //get reference to the current context(
         mContext = appointmentFragment.getContext();
         //get the reference to appointmentManager object
         appointmentManager = new AppointmentManager(mContext);
-        //get the appointment details from the appointment table
-        appointmentList = appointmentManager.getAppointments(tabPosition);
-
         //get reference to the recyclerview
         appointmentsView = (RecyclerView) appointmentFragment.findViewById(R.id.appointmentrecycler_view);
+
+        //Floating button to implement adding appointments
+        aFab = (FloatingActionButton)appointmentFragment.findViewById(R.id.fab);
+
+        if (args != null) {
+            tabPosition= args.getInt("position");
+            notificationContent = args.getString("notification", null);
+            notificationId = args.getString("Id", null);
+        }
+
+        if((notificationContent != null) && (notificationId != null)){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Appointment");
+            aFab.setVisibility(View.GONE);
+            Log.d("Fragment tab ","before get");
+            //get the appointment details from the appointment table
+            //appointmentList = appointmentManager.getAppointment(notificationId);
+            appointmentList = appointmentManager.getAppointment(notificationId);
+        }
+        else
+        {
+            //get the appointment details from the appointment table
+            appointmentList = appointmentManager.getAppointments(tabPosition);
+
+
+            aFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent addAppointment = new Intent(mContext, AddEditAppointmentActivity.class);
+                    //Same activity is used for adding and editing; using the below flag to know which logic block to execute inside it.
+                    addAppointment.putExtra("isEdit",false);
+                    getActivity().startActivityForResult(addAppointment,101);
+                }
+            });
+        }
+
 
         if(appointmentList.isEmpty())
         {
@@ -77,17 +111,9 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
             populateRecyclerView(tabPosition);
         }
 
-        //Floating button to implement adding appointments
-        aFab = (FloatingActionButton)appointmentFragment.findViewById(R.id.fab);
-        aFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent addAppointment = new Intent(mContext, AddEditAppointmentActivity.class);
-                //Same activity is used for adding and editing; using the below flag to know which logic block to execute inside it.
-                addAppointment.putExtra("isEdit",false);
-                getActivity().startActivityForResult(addAppointment,101);
-            }
-        });
+
+
+
 
         return appointmentFragment;
     }

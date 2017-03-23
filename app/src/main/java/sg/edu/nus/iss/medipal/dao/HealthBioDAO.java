@@ -11,7 +11,6 @@ import java.util.List;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 import sg.edu.nus.iss.medipal.pojo.HealthBio;
-import sg.edu.nus.iss.medipal.pojo.PersonalBio;
 import sg.edu.nus.iss.medipal.utils.DataBaseUtility;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
@@ -28,10 +27,12 @@ public class HealthBioDAO extends DataBaseUtility {
     }
 
     public long insert(HealthBio healthBio) throws SQLException {
+
         long retCode = 0;
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseManager.HEALTHBIO_CONDITION, healthBio.getCondition());
-        contentValues.put(DataBaseManager.HEALTHBIO_STARTDATE, MediPalUtility.covertDateToString(healthBio.getStartDate()));
+        contentValues.put(DataBaseManager.HEALTHBIO_STARTDATE, MediPalUtility.convertDateToString(healthBio.getStartDate(),
+                "dd MMM yyyy"));
         contentValues.put(DataBaseManager.HEALTHBIO_CONDITIONTYPE, String.valueOf(healthBio.getConditionType()));
 
         try {
@@ -49,7 +50,8 @@ public class HealthBioDAO extends DataBaseUtility {
         long retCode = 0;
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseManager.HEALTHBIO_CONDITION, healthBio.getCondition());
-        contentValues.put(DataBaseManager.HEALTHBIO_STARTDATE, MediPalUtility.covertDateToString(healthBio.getStartDate()));
+        contentValues.put(DataBaseManager.HEALTHBIO_STARTDATE, MediPalUtility.convertDateToString(healthBio.getStartDate(),
+                "dd MMM yyyy"));
         contentValues.put(DataBaseManager.HEALTHBIO_CONDITIONTYPE, String.valueOf(healthBio.getConditionType()));
 
         try {
@@ -79,7 +81,8 @@ public class HealthBioDAO extends DataBaseUtility {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String condition = cursor.getString(1);
-                Date startDate = MediPalUtility.covertStringToDate(cursor.getString(2));
+                Date startDate = MediPalUtility.convertStringToDate(cursor.getString(2),
+                        "dd MMM yyyy");
                 char conditionType = cursor.getString(3).charAt(0);
 
                 healthBio = new

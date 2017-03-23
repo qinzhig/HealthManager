@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/list_item_hb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_margin"
+        android:elevation="3dp"
+        card_view:cardCornerRadius="@dimen/card_corner_radius">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/icethumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/doctor_image"
+                android:clickable="true"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/icelistitemname_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/title_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:paddingTop="@dimen/title_padding"
+                android:textColor="@color/title"
+                android:textSize="@dimen/title_size"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/icethumbnail" />
+
+            <TextView
+                android:id="@+id/icelistitemcontactnumber_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/icelistitemname_view"
+                android:paddingBottom="@dimen/title_padding"
+                android:layout_toEndOf="@+id/icethumbnail"
+                android:paddingLeft="@dimen/title_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:textSize="@dimen/datetime_size" />
+
+            <TextView
+                android:id="@+id/icelistitemcontacttype_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/icelistitemcontactnumber_view"
+                android:paddingBottom="@dimen/title_padding"
+                android:layout_toEndOf="@+id/icethumbnail"
+                android:paddingLeft="@dimen/title_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/desc_size" />
+
+            <ImageView
+                android:id="@+id/iceedit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/edit"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/icedelete" />
+
+            <ImageView
+                android:id="@+id/icedelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/delete_2"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/icelistitemcontacttype_view" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

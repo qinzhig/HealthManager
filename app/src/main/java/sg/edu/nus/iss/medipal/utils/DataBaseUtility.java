@@ -3,6 +3,7 @@ package sg.edu.nus.iss.medipal.utils;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 
@@ -32,6 +33,7 @@ public class DataBaseUtility {
         if(dbManager == null)
             dbManager = DataBaseManager.getDBInstance(mContext);
         database = dbManager.getWritableDatabase();
+        Log.d("inside open",Boolean.toString(database==null));
     }
 
     //close the connection

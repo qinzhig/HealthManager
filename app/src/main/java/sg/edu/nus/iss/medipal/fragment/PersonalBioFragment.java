@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
 import sg.edu.nus.iss.medipal.activity.AddEditPersonalBioActivity;
 import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.manager.PersonalBioManager;
@@ -53,14 +53,15 @@ public class PersonalBioFragment extends Fragment{
             name.setText(personalBio.getName());
             name.setTag(personalBio.getId());
             dob.setText(MediPalUtility.
-                    covertDateToString(personalBio.getDob()));
+                    convertDateToString(personalBio.getDob(),
+                            "dd MMM yyyy"));
             idNo.setText(personalBio.getIdNo());
             address.setText(personalBio.getAddress());
             postalCode.setText(String.valueOf(personalBio.getPostalCode()));
             height.setText(String.valueOf(personalBio.getHeight()));
             bloodType.setText(personalBio.getBloodType());
 
-            ((MainActivity) getActivity()).setActionBarTitle("MediPal_FT01 - Personal Bio");
+            ((MainActivity) getActivity()).setActionBarTitle("Personal Bio");
         }
 
         aFab = (FloatingActionButton)personalBioFragment.findViewById(R.id.fab);
@@ -68,7 +69,7 @@ public class PersonalBioFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent personalBioIntent = new Intent(getContext(), AddEditPersonalBioActivity.class);
-                startActivity(personalBioIntent);
+                getActivity().startActivityForResult(personalBioIntent,3);
             }
         });
 
