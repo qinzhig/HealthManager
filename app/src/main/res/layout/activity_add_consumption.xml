@@ -35,20 +35,21 @@
                 android:layout_marginTop="20dp"
                 android:id="@+id/medicine_name"
                 android:textStyle="bold"/>
-            <Spinner
-                android:id="@+id/spn_medicine"
-                android:layout_below="@id/medicine_name"
+
+            <TextView
+                android:id="@+id/view_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_below="@id/medicine_name"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
-                >
-            </Spinner>
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+            </TextView>
+
             <TextView
                 android:id="@+id/Quantity"
-                android:layout_below="@id/spn_medicine"
+                android:layout_below="@id/view_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Quantity"
@@ -56,7 +57,7 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="20dp" />
-            <TextView
+            <EditText
                 android:id="@+id/Dosage"
                 android:layout_below="@id/Quantity"
                 android:layout_width="match_parent"
@@ -87,8 +88,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/tv_date"
                     android:layout_alignStart="@id/tv_date"
-                    android:inputType="date"
-                    android:focusable="false"/>
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:ems="7"/>
                 <TextView
                     android:id="@+id/tv_time"
                     android:text="Time"
@@ -108,7 +110,8 @@
                     android:focusable="false"
                     android:layout_alignBaseline="@id/et_select_date"
                     android:hint="Time"
-                    android:inputType="datetime"/>
+                    android:ems="7"
+                    android:inputType="none"/>
 
 
             </RelativeLayout>

@@ -207,6 +207,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_APPOINTMENT_TABLE);
         db.execSQL(CREATE_ICE_TABLE);
         db.execSQL(CREATE_MEASUREMENT_TABLE);
+        db.execSQL(CREATE_CONSUMPTION_TABLE);
 
         //Initalize the pre-defined medicine category to SQLite
         db.execSQL(INSERT_PREDEFINED_CATEGORY1);
@@ -231,5 +232,6 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " +CREATE_CONSUMPTION_TABLE );
         onCreate(db);
     }}

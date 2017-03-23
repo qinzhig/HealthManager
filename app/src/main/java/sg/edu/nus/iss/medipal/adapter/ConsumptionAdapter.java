@@ -17,78 +17,78 @@ import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
-import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
+import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
- * Created by zhiguo on 15/3/17.
+ * Created by apple on 22/03/2017.
  */
 
-public class MedicineAdapter extends ArrayAdapter<Medicine>{
-
+public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
     private Context context;
+    private List<Consumption>consumptions = new ArrayList<Consumption>();
+    ConsumptionManager consumptionManager ;
     private List<Medicine> medicines = new ArrayList<>();
 
-    public MedicineAdapter(Context context){
+ public ConsumptionAdapter(Context context) {
+     super(context, R.layout.consumption_item);
+     consumptionManager = new ConsumptionManager(context);
+     this.context=context;
+     refreshConsumptions();
+ }
 
-      //  super(context, R.layout.medicine_category_row_layout);
-        super(context,R.layout.medicine_category_row_layout);
-        this.context=context;
-        refreshMedicines();
-    }
+ public void refreshConsumptions(){
+     consumptions.clear();
+     consumptions.addAll(consumptionManager.getConsumptions(this.context));
 
-    public void refreshMedicines() {
+     Log.v("DEBUG",".............Consumptiondapter+++++++++++++++++++++++++++++++++++++++++++++ Size = "+consumptions.size());
 
-        medicines.clear();
-
-        medicines.addAll(App.hm.getMedicines(this.context));
-
-        Log.v("DEBUG",".............MedicineAdapter+++++++++++++++++++++++++++++++++++++++++++++ Size = "+medicines.size());
-
-        notifyDataSetChanged();
-    }
+     notifyDataSetChanged();
+ }
 
     public int getCount(){
-        return  medicines.size();
+        return  consumptions.size();
     }
 
     static class ViewHolder{
-        TextView tvName;
-        Button btnUpdate,btnRemove;
+        TextView item_name;
+        Button btn_updateconsumption,btn_removeconsumption;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent){
-        ViewHolder viewHolder;
+        ConsumptionAdapter.ViewHolder viewHolder;
 
         if (convertView == null) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.medicine_category_row_layout, parent, false);
+            convertView = inflater.inflate(R.layout.consumption_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.btnUpdate = (Button) convertView.findViewById(R.id.btn_update);
-            viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_remove);
+            viewHolder.item_name = (TextView) convertView.findViewById(R.id.item_name);
+            viewHolder.btn_updateconsumption = (Button) convertView.findViewById(R.id.btn_updateconsumption);
+            viewHolder.btn_removeconsumption = (Button) convertView.findViewById(R.id.btn_removeconsumption);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ConsumptionAdapter.ViewHolder) convertView.getTag();
         }
 
-        final Medicine medicine = medicines.get(position);
-        viewHolder.tvName.setText(medicine.getMedicine_name());
+      //  final Medicine medicine = medicines.get(position);
+        final Consumption consumption = consumptions.get(position);
+        viewHolder.item_name.setText("Thanks!");
 
-        viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener(){
+        viewHolder.btn_updateconsumption.setOnClickListener(new View.OnClickListener(){
 
             @Override public void onClick(View v) {
 
-                Intent updateMedicine = new Intent(context, EditMedicineActivity.class);
+                Intent updateConsumption = new Intent(context, EditMedicineActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("medicineInfo",medicine);
+               // bundle.putSerializable("medicineInfo",medicine);
 
-                updateMedicine.setClass(context,EditMedicineActivity.class);
-                updateMedicine.putExtras(bundle);
+                updateConsumption.setClass(context,EditMedicineActivity.class);
+                updateConsumption.putExtras(bundle);
 
-                Log.v("TAG","--------------------MedicineAdapter Update   Object " + medicine.toString());
+                Log.v("TAG","--------------------ConsumotionAdapter Update   Object " + "Good night!");
 
 //                Log.v("TAG","--------------------MedicineAdapter Update   ID " + medicine.getId() );
 //                Log.v("TAG","--------------------MedicineAdapter Update  name " + medicine.getMedicine_name() );
@@ -97,7 +97,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
 
 
-                ((Activity)context).startActivity(updateMedicine);
+                ((Activity)context).startActivity(updateConsumption);
 
 
 //                updateMedicine.putExtra("id",medicine.getId());
@@ -118,15 +118,15 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
             }
         });
 
-        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btn_removeconsumption.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                App.hm.deleteMedicine(medicine.getId(),context);
-                refreshMedicines();
+                consumptionManager.deleteConsumption(consumption.getId(),context);
+                refreshConsumptions();
             }
         });
 
 
-        Log.v("DEBUG",".............++++++++++++++++++++++++++++++++++++++++++++++ Size = "+medicines.size());
+        Log.v("DEBUG",".............++++++++++++++++++++++++++++++++++++++++++++++ Size = "+consumptions.size());
 
         return convertView;
 

@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
+        else if (id == R.id.nav_consumption) {
+            Intent intent_consumption = new Intent(getApplicationContext(),ConsumptionActivity.class);
+            startActivity(intent_consumption);
+        }
+
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
@@ -205,7 +210,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.helpswitch)
+        if(id == R.id.settings_togglehelp)
         {
             item.setChecked(!item.isChecked());
             return true;
