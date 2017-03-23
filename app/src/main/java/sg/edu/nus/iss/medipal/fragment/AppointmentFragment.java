@@ -7,10 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 
 /**
  * Created by : Navi on 06-03-2017.
@@ -40,7 +37,7 @@ public class AppointmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.appointment_tabview,container,false);
+        View view = inflater.inflate(R.layout.layout_tabview,container,false);
 
         tabLayout = (TabLayout) view.findViewById(R.id.appointment_tabs);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.appointment_viewpager);

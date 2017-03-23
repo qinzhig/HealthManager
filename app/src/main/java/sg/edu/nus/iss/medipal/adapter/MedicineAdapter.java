@@ -31,7 +31,8 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
     public MedicineAdapter(Context context){
 
-        super(context, R.layout.medicine_category_row_layout);
+      //  super(context, R.layout.medicine_category_row_layout);
+        super(context,R.layout.medicine_category_row_layout);
         this.context=context;
         refreshMedicines();
     }

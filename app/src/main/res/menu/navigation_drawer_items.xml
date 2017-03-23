@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-
+    <group android:id="@+id/group1" android:checkableBehavior="single">
         <item
+            android:orderInCategory="0"
+            android:id="@+id/nav_home"
+            android:title="@string/home" />
+        <item
+            android:orderInCategory="0"
             android:id="@+id/nav_personalBio"
             android:title="@string/personalBio" />
 
         <item
+            android:orderInCategory="0"
             android:id="@+id/nav_healthBio"
             android:title="@string/healthBio" />
 
         <item
+            android:orderInCategory="0"
+            android:id="@+id/nav_ice"
+            android:title="@string/ice" />
+    </group>
+    <group android:id="@+id/group2" android:checkableBehavior="single">
+        <item
+            android:orderInCategory="1"
             android:id="@+id/nav_medicine"
             android:title="@string/medication" />
         <item
+            android:orderInCategory="1"
             android:id="@+id/nav_appointments"
             android:title="@string/appointments" />
         <item
+            android:orderInCategory="1"
             android:id="@+id/nav_measurement"
             android:title="Measurements" />
-        <item
-            android:id="@+id/nav_ice"
-            android:title="ICEs" />
-        <item
-            android:id="@+id/nav_notifications"
-            android:title="@string/notifications" />
+    </group>
+    <group android:id="@+id/group3" android:checkableBehavior="single">
 
         <item
+            android:orderInCategory="2"
             android:id="@+id/nav_reports"
             android:title="@string/reports" />
+        <item
+            android:id="@+id/nav_consumption"
+            android:title="consumption"/>
     </group>
 
 </menu>

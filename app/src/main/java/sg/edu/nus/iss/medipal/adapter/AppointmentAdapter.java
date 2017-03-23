@@ -41,6 +41,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private Context mContext;
     private List<Appointment> appointmentList;
     private Integer fragmentPosition;
+    private Boolean fromHomeFragment;
 
     //callback listener to communicate with the parent activity
     private AdapterCallbackInterface mCallback;
@@ -73,6 +74,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             edit = (ImageView) view.findViewById(R.id.edit);
             remainderOne = (TextView) view.findViewById(R.id.appointmentremainder_one);
             remainderTwo = (TextView) view.findViewById(R.id.appointmentremainder_two);
+
+            if(fromHomeFragment != null && fromHomeFragment) {
+                delete.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+            }
 
             //edit features are to made available for active(upcoming) appointments only
             if(fragmentPosition == UPCOMING_APPOINTMENTS) {
@@ -155,6 +161,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.appointmentList = appointmentList;
         appointmentPreference = new PreferenceManager(mContext);
         this.mCallback = mCallback;
+        if(fragmentPosition == 2) {
+            fromHomeFragment = true;
+            fragmentPosition = 0;
+        }
         this.fragmentPosition = fragmentPosition;
     }
 

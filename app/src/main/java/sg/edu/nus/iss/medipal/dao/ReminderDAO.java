@@ -7,7 +7,6 @@ import android.database.SQLException;
 
 import java.util.ArrayList;
 
-import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
 import sg.edu.nus.iss.medipal.utils.DataBaseUtility;
 
@@ -29,7 +28,7 @@ public class ReminderDAO extends DataBaseUtility {
         super(context);
     }
 
-    public Reminder find(Medicine medicine) throws  SQLException
+    public Reminder find(int reminderid) throws  SQLException
     {
         Cursor cursor;
 
@@ -41,7 +40,7 @@ public class ReminderDAO extends DataBaseUtility {
                     REMINDER_FREQUENCY,
                     REMINDER_TIME,
                     REMINDER_INTERVAL,
-                    },  WHERE_ID_EQUALS, new String[]{String.valueOf(medicine.getReminderId())},null,null,null);
+                    },  WHERE_ID_EQUALS, new String[]{String.valueOf(reminderid)},null,null,null);
 
         if(cursor.moveToNext())
         {
@@ -67,6 +66,7 @@ public class ReminderDAO extends DataBaseUtility {
         long retCode = 0;
         //use the REMINDER pojo to populate the table column values
         ContentValues values =  new ContentValues();
+        values.put(REMINDER_ID,reminder.getId());
         values.put(REMINDER_FREQUENCY, reminder.getFrequency());
         values.put(REMINDER_TIME, reminder.getStartTime());
         values.put(REMINDER_INTERVAL, reminder.getInterval());

@@ -61,7 +61,7 @@ public class PersonalBioFragment extends Fragment{
             height.setText(String.valueOf(personalBio.getHeight()));
             bloodType.setText(personalBio.getBloodType());
 
-            ((MainActivity) getActivity()).setActionBarTitle("MediPal_FT01 - Personal Bio");
+            ((MainActivity) getActivity()).setActionBarTitle("Personal Bio");
         }
 
         aFab = (FloatingActionButton)personalBioFragment.findViewById(R.id.fab);
@@ -70,7 +70,8 @@ public class PersonalBioFragment extends Fragment{
             public void onClick(View view) {
                 Intent personalBioIntent = new Intent(getContext(), AddEditPersonalBioActivity.class);
                 personalBioIntent.putExtra("firstTime",false);
-                startActivity(personalBioIntent);
+                getActivity().startActivityForResult(personalBioIntent,3);
+
             }
         });
 

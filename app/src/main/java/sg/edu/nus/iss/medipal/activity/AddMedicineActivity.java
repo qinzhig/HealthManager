@@ -42,7 +42,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     private Spinner spinner,spinner_dosage;
     Button button_save;
     ImageButton button_add_category;
-    TextView tv_reminder;
+    TextView tv_reminder,tv_reminder_sw;
 
     private Switch switch_remind;
     private boolean remind_status;
@@ -83,6 +83,17 @@ public class AddMedicineActivity extends AppCompatActivity {
         array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
 
+        //Reminder setting for medicine
+        tv_reminder_sw = (TextView) findViewById(R.id.tv_reminder_sw);
+        tv_reminder = (TextView) findViewById(R.id.tv_reminder);
+        et_frequency = (EditText) findViewById(R.id.et_frequency);
+        et_interval = (EditText) findViewById(R.id.et_interval);
+        et_stime = (EditText) findViewById(R.id.et_stime);
+
+        //Default category is SUP and switch for it is ON
+        switch_remind = (Switch) findViewById(R.id.switch_remind);
+
+
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -90,6 +101,38 @@ public class AddMedicineActivity extends AppCompatActivity {
                 arg0.setVisibility(View.VISIBLE);
 
                 position=arg2;
+
+                if(position>0 && position <4){
+
+                    switch_remind.setChecked(true);
+
+                    tv_reminder_sw.setVisibility(View.INVISIBLE);
+                    switch_remind.setVisibility(View.INVISIBLE);
+
+
+                    tv_reminder.setVisibility(View.VISIBLE);
+                    et_frequency.setVisibility(View.VISIBLE);
+                    et_interval.setVisibility(View.VISIBLE);
+                    et_stime.setVisibility(View.VISIBLE);
+
+                    remind_status = true;
+
+                }else{
+                    tv_reminder_sw.setVisibility(View.VISIBLE);
+                    switch_remind.setVisibility(View.VISIBLE);
+                    switch_remind.setChecked(false);
+
+                    tv_reminder.setVisibility(View.INVISIBLE);
+                    et_frequency.setVisibility(View.INVISIBLE);
+                    et_interval.setVisibility(View.INVISIBLE);
+                    et_stime.setVisibility(View.INVISIBLE);
+
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
+
+                    remind_status = false;
+
+                }
 
                 Toast toast = Toast.makeText(AddMedicineActivity.this,"Category Selected Item"+position,Toast.LENGTH_SHORT);
                 toast.show();
@@ -208,39 +251,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         //End of computing the expireFactor
 
 
-
-
-        //Reminder setting for medicine
-        tv_reminder = (TextView) findViewById(R.id.tv_reminder);
-        et_frequency = (EditText) findViewById(R.id.et_frequency);
-        et_interval = (EditText) findViewById(R.id.et_interval);
-        et_stime = (EditText) findViewById(R.id.et_stime);
-
-        switch_remind = (Switch) findViewById(R.id.switch_remind);
-
-        //set the switch to ON
-        if(spinner.getSelectedItemPosition() > 0 && spinner.getSelectedItemPosition() < 4)
-        {
-            switch_remind.setChecked(true);
-            remind_status = true;
-
-            et_frequency.setText("2");
-            et_interval.setText("8");
-
-        }else{
-            switch_remind.setChecked(false);
-            remind_status = false;
-
-            tv_reminder.setVisibility(View.INVISIBLE);
-            et_frequency.setVisibility(View.INVISIBLE);
-            et_interval.setVisibility(View.INVISIBLE);
-            et_stime.setVisibility(View.INVISIBLE);
-
-            et_frequency.setText("2");
-            et_interval.setText("8");
-
-        }
-
         //attach a listener to check for changes in state
         switch_remind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -268,6 +278,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                     et_frequency.setText("0");
                     et_interval.setText("0");
+
                 }
 
             }
@@ -308,16 +319,30 @@ public class AddMedicineActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if(input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+
+                int reminderid = (int)( (Math.random()*9 + 1) * 10000);
+
+                boolean no_input_empty;
+
+                if((et_cquantity.getText().length() >0 && et_quanity.getText().length()>0 && et_threshold.getText().length()>0)){
+                    no_input_empty = true;
+                }else{
+                    no_input_empty = false;
+                }
+
+                if(no_input_empty && input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
                         Integer.valueOf(et_quanity.getText().toString().trim()),Integer.valueOf(et_cquantity.getText().toString().trim()),
                         Integer.valueOf(et_threshold.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),
-                        Integer.valueOf(et_interval.getText().toString().trim()))) {
+                        Integer.valueOf(et_interval.getText().toString().trim())) ) {
 
 
-                    App.hm.addReminder(0,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
+                    if(remind_status){
+                        App.hm.addReminder(reminderid,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),
+                                Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
+                    }
 
                     App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                            position,0,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
+                            position,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
                             spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
                             Integer.valueOf(et_threshold.getText().toString().trim()),et_date_get.getText().toString(),expire_factor,getApplicationContext());
 
@@ -431,4 +456,5 @@ public class AddMedicineActivity extends AppCompatActivity {
         return validate_status;
 
     }
+
 }

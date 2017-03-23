@@ -22,24 +22,26 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
+import sg.edu.nus.iss.medipal.fragment.HomeFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
 import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.ReportFragment;
-import sg.edu.nus.iss.medipal.fragment.dummy.DummyContent;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        IceFragment.OnListFragmentInteractionListener, MeasurementFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private boolean refreshHealthBioFragment;
     private boolean refreshAppointmentFragment;
+    private boolean refreshPersonalBioFragment;
+    private Boolean inHomeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        inHomeFragment = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         Log.d("Activity", "started");
@@ -65,11 +67,24 @@ public class MainActivity extends AppCompatActivity
                 getIntent().removeExtra("notification");
                 getIntent().removeExtra("Id");
             }
+        } else {
+            loadHomeFragment();
         }
     }
 
-    private void showFragment(String fragmentType, String notificationContent, String notificationId) {
+    private void loadHomeFragment() {
+        Log.d("Activity", "fragment home load");
+        //use the appointment view to show in the main page
+        Fragment fragment = new HomeFragment();
+        inHomeFragment = true;
+        //move this to outside when all other modules are implemented using fragments
+        //populate the selected view(fragment) in the main page using fragment manager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+    }
 
+    private void showFragment(String fragmentType, String notificationContent, String notificationId) {
+        inHomeFragment = false;
         if (fragmentType.equalsIgnoreCase("Appointment")) {
             Log.d("Activity", "fragment load");
             //use the appointment view to show in the main page
@@ -113,11 +128,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String Title;
         Fragment fragment;
+        inHomeFragment = false;
+
+        if (id == R.id.nav_home) {
+            resetTitle("Home");
+            fragment = new HomeFragment();
+            inHomeFragment = true;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
         if (id == R.id.nav_personalBio) {
+
+            resetTitle("Personal Bio");
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_healthBio) {
+            resetTitle("Health Bio");
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -129,7 +156,6 @@ public class MainActivity extends AppCompatActivity
             //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-
         } else if (id == R.id.nav_medicine) {
             Intent intent_medicine = new Intent(getApplicationContext(), MedicineActivity.class);
             startActivity(intent_medicine);
@@ -141,11 +167,21 @@ public class MainActivity extends AppCompatActivity
             fragment = new IceFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else if (id == R.id.nav_measurement) {
+            resetTitle("Measurements");
+            fragment = new MeasurementFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_reports) {
+            resetTitle("Reports");
             fragment = new ReportFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else if (id == R.id.nav_consumption) {
+            Intent intent_consumption = new Intent(getApplicationContext(), ConsumptionActivity.class);
+            startActivity(intent_consumption);
         }
+
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
@@ -160,17 +196,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to exit?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+        if (inHomeFragment == true) {
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            loadHomeFragment();
+        }
     }
 
     @Override
@@ -192,6 +231,14 @@ public class MainActivity extends AppCompatActivity
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else if (refreshPersonalBioFragment) {
+            refreshPersonalBioFragment = false;
+            fragment = new PersonalBioFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        } else {
+            //  if(inHomeFragment)
+            // loadHomeFragment();
         }
     }
 
@@ -206,19 +253,15 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == 0) {
                 refreshHealthBioFragment = true;
             }
+        } else if (requestCode == 3) {
+            if (resultCode == 0) {
+                refreshPersonalBioFragment = true;
+            }
         }
     }
 
     public void setActionBarTitle(String title) {
         toolbar.setTitle(title);
-    }
-
-    public void onIceSelected(DummyContent.DummyItem item) {
-
-    }
-
-    public void onMeasurementSelected(DummyContent.DummyItem item) {
-
     }
 
     @Override
@@ -261,7 +304,7 @@ public class MainActivity extends AppCompatActivity
                 prefManager.setSplashScreenPref("true");
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
+
 }
