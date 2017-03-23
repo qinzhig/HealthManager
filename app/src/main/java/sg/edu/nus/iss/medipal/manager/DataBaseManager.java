@@ -230,13 +230,10 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + REMINDER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + APPOINTMENT_TABLE);
-<<<<<<< HEAD
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_ICE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_MEASUREMENT_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " +CREATE_CONSUMPTION_TABLE );
-=======
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_CONSUMPTION_TABLE );
+
         db.execSQL("DROP TABLE IF EXISTS " + ICE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + MEASUREMENT_TABLE);
->>>>>>> a96cf8409eb4ca2b18d8280eb21ca63e92ba364e
+
         onCreate(db);
     }}
