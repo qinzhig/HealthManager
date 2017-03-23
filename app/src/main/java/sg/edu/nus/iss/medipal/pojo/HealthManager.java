@@ -299,11 +299,11 @@ public class HealthManager {
 
     //Setup repeat reminder for the medicine consumpotion
 
-    public void setMeidicineReminder(String stime, int interval, int frequency,int reminderId, Context context){
+    public void setMeidicineReminder(boolean alarmSwitch,String stime, int interval, int frequency,int reminderId, Context context){
 
-
-
-
+        //To avoid the reminder repeat after determined duration of consumption period,
+        // we have just divided the hour repeat reminders to few daily reapeted
+        //This will be accurate and will not generate any invalidate Alarms
         for(int i=0; i < frequency ; i++){
 
             if(!stime.isEmpty()){
@@ -317,13 +317,13 @@ public class HealthManager {
                 calendar.setTimeInMillis(System.currentTimeMillis());
 
                 //Set a repeat reminder hour for the frequency alarm
-                //int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
-                int reminder_min  = (Integer.valueOf(stime_hour_min[1]) + interval * i) % 60;
+                int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
+                //int reminder_min  = (Integer.valueOf(stime_hour_min[1]) + interval * i) % 60;
 
-                //calendar.set(Calendar.HOUR_OF_DAY, reminder_hour);
-                calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(stime_hour_min[0]));
-                //calendar.set(Calendar.MINUTE, Integer.valueOf(stime_hour_min[1]));
-                calendar.set(Calendar.MINUTE, reminder_min);
+                calendar.set(Calendar.HOUR_OF_DAY, reminder_hour);
+                //calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(stime_hour_min[0]));
+                calendar.set(Calendar.MINUTE, Integer.valueOf(stime_hour_min[1]));
+                //calendar.set(Calendar.MINUTE, reminder_min);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
 
@@ -331,30 +331,29 @@ public class HealthManager {
 
                 Intent intent = new Intent(context, RemindAlarmReceiver.class);
                 //intent.setAction("MedicineReminder");
+                //Set the reminderID and startTime in Intent data for scheduled repeat reminder
                 intent.putExtra("ConsumptionReminderId", Integer.toString(repeat_reminderID));
-                //intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
-                intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
+                intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
+                //intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
 
-                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );
+                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );
 
-                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
+                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
 
-                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_CANCEL_CURRENT);
 
-                //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),1000*60*2,pendingIntent);
-
-                Log.v("ALARM","-------------------<<<<<<<<<<<<<<<< ALRAM TIME SET  + Start Time = " + calendar.getTimeInMillis() );
-
-
-
-
-            }else{
+                if(alarmSwitch){
+                    //Set the scheduled daily repeat reminder
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+                    //Testing Alarm which set the interval to 2 mins
+                    //alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),1000*60*2,pendingIntent);
+                }else{
+                    //If the Reminder Alarm set to false,we will cancle the repeat alarms for this reminder
+                    alarmManager.cancel(pendingIntent);
+                }
 
             }
         }
-
-
 
     }
 
