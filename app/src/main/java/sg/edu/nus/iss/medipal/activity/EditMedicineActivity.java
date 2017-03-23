@@ -367,7 +367,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                         App.hm.updateReminder(medicine.getReminderId(),Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
 
                         App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                                position, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                position+1, medicine.getReminderId(), remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
@@ -379,7 +379,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                         App.hm.addReminder(reminderid, Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
 
                         App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                                position, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                                position+1, reminderid, remind_status, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 

@@ -344,7 +344,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                     }
 
                     App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
-                            position,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
+                            position+1,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
                             spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
                             Integer.valueOf(et_threshold.getText().toString().trim()),et_date_get.getText().toString(),expire_factor,getApplicationContext());
 
