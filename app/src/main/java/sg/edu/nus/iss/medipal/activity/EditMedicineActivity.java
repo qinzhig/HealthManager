@@ -371,7 +371,8 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
-                        App.hm.setMeidicineReminder(et_stime.getText().toString(),medicine.getReminderId(),getApplicationContext());
+                        App.hm.setMeidicineReminder(et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                                Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),getApplicationContext());
 
                     }else {
                         //If the medicine doesn't own a reminder and user just add a reminder for this medicine,try to add a new reminder for this medicine
@@ -382,7 +383,8 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
-                        App.hm.setMeidicineReminder(et_stime.getText().toString(),reminderid,getApplicationContext());
+                        App.hm.setMeidicineReminder(et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                                Integer.valueOf(et_frequency.getText().toString().trim()), reminderid,getApplicationContext());
                     }
 
 
