@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,7 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
     private Spinner _contactTypeSpinner;
     private EditText _descriptionEdit;
 
+    private Integer _id = null;
     private String _nameStr;
     private String _contactNoStr;
     private Integer _contactType;
@@ -34,11 +37,9 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
         setContentView(R.layout.activity_ice);
 
-        /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.ice_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-        */
 
         _nameEdit = (EditText) findViewById(R.id.icename_edit);
         _contactNoEdit = (EditText) findViewById(R.id.icecontactnumber_edit);
@@ -50,6 +51,35 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
         Bundle intentExtras = getIntent().getExtras();
         boolean isEdit = intentExtras.getBoolean("isEdit");
+
+        if (isEdit) {
+            _id = intentExtras.getInt("id");
+            _nameEdit.setText(intentExtras.get("name").toString());
+            _contactNoEdit.setText(intentExtras.get("contactNo").toString());
+
+            if (intentExtras.getInt("contactType") == 0) {
+                _contactTypeSpinner.setSelection(0);
+            } else if (intentExtras.getInt("contactType") == 1) {
+                _contactTypeSpinner.setSelection(1);
+            }
+
+            _descriptionEdit.setText(intentExtras.get("description").toString());
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_action_items, menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_close);
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        return true;
     }
 
     @Override
@@ -70,7 +100,12 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
             _descriptionStr = _descriptionEdit.getText().toString();
 
             if (validateIce(_nameStr, _contactNoStr, _descriptionStr)) {
-                addIce(_nameStr, _contactNoStr, _contactType, _descriptionStr);
+                if(_id != null) {
+                    updateIce(_id, _nameStr, _contactNoStr, _contactType, _descriptionStr);
+                } else {
+                    addIce(_nameStr, _contactNoStr, _contactType, _descriptionStr);
+                }
+
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
@@ -85,7 +120,7 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
                                                   Toast.makeText(IceActivity.this, "Success", Toast.LENGTH_LONG).show();
                                               }
                                           },
-                        1000);
+                        500);
 
             }
         }
@@ -96,6 +131,11 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
     private void addIce(String name, String contactNo, Integer contactType, String description) {
         IceManager iceManager = new IceManager();
         iceManager.addIce(name, contactNo, contactType, description, this);
+    }
+
+    private void updateIce(Integer id, String name, String contactNo, Integer contactType, String description) {
+        IceManager iceManager = new IceManager();
+        iceManager.updateIce(id , name, contactNo, contactType, description, this);
     }
 
     private boolean validateIce(String name, String contactNo, String description) {

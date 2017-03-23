@@ -42,7 +42,7 @@ public class IceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ice_list, container, false);
 
         _iceManager = new IceManager();
-        _iceList = _iceManager.getIce(getContext());
+        _iceList = _iceManager.getIces(getContext());
 
         if(_iceList.isEmpty()) {
             TextView txtView = (TextView) view.findViewById(R.id.icelist_placeholder);

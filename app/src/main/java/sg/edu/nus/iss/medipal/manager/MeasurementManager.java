@@ -21,7 +21,7 @@ public class MeasurementManager {
         return _measurementDAO.insert(measurement);
     }
 
-    public List<Measurement> getMeasurement(Context context) {
+    public List<Measurement> getMeasurements(Context context) {
         _measurementDAO = new MeasurementDAO(context);
         return _measurementDAO.retrieve();
     }

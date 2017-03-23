@@ -6,13 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.utils.DataBaseUtility;
-import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by levis on 3/23/2017.
@@ -43,7 +41,6 @@ public class IceDAO extends DataBaseUtility {
         return retCode;
     }
 
-
     public long update(Ice ice) {
         long retCode = 0;
         ContentValues contentValues = new ContentValues();
@@ -62,7 +59,6 @@ public class IceDAO extends DataBaseUtility {
     }
 
     public List<Ice> retrieve() {
-
         Ice ice = null;
         List<Ice> iceList = new ArrayList<Ice>();
 
@@ -92,15 +88,13 @@ public class IceDAO extends DataBaseUtility {
         return iceList;
     }
 
-
-    public long delete(String iceId) {
-
+    public long delete(String id) {
         long retCode = 0;
 
         try {
-            database.delete(DataBaseManager.ICE_TABLE, DataBaseManager.ICE_ID + "= ?", new String[]{iceId});
+            database.delete(DataBaseManager.ICE_TABLE, DataBaseManager.ICE_ID + "= ?", new String[]{id});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
+            sqlExp.printStackTrace();
             retCode = -1; //set return value to error code so that caller can handle error
         }
         return retCode;

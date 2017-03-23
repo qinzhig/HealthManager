@@ -5,17 +5,23 @@ package sg.edu.nus.iss.medipal.adapter;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.app.Activity;
 
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
+import sg.edu.nus.iss.medipal.activity.IceActivity;
 
 public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
 
@@ -23,8 +29,11 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     private List<Ice> _iceList;
 
     public class IceViewHolder extends RecyclerView.ViewHolder {
-        public TextView _name, _contactNo, _contactType;
-        public ImageView _edit, _delete;
+        public TextView _name;
+        public TextView _contactNo;
+        public TextView _contactType;
+        public ImageView _edit;
+        public ImageView _delete;
 
         public IceViewHolder(View view) {
             super(view);
@@ -35,22 +44,24 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _edit = (ImageView) view.findViewById(R.id.iceedit);
             _delete = (ImageView) view.findViewById(R.id.icedelete);
 
-            /*
-            edit.setOnClickListener(new View.OnClickListener() {
+            _edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent addEditHealthBio = new Intent(_context, AddEditHealthBioActivity.class);
-                    addEditHealthBio.putExtra("id",condition.getTag().toString());
-                    addEditHealthBio.putExtra("condition",condition.getText().toString());
-                    addEditHealthBio.putExtra("startDate",startDate.getText().toString());
-                    addEditHealthBio.putExtra("conditionType",conditionType.getText().toString());
-                    addEditHealthBio.putExtra("isEdit",true);
-                    ((Activity)_context).startActivityForResult(addEditHealthBio,2);
+                    IceManager iceManager = new IceManager();
+                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+
+                    Intent iceIntent = new Intent(_context, IceActivity.class);
+                    iceIntent.putExtra("id", ice.getId());
+                    iceIntent.putExtra("name", ice.getName());
+                    iceIntent.putExtra("contactNo", ice.getContactNo());
+                    iceIntent.putExtra("contactType", ice.getContactType());
+                    iceIntent.putExtra("description", ice.getDescription());
+                    iceIntent.putExtra("isEdit", true);
+                    ((Activity)_context).startActivityForResult(iceIntent, 103);
                 }
             });
-            */
-            /*
-            delete.setOnClickListener(new View.OnClickListener() {
+
+            _delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(view.getContext())
@@ -58,8 +69,8 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    IceManager healthBioManager = new IceManager();
-                                    healthBioManager.deleteIce(condition.getTag().toString(), _context);
+                                    IceManager iceManager = new IceManager();
+                                    iceManager.deleteIce(getAdapterPosition(), _context);
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -67,12 +78,11 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                             .show();
                 }
             });
-            */
         }
     }
 
-    public IceAdapter(Context mContext, List<Ice> iceBioList) {
-        this._context = mContext;
+    public IceAdapter(Context context, List<Ice> iceBioList) {
+        this._context = context;
         this._iceList = iceBioList;
     }
 
@@ -104,7 +114,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         return _iceList.size();
     }
 
-    public void delete(int position) { //removes the row
+    public void delete(int position) {
         _iceList.remove(position);
         notifyItemRemoved(position);
     }

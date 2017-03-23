@@ -38,7 +38,7 @@ public class MeasurementFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_measurement_list, container, false);
 
         _measurementManager = new MeasurementManager();
-        _measurementList = _measurementManager.getMeasurement(getContext());
+        _measurementList = _measurementManager.getMeasurements(getContext());
 
         if(_measurementList.isEmpty()) {
             TextView txtView = (TextView) view.findViewById(R.id.measurementlist_placeholder);

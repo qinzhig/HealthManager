@@ -15,13 +15,18 @@ public class IceManager {
 
     IceDAO _iceDAO = null;
 
-    public long addIce(String name, String contactNo, int contactType, String description, Context context) {
+    public long addIce(String name, String contactNo, Integer contactType, String description, Context context) {
         Ice ice = new Ice(name, contactNo, contactType, description);
         _iceDAO = new IceDAO(context);
         return _iceDAO.insert(ice);
     }
 
-    public List<Ice> getIce(Context context) {
+    public Ice getIce(Integer index, Context context) {
+        _iceDAO = new IceDAO(context);
+        return _iceDAO.retrieve().get(index);
+    }
+
+    public List<Ice> getIces(Context context) {
         _iceDAO = new IceDAO(context);
         return _iceDAO.retrieve();
     }
@@ -31,9 +36,14 @@ public class IceManager {
         return _iceDAO.delete(id);
     }
 
-    public long updateIce(String id, String name, String contactNo, int contactType, String description, Context context) {
+    public long deleteIce(Integer index, Context context) {
+        Integer id = this.getIce(index, context).getId();
+        return this.deleteIce(id.toString(), context);
+    }
+
+    public long updateIce(Integer id, String name, String contactNo, Integer contactType, String description, Context context) {
         _iceDAO = new IceDAO(context);
-        Ice ice = new Ice(Integer.valueOf(id), name, contactNo, contactType, description);
+        Ice ice = new Ice(id, name, contactNo, contactType, description);
         return _iceDAO.update(ice);
     }
 }
