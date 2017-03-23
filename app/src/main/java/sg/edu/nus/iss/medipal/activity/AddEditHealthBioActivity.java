@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 public class AddEditHealthBioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText condition, startDate;
+    private TextInputLayout textInputLayoutCondition,textInputLayoutDate;
     private Spinner conditionType;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar selectedDate = Calendar.getInstance();
@@ -50,12 +53,18 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
 
         condition = (EditText) findViewById(R.id.conditionEdit);
         startDate = (EditText) findViewById(R.id.startDateEdit);
+
+        //get reference to view element layouts
+        textInputLayoutCondition = (TextInputLayout) findViewById(R.id.conditionView);
+        textInputLayoutDate = (TextInputLayout) findViewById(R.id.startDateView);
+
         conditionType = (Spinner) findViewById(R.id.conditionTypeSpinner);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.
                 R.layout.simple_dropdown_item_1line, CONDITION_TYPE);
         conditionType.setAdapter(spinnerAdapter);
-
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
         Bundle bundleVal = getIntent().getExtras();
         boolean isEdit = bundleVal.getBoolean("isEdit");
 
@@ -71,6 +80,25 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
             }
         }
         startDate.setOnClickListener(this);
+    }
+
+    private void clearErrorOnTextInput() {
+
+        condition.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    textInputLayoutCondition.setError(null);
+            }
+        });
+
+        startDate.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    textInputLayoutDate.setError(null);
+            }
+        });
     }
 
     @Override
@@ -173,20 +201,20 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
         boolean isValid = true;
 
         if (conditionInp.isEmpty()) {
-            condition.setError("Please enter Condition title");
+            textInputLayoutCondition.setError("Please enter Condition title");
             isValid = false;
         } else {
-            condition.setError(null);
+            textInputLayoutCondition.setError(null);
         }
 
         if (startDateInp.isEmpty()) {
-            startDate.setError("Please select Start Date of the Condition");
+            textInputLayoutDate.setError("Please select Start Date of the Condition");
             isValid = false;
         } else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
-            startDate.setError("Start Date cannot be in future");
+            textInputLayoutDate.setError("Start Date cannot be in future");
             isValid = false;
         } else {
-            startDate.setError(null);
+            textInputLayoutDate.setError(null);
         }
 
         return isValid;
