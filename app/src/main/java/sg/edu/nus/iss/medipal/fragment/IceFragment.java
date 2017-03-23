@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
 import sg.edu.nus.iss.medipal.adapter.IceAdapter;
 import sg.edu.nus.iss.medipal.manager.IceManager;
-import sg.edu.nus.iss.medipal.pojo.Ice;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class IceFragment extends Fragment {
 
         if(_iceList.isEmpty()) {
             TextView txtView = (TextView) view.findViewById(R.id.icelist_placeholder);
-            txtView.setText("No Contact(ICE) found");
+            txtView.setText("No Contact(ICE)s found");
             txtView.setVisibility(View.VISIBLE);
         } else {
             _iceView = (RecyclerView) view.findViewById(R.id.icerecycler_view);
@@ -67,8 +67,8 @@ public class IceFragment extends Fragment {
     }
 
     private void populateRecyclerView() {
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        _iceView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        _iceView.setLayoutManager(layoutManager);
 
         _iceAdapter = new IceAdapter(getContext(), _iceList);
         _iceView.setAdapter(_iceAdapter);

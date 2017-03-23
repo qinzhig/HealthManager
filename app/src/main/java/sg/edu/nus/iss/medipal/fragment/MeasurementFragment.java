@@ -1,18 +1,20 @@
 package sg.edu.nus.iss.medipal.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.MeasurementManager;
+import sg.edu.nus.iss.medipal.pojo.Measurement;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
 import sg.edu.nus.iss.medipal.adapter.MeasurementAdapter;
 
@@ -20,41 +22,32 @@ import java.util.List;
 
 public class MeasurementFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public MeasurementFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static MeasurementFragment newInstance(int columnCount) {
-        MeasurementFragment fragment = new MeasurementFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RecyclerView _measurementView;
+    private MeasurementManager _measurementManager;
+    private List<Measurement> _measurementList;
+    private MeasurementAdapter _measurementAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measurement_list, container, false);
+
+        _measurementManager = new MeasurementManager();
+        _measurementList = _measurementManager.getMeasurement(getContext());
+
+        if(_measurementList.isEmpty()) {
+            TextView txtView = (TextView) view.findViewById(R.id.measurementlist_placeholder);
+            txtView.setText("No Measurements found");
+            txtView.setVisibility(View.VISIBLE);
+        } else {
+            _measurementView = (RecyclerView) view.findViewById(R.id.measurementrecycler_view);
+            populateRecyclerView();
+        }
 
         FloatingActionButton aFab = (FloatingActionButton)view.findViewById(R.id.measurement_fab);
         aFab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +59,15 @@ public class MeasurementFragment extends Fragment {
             }
         });
 
-
         return view;
     }
+
+    private void populateRecyclerView() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        _measurementView.setLayoutManager(layoutManager);
+
+        _measurementAdapter = new MeasurementAdapter(getContext(), _measurementList);
+        _measurementView.setAdapter(_measurementAdapter);
+    }
+
 }

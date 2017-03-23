@@ -21,8 +21,7 @@
             android:textColor="@color/iron"
             android:paddingTop="10dp"
             android:textSize="16dp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/icerecycler_view"

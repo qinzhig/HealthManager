@@ -5,6 +5,8 @@ package sg.edu.nus.iss.medipal.adapter;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +17,36 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.pojo.Ice;
+import sg.edu.nus.iss.medipal.manager.MeasurementManager;
+import sg.edu.nus.iss.medipal.pojo.Measurement;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.MeasurementViewHolder>{
 
     private Context _context;
-    private List<Ice> _iceList;
+    private List<Measurement> _measurementList;
 
     public class MeasurementViewHolder extends RecyclerView.ViewHolder {
-        public TextView _name, _contactNo, _contactType;
-        public ImageView _edit, _delete;
+        public TextView _systolic;
+        public TextView _diastolic;
+        public TextView _pulse;
+        public TextView _temperature;
+        public TextView _weight;
+        public TextView _date;
+        public ImageView _edit;
+        public ImageView _delete;
 
         public MeasurementViewHolder(View view) {
             super(view);
 
-            _name = (TextView) view.findViewById(R.id.condition);
-            _contactNo = (TextView) view.findViewById(R.id.startDate);
-            _contactType = (TextView) view.findViewById(R.id.conditionType);
-            _edit = (ImageView) view.findViewById(R.id.edit);
-            _delete = (ImageView) view.findViewById(R.id.delete);
+            _systolic = (TextView) view.findViewById(R.id.measurementlistitem_systolic);
+            _diastolic = (TextView) view.findViewById(R.id.measurementlistitem_diastolic);
+            _pulse = (TextView) view.findViewById(R.id.measurementlistitem_pulse);
+            _temperature = (TextView) view.findViewById(R.id.measurementlistitem_temperature);
+            _weight = (TextView) view.findViewById(R.id.measurementlistitem_weight);
+            _date = (TextView) view.findViewById(R.id.measurementlistitem_date);
+
+            _edit = (ImageView) view.findViewById(R.id.measurement_edit);
+            _delete = (ImageView) view.findViewById(R.id.measurement_delete);
 
             /*
             edit.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +62,8 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                 }
             });
             */
-            /*
-            delete.setOnClickListener(new View.OnClickListener() {
+
+            _delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(view.getContext())
@@ -58,8 +71,8 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    IceManager healthBioManager = new IceManager();
-                                    healthBioManager.deleteIce(condition.getTag().toString(), _context);
+                                    MeasurementManager measurementManager = new MeasurementManager();
+                                    //measurementManager.deleteMeasurement(condition.getTag().toString(), _context);
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -67,13 +80,12 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                             .show();
                 }
             });
-            */
         }
     }
 
-    public MeasurementAdapter(Context mContext, List<Ice> iceBioList) {
-        this._context = mContext;
-        this._iceList = iceBioList;
+    public MeasurementAdapter(Context context, List<Measurement> measurementList) {
+        this._context = context;
+        this._measurementList = measurementList;
     }
 
     @Override
@@ -85,27 +97,23 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
 
     @Override
     public void onBindViewHolder(final MeasurementAdapter.MeasurementViewHolder holder, int position) {
-        Ice ice = _iceList.get(position);
-        holder._name.setText(ice.getName());
-        holder._contactNo.setText(ice.getContactNo());
+        Measurement measurement = _measurementList.get(position);
 
-        String contactType = "";
-        if(ice.getContactType()== 0){
-            contactType = "NOK";
-        } else{
-            contactType = "GP";
-        }
-        holder._contactType.setText(contactType);
-        holder._name.setTag(ice.getId());
+        holder._systolic.setText(measurement.getSystolic().toString());
+        holder._diastolic.setText(measurement.getDiastolic().toString());
+        holder._pulse.setText(measurement.getPulse().toString());
+        holder._temperature.setText(measurement.getTemperature().toString());
+        holder._weight.setText(measurement.getWeight().toString());
+        holder._date.setText(measurement.getMeasuredOn().toString());
     }
 
     @Override
     public int getItemCount() {
-        return _iceList.size();
+        return _measurementList.size();
     }
 
     public void delete(int position) { //removes the row
-        _iceList.remove(position);
+        _measurementList.remove(position);
         notifyItemRemoved(position);
     }
 }
