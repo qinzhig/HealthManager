@@ -149,12 +149,14 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String ICE_CONTACTNUMBER = "contactnumber";
     public static final String ICE_CONTACTTYPE = "contacttype";
     public static final String ICE_DESCRIPTION = "description";
+    public static final String ICE_PRIORITY = "priority";
 
     //appointment table create query
     public static final String CREATE_ICE_TABLE = "CREATE TABLE "
-            + ICE_TABLE + "(" + ICE_ID + " INTEGER PRIMARY KEY, "
+            + ICE_TABLE + "(" + ICE_ID + "INTEGER PRIMARY KEY, "
             + ICE_NAME + " TEXT, " + ICE_CONTACTNUMBER + " TEXT, "
-            + ICE_CONTACTTYPE + " INTEGER, "+ ICE_DESCRIPTION + " TEXT" + ")";
+            + ICE_CONTACTTYPE + " INTEGER, "+ ICE_DESCRIPTION + " TEXT, "
+            + ICE_PRIORITY + " INTEGER" + ")";
 
     //variables used to create measurement table query
     public static final String MEASUREMENT_TABLE = "measurement";

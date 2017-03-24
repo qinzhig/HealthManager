@@ -129,7 +129,8 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
     private void addIce(String name, String contactNo, Integer contactType, String description) {
         IceManager iceManager = new IceManager();
-        iceManager.addIce(name, contactNo, contactType, description, this);
+        Integer priority = iceManager.getIces(this).size();
+        iceManager.addIce(name, contactNo, contactType, description, priority, this);
     }
 
     private void updateIce(Integer id, String name, String contactNo, Integer contactType, String description) {
