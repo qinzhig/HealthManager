@@ -149,12 +149,13 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String ICE_CONTACTNUMBER = "contactnumber";
     public static final String ICE_CONTACTTYPE = "contacttype";
     public static final String ICE_DESCRIPTION = "description";
+    public static final String ICE_PRIORITY = "priority";
 
     //appointment table create query
     public static final String CREATE_ICE_TABLE = "CREATE TABLE "
             + ICE_TABLE + "(" + ICE_ID + " INTEGER PRIMARY KEY, "
             + ICE_NAME + " TEXT, " + ICE_CONTACTNUMBER + " TEXT, "
-            + ICE_CONTACTTYPE + " INTEGER, "+ ICE_DESCRIPTION + " TEXT" + ")";
+            + ICE_CONTACTTYPE + " INTEGER, "+ ICE_DESCRIPTION + " TEXT, " + ICE_PRIORITY + " INTEGER " + ")";
 
     //variables used to create measurement table query
     public static final String MEASUREMENT_TABLE = "measurement";
@@ -169,7 +170,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String CREATE_MEASUREMENT_TABLE = "CREATE TABLE "
             + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
             + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
-            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " FLOAT, "
+            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " INTEGER, "
             + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " TEXT" + ")";
 
     //To store current DB instance

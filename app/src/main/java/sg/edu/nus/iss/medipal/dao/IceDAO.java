@@ -31,6 +31,7 @@ public class IceDAO extends DataBaseUtility {
         contentValues.put(DataBaseManager.ICE_CONTACTNUMBER, ice.getContactNo());
         contentValues.put(DataBaseManager.ICE_CONTACTTYPE, ice.getContactType());
         contentValues.put(DataBaseManager.ICE_DESCRIPTION, ice.getDescription());
+        contentValues.put(DataBaseManager.ICE_PRIORITY, ice.getPriority());
 
         try {
             retCode = database.insertOrThrow(DataBaseManager.ICE_TABLE, null, contentValues);
@@ -48,12 +49,13 @@ public class IceDAO extends DataBaseUtility {
         contentValues.put(DataBaseManager.ICE_CONTACTNUMBER, ice.getContactNo());
         contentValues.put(DataBaseManager.ICE_CONTACTTYPE, ice.getContactType());
         contentValues.put(DataBaseManager.ICE_DESCRIPTION, ice.getDescription());
+        contentValues.put(DataBaseManager.ICE_PRIORITY, ice.getPriority());
 
         try {
             retCode = database.update(DataBaseManager.ICE_TABLE, contentValues, WHERE_ID_EQUALS, new String[]{String.valueOf(ice.getId())});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
-            retCode = -1; //set return value to error code so that caller can handle error
+            sqlExp.printStackTrace();
+            retCode = -1;
         }
         return retCode;
     }
@@ -69,20 +71,22 @@ public class IceDAO extends DataBaseUtility {
                             DataBaseManager.ICE_NAME,
                             DataBaseManager.ICE_CONTACTNUMBER,
                             DataBaseManager.ICE_CONTACTTYPE,
-                            DataBaseManager.ICE_DESCRIPTION}, null, null, null, null, null);
+                            DataBaseManager.ICE_DESCRIPTION,
+                            DataBaseManager.ICE_PRIORITY}, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(0);
+                Integer id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String contractNo = cursor.getString(2);
-                int contractType = cursor.getInt(3);
+                Integer contractType = cursor.getInt(3);
                 String description = cursor.getString(4);
+                Integer priority = cursor.getInt(5);
 
                 ice = new Ice(id, name, contractNo, contractType, description);
                 iceList.add(ice);
             }
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
+            sqlExp.printStackTrace();
         }
 
         return iceList;
@@ -95,7 +99,7 @@ public class IceDAO extends DataBaseUtility {
             database.delete(DataBaseManager.ICE_TABLE, DataBaseManager.ICE_ID + "= ?", new String[]{id});
         } catch (SQLException sqlExp) {
             sqlExp.printStackTrace();
-            retCode = -1; //set return value to error code so that caller can handle error
+            retCode = -1;
         }
         return retCode;
     }

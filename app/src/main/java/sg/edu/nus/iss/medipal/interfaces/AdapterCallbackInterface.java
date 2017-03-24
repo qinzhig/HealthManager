@@ -9,6 +9,6 @@ package sg.edu.nus.iss.medipal.interfaces;
 
 
 public interface AdapterCallbackInterface {
-        void refreshView();
+        void refreshView(String message);
     }
 

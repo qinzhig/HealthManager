@@ -66,6 +66,58 @@
                 android:textSize="@dimen/desc_size" />
 
             <ImageView
+                android:id="@+id/ice_list_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/double_arrow_up"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/ice_list_up" />
+
+            <ImageView
+                android:id="@+id/ice_list_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/double_arrow_up"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/ice_list_down" />
+
+            <ImageView
+                android:id="@+id/ice_list_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/double_arrow_down"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/ice_list_bottom" />
+
+            <ImageView
+                android:id="@+id/ice_list_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/double_arrow_down"
+                android:clickable="true"
+                android:paddingRight="10dp"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/icelistitemcontacttype_view"
+                android:layout_toStartOf="@+id/iceedit" />
+
+            <ImageView
                 android:id="@+id/iceedit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

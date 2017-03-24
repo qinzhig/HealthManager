@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.pojo.Ice;
-import sg.edu.nus.iss.medipal.activity.IceActivity;
-import sg.edu.nus.iss.medipal.adapter.IceAdapter;
 import sg.edu.nus.iss.medipal.manager.IceManager;
+import sg.edu.nus.iss.medipal.pojo.Ice;
+import sg.edu.nus.iss.medipal.adapter.IceAdapter;
+import sg.edu.nus.iss.medipal.activity.IceActivity;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ import java.util.List;
  */
 
 public class IceFragment extends Fragment {
-
-    private RecyclerView _iceView;
+    private IceManager _iceManager;
     private List<Ice> _iceList;
     private IceAdapter _iceAdapter;
-    private IceManager _iceManager;
+    private RecyclerView _iceListView;
+    private TextView _iceNotification;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,18 +40,8 @@ public class IceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ice_list, container, false);
-
-        _iceManager = new IceManager();
-        _iceList = _iceManager.getIces(getContext());
-
-        if(_iceList.isEmpty()) {
-            TextView txtView = (TextView) view.findViewById(R.id.icelist_placeholder);
-            txtView.setText("No Contact(ICE)s found");
-            txtView.setVisibility(View.VISIBLE);
-        } else {
-            _iceView = (RecyclerView) view.findViewById(R.id.icerecycler_view);
-            populateRecyclerView();
-        }
+        _iceListView = (RecyclerView) view.findViewById(R.id.icerecycler_view);
+        _iceNotification = (TextView) view.findViewById(R.id.icelist_placeholder);
 
         FloatingActionButton aFab = (FloatingActionButton)view.findViewById(R.id.ice_fab);
         aFab.setOnClickListener(new View.OnClickListener() {
@@ -63,25 +53,29 @@ public class IceFragment extends Fragment {
             }
         });
 
+        _iceManager = new IceManager();
+
         return view;
     }
 
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         _iceList = _iceManager.getIces(getContext());
 
-        this.populateRecyclerView();
+        if(_iceList.isEmpty()) {
+            _iceNotification.setText("No Contact(ICE)s found");
+            _iceNotification.setVisibility(View.VISIBLE);
+        } else {
+            populateRecyclerView();
+        }
     }
-
 
     private void populateRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        _iceView.setLayoutManager(layoutManager);
+        _iceListView.setLayoutManager(layoutManager);
 
         _iceAdapter = new IceAdapter(getContext(), _iceList);
-        _iceView.setAdapter(_iceAdapter);
+        _iceListView.setAdapter(_iceAdapter);
     }
-
 }

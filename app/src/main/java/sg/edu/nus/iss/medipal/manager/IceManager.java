@@ -15,8 +15,8 @@ public class IceManager {
 
     IceDAO _iceDAO = null;
 
-    public long addIce(String name, String contactNo, Integer contactType, String description, Context context) {
-        Ice ice = new Ice(name, contactNo, contactType, description);
+    public long addIce(String name, String contactNo, Integer contactType, String description, Integer priority, Context context) {
+        Ice ice = new Ice(name, contactNo, contactType, description, priority);
         _iceDAO = new IceDAO(context);
         return _iceDAO.insert(ice);
     }

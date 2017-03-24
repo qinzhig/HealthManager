@@ -2,12 +2,17 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,9 +45,9 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_frequency,et_interval,et_stime,et_cquantity,et_threshold;
     private Spinner spinner,spinner_dosage;
-    Button button_save;
+
     ImageButton button_add_category;
-    TextView tv_reminder,tv_reminder_sw;
+    TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
     private Switch switch_remind;
     private boolean remind_status;
@@ -70,8 +75,18 @@ public class AddMedicineActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        lName = (TextInputLayout)findViewById(R.id.tv_name);
+        lDesc = (TextInputLayout)findViewById(R.id.tv_des);
+        lQuantity = (TextInputLayout)findViewById(R.id.tv_quantity);
+        lCQuantity = (TextInputLayout)findViewById(R.id.tv_dosage);
+        lThreshold = (TextInputLayout)findViewById(R.id.tv_threshold);
+        lGetDate = (TextInputLayout)findViewById(R.id.tv_date_get);
+        lExpireDate = (TextInputLayout)findViewById(R.id.tv_date_expire);
+        lFrequency = (TextInputLayout)findViewById(R.id.tv_reminder);
+        lInterval = (TextInputLayout)findViewById(R.id.tv_interval);
+        lStartTime = (TextInputLayout)findViewById(R.id.tv_stime);
+
 
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
@@ -84,8 +99,8 @@ public class AddMedicineActivity extends AppCompatActivity {
         spinner.setAdapter(array_adpater);
 
         //Reminder setting for medicine
-        tv_reminder_sw = (TextView) findViewById(R.id.tv_reminder_sw);
-        tv_reminder = (TextView) findViewById(R.id.tv_reminder);
+       // tv_reminder_sw = (TextView) findViewById(R.id.tv_reminder_sw);
+
         et_frequency = (EditText) findViewById(R.id.et_frequency);
         et_interval = (EditText) findViewById(R.id.et_interval);
         et_stime = (EditText) findViewById(R.id.et_stime);
@@ -105,12 +120,13 @@ public class AddMedicineActivity extends AppCompatActivity {
                 if(position>0 && position <4){
 
                     switch_remind.setChecked(true);
-
-                    tv_reminder_sw.setVisibility(View.INVISIBLE);
                     switch_remind.setVisibility(View.INVISIBLE);
 
 
-                    tv_reminder.setVisibility(View.VISIBLE);
+                    lFrequency.setVisibility(View.VISIBLE);
+                    lInterval.setVisibility(View.VISIBLE);
+                    lStartTime.setVisibility(View.VISIBLE);
+
                     et_frequency.setVisibility(View.VISIBLE);
                     et_interval.setVisibility(View.VISIBLE);
                     et_stime.setVisibility(View.VISIBLE);
@@ -118,17 +134,19 @@ public class AddMedicineActivity extends AppCompatActivity {
                     remind_status = true;
 
                 }else{
-                    tv_reminder_sw.setVisibility(View.VISIBLE);
                     switch_remind.setVisibility(View.VISIBLE);
                     switch_remind.setChecked(false);
 
-                    tv_reminder.setVisibility(View.INVISIBLE);
-                    et_frequency.setVisibility(View.INVISIBLE);
-                    et_interval.setVisibility(View.INVISIBLE);
-                    et_stime.setVisibility(View.INVISIBLE);
+                    lFrequency.setVisibility(View.GONE);
+                    lInterval.setVisibility(View.GONE);
+                    lStartTime.setVisibility(View.GONE);
 
-                    et_frequency.setText("0");
-                    et_interval.setText("0");
+                    et_frequency.setVisibility(View.GONE);
+                    et_interval.setVisibility(View.GONE);
+                    et_stime.setVisibility(View.GONE);
+
+                    //et_frequency.setText("0");
+                    //et_interval.setText("0");
 
                     remind_status = false;
 
@@ -259,25 +277,31 @@ public class AddMedicineActivity extends AppCompatActivity {
                                          boolean isChecked) {
 
                 if(isChecked){
-                    switch_remind.setText(" ON ");
+                  //  switch_remind.setText(" ON ");
                     remind_status = true;
+                    lFrequency.setVisibility(View.VISIBLE);
+                    lInterval.setVisibility(View.VISIBLE);
+                    lStartTime.setVisibility(View.VISIBLE);
 
-                    tv_reminder.setVisibility(View.VISIBLE);
                     et_frequency.setVisibility(View.VISIBLE);
                     et_interval.setVisibility(View.VISIBLE);
                     et_stime.setVisibility(View.VISIBLE);
 
+
                 }else{
-                    switch_remind.setText(" OFF ");
+                  //  switch_remind.setText(" OFF ");
                     remind_status = false;
+                    lFrequency.setVisibility(View.GONE);
+                    lInterval.setVisibility(View.GONE);
+                    lStartTime.setVisibility(View.GONE);
 
-                    tv_reminder.setVisibility(View.INVISIBLE);
-                    et_frequency.setVisibility(View.INVISIBLE);
-                    et_interval.setVisibility(View.INVISIBLE);
-                    et_stime.setVisibility(View.INVISIBLE);
+                    et_frequency.setVisibility(View.GONE);
+                    et_interval.setVisibility(View.GONE);
+                    et_stime.setVisibility(View.GONE);
 
-                    et_frequency.setText("0");
-                    et_interval.setText("0");
+
+                   // et_frequency.setText("0");
+                   // et_interval.setText("0");
 
                 }
 
@@ -310,15 +334,139 @@ public class AddMedicineActivity extends AppCompatActivity {
         });
 
 
-        //Save the medicine Infomation to SQLite
 
-        button_save = (Button) findViewById(R.id.button_save);
 
-        button_save.setOnClickListener(new View.OnClickListener() {
+
+        //If doesn't found the category in the List,choose to add a new one
+        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
+
+        button_add_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Intent intent_add_category= new Intent(getApplicationContext(), AddCategoryActivity.class);
+                startActivity(intent_add_category);
 
+                finish();
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume(){
+        //This activity get focus again and refresh the category List
+
+        super.onResume();
+
+        if(array_adpater != null)
+        {
+            array_adpater.notifyDataSetChanged();
+            m_list = App.hm.getCategoryNameList(getApplicationContext());
+
+
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_action_items,menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_close);
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_close)
+        {
+            finish();
+        }
+        else if (id == R.id.action_done)
+        {
+            //this to bring down the keyboard when action is done. so that dialog will not be messed by the keyboard
+            View view = this.getCurrentFocus();
+            if(view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                saveMedicine();
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean input_validate(String name,String des,int quantity,int cquantity,int threshold,int frequency,int interval){
+
+        boolean validate_status =true;
+
+        if(name.isEmpty()){
+            et_name.setError("Please input a Medicine Name!");
+            validate_status = false;
+        }
+
+        if(des.isEmpty()){
+            et_des.setError("Please input a description for this medicine!");
+            validate_status = false;
+        }
+
+        if(quantity < 0){
+            et_quanity.setError("Please input a correct quantity for this Medicine! ");
+            validate_status = false;
+            Log.v("DEBUG","------------Quantity = "+et_quanity.getText().toString().trim());
+        }
+
+        if(threshold >= quantity )
+        {
+            et_threshold.setError("Threshold medicine number overlap the Medicine Quantity!");
+            validate_status = false;
+            Log.v("DEBUG","------------Threshold = "+et_threshold.getText().toString().trim());
+        }
+        if(cquantity > quantity ){
+            et_cquantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
+            validate_status = false;
+        }
+
+        if(frequency < 0 || frequency > 24 )
+        {
+            et_frequency.setError("Too Much Consumpotion Frequency set here!");
+            validate_status = false;
+
+            Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
+        }
+
+        if(interval < 0 || interval >24 ){
+
+            et_interval.setError("The interval hour exceed than 24 hours!");
+            validate_status = false;
+
+            Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
+        }
+
+        if( frequency*interval >24 )
+        {
+            et_frequency.setError("Consumpition Setting exceed in one day!");
+            et_interval.setError("Consumpition Setting exceed in one day!");
+            validate_status = false;
+        }
+
+        return validate_status;
+
+    }
+
+    private void saveMedicine(){
+        //Save the medicine Infomation to SQLite
 
                 int reminderid = (int)( (Math.random()*9 + 1) * 10000);
 
@@ -364,101 +512,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast toast_error = Toast.makeText(AddMedicineActivity.this,"Some input incorrect,please check!",Toast.LENGTH_SHORT);
                     toast_error.show();
                 }
-
-
-
-            }
-        });
-
-        //End of saving
-
-
-        //If doesn't found the category in the List,choose to add a new one
-        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
-
-        button_add_category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent_add_category= new Intent(getApplicationContext(), AddCategoryActivity.class);
-                startActivity(intent_add_category);
-
-                finish();
-
-            }
-        });
-    }
-
-    @Override
-    public void onResume(){
-        //This activity get focus again and refresh the category List
-
-        super.onResume();
-
-        if(array_adpater != null)
-        {
-            array_adpater.notifyDataSetChanged();
-            m_list = App.hm.getCategoryNameList(getApplicationContext());
-
-
-        }
-    }
-
-    public boolean input_validate(String name,String des,int quantity,int cquantity,int threshold,int frequency,int interval){
-
-        boolean validate_status =true;
-
-        if(name.isEmpty()){
-            et_name.setError("Please input a Medicine Name!");
-            validate_status = false;
-        }
-
-        if(des.isEmpty()){
-            et_des.setError("Please input a description for this medicine!");
-            validate_status = false;
-        }
-
-        if(quantity < 0){
-            et_quanity.setError("Please input a correct quantitu for this Medicine! ");
-            validate_status = false;
-            Log.v("DEBUG","------------Quantity = "+et_quanity.getText().toString().trim());
-        }
-
-        if(threshold >= quantity )
-        {
-            et_threshold.setError("Threshold medicine number overlap the Medicine Quantity!");
-            validate_status = false;
-            Log.v("DEBUG","------------Threshold = "+et_threshold.getText().toString().trim());
-        }
-        if(cquantity > quantity ){
-            et_cquantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
-            validate_status = false;
-        }
-
-        if(frequency < 0 || frequency > 24 )
-        {
-            et_frequency.setError("Too Much Consumpotion Frequency set here!");
-            validate_status = false;
-
-            Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
-        }
-
-        if(interval < 0 || interval >24 ){
-
-            et_interval.setError("The interval hour exceed than 24 hours!");
-            validate_status = false;
-
-            Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
-        }
-
-        if( frequency*interval >24 )
-        {
-            et_frequency.setError("Consumpition Setting exceed in one day!");
-            et_interval.setError("Consumpition Setting exceed in one day!");
-            validate_status = false;
-        }
-
-        return validate_status;
 
     }
 

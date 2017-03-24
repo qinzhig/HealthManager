@@ -12,11 +12,11 @@ public class Measurement {
     private Integer _systolic;
     private Integer _diastolic;
     private Integer _pulse;
-    private Float _temperature;
+    private Integer _temperature;
     private Integer _weight;
-    private Date _measuredOn;
+    private String _measuredOn;
 
-    public Measurement(Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
+    public Measurement(Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String mesuredOn) {
         this._systolic = systolic;
         this._diastolic = diastolic;
         this._pulse = pulse;
@@ -25,7 +25,7 @@ public class Measurement {
         this._measuredOn = mesuredOn;
     }
 
-    public Measurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn) {
+    public Measurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String mesuredOn) {
         this._id = id;
         this._systolic = systolic;
         this._diastolic = diastolic;
@@ -57,14 +57,14 @@ public class Measurement {
     public Integer getPulse() { return _pulse; }
     public void setPulse(Integer pulse) { this._pulse = pulse; }
 
-    public Float getTemperature() {
+    public Integer getTemperature() {
         return _temperature;
     }
-    public void setTemperature(Float temperature) { this._temperature = temperature; }
+    public void setTemperature(Integer temperature) { this._temperature = temperature; }
 
     public Integer getWeight() { return _weight; }
     public void setWeight(Integer weight) { this._weight = weight; }
 
-    public Date getMeasuredOn() { return _measuredOn; }
-    public void setMeasuredOn(Date measuredOn) { this._measuredOn = measuredOn; }
+    public String getMeasuredOn() { return _measuredOn; }
+    public void setMeasuredOn(String measuredOn) { this._measuredOn = measuredOn; }
 }

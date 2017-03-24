@@ -121,7 +121,7 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
 
         if(healthBioList.size() == 0)
         {
-            mCallback.refreshView();
+            mCallback.refreshView("No Health Bio found");
         }
     }
 }

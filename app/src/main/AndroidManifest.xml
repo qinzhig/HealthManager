@@ -30,7 +30,7 @@
             android:name=".activity.AddMedicineActivity"
             android:label="AddMedicine"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.EditMedicineActivity"
             android:label="EditMedicine"
@@ -74,7 +74,13 @@
             android:label="ADD" />
         <activity
             android:name=".activity.IceActivity"
-            android:label="AddEditICE"
+            android:label="ICEDetail"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.MeasurementActivity"
+            android:label="MeasurementDetail"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

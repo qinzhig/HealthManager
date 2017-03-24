@@ -53,7 +53,7 @@ public class HealthBioFragment extends Fragment implements AdapterCallbackInterf
 
         if(healthBioList.isEmpty())
         {
-            refreshView();
+            refreshView("No Health Bio found");
         }
         else {
 
@@ -83,15 +83,14 @@ public class HealthBioFragment extends Fragment implements AdapterCallbackInterf
     }
 
     @Override
-    public void refreshView() {
+    public void refreshView(String message) {
         //if no health are found then the following message will be shown
         LinearLayout linearLayout = (LinearLayout) healthBioFragment.findViewById(R.id.hb_layout);
         linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
         TextView txtView = (TextView) healthBioFragment.findViewById(R.id.placeholdertext);
-        txtView.setText("No appointments found");
         txtView.setVisibility(View.VISIBLE);
         healthBioView.setVisibility(View.GONE);
-        txtView.setText("No Health Bio found");
+        txtView.setText(message);
 
     }
 
