@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
@@ -178,6 +179,8 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     }
 
     public void saveConsumption() {
+
+
         int quantity = Integer.valueOf(view_Quantity.getText().toString().trim());
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
@@ -187,39 +190,45 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
 
 
+
+
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
 
         if (input_validate(quantity,date,time)) {
 
-            String date_time = date+ " " +time;
+            String date_time = date + " " + time;
             /*
                 select * from consumptionTable where medicineid = getmedicineid,
 
             */
+            ConsumptionDAO consumptionDAO = new ConsumptionDAO(this);
 
-            /*
-            if true
-                select * from consumptionTable where medicineid = getmedicineid,data = today,quantity == 0
-            for (int i = 0; i < getClicktimes; i++)
-                {
-                    updateconsumption()
-                }
-             */
-            for (int i = 0; i < getFrequency; i++)
-            {
-                // addconsumption()
-            }
+            Calendar c = Calendar.getInstance();
+            int day, month, year;
+            day = c.get(Calendar.DAY_OF_MONTH);
+            month = c.get(Calendar.MONTH);
+            year = c.get(Calendar.YEAR);
+            String consumedDate = day + "-" + (month + 1) + "-" + year;
 
 
             ConsumptionManager consumptionManager = new ConsumptionManager(quantity,date_time,this);
 
-            consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
 
+            Log.d("consumed Date", consumedDate);
+            int consumptionCount = consumptionDAO.getConsumptionCount(Integer.toString(medicine_id), consumedDate);
+            //int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
+            int ReminderId = healthmanager.getMedicine(medicine_id,getApplicationContext()).getReminderId();
+            int FrequentNum = healthmanager.getReminder(ReminderId,getApplicationContext()).getFrequency();
+            if (consumptionCount == 0) {
+                for (int i =0; i < FrequentNum; i++) {
+                    consumptionManager.addConsumption(0,medicine_id,0,date_time,this);
+                }
+            }
+            int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
+            consumptionManager.updateConsumption(MinConsumptionId,medicine_id,quantity,date_time,this);
 
-
-         //   int remind_id = healthmanager.getMedicine(medicine_id,)
-
-
+            Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
+            toast.show();
 
 
             if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity <= threshold) {
@@ -228,13 +237,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 dlg.setMessage("Dear, you need replenish the medicine");
                 dlg.setPositiveButton("OK",null);
                 dlg.show();
-
             }
-            Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
-            toast.show();
-
-           // finish();
-
             Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);
             startActivity(i);
         }

@@ -21,8 +21,9 @@ public class UncomsumedActivity extends AppCompatActivity{
 
         Bundle bundleFrequent = getIntent().getExtras();
         getFrequentCount = bundleFrequent.getInt("countFrequentNum");
-        Log.v("TAGTAGTAG","_+_+_+_+_+_+__+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+GETFREQUENT"+getFrequentCount);
-        Log.v("mateng i am in the Unconsumption actovity","_++_+_++_+_+_+_+_+_matneg i am in the Unconsumption activity _+_+_+_+_+_+_+_+_+_+_+_+");
+
+
+
         UnconsumptionlistView = (ListView)findViewById(R.id.ListUnconsumed);
         unConsumptionAdapter = new UnConsumptionAdapter(getApplicationContext());
         UnconsumptionlistView.setAdapter((ListAdapter) unConsumptionAdapter);

@@ -86,6 +86,7 @@ public class ConsumptionDAO extends DataBaseUtility {
     public ArrayList<Consumption> getConsumptions() {
         ArrayList<Consumption> consumptions = new ArrayList<Consumption>();
 
+
         Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
                 new String[]{
                         DataBaseManager.CONSUMPTION_ID,
@@ -132,5 +133,9 @@ public class ConsumptionDAO extends DataBaseUtility {
         }
         return id;
     }
+
+
+
+
 
 }
