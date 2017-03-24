@@ -84,7 +84,6 @@ public class MeasurementDAO extends DataBaseUtility {
                             DataBaseManager.MEASUREMENT_PULSE,
                             DataBaseManager.MEASUREMENT_TEMPERATURE,
                             DataBaseManager.MEASUREMENT_WEIGHT,
-                            DataBaseManager.MEASUREMENT_TEMPERATURE,
                             DataBaseManager.MEASUREMENT_MEASUREDON}, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
@@ -92,7 +91,7 @@ public class MeasurementDAO extends DataBaseUtility {
                 Integer systolic = cursor.getInt(1);
                 Integer diastolic = cursor.getInt(2);
                 Integer pulse = cursor.getInt(3);
-                Float temperature = cursor.getFloat(4);
+                Integer temperature = cursor.getInt(4);
                 Integer weight = cursor.getInt(5);
                 String measuredOn = cursor.getString(6);
 

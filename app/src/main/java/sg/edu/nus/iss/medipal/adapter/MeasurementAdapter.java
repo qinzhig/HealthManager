@@ -31,7 +31,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         public TextView _pulse;
         public TextView _temperature;
         public TextView _weight;
-        public TextView _date;
+        public TextView _measuredOn;
         public ImageView _edit;
         public ImageView _delete;
 
@@ -43,7 +43,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
             _pulse = (TextView) view.findViewById(R.id.measurementlistitem_pulse);
             _temperature = (TextView) view.findViewById(R.id.measurementlistitem_temperature);
             _weight = (TextView) view.findViewById(R.id.measurementlistitem_weight);
-            _date = (TextView) view.findViewById(R.id.measurementlistitem_date);
+            _measuredOn = (TextView) view.findViewById(R.id.measurementlistitem_date);
 
             _edit = (ImageView) view.findViewById(R.id.measurement_edit);
             _delete = (ImageView) view.findViewById(R.id.measurement_delete);
@@ -90,7 +90,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
 
     @Override
     public MeasurementAdapter.MeasurementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_ice_listitem, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_measurement_listitem, parent, false);
 
         return new MeasurementAdapter.MeasurementViewHolder(itemView);
     }
@@ -104,7 +104,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         holder._pulse.setText(measurement.getPulse().toString());
         holder._temperature.setText(measurement.getTemperature().toString());
         holder._weight.setText(measurement.getWeight().toString());
-        holder._date.setText(measurement.getMeasuredOn().toString());
+        holder._measuredOn.setText(measurement.getMeasuredOn().toString());
     }
 
     @Override

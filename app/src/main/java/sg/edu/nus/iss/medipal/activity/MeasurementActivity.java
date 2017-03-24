@@ -21,6 +21,7 @@ import java.util.Date;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.MeasurementManager;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by levis on 3/23/2017.
@@ -143,11 +144,12 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
             _weightStr = _weightEdit.getText().toString();
             _dateStr = _dateEdit.getText().toString();
             _timeStr = _timeEdit.getText().toString();
-            _measuredOnStr = _dateStr + " " + _timeStr;
 
-            if (validateMeasurement(_systolicStr, _diastolicStr, _pulseStr, _temperatureStr, _weightStr, _measuredOnStr)) {
+            if (validateMeasurement(_systolicStr, _diastolicStr, _pulseStr, _temperatureStr, _weightStr, _dateStr, _timeStr)) {
+                _measuredOnStr = _dateStr + " " + _timeStr;
+
                 addMeasurement(Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
-                        Integer.parseInt(_pulseStr), Float.parseFloat(_temperatureStr),
+                        Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
                         Integer.parseInt(_weightStr), _measuredOnStr);
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
@@ -171,20 +173,49 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    private void addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, String measuredOn) {
+    private void addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String measuredOn) {
         MeasurementManager measurementManager = new MeasurementManager();
         measurementManager.addMeasurement(systolic, diastolic, pulse, temperature, weight, measuredOn, this);
     }
 
-    private boolean validateMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String measuredOn) {
+    private boolean validateMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String date, String time) {
         boolean valid = true;
 
-        if(measuredOn.isEmpty()) {
+        if(date.isEmpty()) {
+            _dateEdit.setError("Please enter a date.");
             valid = false;
         } else {
-            if(systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
-                valid = false;
-            }
+            _dateEdit.setError(null);
+        }
+
+        if(time.isEmpty()) {
+            _timeEdit.setError("Please enter a date.");
+            valid = false;
+        } else {
+            _timeEdit.setError(null);
+        }
+        /*
+        String measuredOn;
+        measuredOn = date + " " + time;
+        else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
+            textInputLayoutDate.setError("Start Date cannot be in future");
+            isValid = false;
+        }
+        */
+        if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
+            _systolicEdit.setError("Please enter a systolic.");
+            _diastolicEdit.setError("Please enter a diastolic.");
+            _pulseEdit.setError("Please enter a pulse.");
+            _temperatureEdit.setError("Please enter a temperature.");
+            _weightEdit.setError("Please enter a weight.");
+
+            valid = false;
+        } else {
+            _systolicEdit.setError(null);
+            _diastolicEdit.setError(null);
+            _pulseEdit.setError(null);
+            _temperatureEdit.setError(null);
+            _weightEdit.setError(null);
         }
 
         return valid;

@@ -169,7 +169,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String CREATE_MEASUREMENT_TABLE = "CREATE TABLE "
             + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
             + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
-            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " FLOAT, "
+            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " INTEGER, "
             + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " TEXT" + ")";
 
     //To store current DB instance
