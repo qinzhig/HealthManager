@@ -1,11 +1,13 @@
 package sg.edu.nus.iss.medipal.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by zhiguo on 13/3/17.
  * Description : Define Category class details
  */
 
-public class Category {
+public class Category implements Serializable {
 
     private int id;
     private String category_name;
