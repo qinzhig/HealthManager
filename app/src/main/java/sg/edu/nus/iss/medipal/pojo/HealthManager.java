@@ -395,7 +395,7 @@ public class HealthManager {
 
                 if(alarmSwitch){
                     //Set the scheduled daily repeat reminder
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
                     //Testing Alarm which set the interval to 2 mins
                     //alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),1000*60*2,pendingIntent);
                 }else{

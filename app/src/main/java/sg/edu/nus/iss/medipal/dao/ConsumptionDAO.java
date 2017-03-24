@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
@@ -135,7 +136,7 @@ public class ConsumptionDAO extends DataBaseUtility {
     }
 
     public int[] getConsumptionQuantities(String medicineId,String consumedOn) {
-        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ? AND quantity = ?";
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = trim(substr(?,1,10)) AND quantity = ?";
         String[] selectionArgs = {medicineId, consumedOn,"0"};
         Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
                 new String[]{
@@ -148,6 +149,23 @@ public class ConsumptionDAO extends DataBaseUtility {
             id[cnt] =Integer.parseInt(cursor.getString(0));
         }
         return id;
+    }
+
+    //get list of consumption
+    public HashMap<String,Double> getPieChartConsumptions(String date) {
+        HashMap<String,Double> data = new HashMap<>();
+
+        String query = "select count(c.id),c1.category from medicine m,category c1, consumption c where m.id=c.medicine_id and m.catid=c1.id and c.quantity=0 and trim(substr(consumedOn,1,10)) = ? group by category";
+        Cursor c = database.rawQuery(query,new String[]{date});
+
+        //loop through each result set to populate the appointment pojo and add to the list each time
+        while (c.moveToNext()) {
+            int count = c.getInt(0);
+            String category = c.getString(1);
+
+            data.put(category,Double.valueOf(count));
+        }
+        return data;
     }
 
 }

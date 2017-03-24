@@ -20,6 +20,8 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.UncomsumedActivity;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
  * Created by apple on 24/03/2017.
@@ -29,17 +31,20 @@ public class UnConsumptionAdapter extends ArrayAdapter<Consumption> {
     private Context context;
     private List<Consumption> Unconsumption = new ArrayList<Consumption>();
     ConsumptionManager consumptionManager;
-
+    String consumeQuantity;
+    Integer medicineId;
 
     public UnConsumptionAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
     }
 
-    public UnConsumptionAdapter(Context context) {
+    public UnConsumptionAdapter(Context context,Integer medicineId,String consumeQuantity) {
         super(context, R.layout.medicine_category_row_layout);
         this.context = context;
         consumptionManager = new ConsumptionManager(context);
         refreshUnconsumption();
+        this.medicineId=medicineId;
+        this.consumeQuantity=consumeQuantity;
     }
     public void refreshUnconsumption() {
         Unconsumption.clear();
@@ -73,12 +78,25 @@ public class UnConsumptionAdapter extends ArrayAdapter<Consumption> {
             viewHolder = (UnConsumptionAdapter.ViewHolder) convertView.getTag();
         }
         final Consumption consumption = Unconsumption.get(position);
+        HealthManager healthManager = new HealthManager();
         UncomsumedActivity unconsumned = new UncomsumedActivity();
-        int acceptFrequentCount = unconsumned.getFrequentCount();
+        String getConsumptionQuantity =consumeQuantity;
+        String getIem[] = getConsumptionQuantity.split(" ");
+        int medicine_id = medicineId;
+        for (int i = 0;i < getIem.length; i++)
+        {
+            if (Integer.valueOf(getIem[i]) != 0) {
+                viewHolder.tvName.setVisibility(View.INVISIBLE);
+                viewHolder.btnUpdate.setVisibility(View.INVISIBLE);
+                viewHolder.btnUpdate.setVisibility(View.VISIBLE);
+            }
 
-        Log.v("ACCEPTTAGTAGTAGACCEPT","_+_+_+_+_+_+_+_++++_+_+_+_+_+ACCEPTCOUNT"+acceptFrequentCount);
-
-
+            if (Integer.valueOf(getIem[i]) == 0) {
+                viewHolder.tvName.setText(healthManager.getMedicine(medicine_id,context).getMedicine_name());
+                viewHolder.btnUpdate.setVisibility(View.INVISIBLE);
+                viewHolder.btnUpdate.setVisibility(View.VISIBLE);
+            }
+        }
 
 
 
