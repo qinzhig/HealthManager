@@ -1,11 +1,16 @@
 package sg.edu.nus.iss.medipal.pojo;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import sg.edu.nus.iss.medipal.asynTask.AddCategory;
@@ -18,6 +23,7 @@ import sg.edu.nus.iss.medipal.asynTask.ListReminder;
 import sg.edu.nus.iss.medipal.asynTask.UpdateCategory;
 import sg.edu.nus.iss.medipal.asynTask.UpdateMedicine;
 import sg.edu.nus.iss.medipal.asynTask.UpdateReminder;
+import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
 
 /**
  * Created by zhiguo on 15/3/17.
@@ -49,8 +55,14 @@ public class HealthManager {
         this.reminders  =   new ArrayList<Reminder>();
     }
 
-    public Medicine getMedicine(int id){
-        Iterator<Medicine> i = medicines.iterator();
+    public Medicine getMedicine(int id,Context context){
+        Iterator<Medicine> i;
+        if(medicines.isEmpty()) {
+            i = getMedicines(context).iterator();
+        }
+        else {
+            i = medicines.iterator();
+        }
 
         while(i.hasNext()){
             Medicine m = i.next();
@@ -117,7 +129,7 @@ public class HealthManager {
 
     public void deleteMedicine(int id,Context context){
 
-        Medicine m = getMedicine(id);
+        Medicine m = getMedicine(id,context);
 
         if(m != null)
         {
@@ -128,15 +140,21 @@ public class HealthManager {
     }
 
 
-    public Category getCategory(int id){
+    public Category getCategory(int id,Context context){
 
-        Iterator<Category> i = categorys.iterator();
+        Iterator<Category> c;
+        if(medicines.isEmpty()) {
+            c = getCategorys(context).iterator();
+        }
+        else {
+            c = categorys.iterator();
+        }
 
-        while(i.hasNext()){
-            Category c = i.next();
-            if( c.getId() == id)
+        while(c.hasNext()){
+            Category c_node = c.next();
+            if( c_node.getId() == id)
             {
-                return c;
+                return c_node;
             }
         }
 
@@ -215,8 +233,14 @@ public class HealthManager {
     //--------------------------------------Reminder-----------------------------------
     public Reminder getReminder(int id,Context context){
 
+        Iterator<Reminder> i;
 
-        Iterator<Reminder> i = getReminders(context).iterator();
+        if(reminders.isEmpty()) {
+            i = getReminders(context).iterator();
+        }
+        else {
+            i = reminders.iterator();
+        }
 
         while(i.hasNext()){
             Reminder c = i.next();
@@ -270,6 +294,66 @@ public class HealthManager {
         taskAddReminder.execute(reminder);
 
         return reminder;
+
+    }
+
+    //Setup repeat reminder for the medicine consumpotion
+
+    public void setMeidicineReminder(boolean alarmSwitch,String stime, int interval, int frequency,int reminderId, Context context){
+
+        //To avoid the reminder repeat after determined duration of consumption period,
+        // we have just divided the hour repeat reminders to few daily reapeted
+        //This will be accurate and will not generate any invalidate Alarms
+        for(int i=0; i < frequency ; i++){
+
+            if(!stime.isEmpty()){
+
+                //Slice the start time and get the reminder start Hour and Min
+                String[] stime_hour_min = stime.split(":");
+
+                //Setup Alarmanager
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                Calendar calendar =Calendar.getInstance(Locale.getDefault());
+                calendar.setTimeInMillis(System.currentTimeMillis());
+
+                //Set a repeat reminder hour for the frequency alarm
+                int reminder_hour = (Integer.valueOf(stime_hour_min[0]) + interval * i) % 24;
+                //int reminder_min  = (Integer.valueOf(stime_hour_min[1]) + interval * i) % 60;
+
+                calendar.set(Calendar.HOUR_OF_DAY, reminder_hour);
+                //calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(stime_hour_min[0]));
+                calendar.set(Calendar.MINUTE, Integer.valueOf(stime_hour_min[1]));
+                //calendar.set(Calendar.MINUTE, reminder_min);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+
+                int repeat_reminderID = reminderId*100+i;
+
+                Intent intent = new Intent(context, RemindAlarmReceiver.class);
+                //intent.setAction("MedicineReminder");
+                //Set the reminderID and startTime in Intent data for scheduled repeat reminder
+                intent.putExtra("ConsumptionReminderId", Integer.toString(repeat_reminderID));
+                intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
+                //intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
+
+                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );
+
+                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
+
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_CANCEL_CURRENT);
+
+                if(alarmSwitch){
+                    //Set the scheduled daily repeat reminder
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+                    //Testing Alarm which set the interval to 2 mins
+                    //alarmManager.setRepeating(AlarmManager.RTC,calendar.getTimeInMillis(),1000*60*2,pendingIntent);
+                }else{
+                    //If the Reminder Alarm set to false,we will cancle the repeat alarms for this reminder
+                    alarmManager.cancel(pendingIntent);
+                }
+
+            }
+        }
 
     }
 

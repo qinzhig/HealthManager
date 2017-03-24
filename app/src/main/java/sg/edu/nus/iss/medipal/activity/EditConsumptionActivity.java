@@ -2,17 +2,14 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -31,9 +28,8 @@ import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
-import static java.lang.Integer.valueOf;
+public class EditConsumptionActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class AddConsumption extends AppCompatActivity implements View.OnClickListener {
     private Spinner spnMedicine;
     private EditText etDate, etTime;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
@@ -47,6 +43,8 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
     private int quantity;
     private int medicine_id;
+    private int id;
+    private String date_time;
 
 
 
@@ -57,16 +55,16 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     List<String> medinceList = null;
     List<Integer> dosageList = null;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String medicine_name;
-
+        String date = null;
+        String time = null;
+        String MM = null;
+        String time_MM = null;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_consumption);
-        //initial a medicine
 
         etDate = (EditText)findViewById(R.id.et_select_date);
         etTime = (EditText)findViewById(R.id.et_select_time);
@@ -75,21 +73,48 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         view_Quantity = (EditText) findViewById(R.id.Dosage);
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
-      //  view_Medicine.setText(medicine.getMedicine_name());
-        Bundle bundleMedicine = getIntent().getExtras();
-        medicine_name = bundleMedicine.getString("medicine_name");
-        medicine_id = bundleMedicine.getInt("medicine_id");
-        quantity = bundleMedicine.getInt("quantity");
+
+        Bundle transfer = getIntent().getExtras();
+        medicine_name = transfer.getString("medicine_name");
+        Log.v("medicine_name is null or not","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+medicine_name);
+        medicine_id = transfer.getInt("medicine_id");
+        Log.v("medicineID is null or not","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+medicine_id);
+        quantity = transfer.getInt("quantity");
+        id = transfer.getInt("id");
+        date_time = transfer.getString("date_time");
+        Log.v("datetime is null or not","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+date_time);
+
+
+        String[] datetime_picker_result = date_time.split(" ");
+        date = datetime_picker_result[0] ;
+        time =datetime_picker_result[1] ;
+        MM = datetime_picker_result[2];
+        time_MM = time +" " + MM;
+
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+datetime_picker_result[0]);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+datetime_picker_result[1]);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+datetime_picker_result[2]);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+time_MM);
+
+
+
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+datetime_picker_result);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+date);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+time);
+        Log.v("datetime","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+MM);
+
+
+        Log.v("mateng's date_time","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+"+date_time);
+
         view_Medicine.setText(medicine_name);
         view_Quantity.setText(Integer.toString(quantity));
-    //    Log.v("MT","------------------------Cquantity="+medicine.getConsumequantity());
-        Log.v("mateng","***************************name"+medicine_name);
-        Log.v("mateng","***************************quantity"+quantity);
-        Log.v("mateng","***************************bundle"+bundleMedicine);
-     //   view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
+        etDate.setText(date);
+        etTime.setText(time_MM);
+
 
     }
 
+    @Override
     public void onClick(View v) {
         final Calendar calender;
         int day,month,year,hour,minute;
@@ -137,7 +162,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_action_items, menu);
         MenuItem menuItem;
@@ -159,35 +183,28 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         }
         if (id == R.id.action_done) {
-            saveConsumption();
+            updateConsumption();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveConsumption() {
+    public void updateConsumption() {
         int quantity = Integer.valueOf(view_Quantity.getText().toString().trim());
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
 
         if (input_validate(quantity,date,time)) {
-            String date_time = date+ " " +time;
+            date_time = date+ " " +time;
             ConsumptionManager consumptionManager = new ConsumptionManager(quantity,date_time,this);
 
-            consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
-            Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
+            consumptionManager.updateConsumption(id,medicine_id,quantity,date_time,this);
+            Toast toast = Toast.makeText(EditConsumptionActivity.this,"Update Consumption Successfully!",Toast.LENGTH_SHORT);
             toast.show();
-           // finish();
             Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);
             startActivity(i);
         }
 
-
     }
-
-
 
     public boolean input_validate(int quantity,String date,String time) {
         boolean validate_status = true;
@@ -197,7 +214,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             validate_status = false;
         }
         if (date.isEmpty()) {
-           etDate.setError("please select a date");
+            etDate.setError("please select a date");
             validate_status = false;
         } else if (!MediPalUtility.isValidDate(date)) {
             etDate.setError("please select a right date");
@@ -212,6 +229,4 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         }
         return validate_status;
     }
-
-
 }

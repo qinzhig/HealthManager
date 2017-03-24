@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddEditHealthBioActivity;
+import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.HealthBioManager;
 import sg.edu.nus.iss.medipal.pojo.HealthBio;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
@@ -26,6 +27,8 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
 
     private Context mContext;
     private List<HealthBio> healthBioList;
+    //callback listener to communicate with the parent activity
+    private AdapterCallbackInterface mCallback;
 
     public class HealthBioViewHolder extends RecyclerView.ViewHolder {
         public TextView condition,startDate,conditionType;
@@ -73,9 +76,10 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
         }
     }
 
-    public HealthBioAdapter(Context mContext, List<HealthBio> healthBioList) {
+    public HealthBioAdapter(Context mContext, List<HealthBio> healthBioList, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
         this.healthBioList = healthBioList;
+        this.mCallback = mCallback;
     }
 
     @Override
@@ -114,5 +118,10 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
     public void delete(int position) { //removes the row
         healthBioList.remove(position);
         notifyItemRemoved(position);
+
+        if(healthBioList.size() == 0)
+        {
+            mCallback.refreshView();
+        }
     }
 }

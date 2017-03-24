@@ -2,10 +2,15 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +36,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 public class AddEditHealthBioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText condition, startDate;
+    private TextInputLayout textInputLayoutCondition, textInputLayoutDate;
     private Spinner conditionType;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     Calendar selectedDate = Calendar.getInstance();
@@ -39,6 +44,7 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
     private String conditionStr, conditionTypeStr;
     private Date startDt;
     private static String[] CONDITION_TYPE = {"Condition", "Allergy"};
+    private boolean isFirst = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +56,21 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
 
         condition = (EditText) findViewById(R.id.conditionEdit);
         startDate = (EditText) findViewById(R.id.startDateEdit);
+
+        //get reference to view element layouts
+        textInputLayoutCondition = (TextInputLayout) findViewById(R.id.conditionView);
+        textInputLayoutDate = (TextInputLayout) findViewById(R.id.startDateView);
+
         conditionType = (Spinner) findViewById(R.id.conditionTypeSpinner);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.
                 R.layout.simple_dropdown_item_1line, CONDITION_TYPE);
         conditionType.setAdapter(spinnerAdapter);
-
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
         Bundle bundleVal = getIntent().getExtras();
         boolean isEdit = bundleVal.getBoolean("isEdit");
+        isFirst = bundleVal.getBoolean("isFirstTime");
 
         if (isEdit) {
             condition.setText(bundleVal.get("condition").toString());
@@ -73,6 +86,25 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
         startDate.setOnClickListener(this);
     }
 
+    private void clearErrorOnTextInput() {
+
+        condition.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    textInputLayoutCondition.setError(null);
+            }
+        });
+
+        startDate.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    textInputLayoutDate.setError(null);
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_action_items, menu);
@@ -80,8 +112,15 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
         final MenuItem menuItem = menu.findItem(R.id.action_close);
         menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onClick(View view) {
+                if (isFirst) {
+                    Intent mainActivity = new Intent(AddEditHealthBioActivity.this, MainActivity.class);
+                    startActivity(mainActivity);
+                    finish();
+                }
+                else{
+                    finish();
+                }
             }
         });
 
@@ -119,38 +158,70 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
             finish();
         } else if (id == R.id.action_done) {
 
-            conditionStr = condition.getText().toString();
-            startDt = MediPalUtility
-                    .convertStringToDate(startDate.getText().toString(),"dd MMM yyyy");
-            conditionTypeStr = conditionType.getSelectedItem().toString();
+            boolean isAdded = actionDone();
 
-            if (validateHealthBio(conditionStr, startDate.getText().toString())) {
-                if (null != condition.getTag()) {
-                    updateHealthBio();
-                } else {
-                    addHealthBio();
-                }
-
-                final ProgressDialog progressDialog = new ProgressDialog(this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Saving...");
-                progressDialog.show();
-
-                new Handler().postDelayed(new Runnable() {
-                                              @Override
-                                              public void run() {
-                                                  progressDialog.dismiss();
-                                                  finish();
-                                                  Toast.makeText(AddEditHealthBioActivity.this, "Success", Toast.LENGTH_LONG).show();
-                                              }
-                                          },
-                        1000);
-
+            if (isAdded) {
+                new AlertDialog.Builder(this)
+                        .setMessage("Do you want to add more Health Bio?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent addEditHealthBio = new Intent(AddEditHealthBioActivity.this, AddEditHealthBioActivity.class);
+                                addEditHealthBio.putExtra("isEdit", false);
+                                if (isFirst) {
+                                    addEditHealthBio.putExtra("isFirstTime", true);
+                                } else {
+                                    addEditHealthBio.putExtra("isFirstTime", false);
+                                }
+                                startActivity(addEditHealthBio);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                startActivity(new Intent(AddEditHealthBioActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        })
+                        .show();
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean actionDone() {
+        conditionStr = condition.getText().toString();
+        startDt = MediPalUtility
+                .convertStringToDate(startDate.getText().toString(), "dd MMM yyyy");
+        conditionTypeStr = conditionType.getSelectedItem().toString();
+
+        if (validateHealthBio(conditionStr, startDate.getText().toString())) {
+            if (null != condition.getTag()) {
+                updateHealthBio();
+            } else {
+                addHealthBio();
+            }
+
+            final ProgressDialog progressDialog = new ProgressDialog(this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Saving...");
+            progressDialog.show();
+
+            new Handler().postDelayed(new Runnable() {
+                                          @Override
+                                          public void run() {
+                                              progressDialog.dismiss();
+                                          }
+                                      },
+                    1000);
+
+            return true;
+
+        } else {
+            return false;
+        }
     }
 
     private void addHealthBio() {
@@ -173,20 +244,20 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
         boolean isValid = true;
 
         if (conditionInp.isEmpty()) {
-            condition.setError("Please enter Condition title");
+            textInputLayoutCondition.setError("Please enter Condition title");
             isValid = false;
         } else {
-            condition.setError(null);
+            textInputLayoutCondition.setError(null);
         }
 
         if (startDateInp.isEmpty()) {
-            startDate.setError("Please select Start Date of the Condition");
+            textInputLayoutDate.setError("Please select Start Date of the Condition");
             isValid = false;
         } else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
-            startDate.setError("Start Date cannot be in future");
+            textInputLayoutDate.setError("Start Date cannot be in future");
             isValid = false;
         } else {
-            startDate.setError(null);
+            textInputLayoutDate.setError(null);
         }
 
         return isValid;

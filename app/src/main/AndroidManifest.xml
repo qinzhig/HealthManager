@@ -27,24 +27,19 @@
             android:parentActivityName=".activity.AddEditHealthBioActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.MedicineActivity"
-            android:label="@string/title_activity_medicine"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activity.AddMedicineActivity"
             android:label="AddMedicine"
-            android:parentActivityName=".activity.MedicineActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.EditMedicineActivity"
             android:label="EditMedicine"
-            android:parentActivityName=".activity.MedicineActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.AddCategoryActivity"
             android:label="AddCategory"
-            android:parentActivityName=".activity.MedicineActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.AddEditAppointmentActivity"
@@ -76,8 +71,7 @@
             android:parentActivityName=".activity.ConsumptionDetail" />
         <activity
             android:name=".activity.AddConsumption"
-            android:label="ADD"></activity>
-
+            android:label="ADD" />
         <activity
             android:name=".activity.IceActivity"
             android:label="ICEDetail"
@@ -89,6 +83,10 @@
             android:label="MeasurementDetail"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.EditConsumptionActivity"
+            android:parentActivityName=".activity.ConsumptionActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -29,51 +29,87 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
     PreferenceManager remainderPreference;
     @Override
     public void onReceive(Context context, Intent intent) {
-        remainderPreference = new PreferenceManager(context);
-        String notificationId = intent.getStringExtra("Id");
-        String Id;
-        String notificationString = intent.getStringExtra("notification");
 
-        if(notificationString.equalsIgnoreCase("Remainder for Appointment"))
-            Id=Integer.toString(Integer.valueOf(notificationId) - 100000);
-        else
-            Id=notificationId;
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-        notificationIntent.putExtra("Id",Id);
-        notificationIntent.putExtra("notification",notificationString);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+        if(!intent.getStringExtra("ConsumptionReminderId").isEmpty())
+        {
+            Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
+            Log.v("MedicineReminder","---------------------->+++++++++++Reminder Id=" + intent.getStringExtra("ConsumptionReminderId"));
+            Log.v("MedicineReminder","---------------------->+++++++++++Reminder StartTime=" + intent.getStringExtra("StartTime"));
 
-        Log.d("ReminderReceiver","onReceive Called");
+            int cReminderID = Integer.valueOf(intent.getStringExtra("ConsumptionReminderId"));
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        //stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(Integer.valueOf(notificationId), PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent resultIntent = new Intent(context, MainActivity.class);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
-        String storedString = remainderPreference.getAppointmentInfo(notificationId);
-        Log.d("Notification",notificationId);
-        Log.d("Notification string",storedString);
+            stackBuilder.addNextIntent(resultIntent);
 
-        if(storedString != null) {
-            try {
-                JSONArray jsonArray = new JSONArray(storedString);
+            PendingIntent medicinePendingIntent = stackBuilder.getPendingIntent(cReminderID, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
 
-                Notification notification = builder.setContentTitle(jsonArray.getString(0))
-                        .setContentText(notificationString)
-                        .setTicker("Notification for Appointment")
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setAutoCancel(true)
-                        .setContentIntent(pendingIntent).build();
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(Integer.valueOf(notificationId), notification);
+            Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
+                    .setContentText("Reminder for Consumpition")
+                    .setTicker("Notification for Appointment")
+                    .setSmallIcon(R.drawable.medicine)
+                    .setAutoCancel(true)
+                    .setContentIntent(medicinePendingIntent).build();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotificationManager.notify(cReminderID, consumption_notification);
+
+
+
+        }else {
+
+            remainderPreference = new PreferenceManager(context);
+            String notificationId = intent.getStringExtra("Id");
+            String Id;
+            String notificationString = intent.getStringExtra("notification");
+
+            if (notificationString.equalsIgnoreCase("Remainder for Appointment"))
+                Id = Integer.toString(Integer.valueOf(notificationId) - 100000);
+            else
+                Id = notificationId;
+
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.putExtra("Id", Id);
+            notificationIntent.putExtra("notification", notificationString);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            Log.d("ReminderReceiver", "onReceive Called");
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            //stackBuilder.addParentStack(MainActivity.class);
+            stackBuilder.addNextIntent(notificationIntent);
+            PendingIntent pendingIntent = stackBuilder.getPendingIntent(Integer.valueOf(notificationId), PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+            String storedString = remainderPreference.getAppointmentInfo(notificationId);
+            Log.d("Notification", notificationId);
+            Log.d("Notification string", storedString);
+
+            if (storedString != null) {
+                try {
+                    JSONArray jsonArray = new JSONArray(storedString);
+
+                    Notification notification = builder.setContentTitle(jsonArray.getString(0))
+                            .setContentText(notificationString)
+                            .setTicker("Notification for Appointment")
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setAutoCancel(true)
+                            .setContentIntent(pendingIntent).build();
+
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(Integer.valueOf(notificationId), notification);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
-
         }
 
     }

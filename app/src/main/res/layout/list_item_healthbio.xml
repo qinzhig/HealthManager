@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+   >
 
     <android.support.v7.widget.CardView
         android:id="@+id/list_item_hb"
@@ -21,11 +22,25 @@
                 android:id="@+id/thumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/doctor_image"
+                android:src="@drawable/hospital2"
                 android:clickable="true"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+            <TextView
+                android:id="@+id/nameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condition/Allergies: "
+                android:paddingLeft="@dimen/left_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:paddingTop="@dimen/title_padding"
+                android:textStyle="bold"
+                android:textColor="@color/title"
+                android:textSize="@dimen/desc_size"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/thumbnail" />
 
             <TextView
                 android:id="@+id/condition"
@@ -33,37 +48,56 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
                 android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/thumbnail"
+                android:layout_below="@+id/nameView"/>
+            <TextView
+                android:id="@+id/startDateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Date: "
+                android:paddingLeft="@dimen/left_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:paddingTop="@dimen/title_padding"
+                android:textStyle="bold"
+                android:textColor="@color/title"
+                android:textSize="@dimen/desc_size"
+                android:layout_centerVertical="true"
+                android:layout_below="@+id/condition"
                 android:layout_toEndOf="@+id/thumbnail" />
-
             <TextView
                 android:id="@+id/startDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/condition"
-                android:paddingBottom="@dimen/title_padding"
-                android:layout_toEndOf="@+id/thumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:textSize="@dimen/datetime_size" />
+                android:textSize="@dimen/title_size"
+                android:layout_below="@+id/startDateView"
+                android:layout_toEndOf="@+id/thumbnail" />
+            <TextView
+                android:id="@+id/conditionTypeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condition Type: "
+                android:paddingLeft="@dimen/left_padding"
+                android:paddingRight="@dimen/title_padding"
+                android:paddingTop="@dimen/title_padding"
+                android:textStyle="bold"
+                android:textColor="@color/title"
+                android:textSize="@dimen/desc_size"
+                android:layout_below="@+id/startDate"
+                android:layout_toEndOf="@+id/thumbnail" />
 
             <TextView
                 android:id="@+id/conditionType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/startDate"
-                android:paddingBottom="@dimen/title_padding"
-                android:layout_toEndOf="@+id/thumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="@dimen/desc_size" />
+                android:textSize="@dimen/title_size"
+                android:layout_below="@+id/conditionTypeView"
+                android:layout_alignStart="@+id/conditionTypeView" />
 
             <ImageView
                 android:id="@+id/edit"

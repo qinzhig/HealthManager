@@ -180,7 +180,7 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
 
     private void clearErrorOnTextInput() {
 
-        appointmentTitle.addTextChangedListener(new CustomTextWatcher() {
+        appointmentTitle.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
@@ -188,21 +188,21 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             }
         });
 
-        appointmentLocation.addTextChangedListener(new CustomTextWatcher() {
+        appointmentLocation.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
                     textInputLayoutLocation.setError(null);
             }
         });
-        appointmentDate.addTextChangedListener(new CustomTextWatcher() {
+        appointmentDate.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
                     textInputLayoutDate.setError(null);
             }
         });
-        appointmentTime.addTextChangedListener(new CustomTextWatcher() {
+        appointmentTime.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
@@ -210,7 +210,7 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             }
         });
 
-        appointmentDesc.addTextChangedListener(new CustomTextWatcher() {
+        appointmentDesc.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
@@ -400,20 +400,5 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
         return valid;
     }
 
-    //custom class for textwatcher as only afterTextChanged method is required.
-    public class CustomTextWatcher implements TextWatcher{
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    }
 
 }

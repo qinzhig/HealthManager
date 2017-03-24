@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
@@ -31,7 +32,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
     public MedicineAdapter(Context context){
 
-        super(context, R.layout.medicine_category_row_layout);
+        super(context,R.layout.medicine_category_row_layout);
         this.context=context;
         refreshMedicines();
     }
@@ -56,8 +57,10 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         Button btnUpdate,btnRemove;
     }
 
+
+
     public View getView(final int position, View convertView, ViewGroup parent){
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if (convertView == null) {
             LayoutInflater inflater =
@@ -73,13 +76,29 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         }
 
         final Medicine medicine = medicines.get(position);
+
         viewHolder.tvName.setText(medicine.getMedicine_name());
+        viewHolder.tvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addConsumption = new Intent(context, AddConsumption.class);
+
+                addConsumption.putExtra("isEdit",true);
+                addConsumption.putExtra("medicine_name",viewHolder.tvName.getText().toString());
+                addConsumption.putExtra("quantity",medicine.getConsumequantity());
+                addConsumption.putExtra("medicine_id",medicine.getId());
+                ((Activity)context).startActivity(addConsumption);
+
+            }
+        });
 
         viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener(){
 
             @Override public void onClick(View v) {
 
                 Intent updateMedicine = new Intent(context, EditMedicineActivity.class);
+
+                Log.v("Tag","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+updateMedicine);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("medicineInfo",medicine);
@@ -88,14 +107,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
                 updateMedicine.putExtras(bundle);
 
                 Log.v("TAG","--------------------MedicineAdapter Update   Object " + medicine.toString());
-
-//                Log.v("TAG","--------------------MedicineAdapter Update   ID " + medicine.getId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update  name " + medicine.getMedicine_name() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   catId " + medicine.getCateId() );
-//                Log.v("TAG","--------------------MedicineAdapter Update   Quantity " + medicine.getQuantity() );
-
-
-
                 ((Activity)context).startActivity(updateMedicine);
 
 
