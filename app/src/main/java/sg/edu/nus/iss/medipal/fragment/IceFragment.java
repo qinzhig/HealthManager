@@ -12,13 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.List;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.adapter.IceAdapter;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
-
-import java.util.List;
 
 /**
  * Created by levis on 3/16/2017.
@@ -74,6 +75,8 @@ public class IceFragment extends Fragment {
     private void populateRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         _iceListView.setLayoutManager(layoutManager);
+
+        Collections.sort(_iceList);
 
         _iceAdapter = new IceAdapter(getContext(), _iceList);
         _iceListView.setAdapter(_iceAdapter);

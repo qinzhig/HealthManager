@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
 
+import java.util.Iterator;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -55,32 +56,28 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _top.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IceManager iceManager = new IceManager();
-                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                   updatePriority(getAdapterPosition(), 0);
                 }
             });
 
             _up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IceManager iceManager = new IceManager();
-                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                   updatePriority(getAdapterPosition(), getAdapterPosition() - 1);
                 }
             });
 
             _down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IceManager iceManager = new IceManager();
-                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                   updatePriority(getAdapterPosition(), getAdapterPosition() + 1);
                 }
             });
 
             _bottom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IceManager iceManager = new IceManager();
-                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                  updatePriority(getAdapterPosition(), _iceList.size() - 1);
                 }
             });
 
@@ -121,9 +118,9 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         }
     }
 
-    public IceAdapter(Context context, List<Ice> iceBioList) {
+    public IceAdapter(Context context, List<Ice> iceList) {
         this._context = context;
-        this._iceList = iceBioList;
+        this._iceList = iceList;
     }
 
     @Override
@@ -136,6 +133,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     @Override
     public void onBindViewHolder(final IceAdapter.IceViewHolder holder, int position) {
         Ice ice = _iceList.get(position);
+
         holder._name.setText(ice.getName());
         holder._contactNo.setText(ice.getContactNo());
 
@@ -152,6 +150,33 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     @Override
     public int getItemCount() {
         return _iceList.size();
+    }
+
+    public void updatePriority(Integer targetIndex, Integer newIndex) {
+        IceManager iceManager = new IceManager();
+
+        Iterator iter = _iceList.iterator();
+        while (iter.hasNext()){
+            Ice ice = (Ice)iter.next();
+
+            if(ice.getPriority() == targetIndex) {
+                ice.setPriority(newIndex);
+            } else {
+                if(newIndex < targetIndex) {
+                    if(ice.getPriority() >= newIndex && ice.getPriority() < targetIndex) {
+                        ice.setPriority(ice.getPriority() + 1);
+                    }
+                } else if(newIndex > targetIndex) {
+                    if(ice.getPriority() > targetIndex && ice.getPriority() >= newIndex) {
+                        ice.setPriority(ice.getPriority() - 1);
+                    }
+                }
+            }
+
+            iceManager.updateIce(ice.getId() , ice.getName(), ice.getContactNo(), ice.getContactType(), ice.getDescription(), ice.getPriority(), _context);
+        }
+
+        notifyDataSetChanged();
     }
 
     public void delete(int position) {
