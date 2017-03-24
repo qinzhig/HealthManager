@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.medipal.pojo;
 
-import java.util.Date;
-
 /**
  * Created by levis on 3/16/2017.
  * Description : Class to hold ICE(In case of Emergency Contact) table data
@@ -21,14 +19,6 @@ public class Ice implements Comparable<Ice> {
         this._contactType = contactType;
         this._description = description;
         this._priority = priority;
-    }
-
-    public Ice(Integer id, String name, String contactNo, Integer contactType, String description) {
-        this._id = id;
-        this._name = name;
-        this._contactNo = contactNo;
-        this._contactType = contactType;
-        this._description = description;
     }
 
     public Ice(Integer id, String name, String contactNo, Integer contactType, String description, Integer priority) {

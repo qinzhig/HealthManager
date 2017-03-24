@@ -514,7 +514,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                                 Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
 
 
-
                         App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
                                 Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
 

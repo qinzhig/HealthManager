@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
 
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -25,7 +25,6 @@ import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
 
 public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
-
     private Context _context;
     private List<Ice> _iceList;
 
@@ -56,28 +55,26 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _top.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   updatePriority(getAdapterPosition(), 0);
+                    goTop(getAdapterPosition());
                 }
             });
 
             _up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   updatePriority(getAdapterPosition(), getAdapterPosition() - 1);
+                    goUp(getAdapterPosition());
                 }
             });
 
             _down.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                   updatePriority(getAdapterPosition(), getAdapterPosition() + 1);
+                public void onClick(View view) { goDown(getAdapterPosition());
                 }
             });
 
             _bottom.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                  updatePriority(getAdapterPosition(), _iceList.size() - 1);
+                public void onClick(View view) { goBottom(getAdapterPosition());
                 }
             });
 
@@ -93,6 +90,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                     iceIntent.putExtra("contactNo", ice.getContactNo());
                     iceIntent.putExtra("contactType", ice.getContactType());
                     iceIntent.putExtra("description", ice.getDescription());
+                    iceIntent.putExtra("priority", ice.getPriority());
                     iceIntent.putExtra("isEdit", true);
                     ((Activity)_context).startActivityForResult(iceIntent, 103);
                 }
@@ -106,8 +104,6 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    IceManager iceManager = new IceManager();
-                                    iceManager.deleteIce(getAdapterPosition(), _context);
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -152,35 +148,50 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         return _iceList.size();
     }
 
-    public void updatePriority(Integer targetIndex, Integer newIndex) {
-        IceManager iceManager = new IceManager();
+    public void goTop(Integer position) {
+        Collections.swap(_iceList, position, 0);
+        notifyItemMoved(position, 0);
+        updateAllPriority();
+    }
 
-        Iterator iter = _iceList.iterator();
-        while (iter.hasNext()){
-            Ice ice = (Ice)iter.next();
-
-            if(ice.getPriority() == targetIndex) {
-                ice.setPriority(newIndex);
-            } else {
-                if(newIndex < targetIndex) {
-                    if(ice.getPriority() >= newIndex && ice.getPriority() < targetIndex) {
-                        ice.setPriority(ice.getPriority() + 1);
-                    }
-                } else if(newIndex > targetIndex) {
-                    if(ice.getPriority() > targetIndex && ice.getPriority() >= newIndex) {
-                        ice.setPriority(ice.getPriority() - 1);
-                    }
-                }
-            }
-
-            iceManager.updateIce(ice.getId() , ice.getName(), ice.getContactNo(), ice.getContactType(), ice.getDescription(), ice.getPriority(), _context);
+    public void goUp(Integer position) {
+        if(position > 0) {
+            Collections.swap(_iceList, position, position - 1);
+            notifyItemMoved(position, position - 1);
+            updateAllPriority();
         }
+    }
 
-        notifyDataSetChanged();
+    public void goDown(Integer position) {
+        if(position < this.getItemCount() - 1) {
+            Collections.swap(_iceList, position, position + 1);
+            notifyItemMoved(position, position + 1);
+            updateAllPriority();
+        }
+    }
+
+    public void goBottom(Integer position) {
+        Collections.swap(_iceList, position, this.getItemCount() - 1);
+        notifyItemMoved(position, this.getItemCount() - 1);
+        updateAllPriority();
     }
 
     public void delete(int position) {
+        IceManager iceManager = new IceManager();
+        Ice ice = (Ice)_iceList.get(position);
+        iceManager.deleteIce(ice.getId().toString(), _context);
+
         _iceList.remove(position);
         notifyItemRemoved(position);
+        updateAllPriority();
+    }
+
+    void updateAllPriority() {
+        IceManager iceManager = new IceManager();
+        for(int i = 0; i < _iceList.size(); i++) {
+            Ice ice = _iceList.get(i);
+            ice.setPriority(i);
+            iceManager.updateIce(ice.getId(), ice.getName(), ice.getContactNo(), ice.getContactType(), ice.getDescription(), i, _context);
+        }
     }
 }

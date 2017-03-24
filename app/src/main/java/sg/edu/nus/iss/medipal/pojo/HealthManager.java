@@ -99,6 +99,41 @@ public class HealthManager {
 
     }
 
+    //SQLite get medicine list
+    public List<Medicine> getMedicinesWithRemainders(Context context) {
+        taskListMedicine = new ListMedicine(context);
+        taskListMedicine.execute((Void)null);
+        List<Medicine> medicineList = new ArrayList<Medicine>();
+        try {
+            medicineList = taskListMedicine.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(medicineList == null){
+            medicineList = new ArrayList<Medicine>();
+        }
+        else{
+            Iterator<Medicine> i;
+            i = medicineList.iterator();
+
+            while(i.hasNext()){
+                Medicine m = i.next();
+                if( !m.isReminder())
+                {
+                    i.remove();
+                }
+            }
+
+        }
+
+        Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
+        return  medicineList;
+
+    }
+
     //SQLite add medicine
     public Medicine addMedicine(int id, String medicine_name, String medicine_des, int cateId,
                                 int reminderId, Boolean reminder, int quantity, int dosage,int cquantity,int threshold,

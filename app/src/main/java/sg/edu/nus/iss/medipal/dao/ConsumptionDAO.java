@@ -105,10 +105,32 @@ public class ConsumptionDAO extends DataBaseUtility {
         return consumptions;
     }
 
+    //added by naval
+    public Integer getConsumptionCount(String medicineId,String consumedOn) {
 
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ?";
+        String[] selectionArgs = {medicineId, consumedOn};
+        Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
+                null,selection,selectionArgs,null,null,null);
 
+        int count = cursor.getCount();
+        return count;
+    }
 
+    public int getMinConsumptionId(String medicineId,String consumedOn) {
 
-
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ? AND quantity = ?";
+        String[] selectionArgs = {medicineId, consumedOn,"0"};
+        Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
+                new String[]{
+                        "min(id)",
+                        },selection,selectionArgs,null,null,null);
+        int id=-1;
+        //loop through each result set to populate the appointment pojo and add to the list each time
+        while (cursor.moveToNext()) {
+            id = cursor.getInt(0);
+        }
+        return id;
+    }
 
 }
