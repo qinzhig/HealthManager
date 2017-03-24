@@ -9,29 +9,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
-import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
-import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
-import sg.edu.nus.iss.medipal.pojo.Appointment;
-import sg.edu.nus.iss.medipal.pojo.Category;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
@@ -112,6 +101,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                                 public void onClick(DialogInterface dialog, int id) {
                                     Medicine medicine = medicineList.get(getAdapterPosition());
                                     healthManager.deleteMedicine(medicine.getId(),mContext);
+                                    healthManager.deleteReminder(medicine.getReminderId(),mContext);
                                     delete(getAdapterPosition());
                                 }
                             })
