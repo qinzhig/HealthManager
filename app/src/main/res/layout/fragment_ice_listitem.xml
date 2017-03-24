@@ -31,38 +31,35 @@
                 android:id="@+id/icelistitemname_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/icethumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding"
                 android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
+                android:textSize="25dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/icethumbnail" />
+                android:layout_alignParentTop="true" />
 
             <TextView
                 android:id="@+id/icelistitemcontactnumber_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icelistitemname_view"
-                android:paddingBottom="@dimen/title_padding"
                 android:layout_toEndOf="@+id/icethumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:textSize="@dimen/datetime_size" />
+                android:textSize="25dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/icelistitemcontacttype_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/icelistitemcontactnumber_view"
-                android:paddingBottom="@dimen/title_padding"
                 android:layout_toEndOf="@+id/icethumbnail"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:textSize="@dimen/desc_size" />
 
             <ImageView
