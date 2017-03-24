@@ -17,6 +17,7 @@ import sg.edu.nus.iss.medipal.asynTask.AddCategory;
 import sg.edu.nus.iss.medipal.asynTask.AddMedicine;
 import sg.edu.nus.iss.medipal.asynTask.AddReminder;
 import sg.edu.nus.iss.medipal.asynTask.DeleteMedicine;
+import sg.edu.nus.iss.medipal.asynTask.DeleteReminder;
 import sg.edu.nus.iss.medipal.asynTask.ListCategory;
 import sg.edu.nus.iss.medipal.asynTask.ListMedicine;
 import sg.edu.nus.iss.medipal.asynTask.ListReminder;
@@ -47,6 +48,7 @@ public class HealthManager {
     private AddReminder     taskAddReminder;
     private UpdateReminder  taskUpdateReminder;
     private ListReminder    taskListReminder;
+    private DeleteReminder  taskDeleteReminder;
 
 
     public HealthManager(){
@@ -329,6 +331,20 @@ public class HealthManager {
         taskAddReminder.execute(reminder);
 
         return reminder;
+
+    }
+
+    //SQLite delete medicine
+
+    public void deleteReminder(int id,Context context){
+
+        Reminder r = getReminder(id,context);
+
+        if(r != null)
+        {
+            taskDeleteReminder = new DeleteReminder(context);
+            taskDeleteReminder.execute(r);
+        }
 
     }
 
