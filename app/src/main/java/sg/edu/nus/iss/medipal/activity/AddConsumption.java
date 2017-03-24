@@ -66,7 +66,11 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         etDate = (EditText)findViewById(R.id.et_select_date);
         etTime = (EditText)findViewById(R.id.et_select_time);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+
         view_Medicine = (TextView)findViewById(R.id.view_medicine);
         view_Quantity = (EditText) findViewById(R.id.Dosage);
         etDate.setOnClickListener(this);
