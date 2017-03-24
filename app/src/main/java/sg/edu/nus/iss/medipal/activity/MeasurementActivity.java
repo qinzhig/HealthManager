@@ -12,12 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.StringTokenizer;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.MeasurementManager;
@@ -65,6 +64,25 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
 
         _dateEdit.setOnClickListener(this);
         _timeEdit.setOnClickListener(this);
+
+        Bundle intentExtras = getIntent().getExtras();
+        boolean isEdit = intentExtras.getBoolean("isEdit");
+
+        if (isEdit) {
+            _id = intentExtras.getInt("id");
+            _systolicEdit.setText(intentExtras.get("systolic").toString());
+            _diastolicEdit.setText(intentExtras.get("diastolic").toString());
+            _pulseEdit.setText(intentExtras.get("pulse").toString());
+            _temperatureEdit.setText(intentExtras.get("temperature").toString());
+            _weightEdit.setText(intentExtras.get("weight").toString());
+
+            String measuredOn = intentExtras.get("measuredon").toString();
+            StringTokenizer tokens = new StringTokenizer(measuredOn, " ");
+            String date = tokens.nextToken();
+            String time = tokens.nextToken() + " " + tokens.nextToken();
+            _dateEdit.setText(date);
+            _timeEdit.setText(time);
+        }
     }
 
     @Override
@@ -148,9 +166,16 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
             if (validateMeasurement(_systolicStr, _diastolicStr, _pulseStr, _temperatureStr, _weightStr, _dateStr, _timeStr)) {
                 _measuredOnStr = _dateStr + " " + _timeStr;
 
-                addMeasurement(Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
-                        Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
-                        Integer.parseInt(_weightStr), _measuredOnStr);
+                if(_id != null) {
+                    updateMeasurement(_id,
+                            Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
+                            Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
+                            Integer.parseInt(_weightStr), _measuredOnStr);
+                } else {
+                    addMeasurement(Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
+                            Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
+                            Integer.parseInt(_weightStr), _measuredOnStr);
+                }
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
@@ -176,6 +201,11 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
     private void addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String measuredOn) {
         MeasurementManager measurementManager = new MeasurementManager();
         measurementManager.addMeasurement(systolic, diastolic, pulse, temperature, weight, measuredOn, this);
+    }
+
+    private void updateMeasurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String measuredOn) {
+        MeasurementManager iceManager = new MeasurementManager();
+        iceManager.updateMeasurement(id, systolic, diastolic, pulse, temperature, weight, measuredOn, this);
     }
 
     private boolean validateMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String date, String time) {

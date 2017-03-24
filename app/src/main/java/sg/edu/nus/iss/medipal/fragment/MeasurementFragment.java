@@ -62,6 +62,13 @@ public class MeasurementFragment extends Fragment {
         return view;
     }
 
+    public void onResume() {
+        super.onResume();
+
+        _measurementList = _measurementManager.getMeasurements(getContext());
+        this.populateRecyclerView();
+    }
+
     private void populateRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         _measurementView.setLayoutManager(layoutManager);

@@ -106,7 +106,6 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
                     addIce(_nameStr, _contactNoStr, _contactType, _descriptionStr);
                 }
 
-
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Saving...");

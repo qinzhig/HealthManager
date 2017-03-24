@@ -24,7 +24,6 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 public class MeasurementDAO extends DataBaseUtility {
 
     private static final String WHERE_ID_EQUALS = DataBaseManager.MEASUREMENT_ID + " =?";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     public MeasurementDAO(Context context) {
         super(context);
@@ -63,10 +62,10 @@ public class MeasurementDAO extends DataBaseUtility {
         contentValues.put(DataBaseManager.MEASUREMENT_MEASUREDON, measurement.getMeasuredOn());
 
         try {
-            retCode = database.update(DataBaseManager.ICE_TABLE, contentValues, WHERE_ID_EQUALS, new String[]{String.valueOf(measurement.getId())});
+            retCode = database.update(DataBaseManager.MEASUREMENT_TABLE, contentValues, WHERE_ID_EQUALS, new String[]{String.valueOf(measurement.getId())});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
-            retCode = -1; //set return value to error code so that caller can handle error
+            sqlExp.printStackTrace();
+            retCode = -1;
         }
         return retCode;
     }
@@ -99,7 +98,7 @@ public class MeasurementDAO extends DataBaseUtility {
                 measurementList.add(measurement);
             }
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
+            sqlExp.printStackTrace();
         }
 
         return measurementList;
@@ -112,8 +111,8 @@ public class MeasurementDAO extends DataBaseUtility {
         try {
             database.delete(DataBaseManager.MEASUREMENT_TABLE, DataBaseManager.MEASUREMENT_ID + "= ?", new String[]{id});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
-            retCode = -1; //set return value to error code so that caller can handle error
+            sqlExp.printStackTrace();
+            retCode = -1;
         }
         return retCode;
     }
