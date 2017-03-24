@@ -112,7 +112,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         return _measurementList.size();
     }
 
-    public void delete(int position) { //removes the row
+    public void delete(int position) {
         _measurementList.remove(position);
         notifyItemRemoved(position);
     }

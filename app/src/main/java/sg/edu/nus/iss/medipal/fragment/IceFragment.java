@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.pojo.Ice;
-import sg.edu.nus.iss.medipal.activity.IceActivity;
-import sg.edu.nus.iss.medipal.adapter.IceAdapter;
 import sg.edu.nus.iss.medipal.manager.IceManager;
+import sg.edu.nus.iss.medipal.pojo.Ice;
+import sg.edu.nus.iss.medipal.adapter.IceAdapter;
+import sg.edu.nus.iss.medipal.activity.IceActivity;
 
 import java.util.List;
 
@@ -66,15 +66,12 @@ public class IceFragment extends Fragment {
         return view;
     }
 
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         _iceList = _iceManager.getIces(getContext());
-
         this.populateRecyclerView();
     }
-
 
     private void populateRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -83,5 +80,4 @@ public class IceFragment extends Fragment {
         _iceAdapter = new IceAdapter(getContext(), _iceList);
         _iceView.setAdapter(_iceAdapter);
     }
-
 }

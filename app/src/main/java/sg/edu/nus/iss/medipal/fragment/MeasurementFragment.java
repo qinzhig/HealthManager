@@ -15,8 +15,8 @@ import android.widget.TextView;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.MeasurementManager;
 import sg.edu.nus.iss.medipal.pojo.Measurement;
-import sg.edu.nus.iss.medipal.activity.IceActivity;
 import sg.edu.nus.iss.medipal.adapter.MeasurementAdapter;
+import sg.edu.nus.iss.medipal.activity.MeasurementActivity;
 
 import java.util.List;
 
@@ -53,9 +53,9 @@ public class MeasurementFragment extends Fragment {
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent iceIntent = new Intent(getContext(), IceActivity.class);
-                iceIntent.putExtra("isEdit", false);
-                startActivityForResult(iceIntent, 1);
+                Intent measurementIntent = new Intent(getContext(), MeasurementActivity.class);
+                measurementIntent.putExtra("isEdit", false);
+                startActivityForResult(measurementIntent, 5);
             }
         });
 
@@ -69,5 +69,4 @@ public class MeasurementFragment extends Fragment {
         _measurementAdapter = new MeasurementAdapter(getContext(), _measurementList);
         _measurementView.setAdapter(_measurementAdapter);
     }
-
 }

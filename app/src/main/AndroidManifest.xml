@@ -80,7 +80,13 @@
 
         <activity
             android:name=".activity.IceActivity"
-            android:label="AddEditICE"
+            android:label="ICEDetail"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.MeasurementActivity"
+            android:label="MeasurementDetail"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
