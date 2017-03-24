@@ -396,9 +396,12 @@ public class EditMedicineActivity extends AppCompatActivity {
 
             }
             //Update the medicine if the save button is clicked
-            update_Medicine();
+            boolean update_result = update_Medicine();
 
-            finish();
+            if(update_result){
+                finish();
+            }
+
 
         }
 
@@ -414,7 +417,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(frequency < 0 || frequency > 24 )
         {
-            lFrequency.setError("Incorret Consumpotion Frequency set here!");
+            lFrequency.setError("Invalide Frequency!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
@@ -422,7 +425,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(interval < 0 || interval >24 ){
 
-            lInterval.setError("The interval hour exceed 24 hours!");
+            lInterval.setError("Invalide Interval!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
@@ -430,15 +433,15 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(stime.isEmpty())
         {
-            lStartTime.setError("Please set a startTime for the reminder");
+            lStartTime.setError("Set StartTime");
             reminder_validate_status = false;
         }
 
         if( (reminder_validate_status == true) && (frequency*interval + Integer.valueOf(stime_hour_min[0])) >24 )
         {
-            lFrequency.setError("Consumpition Setting exceed in one day!");
-            lInterval.setError("Consumpition Setting exceed in one day!");
-            lStartTime.setError("Consumption start Time may to late for one day repeat");
+            lFrequency.setError("Setting exceed One Day");
+            lInterval.setError("Setting exceed One Day");
+            lStartTime.setError("Setting exceed One Day");
 
             reminder_validate_status = false;
         }
@@ -452,29 +455,29 @@ public class EditMedicineActivity extends AppCompatActivity {
         boolean validate_status =true;
 
         if(name.isEmpty()){
-            lName.setError("Please input a Medicine Name!");
+            lName.setError("Input a medicine name!");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            lDesc.setError("Please input a description for this medicine!");
+            lDesc.setError("Fill something!");
             validate_status = false;
         }
 
         if(quantity < 0){
-            lQuantity.setError("Please input a correct quantity for this Medicine! ");
+            lQuantity.setError("Incorrect input! ");
             validate_status = false;
             Log.v("DEBUG","------------Quantity = "+et_quanity.getText().toString().trim());
         }
 
         if(threshold >= quantity )
         {
-            lThreshold.setError("Threshold medicine number overlap the Medicine Quantity!");
+            lThreshold.setError("Big than Quantity!");
             validate_status = false;
             Log.v("DEBUG","------------Threshold = "+et_threshold.getText().toString().trim());
         }
         if(cquantity > quantity ){
-            lCQuantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
+            lCQuantity.setError("Incorrect value");
             validate_status = false;
         }
 
@@ -482,7 +485,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
     }
 
-    public void update_Medicine(){
+    public boolean update_Medicine(){
 
         int reminderid = (int)( (Math.random()*9 + 1) * 10000);
 
@@ -572,10 +575,13 @@ public class EditMedicineActivity extends AppCompatActivity {
             //toast.show();
 
             //finish();
+            return true;
 
         }else{
             Toast toast_error = Toast.makeText(EditMedicineActivity.this,"Some input incorrect,please check!",Toast.LENGTH_SHORT);
             toast_error.show();
+
+            return false;
         }
 
     }
