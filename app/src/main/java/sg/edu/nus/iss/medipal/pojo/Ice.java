@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.medipal.pojo;
 
-import java.util.Date;
-
 /**
  * Created by levis on 3/16/2017.
  * Description : Class to hold ICE(In case of Emergency Contact) table data

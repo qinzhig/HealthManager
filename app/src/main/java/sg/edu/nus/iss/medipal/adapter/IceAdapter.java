@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.app.Activity;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -180,7 +178,8 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
 
     public void delete(int position) {
         IceManager iceManager = new IceManager();
-        iceManager.deleteIce(position, _context);
+        Ice ice = (Ice)_iceList.get(position);
+        iceManager.deleteIce(ice.getId().toString(), _context);
 
         _iceList.remove(position);
         notifyItemRemoved(position);
