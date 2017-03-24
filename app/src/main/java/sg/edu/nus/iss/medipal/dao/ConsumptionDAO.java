@@ -86,6 +86,7 @@ public class ConsumptionDAO extends DataBaseUtility {
     public ArrayList<Consumption> getConsumptions() {
         ArrayList<Consumption> consumptions = new ArrayList<Consumption>();
 
+
         Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
                 new String[]{
                         DataBaseManager.CONSUMPTION_ID,
@@ -129,6 +130,22 @@ public class ConsumptionDAO extends DataBaseUtility {
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
             id = cursor.getInt(0);
+        }
+        return id;
+    }
+
+    public int[] getConsumptionQuantities(String medicineId,String consumedOn) {
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ? AND quantity = ?";
+        String[] selectionArgs = {medicineId, consumedOn,"0"};
+        Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
+                new String[]{
+                        "quantity",
+                },selection,selectionArgs,null,null,null);
+        int[] id= new int[cursor.getCount()];
+        int cnt=0;
+        //loop through each result set to populate the appointment pojo and add to the list each time
+        while (cursor.moveToNext()) {
+            id[cnt] =Integer.parseInt(cursor.getString(0));
         }
         return id;
     }

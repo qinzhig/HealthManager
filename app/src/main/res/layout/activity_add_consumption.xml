@@ -1,122 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sg.edu.nus.iss.medipal.activity.AddConsumption">
+    >
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-
-
-    </android.support.v7.widget.Toolbar>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
         >
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:focusableInTouchMode="true"
+            >
+            <TextView
+                android:id="@+id/tb_app_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="Add Consumption"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medicine_name"
-                android:layout_marginLeft="22dp"
-                android:layout_marginStart="22dp"
+                android:text="Medicine name"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:id="@+id/medicine_name"
-                android:textStyle="bold"/>
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                />
 
             <TextView
                 android:id="@+id/view_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/medicine_name"
-                android:layout_marginEnd="20dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp">
+                >
             </TextView>
-
-            <TextView
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/Quantity"
-                android:layout_below="@id/view_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quantity"
-                android:textStyle="bold"
-                android:layout_marginLeft="22dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="20dp" />
-            <EditText
-                android:id="@+id/Dosage"
-                android:layout_below="@id/Quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="20dp"/>
+                app:hintTextAppearance="@style/TextInputLayout.hint">
+                <EditText
+                    android:id="@+id/Dosage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:hint="Quantity"
+                    android:maxLength="500"
+                    android:theme="@style/EditTextStyle"/>
+            </android.support.design.widget.TextInputLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/Dosage">
-                <TextView
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/tv_date"
-                    android:text="Date"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:id="@+id/et_select_date"
-                    android:hint="Date"
-                    android:layout_below="@id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_date"
-                    android:layout_alignStart="@id/tv_date"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:ems="7"/>
-                <TextView
+                    app:hintTextAppearance="@style/TextInputLayout.hint">
+                    <EditText
+                        android:id="@+id/et_select_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="7"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="none"
+                        android:theme="@style/EditTextStyle"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/tv_time"
-                    android:text="Time"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignBaseline="@id/tv_date"/>
-                <EditText
-                    android:id="@+id/et_select_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/et_select_date"
-                    android:layout_toEndOf="@id/et_select_date"
-                    android:layout_alignStart="@id/tv_time"
-                    android:layout_alignLeft="@id/tv_time"
-                    android:focusable="false"
-                    android:layout_alignBaseline="@id/et_select_date"
-                    android:hint="Time"
-                    android:ems="7"
-                    android:inputType="none"/>
-
-
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    app:hintTextAppearance="@style/TextInputLayout.hint">
+                    <EditText
+                        android:id="@+id/et_select_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="40dp"
+                        android:ems="7"
+                        android:focusable="false"
+                        android:hint="Time"
+                        android:inputType="none"
+                        android:theme="@style/EditTextStyle" />
+                </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
-
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
-
-</RelativeLayout>
+</LinearLayout>
