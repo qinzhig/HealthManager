@@ -31,6 +31,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
     PreferenceManager remainderPreference;
     @Override
     public void onReceive(Context context, Intent intent) {
+
         if( (intent.getStringExtra("ConsumptionReminderId") != null) && (!intent.getStringExtra("ConsumptionReminderId").isEmpty()))
         {
             Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
@@ -41,7 +42,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
             Reminder reminder = App.hm.getReminder(cReminderID/100,context);
 
-            if ((cReminderID%100) <= reminder.getFrequency()) {
+            if ( (reminder != null) && (cReminderID%100) <= reminder.getFrequency()) {
 
                 Intent resultIntent = new Intent(context, MainActivity.class);
 
@@ -67,7 +68,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
 
 
-        }else {
+        }else if((intent.getStringExtra("Id") != null) && (intent.getStringExtra("notification") != null)) {
 
             remainderPreference = new PreferenceManager(context);
             String notificationId = intent.getStringExtra("Id");
