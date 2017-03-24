@@ -2,12 +2,17 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,7 +42,7 @@ public class EditMedicineActivity extends AppCompatActivity {
     private Spinner spinner,spinner_dosage;
     Button button_update;
     ImageButton button_add_category;
-    TextView tv_reminder;
+    TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
@@ -66,8 +70,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Update Medicine");
 
         medicine = (Medicine) getIntent().getSerializableExtra("medicineInfo");
@@ -76,7 +78,21 @@ public class EditMedicineActivity extends AppCompatActivity {
         //Get the intentExtras data
         //Bundle intentExtras = getIntent().getExtras();
 
+
         //Align the medicine data from previous selected medicine item to current view correspondingly
+
+        lName = (TextInputLayout)findViewById(R.id.tv_name);
+        lDesc = (TextInputLayout)findViewById(R.id.tv_des);
+        lQuantity = (TextInputLayout)findViewById(R.id.tv_quantity);
+        lCQuantity = (TextInputLayout)findViewById(R.id.tv_dosage);
+        lThreshold = (TextInputLayout)findViewById(R.id.tv_threshold);
+        lGetDate = (TextInputLayout)findViewById(R.id.tv_date_get);
+        lExpireDate = (TextInputLayout)findViewById(R.id.tv_date_expire);
+        lFrequency = (TextInputLayout)findViewById(R.id.tv_frequency);
+        lInterval = (TextInputLayout)findViewById(R.id.tv_interval);
+        lStartTime = (TextInputLayout)findViewById(R.id.tv_stime);
+
+
 
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
@@ -88,7 +104,7 @@ public class EditMedicineActivity extends AppCompatActivity {
         et_frequency = (EditText) findViewById(R.id.et_frequency);
         et_interval = (EditText) findViewById(R.id.et_interval);
         et_stime = (EditText) findViewById(R.id.et_stime);
-        tv_reminder = (TextView) findViewById(R.id.tv_reminder);
+
 
         switch_remind = (Switch) findViewById(R.id.switch_remind);
 
@@ -104,7 +120,6 @@ public class EditMedicineActivity extends AppCompatActivity {
         }else{
             remind_status = false;
 
-            tv_reminder.setVisibility(View.INVISIBLE);
             et_frequency.setVisibility(View.INVISIBLE);
             et_interval.setVisibility(View.INVISIBLE);
             et_stime.setVisibility(View.INVISIBLE);
@@ -125,7 +140,6 @@ public class EditMedicineActivity extends AppCompatActivity {
                     switch_remind.setText(" ON ");
                     remind_status = true;
 
-                    tv_reminder.setVisibility(View.VISIBLE);
                     et_frequency.setVisibility(View.VISIBLE);
                     et_interval.setVisibility(View.VISIBLE);
                     et_stime.setVisibility(View.VISIBLE);
@@ -135,7 +149,6 @@ public class EditMedicineActivity extends AppCompatActivity {
                     switch_remind.setText(" OFF ");
                     remind_status = false;
 
-                    tv_reminder.setVisibility(View.INVISIBLE);
                     et_frequency.setVisibility(View.INVISIBLE);
                     et_interval.setVisibility(View.INVISIBLE);
                     et_stime.setVisibility(View.INVISIBLE);
@@ -335,20 +348,63 @@ public class EditMedicineActivity extends AppCompatActivity {
 
 
         //Set the Save Button Name to Update
-        button_update = (Button) findViewById(R.id.button_save);
-        button_update.setText("Update");
+//        button_update = (Button) findViewById(R.id.button_save);
+//        button_update.setText("Update");
+//
+//        button_update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //Call the update method to update the Medicine and related reminder info
+//                update_Medicine();
+//
+//            }
+//        });
 
-        button_update.setOnClickListener(new View.OnClickListener() {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_action_items,menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_close);
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Call the update method to update the Medicine and related reminder info
-                update_Medicine();
-
+                finish();
             }
         });
 
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_close)
+        {
+            finish();
+        }
+        else if (id == R.id.action_done)
+        {
+            //this to bring down the keyboard when action is done. so that dialog will not be messed by the keyboard
+            View view = this.getCurrentFocus();
+            if(view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+            }
+            //Update the medicine if the save button is clicked
+            update_Medicine();
+
+            finish();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public boolean input_validate_of_reminder(int frequency,int interval,String stime){
 
@@ -358,7 +414,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(frequency < 0 || frequency > 24 )
         {
-            et_frequency.setError("Incorret Consumpotion Frequency set here!");
+            lFrequency.setError("Incorret Consumpotion Frequency set here!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
@@ -366,7 +422,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(interval < 0 || interval >24 ){
 
-            et_interval.setError("The interval hour exceed 24 hours!");
+            lInterval.setError("The interval hour exceed 24 hours!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
@@ -374,15 +430,15 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(stime.isEmpty())
         {
-            et_stime.setError("Please set a startTime for the reminder");
+            lStartTime.setError("Please set a startTime for the reminder");
             reminder_validate_status = false;
         }
 
-        if( frequency*interval + Integer.valueOf(stime_hour_min[0]) >24 )
+        if( (reminder_validate_status == true) && (frequency*interval + Integer.valueOf(stime_hour_min[0])) >24 )
         {
-            et_frequency.setError("Consumpition Setting exceed in one day!");
-            et_interval.setError("Consumpition Setting exceed in one day!");
-            et_stime.setError("Consumption start Time may to late for one day repeat");
+            lFrequency.setError("Consumpition Setting exceed in one day!");
+            lInterval.setError("Consumpition Setting exceed in one day!");
+            lStartTime.setError("Consumption start Time may to late for one day repeat");
 
             reminder_validate_status = false;
         }
@@ -396,29 +452,29 @@ public class EditMedicineActivity extends AppCompatActivity {
         boolean validate_status =true;
 
         if(name.isEmpty()){
-            et_name.setError("Please input a Medicine Name!");
+            lName.setError("Please input a Medicine Name!");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            et_des.setError("Please input a description for this medicine!");
+            lDesc.setError("Please input a description for this medicine!");
             validate_status = false;
         }
 
         if(quantity < 0){
-            et_quanity.setError("Please input a correct quantity for this Medicine! ");
+            lQuantity.setError("Please input a correct quantity for this Medicine! ");
             validate_status = false;
             Log.v("DEBUG","------------Quantity = "+et_quanity.getText().toString().trim());
         }
 
         if(threshold >= quantity )
         {
-            et_threshold.setError("Threshold medicine number overlap the Medicine Quantity!");
+            lThreshold.setError("Threshold medicine number overlap the Medicine Quantity!");
             validate_status = false;
             Log.v("DEBUG","------------Threshold = "+et_threshold.getText().toString().trim());
         }
         if(cquantity > quantity ){
-            et_cquantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
+            lCQuantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
             validate_status = false;
         }
 
@@ -512,10 +568,10 @@ public class EditMedicineActivity extends AppCompatActivity {
                 toast_error.show();
             }
 
-            Toast toast = Toast.makeText(EditMedicineActivity.this, "Update Medicine Successfully!", Toast.LENGTH_SHORT);
-            toast.show();
+           // Toast toast = Toast.makeText(EditMedicineActivity.this, "Update Medicine Successfully!", Toast.LENGTH_SHORT);
+            //toast.show();
 
-            finish();
+            //finish();
 
         }else{
             Toast toast_error = Toast.makeText(EditMedicineActivity.this,"Some input incorrect,please check!",Toast.LENGTH_SHORT);

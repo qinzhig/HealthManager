@@ -22,8 +22,12 @@ import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
 
+
 import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
+
+
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
 
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
@@ -121,10 +125,10 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 @Override
                 public void onClick(View v) {
                     if(fromHomeFragment != null && fromHomeFragment) {
-
-                     //   cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                     //   cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
-
+                        Medicine medicine = medicineList.get(getAdapterPosition());
+                        Intent addConsumption = new Intent(mContext, AddConsumption.class);
+                        addConsumption.putExtra("medicine_id",medicine.getId());
+                        ((Activity)mContext).startActivityForResult(addConsumption,301);
                     }
                 }
 

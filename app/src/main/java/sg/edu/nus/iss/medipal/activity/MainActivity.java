@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private boolean refreshAppointmentFragment;
     private boolean refreshPersonalBioFragment;
     private boolean refreshMedicineFragment;
+    private boolean refreshHomeFragment;
     private Boolean inHomeFragment;
 
     @Override
@@ -251,9 +252,9 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
-        else {
+        else if(refreshHomeFragment){
             //  if(inHomeFragment)
-            // loadHomeFragment();
+            loadHomeFragment();
         }
     }
 
@@ -276,7 +277,12 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == 0) {
                 refreshMedicineFragment = true;
             }
+        }else if(requestCode == 301){
+            if (resultCode == 0) {
+                refreshHomeFragment = true;
+            }
         }
+
     }
 
     public void setActionBarTitle(String title) {
