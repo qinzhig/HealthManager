@@ -82,7 +82,7 @@ public class IceDAO extends DataBaseUtility {
                 String description = cursor.getString(4);
                 Integer priority = cursor.getInt(5);
 
-                ice = new Ice(id, name, contractNo, contractType, description);
+                ice = new Ice(id, name, contractNo, contractType, description, priority);
                 iceList.add(ice);
             }
         } catch (SQLException sqlExp) {

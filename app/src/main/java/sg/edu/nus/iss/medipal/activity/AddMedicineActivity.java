@@ -15,14 +15,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -300,8 +298,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                     et_stime.setVisibility(View.GONE);
 
 
-                   // et_frequency.setText("0");
-                   // et_interval.setText("0");
+                    //et_frequency.setText("0");
+                    //et_interval.setText("0");
 
                 }
 
@@ -407,7 +405,48 @@ public class AddMedicineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean input_validate(String name,String des,int quantity,int cquantity,int threshold,int frequency,int interval){
+    public boolean input_validate_of_reminder(int frequency,int interval,String stime){
+
+        boolean reminder_validate_status = true;
+
+        String[] stime_hour_min = stime.split(":");
+
+        if(frequency < 0 || frequency > 24 )
+        {
+            et_frequency.setError("Incorret Consumpotion Frequency set here!");
+            reminder_validate_status = false;
+
+            Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
+        }
+
+        if(interval < 0 || interval >24 ){
+
+            et_interval.setError("The interval hour exceed 24 hours!");
+            reminder_validate_status = false;
+
+            Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
+        }
+
+        if(stime.isEmpty())
+        {
+            et_stime.setError("Please set a startTime for the reminder");
+            reminder_validate_status = false;
+        }
+
+        if( frequency*interval + Integer.valueOf(stime_hour_min[0]) >24 )
+        {
+            et_frequency.setError("Consumpition Setting exceed in one day!");
+            et_interval.setError("Consumpition Setting exceed in one day!");
+            et_stime.setError("Consumption start Time may to late for one day repeat");
+
+            reminder_validate_status = false;
+        }
+
+        return reminder_validate_status;
+
+    }
+
+    public boolean input_validate(String name,String des,int quantity,int cquantity,int threshold){
 
         boolean validate_status =true;
 
@@ -438,29 +477,6 @@ public class AddMedicineActivity extends AppCompatActivity {
             validate_status = false;
         }
 
-        if(frequency < 0 || frequency > 24 )
-        {
-            et_frequency.setError("Too Much Consumpotion Frequency set here!");
-            validate_status = false;
-
-            Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
-        }
-
-        if(interval < 0 || interval >24 ){
-
-            et_interval.setError("The interval hour exceed than 24 hours!");
-            validate_status = false;
-
-            Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
-        }
-
-        if( frequency*interval >24 )
-        {
-            et_frequency.setError("Consumpition Setting exceed in one day!");
-            et_interval.setError("Consumpition Setting exceed in one day!");
-            validate_status = false;
-        }
-
         return validate_status;
 
     }
@@ -468,29 +484,36 @@ public class AddMedicineActivity extends AppCompatActivity {
     private void saveMedicine(){
         //Save the medicine Infomation to SQLite
 
+                //Generate a 5 digtal number as the reminderID
                 int reminderid = (int)( (Math.random()*9 + 1) * 10000);
 
-                boolean no_input_empty;
+                boolean no_input_empty,no_reminder_input_invalidate;
 
+
+                //Check whether all the Medicine required integer data info matches the requirement
                 if((et_cquantity.getText().length() >0 && et_quanity.getText().length()>0 && et_threshold.getText().length()>0)){
                     no_input_empty = true;
                 }else{
                     no_input_empty = false;
                 }
 
+                //Get the reminder related input info whether match the correct format
+                no_reminder_input_invalidate = input_validate_of_reminder(Integer.valueOf(et_frequency.getText().toString().trim()),
+                        Integer.valueOf(et_interval.getText().toString().trim()),et_stime.getText().toString().trim());
+
+                //Medicine related data matches the requirement and passed the validation
                 if(no_input_empty && input_validate(et_name.getText().toString().trim(),et_des.getText().toString().trim(),
                         Integer.valueOf(et_quanity.getText().toString().trim()),Integer.valueOf(et_cquantity.getText().toString().trim()),
-                        Integer.valueOf(et_threshold.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),
-                        Integer.valueOf(et_interval.getText().toString().trim())) ) {
+                        Integer.valueOf(et_threshold.getText().toString().trim())) ) {
 
-
-                    if(remind_status){
+                    //If the reminder is set to True and reminder related info like:interval,frequency,startime passed the validation
+                    if(remind_status && no_reminder_input_invalidate){
                         App.hm.addReminder(reminderid,Integer.valueOf(et_frequency.getText().toString().trim()),et_stime.getText().toString(),
                                 Integer.valueOf(et_interval.getText().toString().trim()),getApplicationContext());
 
 
-
-                        App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
+                        App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
+                                Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
 
                     }
 
@@ -499,7 +522,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                             spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
                             Integer.valueOf(et_threshold.getText().toString().trim()),et_date_get.getText().toString(),expire_factor,getApplicationContext());
 
-//                App.hm.addMedicine(0,"m1","m1_des",1,0,false,20,1,"14 03 2017",10,getApplicationContext());
 
                     Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine Successfully!",Toast.LENGTH_SHORT);
                     toast.show();

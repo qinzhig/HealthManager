@@ -53,9 +53,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     private int medicine_id;
     private int getFrequency;
 
-    private int getCountofFrequent;
-    private static final String fileName = "sharedfile";//定义保存的文件的名称
-
 
     Calendar currentCal = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
@@ -218,14 +215,12 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
             consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
 
-            getCountofFrequent++;
+
 
          //   int remind_id = healthmanager.getMedicine(medicine_id,)
 
-            SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
-            SharedPreferences.Editor editor = share.edit();
-            editor.putInt("countFrequentNum",getCountofFrequent);
-            editor.commit();
+
+
 
             if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity <= threshold) {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(getApplicationContext());
@@ -246,8 +241,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
 
     }
-
-
 
     public boolean input_validate(int quantity,String date,String time) {
         boolean validate_status = true;

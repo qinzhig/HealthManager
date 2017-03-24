@@ -15,22 +15,23 @@ import org.json.JSONException;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.MainActivity;
+import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
+import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 /**
  * Created by : Navi on 15-03-2017.
  * Description : This is the broad receiver for getting the Appointment remainder from alarm manager service
  *                 after getting the intent, the class dispatches the corresponding notification
- * Modified by :
- * Reason for modification :
+ * Modified by : zhiguo on 23-03-2017
+ * Reason for modification : Add the Medicine alarm for consumption reminder
  */
 
 public class RemindAlarmReceiver extends BroadcastReceiver {
     PreferenceManager remainderPreference;
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        if(intent.getStringExtra("ConsumptionReminderId") != null && !intent.getStringExtra("ConsumptionReminderId").isEmpty())
+        if( (intent.getStringExtra("ConsumptionReminderId") != null) && (!intent.getStringExtra("ConsumptionReminderId").isEmpty()))
         {
             Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
             Log.v("MedicineReminder","---------------------->+++++++++++Reminder Id=" + intent.getStringExtra("ConsumptionReminderId"));
@@ -38,26 +39,31 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
             int cReminderID = Integer.valueOf(intent.getStringExtra("ConsumptionReminderId"));
 
-            Intent resultIntent = new Intent(context, MainActivity.class);
+            Reminder reminder = App.hm.getReminder(cReminderID/100,context);
 
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            if ((cReminderID%100) <= reminder.getFrequency()) {
 
-            stackBuilder.addNextIntent(resultIntent);
+                Intent resultIntent = new Intent(context, MainActivity.class);
 
-            PendingIntent medicinePendingIntent = stackBuilder.getPendingIntent(cReminderID, PendingIntent.FLAG_CANCEL_CURRENT|PendingIntent.FLAG_UPDATE_CURRENT);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                stackBuilder.addNextIntent(resultIntent);
 
-            Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
-                    .setContentText("Reminder for Consumpition")
-                    .setTicker("Notification for Appointment")
-                    .setSmallIcon(R.drawable.medicine)
-                    .setAutoCancel(true)
-                    .setContentIntent(medicinePendingIntent).build();
+                PendingIntent medicinePendingIntent = stackBuilder.getPendingIntent(cReminderID, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
 
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-            mNotificationManager.notify(cReminderID, consumption_notification);
+                Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
+                        .setContentText("Reminder for Consumpition")
+                        .setTicker("Notification for Appointment")
+                        .setSmallIcon(R.drawable.medicine)
+                        .setAutoCancel(true)
+                        .setContentIntent(medicinePendingIntent).build();
+
+                NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                mNotificationManager.notify(cReminderID, consumption_notification);
+            }
 
 
 

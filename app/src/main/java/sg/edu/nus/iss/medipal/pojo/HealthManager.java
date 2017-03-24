@@ -17,6 +17,7 @@ import sg.edu.nus.iss.medipal.asynTask.AddCategory;
 import sg.edu.nus.iss.medipal.asynTask.AddMedicine;
 import sg.edu.nus.iss.medipal.asynTask.AddReminder;
 import sg.edu.nus.iss.medipal.asynTask.DeleteMedicine;
+import sg.edu.nus.iss.medipal.asynTask.DeleteReminder;
 import sg.edu.nus.iss.medipal.asynTask.ListCategory;
 import sg.edu.nus.iss.medipal.asynTask.ListMedicine;
 import sg.edu.nus.iss.medipal.asynTask.ListReminder;
@@ -47,6 +48,7 @@ public class HealthManager {
     private AddReminder     taskAddReminder;
     private UpdateReminder  taskUpdateReminder;
     private ListReminder    taskListReminder;
+    private DeleteReminder  taskDeleteReminder;
 
 
     public HealthManager(){
@@ -94,6 +96,41 @@ public class HealthManager {
 
         Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
         return  medicines;
+
+    }
+
+    //SQLite get medicine list
+    public List<Medicine> getMedicinesWithRemainders(Context context) {
+        taskListMedicine = new ListMedicine(context);
+        taskListMedicine.execute((Void)null);
+        List<Medicine> medicineList = new ArrayList<Medicine>();
+        try {
+            medicineList = taskListMedicine.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(medicineList == null){
+            medicineList = new ArrayList<Medicine>();
+        }
+        else{
+            Iterator<Medicine> i;
+            i = medicineList.iterator();
+
+            while(i.hasNext()){
+                Medicine m = i.next();
+                if( !m.isReminder())
+                {
+                    i.remove();
+                }
+            }
+
+        }
+
+        Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
+        return  medicineList;
 
     }
 
@@ -294,6 +331,20 @@ public class HealthManager {
         taskAddReminder.execute(reminder);
 
         return reminder;
+
+    }
+
+    //SQLite delete medicine
+
+    public void deleteReminder(int id,Context context){
+
+        Reminder r = getReminder(id,context);
+
+        if(r != null)
+        {
+            taskDeleteReminder = new DeleteReminder(context);
+            taskDeleteReminder.execute(r);
+        }
 
     }
 
