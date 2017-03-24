@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
+import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
+import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.AppointmentManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
@@ -44,6 +48,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     private Context mContext;
     private HealthManager healthManager ;
     private List<Medicine> medicineList;
+    private Boolean fromHomeFragment;
 
     //callback listener to communicate with the parent activity
     private AdapterCallbackInterface mCallback;
@@ -57,6 +62,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public TextView consumeQuantity;
         public TextView dateIssued;
         public CardView cardView;
+        public ImageView edit;
+        public ImageView delete;
+
 
         public MedicineViewHolder(View view) {
             super(view);
@@ -68,18 +76,61 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             remainderFrequency = (TextView) view.findViewById(R.id.medicine_frequency);
             consumeQuantity = (TextView) view.findViewById(R.id.medicine_consumequantity);
             dateIssued = (TextView) view.findViewById(R.id.medicine_date);
+            delete = (ImageView) view.findViewById(R.id.delete);
+            edit = (ImageView) view.findViewById(R.id.edit);
+
+
+
+            if(fromHomeFragment != null && fromHomeFragment) {
+                delete.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+            }
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //passing the current information to the activity for showing in view
+                    Intent updateMedicine = new Intent(mContext, EditMedicineActivity.class);
+                    Medicine medicine = medicineList.get(getAdapterPosition());
+                    Log.v("Tag","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+updateMedicine);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("medicineInfo",medicine);
+                    updateMedicine.setClass(mContext,EditMedicineActivity.class);
+                    updateMedicine.putExtras(bundle);
+                    Log.v("TAG","--------------------MedicineAdapter Update   Object " + medicine.toString());
+                    ((Activity)mContext).startActivityForResult(updateMedicine,202);
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setMessage("Are you sure you want to delete this Medicine?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Medicine medicine = medicineList.get(getAdapterPosition());
+                                    healthManager.deleteMedicine(medicine.getId(),mContext);
+                                    delete(getAdapterPosition());
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                }
+            });
 
         }
     }
     //constructor for adapter
-    public MedicineRecyclerAdapter(Context mContext, HealthManager healthManager, AdapterCallbackInterface mCallback) {
+    public MedicineRecyclerAdapter(Context mContext, HealthManager healthManager,List<Medicine> medicineList,Boolean fromHomeFragment, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
         this.healthManager = healthManager;
         medicinePreference = new PreferenceManager(mContext);
         this.mCallback = mCallback;
-        medicineList = healthManager.getMedicines(mContext);
-        healthManager.getCategorys(mContext);
-        healthManager.getReminders(mContext);
+        this.medicineList = medicineList;
+        this.fromHomeFragment = fromHomeFragment;
+
     }
 
     //called once in beginning to load the view
@@ -99,8 +150,15 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
 
         //get appointment data from list using current position as index
 
-
+        String remainderString;
         Medicine medicine = medicineList.get(position);
+        Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
+        if(reminder != null) {
+            Integer remainderFrequency = reminder.getFrequency();
+            remainderString = "Medicine should be taken "+remainderFrequency.toString()+"times per day";
+        }
+        else
+            remainderString="No remainder set";
 
 
         //populate the view elements
@@ -108,13 +166,12 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             holder.medicineName.setTag(medicine.getId());
             holder.medicineDesc.setText(medicine.getMedicine_des());
             String categoryName = healthManager.getCategory(medicine.getCateId(),mContext).getCategory_name();
-            Integer remainderFrequency = healthManager.getReminder(medicine.getReminderId(),mContext).getFrequency();
             Integer consumeQuantity = medicine.getConsumequantity();
             String[] dosageArray = mContext.getResources().getStringArray(R.array.dosage);
             holder.medicineCategory.setText(categoryName);
-            holder.dateIssued.setText(medicine.getDateIssued());
-            holder.remainderFrequency.setText("Medicine should be taken "+remainderFrequency.toString()+" per day");
-            holder.consumeQuantity.setText("Dosage for each consumption is "+ consumeQuantity.toString()+dosageArray[medicine.getDosage()]);
+            holder.dateIssued.setText("Issued Date is " + medicine.getDateIssued());
+            holder.remainderFrequency.setText(remainderString);
+            holder.consumeQuantity.setText("Dosage for each consumption is "+ consumeQuantity.toString()+" "+dosageArray[medicine.getDosage()]);
 
     }
 
@@ -123,4 +180,14 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         return medicineList.size();
     }
 
+    //refresh recycler view
+    public void delete(int position) {
+        medicineList.remove(position);
+        notifyItemRemoved(position);
+        //callback to main activity if all the adapter data is deleted
+        if(medicineList.size() == 0)
+        {
+            mCallback.refreshView("No medications found");
+        }
+    }
 }

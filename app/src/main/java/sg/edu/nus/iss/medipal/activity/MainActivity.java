@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     private boolean refreshHealthBioFragment;
     private boolean refreshAppointmentFragment;
     private boolean refreshPersonalBioFragment;
+    private boolean refreshMedicineFragment;
     private Boolean inHomeFragment;
 
     @Override
@@ -243,7 +244,14 @@ public class MainActivity extends AppCompatActivity
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
-        } else {
+        }
+        else if (refreshMedicineFragment) {
+            refreshMedicineFragment = false;
+            fragment = new MedicineFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
+        else {
             //  if(inHomeFragment)
             // loadHomeFragment();
         }
@@ -263,6 +271,10 @@ public class MainActivity extends AppCompatActivity
         } else if (requestCode == 3) {
             if (resultCode == 0) {
                 refreshPersonalBioFragment = true;
+            }
+        }else if(requestCode == 201 || requestCode == 202){
+            if (resultCode == 0) {
+                refreshMedicineFragment = true;
             }
         }
     }

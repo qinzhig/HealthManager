@@ -8,10 +8,21 @@
     tools:context="sg.edu.nus.iss.medipal.fragment.MedicineFragment">
 
     <LinearLayout
+        android:id="@+id/med_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryLight">
+        <TextView
+            android:id="@+id/placeholdertext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/iron"
+            android:paddingTop="10dp"
+            android:textSize="16dp"
+            android:visibility="gone"
+            />
    <!--     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_medicine"
             android:layout_width="match_parent"
@@ -28,10 +39,12 @@
 
         </android.support.v7.widget.Toolbar>-->
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_medicine"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 

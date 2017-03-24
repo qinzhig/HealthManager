@@ -257,7 +257,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         //callback to main activity if all the adapter data is deleted
         if(appointmentList.size() == 0)
         {
-            mCallback.refreshView();
+            mCallback.refreshView("No appointments found");
         }
     }
 }
