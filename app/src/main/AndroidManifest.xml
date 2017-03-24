@@ -35,12 +35,12 @@
             android:name=".activity.EditMedicineActivity"
             android:label="EditMedicine"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddCategoryActivity"
             android:label="AddCategory"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddEditAppointmentActivity"
             android:parentActivityName=".activity.MainActivity"
