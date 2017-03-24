@@ -11,12 +11,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import sg.edu.nus.iss.medipal.PieChartView.OnPiegraphItemSelectedListener;
 import sg.edu.nus.iss.medipal.PieChartView.PiegraphView;
 import sg.edu.nus.iss.medipal.PieChartView.ScreenUtil;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.adapter.UnConsumptionAdapter;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
 
 public class ConsumptionDetail extends AppCompatActivity {
 
@@ -32,6 +39,9 @@ public class ConsumptionDetail extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private static final String fileName = "sharedfile";
 
+    ConsumptionDAO consumptionDAO;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +53,22 @@ public class ConsumptionDetail extends AppCompatActivity {
         text.setText("the first");
         radius = ScreenUtil.dip2px(this, 140);
         strokeWidth = ScreenUtil.dip2px(this, 3);
-        view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d });
+        //view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d,25d,67d,87d,54d });
+        ConsumptionDAO cDao = new ConsumptionDAO(this);
+        HashMap<String,Double> hm = cDao.getPieChartConsumptions("25-3-2017");
+
+        Double[] dArray = new Double[hm.size()];
+        Iterator it = hm.entrySet().iterator();
+        int i=0;
+        while(it.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)it.next();
+            dArray[i]=(Double)pair.getValue();
+            i++;
+        }
+
+        view.setitemsValues(dArray);
+
         // pieChart.setItemsColors(colors);//设置各个块的颜色,可以使用默认
         // view.setmoveSpeed(animSpeed);// 设置旋转速度
         // view.setRaduis(radius);// 设置饼状图半径，不包含边缘的圆环
@@ -90,11 +115,30 @@ public class ConsumptionDetail extends AppCompatActivity {
 
 
     public void OnclickUnconsumed(View view) {
+        consumptionDAO = new ConsumptionDAO(this);
+        Bundle getFromConsumption = getIntent().getExtras();
+        int medicine_id = 0;
+        medicine_id = getFromConsumption.getInt("medicine_id");
+        String ConsumedOn = getFromConsumption.getString("ConsumedOn");
+        int getConsumptionQuantity[] = consumptionDAO.getConsumptionQuantities(Integer.toString(medicine_id),ConsumedOn);
 
+        String quantityValues="";
+        for(int i=0; i<getConsumptionQuantity.length; i++) {
+          quantityValues += Integer.toString(getConsumptionQuantity[i]);
+            if(i!=(getConsumptionQuantity.length - 1))
+                quantityValues+=" ";
+        }
 
+        Intent transferToUnconsumedActivity = new Intent(getApplicationContext(),UncomsumedActivity.class);
+        transferToUnconsumedActivity.putExtra("ConsumptionQuantity",quantityValues);
+        transferToUnconsumedActivity.putExtra("medicine_id",medicine_id);
+        startActivity(transferToUnconsumedActivity);
+        /*
         Intent i = new Intent(getApplicationContext(), UncomsumedActivity.class);
         SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
         i.putExtra("countFrequentNum",share.getInt("countFrequentNum",100));
         startActivity(i);
+   */
     }
+
 }
