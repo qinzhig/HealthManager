@@ -52,7 +52,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     private PreferenceManager consumptionPreference;
     private int quantity;
     private int medicine_id;
-    private int getFrequency;
+
 
 
     Calendar currentCal = Calendar.getInstance();
@@ -86,16 +86,16 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
 
-        //view_Medicine.setText(medicine.getMedicine_name());
+        ;
 
         Bundle bundleMedicine = getIntent().getExtras();
-        medicine_name = bundleMedicine.getString("medicine_name");
         medicine_id = bundleMedicine.getInt("medicine_id");
-        quantity = bundleMedicine.getInt("quantity");
+        medicine_name = healthmanager.getMedicine(medicine_id,getApplicationContext()).getMedicine_name();
+        quantity = healthmanager.getMedicine(medicine_id,getApplicationContext()).getConsumequantity();
 
-        //getFrequency
 
-        getFrequency = bundleMedicine.getInt("frequency");
+
+
         view_Medicine.setText(medicine_name);
         view_Quantity.setText(Integer.toString(quantity));
 
@@ -185,11 +185,11 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     public void saveConsumption() {
 
 
-        int quantity = Integer.valueOf(view_Quantity.getText().toString().trim());
+        //int quantity = Integer.valueOf(view_Quantity.getText().toString().trim());
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
         int threshold = healthmanager.getMedicine(medicine_id,getApplicationContext()).getThreshold();
-        int getFrequency = 0;
+
 
 
 
@@ -236,7 +236,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
 
             if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity <= threshold) {
-                AlertDialog.Builder dlg = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder dlg = new AlertDialog.Builder(this);
                 dlg.setTitle("Notice");
                 dlg.setMessage("Dear, you need replenish the medicine");
                 dlg.setPositiveButton("OK",null);
