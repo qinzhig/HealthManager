@@ -56,6 +56,15 @@ public class PreferenceManager {
         preferenceEditor.commit();
     }
 
+    public void storeConsumptionInfo(String key, int value){
+        preferenceEditor.putInt(key,value);
+        preferenceEditor.commit();
+    }
+
+    public int getConsumptionInfo(String key){
+        return sharedPref.getInt(key,0);
+    }
+
     public String getAppointmentInfo(String appointmentId) {
         return sharedPref.getString(appointmentId, null);
     }

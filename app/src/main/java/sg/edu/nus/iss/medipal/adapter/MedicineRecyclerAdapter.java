@@ -21,6 +21,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+
+
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
+import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
+
+
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
+
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
@@ -117,10 +125,10 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 @Override
                 public void onClick(View v) {
                     if(fromHomeFragment != null && fromHomeFragment) {
-
-                     //   cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                     //   cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
-
+                        Medicine medicine = medicineList.get(getAdapterPosition());
+                        Intent addConsumption = new Intent(mContext, AddConsumption.class);
+                        addConsumption.putExtra("medicine_id",medicine.getId());
+                        ((Activity)mContext).startActivityForResult(addConsumption,301);
                     }
                 }
 
@@ -142,6 +150,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     //called once in beginning to load the view
     @Override
     public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.v("ADAPTERADAPTER","_+_+_+_+_+_I AM IN THE MedicineAdapter+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_");
         View itemView  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicine_card_list, parent, false);
         View popUp = LayoutInflater.from(parent.getContext())
