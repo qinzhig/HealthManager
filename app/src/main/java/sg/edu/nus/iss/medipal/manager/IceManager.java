@@ -36,17 +36,6 @@ public class IceManager {
         return _iceDAO.delete(id);
     }
 
-    public long deleteIce(Integer index, Context context) {
-        Integer id = this.getIce(index, context).getId();
-        return this.deleteIce(id.toString(), context);
-    }
-
-    public long updateIce(Integer id, String name, String contactNo, Integer contactType, String description, Context context) {
-        _iceDAO = new IceDAO(context);
-        Ice ice = new Ice(id, name, contactNo, contactType, description);
-        return _iceDAO.update(ice);
-    }
-
     public long updateIce(Integer id, String name, String contactNo, Integer contactType, String description, Integer priority, Context context) {
         _iceDAO = new IceDAO(context);
         Ice ice = new Ice(id, name, contactNo, contactType, description, priority);

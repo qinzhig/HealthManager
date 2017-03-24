@@ -81,7 +81,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         lThreshold = (TextInputLayout)findViewById(R.id.tv_threshold);
         lGetDate = (TextInputLayout)findViewById(R.id.tv_date_get);
         lExpireDate = (TextInputLayout)findViewById(R.id.tv_date_expire);
-        lFrequency = (TextInputLayout)findViewById(R.id.tv_reminder);
+        lFrequency = (TextInputLayout)findViewById(R.id.tv_frequency);
         lInterval = (TextInputLayout)findViewById(R.id.tv_interval);
         lStartTime = (TextInputLayout)findViewById(R.id.tv_stime);
 
@@ -397,9 +397,11 @@ public class AddMedicineActivity extends AppCompatActivity {
             if(view != null) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                saveMedicine();
-            }
 
+            }
+            saveMedicine();
+
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -413,7 +415,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(frequency < 0 || frequency > 24 )
         {
-            et_frequency.setError("Incorret Consumpotion Frequency set here!");
+            lFrequency.setError("Incorret Consumpotion Frequency set here!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Frequency = "+et_frequency.getText().toString().trim());
@@ -421,7 +423,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(interval < 0 || interval >24 ){
 
-            et_interval.setError("The interval hour exceed 24 hours!");
+            lInterval.setError("The interval hour exceed 24 hours!");
             reminder_validate_status = false;
 
             Log.v("DEBUG","------------Interval = "+et_interval.getText().toString().trim());
@@ -429,15 +431,15 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(stime.isEmpty())
         {
-            et_stime.setError("Please set a startTime for the reminder");
+            lStartTime.setError("Please set a startTime for the reminder");
             reminder_validate_status = false;
         }
 
-        if( frequency*interval + Integer.valueOf(stime_hour_min[0]) >24 )
+        if( (reminder_validate_status == true) && (frequency*interval + Integer.valueOf(stime_hour_min[0]) >24) )
         {
-            et_frequency.setError("Consumpition Setting exceed in one day!");
-            et_interval.setError("Consumpition Setting exceed in one day!");
-            et_stime.setError("Consumption start Time may to late for one day repeat");
+            lFrequency.setError("Consumpition Setting exceed in one day!");
+            lInterval.setError("Consumpition Setting exceed in one day!");
+            lStartTime.setError("Consumption start Time may to late for one day repeat");
 
             reminder_validate_status = false;
         }
@@ -451,29 +453,29 @@ public class AddMedicineActivity extends AppCompatActivity {
         boolean validate_status =true;
 
         if(name.isEmpty()){
-            et_name.setError("Please input a Medicine Name!");
+            lName.setError("Please input a Medicine Name!");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            et_des.setError("Please input a description for this medicine!");
+            lDesc.setError("Please input a description for this medicine!");
             validate_status = false;
         }
 
         if(quantity < 0){
-            et_quanity.setError("Please input a correct quantity for this Medicine! ");
+            lQuantity.setError("Please input a correct quantity for this Medicine! ");
             validate_status = false;
             Log.v("DEBUG","------------Quantity = "+et_quanity.getText().toString().trim());
         }
 
         if(threshold >= quantity )
         {
-            et_threshold.setError("Threshold medicine number overlap the Medicine Quantity!");
+            lThreshold.setError("Threshold medicine number overlap the Medicine Quantity!");
             validate_status = false;
             Log.v("DEBUG","------------Threshold = "+et_threshold.getText().toString().trim());
         }
         if(cquantity > quantity ){
-            et_cquantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
+            lCQuantity.setError("Consume Quantity every time is more the Medicine Quantity,Try to replenish!");
             validate_status = false;
         }
 
