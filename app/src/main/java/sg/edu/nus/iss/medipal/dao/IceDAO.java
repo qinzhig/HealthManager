@@ -72,8 +72,7 @@ public class IceDAO extends DataBaseUtility {
                             DataBaseManager.ICE_CONTACTNUMBER,
                             DataBaseManager.ICE_CONTACTTYPE,
                             DataBaseManager.ICE_DESCRIPTION,
-                            DataBaseManager.ICE_PRIORITY,
-                    }, null, null, null, null, null);
+                            DataBaseManager.ICE_PRIORITY}, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
                 Integer id = cursor.getInt(0);
@@ -100,7 +99,7 @@ public class IceDAO extends DataBaseUtility {
             database.delete(DataBaseManager.ICE_TABLE, DataBaseManager.ICE_ID + "= ?", new String[]{id});
         } catch (SQLException sqlExp) {
             sqlExp.printStackTrace();
-            retCode = -1; //set return value to error code so that caller can handle error
+            retCode = -1;
         }
         return retCode;
     }

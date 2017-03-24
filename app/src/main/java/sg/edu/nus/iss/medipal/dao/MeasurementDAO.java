@@ -76,14 +76,14 @@ public class MeasurementDAO extends DataBaseUtility {
 
         try {
             Cursor cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
-                    new String[]{
-                            DataBaseManager.MEASUREMENT_ID,
-                            DataBaseManager.MEASUREMENT_SYSTOLIC,
-                            DataBaseManager.MEASUREMENT_DIASTOLIC,
-                            DataBaseManager.MEASUREMENT_PULSE,
-                            DataBaseManager.MEASUREMENT_TEMPERATURE,
-                            DataBaseManager.MEASUREMENT_WEIGHT,
-                            DataBaseManager.MEASUREMENT_MEASUREDON}, null, null, null, null, null);
+                new String[]{
+                        DataBaseManager.MEASUREMENT_ID,
+                        DataBaseManager.MEASUREMENT_SYSTOLIC,
+                        DataBaseManager.MEASUREMENT_DIASTOLIC,
+                        DataBaseManager.MEASUREMENT_PULSE,
+                        DataBaseManager.MEASUREMENT_TEMPERATURE,
+                        DataBaseManager.MEASUREMENT_WEIGHT,
+                        DataBaseManager.MEASUREMENT_MEASUREDON}, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
                 Integer id = cursor.getInt(0);

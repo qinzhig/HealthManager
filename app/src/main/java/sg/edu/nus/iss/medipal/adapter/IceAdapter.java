@@ -34,6 +34,10 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         public TextView _contactType;
         public ImageView _edit;
         public ImageView _delete;
+        public ImageView _top;
+        public ImageView _up;
+        public ImageView _down;
+        public ImageView _bottom;
 
         public IceViewHolder(View view) {
             super(view);
@@ -41,8 +45,44 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _name = (TextView) view.findViewById(R.id.icelistitemname_view);
             _contactNo = (TextView) view.findViewById(R.id.icelistitemcontactnumber_view);
             _contactType = (TextView) view.findViewById(R.id.icelistitemcontacttype_view);
+            _top = (ImageView) view.findViewById(R.id.ice_list_top);
+            _up = (ImageView) view.findViewById(R.id.ice_list_up);
+            _down = (ImageView) view.findViewById(R.id.ice_list_down);
+            _bottom = (ImageView) view.findViewById(R.id.ice_list_bottom);
             _edit = (ImageView) view.findViewById(R.id.iceedit);
             _delete = (ImageView) view.findViewById(R.id.icedelete);
+
+            _top.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IceManager iceManager = new IceManager();
+                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                }
+            });
+
+            _up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IceManager iceManager = new IceManager();
+                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                }
+            });
+
+            _down.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IceManager iceManager = new IceManager();
+                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                }
+            });
+
+            _bottom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IceManager iceManager = new IceManager();
+                    Ice ice = iceManager.getIce(getAdapterPosition(), _context);
+                }
+            });
 
             _edit.setOnClickListener(new View.OnClickListener() {
                 @Override
