@@ -100,7 +100,7 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
         }
         else
         {
-            medicineList = medicineManager.getMedicines(mContext);
+            medicineList = medicineManager.getMedicinesWithRemainders(mContext);
             medicineManager.getCategorys(mContext);
             medicineManager.getReminders(mContext);
             if(medicineList == null || medicineList.isEmpty()){

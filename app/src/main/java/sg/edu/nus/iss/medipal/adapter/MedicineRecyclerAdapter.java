@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -64,9 +67,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public CardView cardView;
         public ImageView edit;
         public ImageView delete;
+        private PopupWindow cardPopUp;
 
-
-        public MedicineViewHolder(View view) {
+        public MedicineViewHolder(View view, final View popUp) {
             super(view);
             //get reference to the card view elements
             cardView = (CardView)view.findViewById(R.id.card_view);
@@ -120,6 +123,19 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 }
             });
 
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(fromHomeFragment != null && fromHomeFragment) {
+
+                        cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                        cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
+
+                    }
+                }
+
+            });
+
         }
     }
     //constructor for adapter
@@ -139,9 +155,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         View itemView  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicine_card_list, parent, false);
         View popUp = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.appointment_card_single, parent, false);
+                .inflate(R.layout.medicine_consume_popup, parent, false);
 
-        return new MedicineViewHolder(itemView);
+        return new MedicineViewHolder(itemView, popUp);
     }
 
     //used to populate the view elements with adapter data
@@ -189,5 +205,14 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         {
             mCallback.refreshView("No medications found");
         }
+    }
+
+    public class CustomAdapter extends ArrayAdapter<Medicine> {
+
+        public CustomAdapter(Context context){
+            super(context,R.layout.consume_individual_element);
+        }
+
+
     }
 }
