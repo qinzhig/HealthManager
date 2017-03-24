@@ -143,8 +143,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                     et_interval.setVisibility(View.GONE);
                     et_stime.setVisibility(View.GONE);
 
-                    //et_frequency.setText("0");
-                    //et_interval.setText("0");
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
 
                     remind_status = false;
 
@@ -298,8 +298,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                     et_stime.setVisibility(View.GONE);
 
 
-                    //et_frequency.setText("0");
-                    //et_interval.setText("0");
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
 
                 }
 
