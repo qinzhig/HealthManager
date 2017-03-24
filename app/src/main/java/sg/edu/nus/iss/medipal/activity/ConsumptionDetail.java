@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import sg.edu.nus.iss.medipal.PieChartView.OnPiegraphItemSelectedListener;
 import sg.edu.nus.iss.medipal.PieChartView.PiegraphView;
 import sg.edu.nus.iss.medipal.PieChartView.ScreenUtil;
@@ -19,6 +23,7 @@ import sg.edu.nus.iss.medipal.adapter.UnConsumptionAdapter;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
 
 public class ConsumptionDetail extends AppCompatActivity {
 
@@ -48,7 +53,22 @@ public class ConsumptionDetail extends AppCompatActivity {
         text.setText("the first");
         radius = ScreenUtil.dip2px(this, 140);
         strokeWidth = ScreenUtil.dip2px(this, 3);
-        view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d });
+        //view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d,25d,67d,87d,54d });
+        ConsumptionDAO cDao = new ConsumptionDAO(this);
+        HashMap<String,Double> hm = cDao.getPieChartConsumptions("25-3-2017");
+
+        Double[] dArray = new Double[hm.size()];
+        Iterator it = hm.entrySet().iterator();
+        int i=0;
+        while(it.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)it.next();
+            dArray[i]=(Double)pair.getValue();
+            i++;
+        }
+
+        view.setitemsValues(dArray);
+
         // pieChart.setItemsColors(colors);//设置各个块的颜色,可以使用默认
         // view.setmoveSpeed(animSpeed);// 设置旋转速度
         // view.setRaduis(radius);// 设置饼状图半径，不包含边缘的圆环
@@ -118,6 +138,7 @@ public class ConsumptionDetail extends AppCompatActivity {
         SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
         i.putExtra("countFrequentNum",share.getInt("countFrequentNum",100));
         startActivity(i);
-        */
+   */
     }
+
 }

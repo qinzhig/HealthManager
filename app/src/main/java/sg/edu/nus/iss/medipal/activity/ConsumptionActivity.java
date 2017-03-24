@@ -35,9 +35,11 @@ public class ConsumptionActivity extends AppCompatActivity {
 
 
     public void OnclickDetail (View view) {
+        /*
         Bundle getFromAddConsumption = getIntent().getExtras();
         medicine_id = getFromAddConsumption.getInt("medicine_id");
         ConsumedOn = getFromAddConsumption.getString("ConsumedOn");
+        */
         Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
         Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+ConsumedOn);
 

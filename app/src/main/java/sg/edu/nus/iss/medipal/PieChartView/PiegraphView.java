@@ -30,9 +30,9 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 public class PiegraphView extends View implements Runnable {
 
-    // 动画速度
+    // 动画速度 animation speed
     private float moveSpeed = 5.0F;
-    // 总数值
+    // 总数值 total
     private double total;
     // 各饼块对应的数值
     private Double[] itemValuesTemp;
