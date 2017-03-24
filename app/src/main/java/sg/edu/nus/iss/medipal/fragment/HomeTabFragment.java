@@ -42,6 +42,7 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
     private AppointmentAdapter appointmentAdapter;
     private MedicineRecyclerAdapter medicineAdapter;
     private List<Appointment> appointmentList;
+    private List<Medicine> medicineList;
     private AppointmentManager appointmentManager;
     private HealthManager medicineManager;
     private Context mContext;
@@ -90,7 +91,7 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
             if(appointmentList == null || appointmentList.isEmpty())
             {
                 //show the "no appointments" message
-                refreshView();
+                refreshView("No appointments found");
             }
             else{
                 //show the list view of appointments
@@ -99,8 +100,16 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
         }
         else
         {
-            populateMedicineRecyclerView();
-
+            medicineList = medicineManager.getMedicines(mContext);
+            medicineManager.getCategorys(mContext);
+            medicineManager.getReminders(mContext);
+            if(medicineList == null || medicineList.isEmpty()){
+                //show the "no medicine" message
+                refreshView("No medications found");
+            }
+            else {
+                populateMedicineRecyclerView();
+            }
         }
 
 
@@ -110,7 +119,7 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
 
     private void populateMedicineRecyclerView() {
         //populate the adapter with appointments lists
-        medicineAdapter = new MedicineRecyclerAdapter(mContext,medicineManager,this);
+        medicineAdapter = new MedicineRecyclerAdapter(mContext,medicineManager,medicineList,true,this);
         listView.setAdapter(medicineAdapter);
 
     }
@@ -123,12 +132,13 @@ public class HomeTabFragment extends Fragment implements AdapterCallbackInterfac
     }
 
     @Override
-    public void refreshView() {
+    public void refreshView(String message) {
             //if no appointments are found then the following message will be shown
             LinearLayout linearLayout = (LinearLayout) homeFragment.findViewById(R.id.appointment_layout);
             linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             TextView txtView = (TextView) homeFragment.findViewById(R.id.placeholdertext);
-            txtView.setText("No appointments found");
+           // txtView.setText("No appointments found");
+            txtView.setText(message);
             txtView.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
 

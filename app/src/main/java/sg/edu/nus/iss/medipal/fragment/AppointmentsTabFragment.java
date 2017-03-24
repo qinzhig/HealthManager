@@ -104,7 +104,7 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
         if(appointmentList.isEmpty())
         {
             //show the "no appointments" message
-            refreshView();
+            refreshView("No appointments found");
         }
         else{
             //show the list view of appointments
@@ -128,12 +128,13 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
     }
 
     @Override
-    public void refreshView() {
+    public void refreshView(String message) {
             //if no appointments are found then the following message will be shown
             LinearLayout linearLayout = (LinearLayout) appointmentFragment.findViewById(R.id.appointment_layout);
             linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             TextView txtView = (TextView) appointmentFragment.findViewById(R.id.placeholdertext);
-            txtView.setText("No appointments found");
+            //txtView.setText("No appointments found");
+            txtView.setText(message);
             txtView.setVisibility(View.VISIBLE);
             appointmentsView.setVisibility(View.GONE);
 

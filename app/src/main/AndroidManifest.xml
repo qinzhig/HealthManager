@@ -30,7 +30,7 @@
             android:name=".activity.AddMedicineActivity"
             android:label="AddMedicine"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.EditMedicineActivity"
             android:label="EditMedicine"

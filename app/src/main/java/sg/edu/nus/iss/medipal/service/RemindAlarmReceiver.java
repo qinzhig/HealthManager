@@ -30,7 +30,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(!intent.getStringExtra("ConsumptionReminderId").isEmpty())
+        if(intent.getStringExtra("ConsumptionReminderId") != null && !intent.getStringExtra("ConsumptionReminderId").isEmpty())
         {
             Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
             Log.v("MedicineReminder","---------------------->+++++++++++Reminder Id=" + intent.getStringExtra("ConsumptionReminderId"));
