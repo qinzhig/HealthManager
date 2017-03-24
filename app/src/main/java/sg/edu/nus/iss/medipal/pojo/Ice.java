@@ -7,7 +7,7 @@ import java.util.Date;
  * Description : Class to hold ICE(In case of Emergency Contact) table data
  */
 
-public class Ice {
+public class Ice implements Comparable<Ice> {
     private Integer _id;
     private String _name;
     private String _contactNo;
@@ -29,6 +29,15 @@ public class Ice {
         this._contactNo = contactNo;
         this._contactType = contactType;
         this._description = description;
+    }
+
+    public Ice(Integer id, String name, String contactNo, Integer contactType, String description, Integer priority) {
+        this._id = id;
+        this._name = name;
+        this._contactNo = contactNo;
+        this._contactType = contactType;
+        this._description = description;
+        this._priority = priority;
     }
 
     public Integer getId() {
@@ -60,4 +69,9 @@ public class Ice {
 
     public Integer getPriority() {return _priority;}
     public void setPriority(Integer priority) {this._priority = priority;}
+
+    @Override
+    public int compareTo(Ice o) {
+        return this._priority - ((Ice)o).getPriority();
+    }
 }
