@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -168,6 +169,10 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         int quantity = Integer.valueOf(view_Quantity.getText().toString().trim());
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
+        int threshold = healthmanager.getMedicine(medicine_id,getApplicationContext()).getThreshold();
+
+
+
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
@@ -177,6 +182,15 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             ConsumptionManager consumptionManager = new ConsumptionManager(quantity,date_time,this);
 
             consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
+
+            if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity < threshold) {
+                AlertDialog.Builder dlg = new AlertDialog.Builder(getApplicationContext());
+                dlg.setTitle("Notice");
+                dlg.setMessage("Dear, you need replenish the medicine");
+                dlg.setPositiveButton("OK",null);
+                dlg.show();
+
+            }
             Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
             toast.show();
            // finish();
