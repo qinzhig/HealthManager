@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.application.App;
@@ -136,6 +137,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     //called once in beginning to load the view
     @Override
     public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.v("ADAPTERADAPTER","_+_+_+_+_+_I AM IN THE MedicineAdapter+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_");
         View itemView  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicine_card_list, parent, false);
         View popUp = LayoutInflater.from(parent.getContext())

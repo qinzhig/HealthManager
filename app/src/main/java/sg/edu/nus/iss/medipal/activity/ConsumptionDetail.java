@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import sg.edu.nus.iss.medipal.PieChartView.OnPiegraphItemSelectedListener;
 import sg.edu.nus.iss.medipal.PieChartView.PiegraphView;
 import sg.edu.nus.iss.medipal.PieChartView.ScreenUtil;
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.adapter.UnConsumptionAdapter;
 import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
 
 public class ConsumptionDetail extends AppCompatActivity {
@@ -28,6 +30,7 @@ public class ConsumptionDetail extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private static final String fileName = "sharedfile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,11 @@ public class ConsumptionDetail extends AppCompatActivity {
 
 
     public void OnclickUnconsumed(View view) {
-        Intent i = new Intent(getApplicationContext(),UncomsumedActivity.class);
+
+
+        Intent i = new Intent(getApplicationContext(), UncomsumedActivity.class);
+        SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
+        i.putExtra("countFrequentNum",share.getInt("countFrequentNum",100));
         startActivity(i);
     }
 }

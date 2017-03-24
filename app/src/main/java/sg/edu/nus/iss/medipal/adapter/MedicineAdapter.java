@@ -19,7 +19,9 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
+import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 /**
  * Created by zhiguo on 15/3/17.
@@ -62,6 +64,8 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
     public View getView(final int position, View convertView, ViewGroup parent){
         final ViewHolder viewHolder;
 
+
+
         if (convertView == null) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,6 +80,8 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         }
 
         final Medicine medicine = medicines.get(position);
+        final HealthManager healthManager = new HealthManager();
+
 
         viewHolder.tvName.setText(medicine.getMedicine_name());
         viewHolder.tvName.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +93,8 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
                 addConsumption.putExtra("medicine_name",viewHolder.tvName.getText().toString());
                 addConsumption.putExtra("quantity",medicine.getConsumequantity());
                 addConsumption.putExtra("medicine_id",medicine.getId());
+                //get Frequency
+                addConsumption.putExtra("frequency",healthManager.getReminder(medicine.getReminderId(),context).getFrequency());
                 ((Activity)context).startActivity(addConsumption);
 
             }

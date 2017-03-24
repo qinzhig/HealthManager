@@ -23,17 +23,7 @@ public class ConsumptionActivity extends AppCompatActivity {
 
         Log.v("mateng i am in the consumption actovity","_++_+_++_+_+_+_+_+_matneg i am in the consumption activity _+_+_+_+_+_+_+_+_+_+_+_+");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                startActivity(new Intent(ConsumptionActivity.this, AddConsumption.class));
-
-            }
-        });
 
         listView= (ListView) findViewById(R.id.showConsumptionall);
         consumptionAdapter = new ConsumptionAdapter(getApplicationContext());

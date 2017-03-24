@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
+import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
@@ -35,6 +37,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 import static java.lang.Integer.valueOf;
 
 public class AddConsumption extends AppCompatActivity implements View.OnClickListener {
+
     private Spinner spnMedicine;
     private EditText etDate, etTime;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
@@ -45,10 +48,13 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     HealthManager healthmanager = new HealthManager();
     Medicine medicine;
     private boolean isEdit = true;
-
+    private PreferenceManager consumptionPreference;
     private int quantity;
     private int medicine_id;
+    private int getFrequency;
 
+    private int getCountofFrequent;
+    private static final String fileName = "sharedfile";//定义保存的文件的名称
 
 
     Calendar currentCal = Calendar.getInstance();
@@ -59,7 +65,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     List<Integer> dosageList = null;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String medicine_name;
@@ -67,8 +72,10 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_consumption);
+
         //initial a medicine
 
+        consumptionPreference = new PreferenceManager(this);
         etDate = (EditText)findViewById(R.id.et_select_date);
         etTime = (EditText)findViewById(R.id.et_select_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,19 +83,27 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         view_Quantity = (EditText) findViewById(R.id.Dosage);
         etDate.setOnClickListener(this);
         etTime.setOnClickListener(this);
-      //  view_Medicine.setText(medicine.getMedicine_name());
+
+        //view_Medicine.setText(medicine.getMedicine_name());
+
         Bundle bundleMedicine = getIntent().getExtras();
         medicine_name = bundleMedicine.getString("medicine_name");
         medicine_id = bundleMedicine.getInt("medicine_id");
         quantity = bundleMedicine.getInt("quantity");
+
+        //getFrequency
+
+        getFrequency = bundleMedicine.getInt("frequency");
         view_Medicine.setText(medicine_name);
         view_Quantity.setText(Integer.toString(quantity));
-    //    Log.v("MT","------------------------Cquantity="+medicine.getConsumequantity());
+
+        //Log.v("MT","------------------------Cquantity="+medicine.getConsumequantity());
+
         Log.v("mateng","***************************name"+medicine_name);
         Log.v("mateng","***************************quantity"+quantity);
         Log.v("mateng","***************************bundle"+bundleMedicine);
-     //   view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
 
+        //view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
     }
 
     public void onClick(View v) {
@@ -170,20 +185,49 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
         int threshold = healthmanager.getMedicine(medicine_id,getApplicationContext()).getThreshold();
+        int getFrequency = 0;
 
 
 
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
+
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
 
         if (input_validate(quantity,date,time)) {
+
             String date_time = date+ " " +time;
+            /*
+                select * from consumptionTable where medicineid = getmedicineid,
+
+            */
+
+            /*
+            if true
+                select * from consumptionTable where medicineid = getmedicineid,data = today,quantity == 0
+            for (int i = 0; i < getClicktimes; i++)
+                {
+                    updateconsumption()
+                }
+             */
+            for (int i = 0; i < getFrequency; i++)
+            {
+                // addconsumption()
+            }
+
+
             ConsumptionManager consumptionManager = new ConsumptionManager(quantity,date_time,this);
 
             consumptionManager.addConsumption(0,medicine_id,quantity,date_time,this);
 
-            if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity < threshold) {
+            getCountofFrequent++;
+
+         //   int remind_id = healthmanager.getMedicine(medicine_id,)
+
+            SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
+            SharedPreferences.Editor editor = share.edit();
+            editor.putInt("countFrequentNum",getCountofFrequent);
+            editor.commit();
+
+            if (healthmanager.getMedicine(medicine_id,getApplicationContext()).getQuantity() - quantity <= threshold) {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(getApplicationContext());
                 dlg.setTitle("Notice");
                 dlg.setMessage("Dear, you need replenish the medicine");
@@ -193,7 +237,9 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             }
             Toast toast = Toast.makeText(AddConsumption.this,"Add Consumption Successfully!",Toast.LENGTH_SHORT);
             toast.show();
+
            // finish();
+
             Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);
             startActivity(i);
         }
