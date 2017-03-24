@@ -56,7 +56,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public CardView cardView;
         public ImageView edit;
         public ImageView delete;
-        private PopupWindow cardPopUp;
+        //private PopupWindow cardPopUp;
 
         public MedicineViewHolder(View view, final View popUp) {
             super(view);
@@ -118,8 +118,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 public void onClick(View v) {
                     if(fromHomeFragment != null && fromHomeFragment) {
 
-                        cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                        cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
+                     //   cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                     //   cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
 
                     }
                 }

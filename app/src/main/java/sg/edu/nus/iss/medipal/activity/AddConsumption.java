@@ -48,16 +48,12 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
     private int quantity;
     private int medicine_id;
 
-
-
     Calendar currentCal = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
 
     //get Medicine and get Dosage
     List<String> medinceList = null;
     List<Integer> dosageList = null;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,8 +182,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
 
     }
-
-
 
     public boolean input_validate(int quantity,String date,String time) {
         boolean validate_status = true;
