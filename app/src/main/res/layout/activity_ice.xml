@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -31,32 +32,6 @@
         </android.support.v7.widget.Toolbar>
 
         <TextView
-            android:id="@+id/icename_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name" />
-
-        <EditText
-            android:id="@+id/icename_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Unknown"
-            android:theme="@style/EditTextStyle" />
-
-        <TextView
-            android:id="@+id/icecontactnumber_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contact Number" />
-
-        <EditText
-            android:id="@+id/icecontactnumber_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="+65"
-            android:theme="@style/EditTextStyle" />
-
-        <TextView
             android:id="@+id/icecontacttype_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,17 +43,56 @@
             android:layout_height="wrap_content"
             android:theme="@style/EditTextStyle"/>
 
-        <TextView
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/icename_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout.hint">
+            <EditText
+                android:id="@+id/icename_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:hint="Name"
+                android:maxLength="100"
+                android:theme="@style/EditTextStyle"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/icecontactnumber_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextInputLayout.hint">
+            <EditText
+                android:id="@+id/icecontactnumber_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:hint="Contact Number"
+                android:maxLength="100"
+                android:theme="@style/EditTextStyle"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/icedescription_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description" />
-
-        <EditText
-            android:id="@+id/icedescription_edit"
-            android:layout_width="match_parent"
-            android:layout_height="152dp"
-            android:hint="Description"
-            android:theme="@style/EditTextStyle" />
+            app:hintTextAppearance="@style/TextInputLayout.hint">
+            <EditText
+                android:id="@+id/icedescription_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:minLines="6"
+                android:gravity="top|left"
+                android:maxLines="10"
+                android:hint="Description"
+                android:maxLength="100"
+                android:theme="@style/EditTextStyle"/>
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </ScrollView>
