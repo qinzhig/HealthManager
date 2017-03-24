@@ -135,7 +135,7 @@ public class ConsumptionDAO extends DataBaseUtility {
     }
 
     public int[] getConsumptionQuantities(String medicineId,String consumedOn) {
-        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ? AND quantity = ?";
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = trim(substr(?,1,10)) AND quantity = ?";
         String[] selectionArgs = {medicineId, consumedOn,"0"};
         Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
                 new String[]{

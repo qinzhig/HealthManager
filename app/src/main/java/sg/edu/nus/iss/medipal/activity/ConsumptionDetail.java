@@ -16,7 +16,9 @@ import sg.edu.nus.iss.medipal.PieChartView.PiegraphView;
 import sg.edu.nus.iss.medipal.PieChartView.ScreenUtil;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.adapter.UnConsumptionAdapter;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 
 public class ConsumptionDetail extends AppCompatActivity {
 
@@ -31,6 +33,9 @@ public class ConsumptionDetail extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private static final String fileName = "sharedfile";
+
+    ConsumptionDAO consumptionDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +95,29 @@ public class ConsumptionDetail extends AppCompatActivity {
 
 
     public void OnclickUnconsumed(View view) {
+        consumptionDAO = new ConsumptionDAO(this);
+        Bundle getFromConsumption = getIntent().getExtras();
+        int medicine_id = 0;
+        medicine_id = getFromConsumption.getInt("medicine_id");
+        String ConsumedOn = getFromConsumption.getString("ConsumedOn");
+        int getConsumptionQuantity[] = consumptionDAO.getConsumptionQuantities(Integer.toString(medicine_id),ConsumedOn);
 
+        String quantityValues="";
+        for(int i=0; i<getConsumptionQuantity.length; i++) {
+          quantityValues += Integer.toString(getConsumptionQuantity[i]);
+            if(i!=(getConsumptionQuantity.length - 1))
+                quantityValues+=" ";
+        }
 
+        Intent transferToUnconsumedActivity = new Intent(getApplicationContext(),UncomsumedActivity.class);
+        transferToUnconsumedActivity.putExtra("ConsumptionQuantity",quantityValues);
+        transferToUnconsumedActivity.putExtra("medicine_id",medicine_id);
+        startActivity(transferToUnconsumedActivity);
+        /*
         Intent i = new Intent(getApplicationContext(), UncomsumedActivity.class);
         SharedPreferences share = super.getSharedPreferences(fileName,MODE_PRIVATE);
         i.putExtra("countFrequentNum",share.getInt("countFrequentNum",100));
         startActivity(i);
+        */
     }
 }

@@ -15,6 +15,8 @@ public class ConsumptionActivity extends AppCompatActivity {
 
     ListView listView;
     ConsumptionAdapter consumptionAdapter;
+    int medicine_id = 0;
+    String ConsumedOn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,15 @@ public class ConsumptionActivity extends AppCompatActivity {
 
 
     public void OnclickDetail (View view) {
+        Bundle getFromAddConsumption = getIntent().getExtras();
+        medicine_id = getFromAddConsumption.getInt("medicine_id");
+        ConsumedOn = getFromAddConsumption.getString("ConsumedOn");
+        Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
+        Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+ConsumedOn);
+
         Intent i = new Intent(getApplicationContext(),ConsumptionDetail.class);
+        i.putExtra("medicine_id",medicine_id);
+        i.putExtra("ConsumedOn",ConsumedOn);
         startActivity(i);
     }
 

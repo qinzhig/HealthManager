@@ -39,6 +39,10 @@ public class Medicine implements Serializable {
         this.expireFactor=expireFactor;
     }
 
+    public Medicine() {
+
+    }
+
     public int getConsumequantity() {
         return consumequantity;
     }
