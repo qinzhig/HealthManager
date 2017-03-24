@@ -23,14 +23,6 @@ public class Ice implements Comparable<Ice> {
         this._priority = priority;
     }
 
-    public Ice(Integer id, String name, String contactNo, Integer contactType, String description) {
-        this._id = id;
-        this._name = name;
-        this._contactNo = contactNo;
-        this._contactType = contactType;
-        this._description = description;
-    }
-
     public Ice(Integer id, String name, String contactNo, Integer contactType, String description, Integer priority) {
         this._id = id;
         this._name = name;
