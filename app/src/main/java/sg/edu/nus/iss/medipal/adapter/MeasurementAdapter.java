@@ -120,6 +120,10 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     }
 
     public void delete(int position) {
+        MeasurementManager measurementManager = new MeasurementManager();
+        Measurement measurement = (Measurement)_measurementList.get(position);
+        measurementManager.deleteMeasurement(measurement.getId().toString(), _context);
+
         _measurementList.remove(position);
         notifyItemRemoved(position);
     }
