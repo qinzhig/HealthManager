@@ -15,7 +15,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import sg.edu.nus.iss.medipal.R;
@@ -62,6 +65,15 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         _dateEdit = (EditText) findViewById(R.id.measurement_edit_date);
         _timeEdit = (EditText) findViewById(R.id.measurement_edit_time);
 
+        Date day = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_KK:mm a", Locale.getDefault());
+        String dateTime = String.valueOf(sdf.format(day));
+        StringTokenizer dateTimeTokens = new StringTokenizer(dateTime, "_");
+        String currentDate = dateTimeTokens.nextToken();
+        String currentTime = dateTimeTokens.nextToken();
+        _dateEdit.setText(currentDate);
+        _timeEdit.setText(currentTime);
+
         _dateEdit.setOnClickListener(this);
         _timeEdit.setOnClickListener(this);
 
@@ -77,11 +89,11 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
             _weightEdit.setText(intentExtras.get("weight").toString());
 
             String measuredOn = intentExtras.get("measuredon").toString();
-            StringTokenizer tokens = new StringTokenizer(measuredOn, " ");
-            String date = tokens.nextToken();
-            String time = tokens.nextToken() + " " + tokens.nextToken();
-            _dateEdit.setText(date);
-            _timeEdit.setText(time);
+            StringTokenizer measuredOnTokens = new StringTokenizer(measuredOn, " ");
+            String measuredOnDate = measuredOnTokens.nextToken();
+            String measuredOnTime = measuredOnTokens.nextToken() + " " + measuredOnTokens.nextToken();
+            _dateEdit.setText(measuredOnDate);
+            _timeEdit.setText(measuredOnTime);
         }
     }
 
@@ -224,14 +236,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         } else {
             _timeEdit.setError(null);
         }
-        /*
-        String measuredOn;
-        measuredOn = date + " " + time;
-        else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
-            textInputLayoutDate.setError("Start Date cannot be in future");
-            isValid = false;
-        }
-        */
+
         if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
             _systolicEdit.setError("Please enter a systolic.");
             _diastolicEdit.setError("Please enter a diastolic.");
