@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/doctor_image"
+                android:src="@drawable/contact_image_64"
                 android:clickable="true"
                 android:scaleType="fitXY" />
 

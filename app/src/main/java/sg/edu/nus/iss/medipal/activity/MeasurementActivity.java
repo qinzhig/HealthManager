@@ -15,7 +15,12 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.MeasurementManager;
@@ -59,6 +64,15 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         _weightEdit = (EditText) findViewById(R.id.measurementweight_edit);
         _dateEdit = (EditText) findViewById(R.id.measurement_edit_date);
         _timeEdit = (EditText) findViewById(R.id.measurement_edit_time);
+
+        Date day = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_KK:mm a", Locale.getDefault());
+        String dateTime = String.valueOf(sdf.format(day));
+        StringTokenizer dateTimeTokens = new StringTokenizer(dateTime, "_");
+        String currentDate = dateTimeTokens.nextToken();
+        String currentTime = dateTimeTokens.nextToken();
+        _dateEdit.setText(currentDate);
+        _timeEdit.setText(currentTime);
 
         _dateEdit.setOnClickListener(this);
         _timeEdit.setOnClickListener(this);
@@ -170,7 +184,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
 
     private void addMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String measuredOn) {
         MeasurementManager measurementManager = new MeasurementManager();
-        int systolicInt=0, diastolicInt=0, pulseInt=0, weightInt=0;
+        int systolicInt = 0, diastolicInt = 0, pulseInt = 0, weightInt = 0;
         float temperatureFloat = 0;
 
         if (null != systolic
@@ -198,6 +212,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
                 .convertStringToDate(measuredOn, "dd-MM-yyyy h:mm a"), this);
     }
 
+
     private boolean validateMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String date, String time) {
         boolean valid = true;
 
@@ -220,21 +235,27 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         } else {
             _timeEdit.setError(null);
         }
-
-        if (!systolic.isEmpty() && diastolic.isEmpty()) {
-            _diastolicEdit.setError("Please enter a diastolic.");
-            valid = false;
-        } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
+        if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
             _systolicEdit.setError("Please enter a systolic.");
-            valid = false;
-        }
+            _diastolicEdit.setError("Please enter a diastolic.");
+            _pulseEdit.setError("Please enter a pulse.");
+            _temperatureEdit.setError("Please enter a temperature.");
+            _weightEdit.setError("Please enter a weight.");
+            if (!systolic.isEmpty() && diastolic.isEmpty()) {
+                _diastolicEdit.setError("Please enter a diastolic.");
+                valid = false;
+            } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
+                _systolicEdit.setError("Please enter a systolic.");
+                valid = false;
+            }
 
-        if (valid) {
-            _systolicEdit.setError(null);
-            _diastolicEdit.setError(null);
-            _pulseEdit.setError(null);
-            _temperatureEdit.setError(null);
-            _weightEdit.setError(null);
+            if (valid) {
+                _systolicEdit.setError(null);
+                _diastolicEdit.setError(null);
+                _pulseEdit.setError(null);
+                _temperatureEdit.setError(null);
+                _weightEdit.setError(null);
+            }
         }
 
         return valid;

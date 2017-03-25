@@ -11,7 +11,7 @@ import sg.edu.nus.iss.medipal.pojo.Consumption;
  * Created by apple on 22/03/2017.
  */
 
-public class DeleteConsumption extends AsyncTask<Consumption,Void,Long> {
+public class DeleteConsumption extends AsyncTask<Object,Void,Long> {
 
     Consumption consumption = null;
     private ConsumptionDAO consumptionDAO;
@@ -20,8 +20,8 @@ public class DeleteConsumption extends AsyncTask<Consumption,Void,Long> {
         this.consumptionDAO = new ConsumptionDAO(context);
     }
     @Override
-    protected Long doInBackground(Consumption... params) {
-        long result = consumptionDAO.delete(params[0]);
+    protected Long doInBackground(Object... params) {
+        long result = consumptionDAO.delete((Integer) params[0]);
         return result;
     }
 

@@ -43,7 +43,7 @@ public class MeasurementFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent measurementIntent = new Intent(getContext(), MeasurementActivity.class);
-                startActivityForResult(measurementIntent, 5);
+                getActivity().startActivityForResult(measurementIntent, 5);
             }
         });
 
@@ -55,9 +55,6 @@ public class MeasurementFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-
-        //_measurementList = _measurementManager.getMeasurements(getContext());
-
         if (_measurementList.isEmpty()) {
             _measurementNotification.setText("No Measurements found for the day");
             _measurementNotification.setVisibility(View.VISIBLE);

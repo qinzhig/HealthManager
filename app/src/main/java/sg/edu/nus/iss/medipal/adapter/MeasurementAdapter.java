@@ -30,13 +30,13 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         public TextView field2;
         public TextView _measuredOn;
 
+
         public MeasurementViewHolder(View view) {
             super(view);
 
             field1 = (TextView) view.findViewById(R.id.measurementlistitem_field1);
             field2 = (TextView) view.findViewById(R.id.measurementlistitem_field2);
             _measuredOn = (TextView) view.findViewById(R.id.measurementlistitem_date);
-
         }
     }
 
@@ -88,5 +88,4 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     public int getItemCount() {
         return _measurementList.size();
     }
-
 }

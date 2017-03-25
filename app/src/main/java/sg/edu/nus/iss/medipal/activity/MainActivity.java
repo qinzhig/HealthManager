@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == 0) {
                 refreshPersonalBioFragment = true;
             }
-        }else if(requestCode == 201 || requestCode == 202){
+        }else if(requestCode == 201 || requestCode == 202 || requestCode == 302){
             if (resultCode == 0) {
                 refreshMedicineFragment = true;
             }

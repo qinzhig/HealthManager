@@ -48,7 +48,7 @@ public class UnConsumptionAdapter extends ArrayAdapter<Consumption> {
     }
     public void refreshUnconsumption() {
         Unconsumption.clear();
-        Unconsumption.addAll(consumptionManager.getConsumptions(context));
+        Unconsumption.addAll(consumptionManager.getConsumptions());
     }
 
     public int getCount(){

@@ -106,7 +106,7 @@ public class ReportManager {
                 = new MedicineDAO(context);
 
         List<Consumption> consumptionList =
-                consumptionManager.getConsumptions(context);
+                consumptionManager.getConsumptions();
 
         for (Consumption consumption : consumptionList) {
 
