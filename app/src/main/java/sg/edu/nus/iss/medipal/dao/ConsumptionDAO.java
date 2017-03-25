@@ -17,13 +17,17 @@ import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.utils.DataBaseUtility;
 
 /**
- * Created by apple on 07/03/2017.
+ * Created by : Ma teng on 07-03-2017.
+ * Description : This is the main view for Appointment
+ * Modified by : Naval on 24-03-2017
+ * Reason for modification :
  */
 
 public class ConsumptionDAO extends DataBaseUtility {
     public ConsumptionDAO(Context context) { super(context); }
 
     private static final String WHERE_ID_EQUALS = DataBaseManager.CONSUMPTION_ID + " =?";
+    private static final String WHERE_MEDICINEID_EQUALS = DataBaseManager.CONSUMPTION_MEIDICINE_ID + " =?";
     private static final SimpleDateFormat formatter = new SimpleDateFormat("d-MMM-yyyy H:mm", Locale.CHINA);
 
 
@@ -83,6 +87,19 @@ public class ConsumptionDAO extends DataBaseUtility {
         return retCode;
     }
 
+    //method to delete the consumption table
+    public long delete(int medicineId) throws SQLException
+    {
+        long retCode=0;
+        try {
+            retCode = database.delete(DataBaseManager.CONSUMPTION_TABLE, WHERE_MEDICINEID_EQUALS, new String[]{String.valueOf(medicineId)});
+        }catch (SQLException sqlE){
+            sqlE.printStackTrace();
+            retCode = -1;
+        }
+        return retCode;
+    }
+
     //get list of consumption
     public ArrayList<Consumption> getConsumptions() {
         ArrayList<Consumption> consumptions = new ArrayList<Consumption>();
@@ -107,11 +124,21 @@ public class ConsumptionDAO extends DataBaseUtility {
         return consumptions;
     }
 
-    //added by naval
     public Integer getConsumptionCount(String medicineId,String consumedOn) {
 
         String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ?";
         String[] selectionArgs = {medicineId, consumedOn};
+        Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
+                null,selection,selectionArgs,null,null,null);
+
+        int count = cursor.getCount();
+        return count;
+    }
+
+    public Integer getCurrentConsumptionCount(String medicineId,String consumedOn) {
+
+        String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ? AND quantity <> ?";
+        String[] selectionArgs = {medicineId, consumedOn,"0"};
         Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
                 null,selection,selectionArgs,null,null,null);
 

@@ -195,9 +195,9 @@ public class EditConsumptionActivity extends AppCompatActivity implements View.O
 
         if (input_validate(quantity,date,time)) {
             date_time = date+ " " +time;
-            ConsumptionManager consumptionManager = new ConsumptionManager(quantity,date_time,this);
+            ConsumptionManager consumptionManager = new ConsumptionManager(this);
 
-            consumptionManager.updateConsumption(id,medicine_id,quantity,date_time,this);
+            consumptionManager.updateConsumption(id,medicine_id,quantity,date_time);
             Toast toast = Toast.makeText(EditConsumptionActivity.this,"Update Consumption Successfully!",Toast.LENGTH_SHORT);
             toast.show();
             Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);

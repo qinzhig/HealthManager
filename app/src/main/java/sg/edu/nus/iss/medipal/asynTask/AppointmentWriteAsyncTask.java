@@ -25,7 +25,6 @@ public class AppointmentWriteAsyncTask extends AsyncTask<Object, Void, Long> {
     private AppointmentDAO appointmentDAO;
     private AsyncTaskCallbacks asyncTaskCallbacks;
     private Context mContext;
-    private String appointmentIDForDelete;
     private Boolean isAdd;
 
     public AppointmentWriteAsyncTask(Context context, AsyncTaskCallbacks asyncTaskCallbacks) {
@@ -35,12 +34,6 @@ public class AppointmentWriteAsyncTask extends AsyncTask<Object, Void, Long> {
         progressDialog = new ProgressDialog(context,R.style.AppTheme_Dark_Dialog);
     }
 
-    public AppointmentWriteAsyncTask(Context context, String appointmentIDForDelete, AsyncTaskCallbacks asyncTaskCallbacks) {
-        mContext = context;
-        this.appointmentDAO = new AppointmentDAO(context);
-        this.appointmentIDForDelete = appointmentIDForDelete;
-        this.asyncTaskCallbacks = asyncTaskCallbacks;
-    }
 
     @Override
     protected void onPreExecute() {

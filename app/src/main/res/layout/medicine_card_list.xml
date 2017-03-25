@@ -96,7 +96,18 @@
                 android:paddingLeft="@dimen/left_padding"
                 android:paddingRight="@dimen/right_padding"
                 android:textSize="@dimen/desc_size" />
-
+            <ImageView
+                android:id="@+id/consume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/timemedicine"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="5dp"
+                android:paddingBottom="5dp"
+                android:layout_below="@+id/medicine_date"
+                android:layout_centerHorizontal="true" />
             <ImageView
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
@@ -106,9 +117,9 @@
                 android:clickable="true"
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="14dp"
                 android:layout_below="@+id/medicine_date"
-                android:layout_toStartOf="@+id/delete" />
+                android:layout_toEndOf="@+id/consume" />
             <ImageView
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
@@ -118,10 +129,8 @@
                 android:clickable="true"
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/medicine_date"
-                />
+                android:layout_toEndOf="@+id/edit" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

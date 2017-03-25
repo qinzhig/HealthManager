@@ -167,7 +167,7 @@ public class AppointmentManager {
     //delete an appointment
      public boolean deleteAppointment(String appointmentId)
     {
-        new AppointmentWriteAsyncTask(context, appointmentId, new AsyncTaskCallbacks() {
+        new AppointmentWriteAsyncTask(context, new AsyncTaskCallbacks() {
             @Override
             public void dbOperationStatus(boolean resultStatus, Long resultValue) {
                 if(resultStatus)

@@ -162,6 +162,15 @@ public class HealthManager {
 
     }
 
+    //SQLite add medicine
+    public void updateMedicineQuantity(Medicine medicine,Context context){
+        if(medicine!= null) {
+            taskUpdateMedicine = new UpdateMedicine(context);
+            taskUpdateMedicine.execute(medicine);
+        }
+
+    }
+
     //SQLite delete medicine
 
     public void deleteMedicine(int id,Context context){

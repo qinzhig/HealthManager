@@ -797,7 +797,7 @@ public class PiegraphView extends View implements Runnable {
 
         ConsumptionManager consumptionManager = new ConsumptionManager(getContext());
         List<Consumption>consumptionList = new ArrayList<Consumption>();
-        consumptionList = consumptionManager.getConsumptions(getContext());
+        consumptionList = consumptionManager.getConsumptions();
         Consumption consumptionitem = new Consumption();
         Iterator iterator = consumptionList.iterator();
         while (iterator.hasNext()) {
