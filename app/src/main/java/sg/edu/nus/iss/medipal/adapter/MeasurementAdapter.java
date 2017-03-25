@@ -35,7 +35,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         public TextView _temperature;
         public TextView _weight;
         public TextView _measuredOn;
-        public ImageView _edit;
+        //public ImageView _edit;
         public ImageView _delete;
 
         public MeasurementViewHolder(View view) {
@@ -48,9 +48,9 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
             _weight = (TextView) view.findViewById(R.id.measurementlistitem_weight);
             _measuredOn = (TextView) view.findViewById(R.id.measurementlistitem_date);
 
-            _edit = (ImageView) view.findViewById(R.id.measurement_edit);
+            //_edit = (ImageView) view.findViewById(R.id.measurement_edit);
             _delete = (ImageView) view.findViewById(R.id.measurement_delete);
-
+/*
             _edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -69,7 +69,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                     ((Activity)_context).startActivityForResult(measurementIntent, 503);
                 }
             });
-
+*/
             _delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -120,6 +120,10 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     }
 
     public void delete(int position) {
+        MeasurementManager measurementManager = new MeasurementManager();
+        Measurement measurement = (Measurement)_measurementList.get(position);
+        measurementManager.deleteMeasurement(measurement.getId().toString(), _context);
+
         _measurementList.remove(position);
         notifyItemRemoved(position);
     }

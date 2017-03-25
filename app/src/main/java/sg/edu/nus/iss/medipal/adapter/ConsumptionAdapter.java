@@ -50,7 +50,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
 
     public void refreshConsumptions() {
         consumptions.clear();
-        consumptions.addAll(consumptionManager.getConsumptions(this.context));
+        consumptions.addAll(consumptionManager.getConsumptions());
 
         notifyDataSetChanged();
     }
@@ -111,7 +111,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
             @Override
             public void onClick(View v) {
                 Log.v("TAG","----------------------------+++++++++++++++++++++++++> Consumpition Adapter Removed!");
-                consumptionManager.deleteConsumption(consumption.getId(),context);
+                consumptionManager.deleteConsumption(consumption.getId());
                 refreshConsumptions();
 
             }
