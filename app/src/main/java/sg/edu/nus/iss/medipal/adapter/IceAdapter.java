@@ -4,9 +4,14 @@ package sg.edu.nus.iss.medipal.adapter;
  * Created by levis on 3/23/2017.
  */
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +44,9 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         public ImageView _down;
         public ImageView _bottom;
 
+        private String[] items = {"Call", "SMS"};
+        private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1234;
+
         public IceViewHolder(View view) {
             super(view);
 
@@ -51,6 +59,39 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _bottom = (ImageView) view.findViewById(R.id.ice_list_bottom);
             _edit = (ImageView) view.findViewById(R.id.iceedit);
             _delete = (ImageView) view.findViewById(R.id.icedelete);
+
+            _contactNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final String phoneNumber = _contactNo.getText().toString();
+                    if(!phoneNumber.isEmpty()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setTitle("tel : " + phoneNumber);
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                if (i == 0) {
+                                    Intent intent = new Intent(Intent.ACTION_CALL);
+                                    intent.setData(Uri.parse("tel:" + Uri.encode(phoneNumber)));
+
+                                    if (ContextCompat.checkSelfPermission(((Activity)_context), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                        ActivityCompat.requestPermissions(((Activity)_context), new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                                    } else {
+                                        ((Activity)_context).startActivity(intent);
+                                    }
+
+                                } else if (i == 1) {
+                                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                    intent.setData(Uri.parse("smsto:" + Uri.encode(phoneNumber)));
+                                    ((Activity)_context).startActivity(intent);
+                                }
+                            }
+                        });
+                        AlertDialog alertdialog = builder.create();
+                        alertdialog.show();
+                    }
+                }
+            });
 
             _top.setOnClickListener(new View.OnClickListener() {
                 @Override
