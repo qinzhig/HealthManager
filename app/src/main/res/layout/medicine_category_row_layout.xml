@@ -13,6 +13,7 @@
         android:textStyle="bold"
         android:id="@+id/tv_name"
         />
+
     <Button
         android:layout_width="50dp"
         android:layout_height="30dp"

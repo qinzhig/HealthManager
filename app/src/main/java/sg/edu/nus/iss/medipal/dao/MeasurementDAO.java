@@ -24,7 +24,6 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 public class MeasurementDAO extends DataBaseUtility {
 
     private static final String WHERE_ID_EQUALS = DataBaseManager.MEASUREMENT_ID + " =?";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     public MeasurementDAO(Context context) {
         super(context);
@@ -39,7 +38,7 @@ public class MeasurementDAO extends DataBaseUtility {
         contentValues.put(DataBaseManager.MEASUREMENT_TEMPERATURE, measurement.getTemperature());
         contentValues.put(DataBaseManager.MEASUREMENT_WEIGHT, measurement.getWeight());
         contentValues.put(DataBaseManager.MEASUREMENT_TEMPERATURE, measurement.getTemperature());
-        contentValues.put(DataBaseManager.MEASUREMENT_MEASUREDON, MediPalUtility.convertDateToString(measurement.getMeasuredOn(), "dd MMM yyyy"));
+        contentValues.put(DataBaseManager.MEASUREMENT_MEASUREDON, measurement.getMeasuredOn());
 
         try {
             retCode = database.insertOrThrow(DataBaseManager.MEASUREMENT_TABLE, null, contentValues);
@@ -60,13 +59,13 @@ public class MeasurementDAO extends DataBaseUtility {
         contentValues.put(DataBaseManager.MEASUREMENT_TEMPERATURE, measurement.getTemperature());
         contentValues.put(DataBaseManager.MEASUREMENT_WEIGHT, measurement.getWeight());
         contentValues.put(DataBaseManager.MEASUREMENT_TEMPERATURE, measurement.getTemperature());
-        contentValues.put(DataBaseManager.MEASUREMENT_MEASUREDON, MediPalUtility.convertDateToString(measurement.getMeasuredOn(), "dd MMM yyyy"));
+        contentValues.put(DataBaseManager.MEASUREMENT_MEASUREDON, measurement.getMeasuredOn());
 
         try {
-            retCode = database.update(DataBaseManager.ICE_TABLE, contentValues, WHERE_ID_EQUALS, new String[]{String.valueOf(measurement.getId())});
+            retCode = database.update(DataBaseManager.MEASUREMENT_TABLE, contentValues, WHERE_ID_EQUALS, new String[]{String.valueOf(measurement.getId())});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
-            retCode = -1; //set return value to error code so that caller can handle error
+            sqlExp.printStackTrace();
+            retCode = -1;
         }
         return retCode;
     }
@@ -77,49 +76,43 @@ public class MeasurementDAO extends DataBaseUtility {
 
         try {
             Cursor cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
-                    new String[]{
-                            DataBaseManager.MEASUREMENT_ID,
-                            DataBaseManager.MEASUREMENT_SYSTOLIC,
-                            DataBaseManager.MEASUREMENT_DIASTOLIC,
-                            DataBaseManager.MEASUREMENT_PULSE,
-                            DataBaseManager.MEASUREMENT_TEMPERATURE,
-                            DataBaseManager.MEASUREMENT_WEIGHT,
-                            DataBaseManager.MEASUREMENT_TEMPERATURE,
-                            DataBaseManager.MEASUREMENT_MEASUREDON}, null, null, null, null, null);
+                new String[]{
+                        DataBaseManager.MEASUREMENT_ID,
+                        DataBaseManager.MEASUREMENT_SYSTOLIC,
+                        DataBaseManager.MEASUREMENT_DIASTOLIC,
+                        DataBaseManager.MEASUREMENT_PULSE,
+                        DataBaseManager.MEASUREMENT_TEMPERATURE,
+                        DataBaseManager.MEASUREMENT_WEIGHT,
+                        DataBaseManager.MEASUREMENT_MEASUREDON}, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(0);
-                int systolic = cursor.getInt(1);
-                int diastolic = cursor.getInt(2);
-                int pulse = cursor.getInt(3);
-                float temperature = cursor.getFloat(4);
-                int weight = cursor.getInt(5);
-                Date measuredon = null;
-                try {
-                    measuredon = dateFormatter.parse(cursor.getString(6));
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Integer id = cursor.getInt(0);
+                Integer systolic = cursor.getInt(1);
+                Integer diastolic = cursor.getInt(2);
+                Integer pulse = cursor.getInt(3);
+                Integer temperature = cursor.getInt(4);
+                Integer weight = cursor.getInt(5);
+                String measuredOn = cursor.getString(6);
 
-                measurement = new Measurement(id, systolic, diastolic, pulse, temperature, weight, measuredon);
+                measurement = new Measurement(id, systolic, diastolic, pulse, temperature, weight, measuredOn);
                 measurementList.add(measurement);
             }
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
+            sqlExp.printStackTrace();
         }
 
         return measurementList;
     }
 
 
-    public long delete(String iceId) {
+    public long delete(String id) {
         long retCode = 0;
 
         try {
-            database.delete(DataBaseManager.MEASUREMENT_TABLE, DataBaseManager.MEASUREMENT_ID + "= ?", new String[]{iceId});
+            database.delete(DataBaseManager.MEASUREMENT_TABLE, DataBaseManager.MEASUREMENT_ID + "= ?", new String[]{id});
         } catch (SQLException sqlExp) {
-            sqlExp.printStackTrace(); //unexpected error while inserting.
-            retCode = -1; //set return value to error code so that caller can handle error
+            sqlExp.printStackTrace();
+            retCode = -1;
         }
         return retCode;
     }

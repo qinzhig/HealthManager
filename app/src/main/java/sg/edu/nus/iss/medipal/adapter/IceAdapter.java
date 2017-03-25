@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.Activity;
 
+import java.util.Collections;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -24,7 +25,6 @@ import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
 
 public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
-
     private Context _context;
     private List<Ice> _iceList;
 
@@ -34,6 +34,10 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         public TextView _contactType;
         public ImageView _edit;
         public ImageView _delete;
+        public ImageView _top;
+        public ImageView _up;
+        public ImageView _down;
+        public ImageView _bottom;
 
         public IceViewHolder(View view) {
             super(view);
@@ -41,8 +45,38 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             _name = (TextView) view.findViewById(R.id.icelistitemname_view);
             _contactNo = (TextView) view.findViewById(R.id.icelistitemcontactnumber_view);
             _contactType = (TextView) view.findViewById(R.id.icelistitemcontacttype_view);
+            _top = (ImageView) view.findViewById(R.id.ice_list_top);
+            _up = (ImageView) view.findViewById(R.id.ice_list_up);
+            _down = (ImageView) view.findViewById(R.id.ice_list_down);
+            _bottom = (ImageView) view.findViewById(R.id.ice_list_bottom);
             _edit = (ImageView) view.findViewById(R.id.iceedit);
             _delete = (ImageView) view.findViewById(R.id.icedelete);
+
+            _top.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goTop(getAdapterPosition());
+                }
+            });
+
+            _up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goUp(getAdapterPosition());
+                }
+            });
+
+            _down.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { goDown(getAdapterPosition());
+                }
+            });
+
+            _bottom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { goBottom(getAdapterPosition());
+                }
+            });
 
             _edit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,6 +90,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                     iceIntent.putExtra("contactNo", ice.getContactNo());
                     iceIntent.putExtra("contactType", ice.getContactType());
                     iceIntent.putExtra("description", ice.getDescription());
+                    iceIntent.putExtra("priority", ice.getPriority());
                     iceIntent.putExtra("isEdit", true);
                     ((Activity)_context).startActivityForResult(iceIntent, 103);
                 }
@@ -69,8 +104,6 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    IceManager iceManager = new IceManager();
-                                    iceManager.deleteIce(getAdapterPosition(), _context);
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -81,9 +114,9 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         }
     }
 
-    public IceAdapter(Context context, List<Ice> iceBioList) {
+    public IceAdapter(Context context, List<Ice> iceList) {
         this._context = context;
-        this._iceList = iceBioList;
+        this._iceList = iceList;
     }
 
     @Override
@@ -96,6 +129,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     @Override
     public void onBindViewHolder(final IceAdapter.IceViewHolder holder, int position) {
         Ice ice = _iceList.get(position);
+
         holder._name.setText(ice.getName());
         holder._contactNo.setText(ice.getContactNo());
 
@@ -114,8 +148,50 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         return _iceList.size();
     }
 
+    public void goTop(Integer position) {
+        Collections.swap(_iceList, position, 0);
+        notifyItemMoved(position, 0);
+        updateAllPriority();
+    }
+
+    public void goUp(Integer position) {
+        if(position > 0) {
+            Collections.swap(_iceList, position, position - 1);
+            notifyItemMoved(position, position - 1);
+            updateAllPriority();
+        }
+    }
+
+    public void goDown(Integer position) {
+        if(position < this.getItemCount() - 1) {
+            Collections.swap(_iceList, position, position + 1);
+            notifyItemMoved(position, position + 1);
+            updateAllPriority();
+        }
+    }
+
+    public void goBottom(Integer position) {
+        Collections.swap(_iceList, position, this.getItemCount() - 1);
+        notifyItemMoved(position, this.getItemCount() - 1);
+        updateAllPriority();
+    }
+
     public void delete(int position) {
+        IceManager iceManager = new IceManager();
+        Ice ice = (Ice)_iceList.get(position);
+        iceManager.deleteIce(ice.getId().toString(), _context);
+
         _iceList.remove(position);
         notifyItemRemoved(position);
+        updateAllPriority();
+    }
+
+    void updateAllPriority() {
+        IceManager iceManager = new IceManager();
+        for(int i = 0; i < _iceList.size(); i++) {
+            Ice ice = _iceList.get(i);
+            ice.setPriority(i);
+            iceManager.updateIce(ice.getId(), ice.getName(), ice.getContactNo(), ice.getContactType(), ice.getDescription(), i, _context);
+        }
     }
 }

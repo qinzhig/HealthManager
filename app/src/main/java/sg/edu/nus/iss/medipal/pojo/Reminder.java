@@ -18,6 +18,10 @@ public class Reminder {
         this.interval = interval;
     }
 
+    public Reminder() {
+
+    }
+
     public int getId() {
         return id;
     }

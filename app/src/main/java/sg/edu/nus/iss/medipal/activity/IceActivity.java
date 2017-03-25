@@ -28,6 +28,7 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
     private String _contactNoStr;
     private Integer _contactType;
     private String _descriptionStr;
+    private Integer _priority = null;
 
     private static String[] CONTACT_TYPE = {"NOK", "GP"};
 
@@ -64,6 +65,7 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
             }
 
             _descriptionEdit.setText(intentExtras.get("description").toString());
+            _priority = intentExtras.getInt("priority");
         }
     }
 
@@ -101,11 +103,10 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
             if (validateIce(_nameStr, _contactNoStr, _descriptionStr)) {
                 if(_id != null) {
-                    updateIce(_id, _nameStr, _contactNoStr, _contactType, _descriptionStr);
+                    updateIce(_id, _nameStr, _contactNoStr, _contactType, _descriptionStr, _priority);
                 } else {
                     addIce(_nameStr, _contactNoStr, _contactType, _descriptionStr);
                 }
-
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
@@ -130,12 +131,13 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
     private void addIce(String name, String contactNo, Integer contactType, String description) {
         IceManager iceManager = new IceManager();
-        iceManager.addIce(name, contactNo, contactType, description, this);
+        Integer priority = iceManager.getIces(this).size();
+        iceManager.addIce(name, contactNo, contactType, description, priority, this);
     }
 
-    private void updateIce(Integer id, String name, String contactNo, Integer contactType, String description) {
+    private void updateIce(Integer id, String name, String contactNo, Integer contactType, String description, Integer priority) {
         IceManager iceManager = new IceManager();
-        iceManager.updateIce(id , name, contactNo, contactType, description, this);
+        iceManager.updateIce(id , name, contactNo, contactType, description, priority, this);
     }
 
     private boolean validateIce(String name, String contactNo, String description) {

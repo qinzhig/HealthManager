@@ -8,10 +8,21 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
+import sg.edu.nus.iss.medipal.pojo.Consumption;
+import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
  * Created by apple on 14/03/2017.
@@ -19,9 +30,9 @@ import sg.edu.nus.iss.medipal.R;
 
 public class PiegraphView extends View implements Runnable {
 
-    // 动画速度
-    private float moveSpeed = 3.0F;
-    // 总数值
+    // 动画速度 animation speed
+    private float moveSpeed = 5.0F;
+    // 总数值 total
     private double total;
     // 各饼块对应的数值
     private Double[] itemValuesTemp;
@@ -61,6 +72,11 @@ public class PiegraphView extends View implements Runnable {
     public static final int TO_LEFT = 2;
     public static final int TO_TOP = 3;
 
+    HealthManager healthManager;
+
+
+
+
     // 颜色值
     private final String[] DEFAULT_ITEMS_COLORS = { "#FF0000", "#FFFF01",
             "#FF9933", "#9967CC", "#00CCCC", "#00CC33", "#0066CC", "#FF6799",
@@ -78,6 +94,7 @@ public class PiegraphView extends View implements Runnable {
                         Double[] itemSizes, float total, int radius, int strokeWidth,
                         String strokeColor, int stopPosition, int separateDistence) {
         super(context);
+        healthManager = new HealthManager();
 
         this.stopPosition = stopPosition;
 
@@ -405,15 +422,22 @@ public class PiegraphView extends View implements Runnable {
                 itemsValues = itemValuesTemp;
             }
 
+
+
             // 开始给各模块赋值
             itemsPercent = new float[itemsValues.length];
             itemsStartAngle = new float[itemsValues.length];
             itemsAngle = new float[itemsValues.length];
             float startAngle = 0.0F;
+            Log.v("PIECHARTVIEW Length","()()()()()()()()()()()()()()()()()()()"+itemsValues.length);
 
             for (int i = 0; i < itemsValues.length; i++) {
                 itemsPercent[i] = ((float) (itemsValues[i] * 1.0D / getTotal() * 1.0D));
+                Log.v("PIECHARTVIEW","()()()()()()()()()()()()()()()()()()()"+itemsValues[i]);
+
             }
+            Log.v("PIECHARTVIEW","()()()()()()()()()()()()()()()()()()()"+itemsValues);
+            Log.v("PIECHARTVIEW ITEMVALUESTEMP","()()()()()()()()()()()()()()()()()()()()"+itemValuesTemp);
 
             for (int i = 0; i < itemsPercent.length; i++) {
                 itemsAngle[i] = (360.0F * itemsPercent[i]);
@@ -757,6 +781,54 @@ public class PiegraphView extends View implements Runnable {
     public void setItemSelectedListener(
             OnPiegraphItemSelectedListener itemSelectedListener) {
         this.itemSelectedListener = itemSelectedListener;
+    }
+
+    public int[] CategotyNum()
+
+    {
+        int CategoryNum = 0;
+        List<Integer>medicine_id = new ArrayList<Integer>();
+
+        List<Integer>category_id = new ArrayList<Integer>();
+
+        List<Integer>category_Num = new ArrayList<Integer>();
+
+
+
+        ConsumptionManager consumptionManager = new ConsumptionManager(getContext());
+        List<Consumption>consumptionList = new ArrayList<Consumption>();
+        consumptionList = consumptionManager.getConsumptions(getContext());
+        Consumption consumptionitem = new Consumption();
+        Iterator iterator = consumptionList.iterator();
+        while (iterator.hasNext()) {
+            consumptionitem = (Consumption)  iterator.next();
+            medicine_id.add(consumptionitem.getMedicineId());
+
+        }
+        for (int i = 0; i < medicine_id.size(); i++)
+        {
+            category_id.add(i,healthManager.getMedicine(medicine_id.get(i),getContext()).getCateId());
+        }
+
+        Collections.sort(category_id);
+
+
+        int diffrent=category_id.get(0);
+        int[] a = {0};
+
+        for (int i = 0,j=0; i < category_id.size(); i++)
+        {
+            if (diffrent == category_id.get(i)) {
+                i++;
+
+            }else{
+                diffrent = category_id.get(i);
+                a[j]=i+1;
+                j++;
+            }
+        }
+
+        return a;
     }
 
 }

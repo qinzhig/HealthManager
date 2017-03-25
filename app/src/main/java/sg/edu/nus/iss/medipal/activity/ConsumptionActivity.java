@@ -4,35 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.adapter.ConsumptionAdapter;
-import sg.edu.nus.iss.medipal.adapter.MedicineAdapter;
 
 public class ConsumptionActivity extends AppCompatActivity {
 
     ListView listView;
     ConsumptionAdapter consumptionAdapter;
+    int medicine_id = 0;
+    String ConsumedOn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumption);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        Log.v("mateng i am in the consumption actovity","_++_+_++_+_+_+_+_+_matneg i am in the consumption activity _+_+_+_+_+_+_+_+_+_+_+_+");
 
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-                startActivity(new Intent(ConsumptionActivity.this, AddConsumption.class));
-
-            }
-        });
 
         listView= (ListView) findViewById(R.id.showConsumptionall);
         consumptionAdapter = new ConsumptionAdapter(getApplicationContext());
@@ -42,7 +35,17 @@ public class ConsumptionActivity extends AppCompatActivity {
 
 
     public void OnclickDetail (View view) {
+        /*
+        Bundle getFromAddConsumption = getIntent().getExtras();
+        medicine_id = getFromAddConsumption.getInt("medicine_id");
+        ConsumedOn = getFromAddConsumption.getString("ConsumedOn");
+        */
+        Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
+        Log.v("INTHECONSUMPTIONDETIL","_+_+_+_+_+_+_+_+_+_+_+"+ConsumedOn);
+
         Intent i = new Intent(getApplicationContext(),ConsumptionDetail.class);
+        i.putExtra("medicine_id",medicine_id);
+        i.putExtra("ConsumedOn",ConsumedOn);
         startActivity(i);
     }
 

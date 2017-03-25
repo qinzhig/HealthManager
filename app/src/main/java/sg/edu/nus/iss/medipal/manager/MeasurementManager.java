@@ -15,10 +15,15 @@ import sg.edu.nus.iss.medipal.pojo.Measurement;
 public class MeasurementManager {
     MeasurementDAO _measurementDAO = null;
 
-    public long addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn, Context context) {
+    public long addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String mesuredOn, Context context) {
         _measurementDAO = new MeasurementDAO(context);
         Measurement measurement = new Measurement(systolic, diastolic, pulse, temperature, weight, mesuredOn);
         return _measurementDAO.insert(measurement);
+    }
+
+    public Measurement getMeasurement(Integer index, Context context) {
+        _measurementDAO = new MeasurementDAO(context);
+        return _measurementDAO.retrieve().get(index);
     }
 
     public List<Measurement> getMeasurements(Context context) {
@@ -31,9 +36,9 @@ public class MeasurementManager {
         return _measurementDAO.delete(id);
     }
 
-    public long updateMeasurement(String id, Integer systolic, Integer diastolic, Integer pulse, Float temperature, Integer weight, Date mesuredOn, Context context) {
+    public long updateMeasurement(int id, Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String mesuredOn, Context context) {
         _measurementDAO = new MeasurementDAO(context);
-        Measurement measurement = new Measurement(Integer.valueOf(id), systolic, diastolic, pulse, temperature, weight, mesuredOn);
+        Measurement measurement = new Measurement(id, systolic, diastolic, pulse, temperature, weight, mesuredOn);
         return _measurementDAO.update(measurement);
     }
 }
