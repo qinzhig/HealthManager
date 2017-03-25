@@ -30,6 +30,7 @@ import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
 import sg.edu.nus.iss.medipal.activity.AddConsumption;
 
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
@@ -64,6 +65,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public CardView cardView;
         public ImageView edit;
         public ImageView delete;
+
+        ConsumptionDAO consumptionDAO;
         //private PopupWindow cardPopUp;
 
         public MedicineViewHolder(View view, final View popUp) {
@@ -128,6 +131,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                         Medicine medicine = medicineList.get(getAdapterPosition());
                         Intent addConsumption = new Intent(mContext, AddConsumption.class);
                         addConsumption.putExtra("medicine_id",medicine.getId());
+                        consumptionDAO = new ConsumptionDAO(mContext);
+                        //int getCount =  consumptionDAO.getConsumptionCount(Integer.toString(medicine.getId(),)
                         ((Activity)mContext).startActivityForResult(addConsumption,301);
                     }
                 }

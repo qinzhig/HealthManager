@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +29,12 @@ import sg.edu.nus.iss.medipal.pojo.HealthManager;
 public class ConsumptionDetail extends AppCompatActivity {
 
     private PiegraphView view;
+    private PiegraphView view_un;
     private TextView text;
+    private TextView text_un;
     private TextView back;
+    private TextView back_un;
+
     private float radius;
     private int strokeWidth;
     private String strokeColor = "#ffffff";
@@ -38,6 +43,8 @@ public class ConsumptionDetail extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private static final String fileName = "sharedfile";
+
+    private Spinner spinner;
 
     ConsumptionDAO consumptionDAO;
 
@@ -49,13 +56,22 @@ public class ConsumptionDetail extends AppCompatActivity {
         view = (PiegraphView) findViewById(R.id.piechar_view);
         text = (TextView) findViewById(R.id.content);
         back = (TextView) findViewById(R.id.back);
+
+        view_un = (PiegraphView)findViewById(R.id.piechar_unview);
+        text_un = (TextView) findViewById(R.id.Uncontent);
+        back_un = (TextView) findViewById(R.id.Unback);
+
+        spinner = (Spinner)findViewById(R.id.spinner);
+
+
       //  back.getBackground().setAlpha(80);
         text.setText("the first");
         radius = ScreenUtil.dip2px(this, 140);
         strokeWidth = ScreenUtil.dip2px(this, 3);
         //view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d,25d,67d,87d,54d });
         ConsumptionDAO cDao = new ConsumptionDAO(this);
-        HashMap<String,Double> hm = cDao.getPieChartConsumptions("25-3-2017");
+        HashMap<String,Double> hm = cDao.getPieChartconsumption("25-3-2017");
+        HashMap<String,Double> Un_hm = cDao.getPieChartUnConsumptions("25-3-2017");
 
         Double[] dArray = new Double[hm.size()];
         Iterator it = hm.entrySet().iterator();
@@ -74,6 +90,18 @@ public class ConsumptionDetail extends AppCompatActivity {
         // view.setRaduis(radius);// 设置饼状图半径，不包含边缘的圆环
         // view.setStrokeWidth(strokeWidth);// 设置边缘的圆环粗度
         view.setStrokeColor(strokeColor);// 设置边缘的圆环颜色
+
+        Double[] un_dArray = new Double[Un_hm.size()];
+        Iterator un_it = Un_hm.entrySet().iterator();
+        int j = 0;
+        while(un_it.hasNext()) {
+            Map.Entry unpair = (Map.Entry)un_it.next();
+            un_dArray[j]=(Double)unpair.getValue();
+            j++;
+        }
+
+        view_un.setitemsValues(un_dArray);
+        view_un.setStrokeColor(strokeColor);
         view.setItemSelectedListener(new OnPiegraphItemSelectedListener() {
             @Override
             public void onPieChartItemSelected(int position, String itemColor,

@@ -227,11 +227,13 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             //int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
             int ReminderId = healthmanager.getMedicine(medicine_id,getApplicationContext()).getReminderId();
             int FrequentNum = healthmanager.getReminder(ReminderId,getApplicationContext()).getFrequency();
+            Log.v("TAG OF FREQUENT NUM","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+FrequentNum);
             if (consumptionCount == 0) {
                 for (int i =0; i < FrequentNum; i++) {
                     consumptionManager.addConsumption(0,medicine_id,0,date_time,this);
                 }
             }
+
             int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
             consumptionManager.updateConsumption(MinConsumptionId,medicine_id,quantity,date_time,this);
 

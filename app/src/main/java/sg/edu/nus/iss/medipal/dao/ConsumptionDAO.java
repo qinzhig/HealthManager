@@ -151,11 +151,11 @@ public class ConsumptionDAO extends DataBaseUtility {
         return id;
     }
 
-    //get list of consumption
-    public HashMap<String,Double> getPieChartConsumptions(String date) {
+    //get list of unConsumption
+    public HashMap<String,Double> getPieChartUnConsumptions(String date) {
         HashMap<String,Double> data = new HashMap<>();
 
-        String query = "select count(c.id),c1.category from medicine m,category c1, consumption c where m.id=c.medicine_id and m.catid=c1.id and c.quantity=0 and trim(substr(consumedOn,1,10)) = ? group by category";
+        String query = "select count(c.id),c1.category from medicine m,category c1, consumption c where m.id=c.medicine_id and m.catid=c1.id and c.quantity<>0 and trim(substr(consumedOn,1,10)) = ? group by category";
         Cursor c = database.rawQuery(query,new String[]{date});
 
         //loop through each result set to populate the appointment pojo and add to the list each time
@@ -167,6 +167,19 @@ public class ConsumptionDAO extends DataBaseUtility {
         }
         return data;
     }
+    //get list of Consumption
+    public  HashMap<String,Double> getPieChartconsumption(String date) {
+        HashMap<String, Double> data = new HashMap<>();
+        String query = "select count(c.id),c1.category from medicine m,category c1, consumption c where m.id=c.medicine_id and m.catid=c1.id and c.quantity=0 and trim(substr(consumedOn,1,10)) = ? group by category";
+        Cursor c = database.rawQuery(query,new String[]{date});
 
+        while (c.moveToNext()) {
+            int count = c.getInt(0);
+            String category = c.getString(1);
+
+            data.put(category,Double.valueOf(count));
+        }
+        return data;
+    }
 
 }
