@@ -170,7 +170,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
         if(reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
-            remainderString = "Medicine should be taken "+remainderFrequency.toString()+"times per day";
+            remainderString = "Medicine should be taken "+remainderFrequency.toString()+" times per day";
         }
         else
             remainderString="No remainder set";
