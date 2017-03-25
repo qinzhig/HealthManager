@@ -16,7 +16,7 @@
     <string name="menu_search">Search</string>
     <string name="menu_add">Add</string>
     <string name="menu_setting">Setting Application</string>
-    <string name="spinner_medicine_hint">Category</string>
+    <string name="spinner_medicine_hint"> Category</string>
 
     <dimen name="img_width_height">120dp</dimen>
     <dimen name="slide_title">30dp</dimen>

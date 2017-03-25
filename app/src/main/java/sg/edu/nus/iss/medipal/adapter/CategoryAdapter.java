@@ -75,7 +75,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
         String reminder_status;
         if(category.getRemind()) {reminder_status = "Remind_ON";}else {reminder_status = "Remind_OFF";}
 
-        String out_name = String.format("%-12s | %-5s | %s",reminder_status,category.getCategory_code(),category.getCategory_name());
+        String out_name = String.format("%-12s\t|%-3s\t|%-20s",reminder_status,category.getCategory_code(),category.getCategory_name());
         viewHolder.tvName.setText(out_name);
         viewHolder.tvName.setTextColor(Color.rgb(0, 0, 0));
 
@@ -97,7 +97,7 @@ public class CategoryAdapter extends ArrayAdapter<Category>{
 
                     context.startActivity(EditCategory);
                 }else{
-
+                    //Can't edit the pre-defined Category:<Chronic,Incidental,Complete Course>
                     Toast toast = Toast.makeText(context,"Pre-defined Category Not allowed to Modify",Toast.LENGTH_SHORT);
                     toast.show();
                 }
