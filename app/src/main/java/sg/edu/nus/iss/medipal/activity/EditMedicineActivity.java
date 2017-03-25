@@ -285,8 +285,8 @@ public class EditMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent_add_category= new Intent(getApplicationContext(), AddCategoryActivity.class);
-                startActivity(intent_add_category);
+                Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
+                startActivity(intent_list_category);
 
                 finish();
 
@@ -532,7 +532,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                     App.hm.addReminder(reminderid, Integer.valueOf(et_frequency.getText().toString().trim()), et_stime.getText().toString(), Integer.valueOf(et_interval.getText().toString().trim()), getApplicationContext());
 
                     App.hm.updateMedicine(medicine.getId(), et_name.getText().toString().trim(), et_des.getText().toString().trim(),
-                            position + 1, reminderid, false, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
+                            position + 1, reminderid, true, Integer.valueOf(et_quanity.getText().toString().trim()), spinner_dosage.getSelectedItemPosition(),
                             Integer.valueOf(et_cquantity.getText().toString().trim()), Integer.valueOf(et_threshold.getText().toString().trim()),
                             et_date_get.getText().toString(), expire_factor, getApplicationContext());
 

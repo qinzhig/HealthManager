@@ -143,8 +143,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                     et_interval.setVisibility(View.GONE);
                     et_stime.setVisibility(View.GONE);
 
-                    //et_frequency.setText("0");
-                    //et_interval.setText("0");
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
 
                     remind_status = false;
 
@@ -298,8 +298,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                     et_stime.setVisibility(View.GONE);
 
 
-                    //et_frequency.setText("0");
-                    //et_interval.setText("0");
+                    et_frequency.setText("0");
+                    et_interval.setText("0");
 
                 }
 
@@ -342,8 +342,9 @@ public class AddMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent_add_category= new Intent(getApplicationContext(), AddCategoryActivity.class);
-                startActivity(intent_add_category);
+
+                Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
+                startActivity(intent_list_category);
 
                 finish();
 

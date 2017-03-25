@@ -90,6 +90,12 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         Bundle bundleMedicine = getIntent().getExtras();
         medicine_id = bundleMedicine.getInt("medicine_id");
+
+        Intent transferMedicineId = new Intent(getApplicationContext(),ConsumptionDetail.class);
+        transferMedicineId.putExtra("medicine_id",medicine_id);
+
+        Intent transferMedicineIdtoUnconsumption = new Intent(getApplicationContext(),UncomsumedActivity.class);
+        transferMedicineIdtoUnconsumption.putExtra("medicine_id",medicine_id);
         medicine_name = healthmanager.getMedicine(medicine_id,getApplicationContext()).getMedicine_name();
         quantity = healthmanager.getMedicine(medicine_id,getApplicationContext()).getConsumequantity();
 
@@ -191,11 +197,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         int threshold = healthmanager.getMedicine(medicine_id,getApplicationContext()).getThreshold();
 
 
-
-
-
-
-
         Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
 
         if (input_validate(quantity,date,time)) {
@@ -205,6 +206,9 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 select * from consumptionTable where medicineid = getmedicineid,
 
             */
+            Intent transferDate_time = new Intent(getApplicationContext(),ConsumptionDetail.class);
+            transferDate_time.putExtra("ConsumedOn",date_time);
+
             ConsumptionDAO consumptionDAO = new ConsumptionDAO(this);
 
             Calendar c = Calendar.getInstance();
@@ -243,6 +247,8 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 dlg.show();
             }
             Intent i = new Intent(getApplicationContext(),ConsumptionActivity.class);
+            i.putExtra("medicine_id",medicine_id);
+            i.putExtra("ConsumedOn",date_time);
             startActivity(i);
         }
 
