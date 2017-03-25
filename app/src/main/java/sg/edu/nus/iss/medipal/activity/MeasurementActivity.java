@@ -184,9 +184,11 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
                             Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
                             Integer.parseInt(_weightStr), _measuredOnStr);
                 } else {
-                    addMeasurement(Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
-                            Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
-                            Integer.parseInt(_weightStr), _measuredOnStr);
+                    addMeasurement(_systolicStr.isEmpty()?null:Integer.parseInt(_systolicStr),
+                            _diastolicStr.isEmpty()?null:Integer.parseInt(_diastolicStr),
+                            _pulseStr.isEmpty()?null:Integer.parseInt(_pulseStr),
+                            _temperatureStr.isEmpty()?null:Integer.parseInt(_temperatureStr),
+                            _weightStr.isEmpty()?null:Integer.parseInt(_weightStr), _measuredOnStr);
                 }
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
