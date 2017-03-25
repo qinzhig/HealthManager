@@ -57,6 +57,18 @@ public class HealthManager {
         this.reminders  =   new ArrayList<Reminder>();
     }
 
+    public List<Medicine> getMedicines() {
+        return this.medicines;
+    }
+
+    public List<Category> getCategories() {
+        return this.categorys;
+    }
+
+    public List<Reminder> getReminders() {
+        return this.reminders;
+    }
+
     public Medicine getMedicine(int id,Context context){
         Iterator<Medicine> i;
         if(medicines.isEmpty()) {
@@ -142,7 +154,15 @@ public class HealthManager {
         Medicine medicine = new Medicine(id, medicine_name, medicine_des,cateId, reminderId, reminder, quantity, dosage,cquantity,threshold,dateIssued, expireFactor);
 
         taskAddMedicine = new AddMedicine(context);
-        taskAddMedicine.execute(medicine);
+        Long retId=new Long(0);
+        try {
+            retId = taskAddMedicine.execute(medicine).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        medicine.setId(retId.intValue());
 
         return medicine;
 
@@ -359,7 +379,7 @@ public class HealthManager {
 
     //Setup repeat reminder for the medicine consumpotion
 
-    public void setMeidicineReminder(boolean alarmSwitch,String stime, int interval, int frequency,int reminderId, Context context){
+    public void setMeidicineReminder(boolean alarmSwitch,String stime, int interval, int frequency,int reminderId,int medicineid, Context context){
 
         //To avoid the reminder repeat after determined duration of consumption period,
         // we have just divided the hour repeat reminders to few daily reapeted
@@ -394,6 +414,7 @@ public class HealthManager {
                 //Set the reminderID and startTime in Intent data for scheduled repeat reminder
                 intent.putExtra("ConsumptionReminderId", Integer.toString(repeat_reminderID));
                 intent.putExtra("StartTime",reminder_hour+":"+stime_hour_min[1]);
+                intent.putExtra("medicineid",medicineid);
                 //intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
 
                 Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );

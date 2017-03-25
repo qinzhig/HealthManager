@@ -21,6 +21,7 @@ import android.view.View;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
+import sg.edu.nus.iss.medipal.fragment.ConsumptionFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.HomeFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
@@ -183,8 +184,12 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_consumption) {
-            Intent intent_consumption = new Intent(getApplicationContext(), ConsumptionActivity.class);
-            startActivity(intent_consumption);
+           // Intent intent_consumption = new Intent(getApplicationContext(), ConsumptionActivity.class);
+            //startActivity(intent_consumption);
+            resetTitle("Consumptions");
+            fragment = new ConsumptionFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
 
         if(id != R.id.nav_medicine){

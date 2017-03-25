@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -124,6 +125,32 @@ public class ConsumptionDAO extends DataBaseUtility {
         return consumptions;
     }
 
+
+    //get list of consumption
+    public ArrayList<Consumption> getConsumptions(String date) {
+        ArrayList<Consumption> consumptions = new ArrayList<Consumption>();
+
+        String selection = "trim(substr(consumedOn,1,10)) = ?";
+        String[] selectionArgs = {date};
+        Cursor cursor = database.query(DataBaseManager.CONSUMPTION_TABLE,
+                new String[]{
+                        DataBaseManager.CONSUMPTION_ID,
+                        DataBaseManager.CONSUMPTION_MEIDICINE_ID,
+                        DataBaseManager.CONSUMPTION_QUANTITY,
+                        DataBaseManager.CONSUMEDON},selection,selectionArgs,null,null,DataBaseManager.CONSUMEDON);
+
+        //loop through each result set to populate the appointment pojo and add to the list each time
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            int CONSUMPTION_MEIDICINE_ID = cursor.getInt(1);
+            int CONSUMPTION_QUANTITY = cursor.getInt(2);
+            String CONSUMEDON = cursor.getString(3);
+            Consumption consumption = new Consumption(id, CONSUMPTION_MEIDICINE_ID, CONSUMPTION_QUANTITY, CONSUMEDON);
+            consumptions.add(consumption);
+        }
+        return consumptions;
+    }
+
     public Integer getConsumptionCount(String medicineId,String consumedOn) {
 
         String selection = "medicine_id = ? AND trim(substr(consumedOn,1,10)) = ?";
@@ -155,6 +182,7 @@ public class ConsumptionDAO extends DataBaseUtility {
                         "min(id)",
                         },selection,selectionArgs,null,null,null);
         int id=-1;
+        Log.d("count",Integer.toString(cursor.getCount()));
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
             id = cursor.getInt(0);

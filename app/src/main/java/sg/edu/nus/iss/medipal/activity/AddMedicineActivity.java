@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
  * Created by : Qin Zhi Guo on 10-03-2017.
@@ -523,7 +524,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                         if(no_reminder_input_invalidate){
 
-                            App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
+                            Medicine medicine =App.hm.addMedicine(0,et_name.getText().toString().trim(),et_des.getText().toString().trim(),
                                     position+1,reminderid,remind_status,Integer.valueOf(et_quanity.getText().toString().trim()),
                                     spinner_dosage.getSelectedItemPosition(),Integer.valueOf(et_cquantity.getText().toString().trim()),
                                     Integer.valueOf(et_threshold.getText().toString().trim()),et_date_get.getText().toString(),expire_factor,getApplicationContext());
@@ -534,7 +535,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
 
                             App.hm.setMeidicineReminder(remind_status,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
-                                    Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
+                                    Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,medicine.getId(),getApplicationContext());
 
                             Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine with a reminder Successfully!",Toast.LENGTH_SHORT);
                             toast.show();
