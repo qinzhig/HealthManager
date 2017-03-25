@@ -113,8 +113,6 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
 
 
 
-
-
         return appointmentFragment;
     }
 

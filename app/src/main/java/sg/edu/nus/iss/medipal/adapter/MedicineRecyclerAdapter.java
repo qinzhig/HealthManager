@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -32,7 +33,9 @@ import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
+import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
@@ -66,7 +69,10 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public ImageView edit;
         public ImageView delete;
 
+
         ConsumptionDAO consumptionDAO;
+
+        public ImageView consume;
         //private PopupWindow cardPopUp;
 
         public MedicineViewHolder(View view, final View popUp) {
@@ -81,13 +87,14 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             dateIssued = (TextView) view.findViewById(R.id.medicine_date);
             delete = (ImageView) view.findViewById(R.id.delete);
             edit = (ImageView) view.findViewById(R.id.edit);
-
+            consume = (ImageView) view.findViewById(R.id.consume);
 
 
             if(fromHomeFragment != null && fromHomeFragment) {
                 delete.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
             }
+
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +123,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                                     Medicine medicine = medicineList.get(getAdapterPosition());
                                     healthManager.deleteMedicine(medicine.getId(),mContext);
                                     healthManager.deleteReminder(medicine.getReminderId(),mContext);
+                                    ConsumptionManager consumptionManager= new ConsumptionManager(mContext);
+                                    consumptionManager.deleteConsumption(medicine.getId());
                                     delete(getAdapterPosition());
                                 }
                             })
@@ -127,20 +136,62 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(fromHomeFragment != null && fromHomeFragment) {
+                   /* if(fromHomeFragment != null && fromHomeFragment) {
                         Medicine medicine = medicineList.get(getAdapterPosition());
                         Intent addConsumption = new Intent(mContext, AddConsumption.class);
                         addConsumption.putExtra("medicine_id",medicine.getId());
                         consumptionDAO = new ConsumptionDAO(mContext);
                         //int getCount =  consumptionDAO.getConsumptionCount(Integer.toString(medicine.getId(),)
                         ((Activity)mContext).startActivityForResult(addConsumption,301);
-                    }
+                    }*/
                 }
 
             });
 
+            consume.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Medicine medicine = medicineList.get(getAdapterPosition());
+                        int id= medicine.getId();
+                        Intent addConsumption = new Intent(mContext, AddConsumption.class);
+                        addConsumption.putExtra("medicine_id", id);
+                    if(fromHomeFragment != null && fromHomeFragment) {
+                        ((Activity) mContext).startActivityForResult(addConsumption, 301);
+                    }
+                    else
+                    {
+                        ((Activity) mContext).startActivityForResult(addConsumption, 302);
+                    }
+
+                }
+            });
         }
     }
+
+    private boolean isConsumptionAvailable(int id) {
+       boolean retval=true;
+        Calendar c = Calendar.getInstance();
+        int day, month, year;
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
+        String consumedDate = day + "-" + (month + 1) + "-" + year;
+        ConsumptionDAO consumptionDAO = new ConsumptionDAO(mContext);
+        int totalConsumeCount=consumptionDAO.getConsumptionCount(Integer.toString(id),consumedDate);
+        int currentConsumeCount = consumptionDAO.getCurrentConsumptionCount(Integer.toString(id),consumedDate);
+        consumptionDAO.close();
+
+        if(totalConsumeCount == 0){
+            retval = true;
+        }
+        else if(currentConsumeCount >= totalConsumeCount)
+        {
+            retval = false;
+        }
+
+        return retval;
+    }
+
     //constructor for adapter
     public MedicineRecyclerAdapter(Context mContext, HealthManager healthManager,List<Medicine> medicineList,Boolean fromHomeFragment, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
@@ -155,7 +206,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     //called once in beginning to load the view
     @Override
     public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.v("ADAPTERADAPTER","_+_+_+_+_+_I AM IN THE MedicineAdapter+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_");
         View itemView  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicine_card_list, parent, false);
         View popUp = LayoutInflater.from(parent.getContext())
@@ -169,6 +219,10 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     public void onBindViewHolder(final MedicineViewHolder holder, int position) {
 
         //get appointment data from list using current position as index
+        int categoryId = medicineList.get(position).getCateId();
+        if(!isConsumptionAvailable(medicineList.get(position).getId()) ) {
+            holder.consume.setVisibility(View.INVISIBLE);
+        }
 
         String remainderString;
         Medicine medicine = medicineList.get(position);
@@ -179,7 +233,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         }
         else
             remainderString="No remainder set";
-
 
         //populate the view elements
             holder.medicineName.setText(medicine.getMedicine_name());
@@ -211,12 +264,4 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         }
     }
 
-    public class CustomAdapter extends ArrayAdapter<Medicine> {
-
-        public CustomAdapter(Context context){
-            super(context,R.layout.consume_individual_element);
-        }
-
-
-    }
 }
