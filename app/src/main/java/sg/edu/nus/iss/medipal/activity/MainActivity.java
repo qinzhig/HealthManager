@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private boolean refreshPersonalBioFragment;
     private boolean refreshMedicineFragment;
     private boolean refreshHomeFragment;
+    private boolean refreshMeasurement;
     private Boolean inHomeFragment;
     private PersonalBioManager personalBioManager;
 
@@ -267,6 +268,11 @@ public class MainActivity extends AppCompatActivity
             //  if(inHomeFragment)
             loadHomeFragment();
         }
+        else if(refreshMeasurement){
+            fragment = new MeasurementFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
     }
 
     @Override
@@ -291,6 +297,12 @@ public class MainActivity extends AppCompatActivity
         }else if(requestCode == 301){
             if (resultCode == 0) {
                 refreshHomeFragment = true;
+            }
+        }
+
+        else if(requestCode == 5){
+            if (resultCode == 0) {
+                refreshMeasurement = true;
             }
         }
 

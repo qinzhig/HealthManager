@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sg.edu.nus.iss.medipal.dao.MedicineDAO;
+import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.HealthBio;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
@@ -42,8 +44,18 @@ public class ReportManager {
         return rowHeader;
     }
 
-    public static TableLayout addContent(Context context,
+    /*public static TableLayout addContent(Context context,
                                          TableLayout tableLayout) {
+
+        addHealthBioContent(context, tableLayout);
+
+        addConsumptionContent(context, tableLayout);
+
+        return tableLayout;
+    }
+*/
+    public static TableLayout addHealthBioContent(Context context,
+                                            TableLayout tableLayout) {
 
         healthBioManager
                 = new HealthBioManager();
@@ -56,7 +68,7 @@ public class ReportManager {
             TableRow rowData = new TableRow(context);
             String condition = healthBio.getCondition();
             String strtDate = MediPalUtility.
-                    convertDateToString(healthBio.getStartDate(),"dd MMM yyyy");
+                    convertDateToString(healthBio.getStartDate(), "dd MMM yyyy");
             String conditionType = "";
             if (healthBio.getConditionType() == 'C') {
                 conditionType = "Condition";
@@ -80,6 +92,46 @@ public class ReportManager {
         }
 
         return tableLayout;
+
+    }
+
+    public static TableLayout
+                    addConsumptionContent(Context context,TableLayout tableLayout){
+
+        ConsumptionManager consumptionManager
+                = new ConsumptionManager(context);
+
+
+        MedicineDAO medicineDAO
+                = new MedicineDAO(context);
+
+        List<Consumption> consumptionList =
+                consumptionManager.getConsumptions(context);
+
+        for (Consumption consumption : consumptionList) {
+
+            TableRow rowData = new TableRow(context);
+            String medcineName = medicineDAO.getMedicineName(consumption.getMedicineId());
+            String consumedOn = consumption.getConsumedOn();
+            int quantity = consumption.getQuality();
+
+            String[] rowArr = {medcineName, String.valueOf(quantity), consumedOn};
+
+            for (String row : rowArr) {
+                TextView tv = new TextView(context);
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(18);
+                tv.setPadding(5, 5, 5, 5);
+                tv.setText(row);
+                rowData.addView(tv);
+            }
+            tableLayout.addView(rowData);
+        }
+
+        return tableLayout;
+
     }
 
     public static String addHealthBioToCsv(String[] headerArr,
@@ -104,7 +156,7 @@ public class ReportManager {
         for (HealthBio healthBio : healthBioList) {
             String condition = healthBio.getCondition();
             String strtDate = MediPalUtility.
-                    convertDateToString(healthBio.getStartDate(),"dd MMM yyyy");
+                    convertDateToString(healthBio.getStartDate(), "dd MMM yyyy");
             String conditionType = "";
             if (healthBio.getConditionType() == 'C') {
                 conditionType = "Condition";
