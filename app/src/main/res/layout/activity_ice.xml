@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="Blood Type"
+                android:text="Contact Type"
                 android:textSize="16sp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorPrimary"
@@ -102,6 +102,7 @@
                 android:id="@+id/icecontacttype_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
                 android:theme="@style/EditTextStyle"/>
         </LinearLayout>
     </ScrollView>
