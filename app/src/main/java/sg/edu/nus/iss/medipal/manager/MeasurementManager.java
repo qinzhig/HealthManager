@@ -10,6 +10,7 @@ import sg.edu.nus.iss.medipal.pojo.BloodPressure;
 import sg.edu.nus.iss.medipal.pojo.Pulse;
 import sg.edu.nus.iss.medipal.pojo.Temperature;
 import sg.edu.nus.iss.medipal.pojo.Weight;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by levis on 3/23/2017.
@@ -44,6 +45,8 @@ public class MeasurementManager {
 
     public List<Object> getMeasurements(Context context) {
         measurementDAO = new MeasurementDAO(context);
-        return measurementDAO.retrieve();
+        Date currDate = new Date();
+        return measurementDAO.retrieve(MediPalUtility
+        .convertDateToString(currDate,"yyyy MMM dd"));
     }
 }

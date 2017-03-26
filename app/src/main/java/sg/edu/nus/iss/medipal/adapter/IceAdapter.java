@@ -13,11 +13,14 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.app.Activity;
 
@@ -37,19 +40,24 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         public TextView _name;
         public TextView _contactNo;
         public TextView _contactType;
+        public String _description;
         public ImageView _edit;
         public ImageView _delete;
         public ImageView _top;
         public ImageView _up;
         public ImageView _down;
         public ImageView _bottom;
+        public CardView _iceCardView;
+
+        private PopupWindow _iceCardPopUp;
 
         private String[] items = {"Call", "SMS"};
         private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1234;
 
-        public IceViewHolder(View view) {
+        public IceViewHolder(View view, final View popUp) {
             super(view);
 
+            _iceCardView = (CardView)view.findViewById(R.id.ice_list_item);
             _name = (TextView) view.findViewById(R.id.icelistitemname_view);
             _contactNo = (TextView) view.findViewById(R.id.icelistitemcontactnumber_view);
             _contactType = (TextView) view.findViewById(R.id.icelistitemcontacttype_view);
@@ -90,6 +98,19 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                         AlertDialog alertdialog = builder.create();
                         alertdialog.show();
                     }
+                }
+            });
+
+            _iceCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((TextView)popUp.findViewById(R.id.ice_popup_nameview)).setText(_name.getText().toString());
+                    ((TextView)popUp.findViewById(R.id.ice_popup_contacttypeview)).setText(_contactType.getText().toString());
+                    ((TextView)popUp.findViewById(R.id.ice_popup_contactnumberview)).setText(_contactNo.getText().toString());
+                    ((TextView)popUp.findViewById(R.id.ice_popup_descriptionview)).setText(_description);
+
+                    _iceCardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    _iceCardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
                 }
             });
 
@@ -163,8 +184,9 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     @Override
     public IceAdapter.IceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_ice_listitem, parent, false);
+        View popUp = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_ice_popup, parent, false);
 
-        return new IceAdapter.IceViewHolder(itemView);
+        return new IceAdapter.IceViewHolder(itemView, popUp);
     }
 
     @Override
@@ -181,6 +203,8 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
             contactType = "GP";
         }
         holder._contactType.setText(contactType);
+        holder._description = ice.getDescription();
+
         holder._name.setTag(ice.getId());
     }
 

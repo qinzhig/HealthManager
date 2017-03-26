@@ -220,6 +220,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
 
             Toast.makeText(MeasurementActivity.this, "Please enter atleast one measurement", Toast.LENGTH_LONG).show();
+            return false;
         }
 
         if (date.isEmpty()) {
@@ -235,29 +236,22 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         } else {
             _timeEdit.setError(null);
         }
-        if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
-            _systolicEdit.setError("Please enter a systolic.");
-            _diastolicEdit.setError("Please enter a diastolic.");
-            _pulseEdit.setError("Please enter a pulse.");
-            _temperatureEdit.setError("Please enter a temperature.");
-            _weightEdit.setError("Please enter a weight.");
-            if (!systolic.isEmpty() && diastolic.isEmpty()) {
-                _diastolicEdit.setError("Please enter a diastolic.");
-                valid = false;
-            } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
-                _systolicEdit.setError("Please enter a systolic.");
-                valid = false;
-            }
 
-            if (valid) {
-                _systolicEdit.setError(null);
-                _diastolicEdit.setError(null);
-                _pulseEdit.setError(null);
-                _temperatureEdit.setError(null);
-                _weightEdit.setError(null);
-            }
+        if (!systolic.isEmpty() && diastolic.isEmpty()) {
+            _diastolicEdit.setError("Please enter a diastolic.");
+            valid = false;
+        } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
+            _systolicEdit.setError("Please enter a systolic.");
+            valid = false;
         }
 
+        if (valid) {
+            _systolicEdit.setError(null);
+            _diastolicEdit.setError(null);
+            _pulseEdit.setError(null);
+            _temperatureEdit.setError(null);
+            _weightEdit.setError(null);
+        }
         return valid;
     }
 }
