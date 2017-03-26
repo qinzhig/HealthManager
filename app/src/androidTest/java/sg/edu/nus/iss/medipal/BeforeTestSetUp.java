@@ -13,6 +13,7 @@ import sg.edu.nus.iss.medipal.dao.CategoryDAO;
 import sg.edu.nus.iss.medipal.dao.HealthBioDAO;
 import sg.edu.nus.iss.medipal.dao.IceDAO;
 import sg.edu.nus.iss.medipal.dao.MedicineDAO;
+import sg.edu.nus.iss.medipal.dao.MeasurementDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
 import sg.edu.nus.iss.medipal.dao.ReminderDAO;
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
@@ -34,6 +35,7 @@ public class BeforeTestSetUp {
     public static MedicineDAO medicineDAO;
     public static CategoryDAO categoryDAO;
     public static ReminderDAO reminderDAO;
+    public static MeasurementDAO measurementDAO;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -46,9 +48,10 @@ public class BeforeTestSetUp {
         medicineDAO = new MedicineDAO(context);
         categoryDAO = new CategoryDAO(context);
         reminderDAO = new ReminderDAO(context);
+        measurementDAO = new MeasurementDAO(context);
     }
 
-    @AfterClass
+
     public static void tearDown() throws Exception {
         healthBioDAO.close();
         personalBioDAO.close();
@@ -56,16 +59,17 @@ public class BeforeTestSetUp {
         medicineDAO.close();
         categoryDAO.close();
         reminderDAO.close();
+        measurementDAO.close();
     }
 
-    @Test
-    public void testSetUp() {
+    public void testSetUp(){
         assertNotNull(healthBioDAO);
         assertNotNull(personalBioDAO);
         assertNotNull(iceDAO);
         assertNotNull(medicineDAO);
         assertNotNull(categoryDAO);
         assertNotNull(reminderDAO);
+        assertNotNull(measurementDAO);
     }
 
 }
