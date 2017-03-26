@@ -53,7 +53,7 @@ public class ConsumptionFragment extends Fragment implements AdapterCallbackInte
     private Context mContext;
     private View consumeFragment;
     private EditText date;
-    private Button button;
+
     int day,month,year;
     Calendar calendar;
 
@@ -87,18 +87,11 @@ public class ConsumptionFragment extends Fragment implements AdapterCallbackInte
         year = calendar.get(Calendar.YEAR);
         String dt=day+"-"+(month+1)+"-"+year;
         date.setText(dt);
-        button=(Button)consumeFragment.findViewById(R.id.button);
 
         createRecyclerView(dt);
 
         date.setOnClickListener(this);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, ConsumptionDetail.class);
-                startActivity(i);
-            }
-        });
+
 
         return consumeFragment;
     }

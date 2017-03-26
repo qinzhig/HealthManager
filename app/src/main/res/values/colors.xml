@@ -10,8 +10,8 @@
     <color name="title">#4c4c4c</color>
     <color name="iron">#cccccc</color>
     <color name="white">#ffffff</color>
-    <color name="unconsumed">#54dc51</color>
-    <color name="consumed">#f3f4f3</color>
+    <color name="unconsumed">#f4958b</color>
+    <color name="consumed">#4ea591</color>
 
     <!-- Screens background color-->
     <color name="bg_screen1">#f64c73</color>

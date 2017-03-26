@@ -195,7 +195,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         consumptionDAO.close();
 
         if(totalConsumeCount == 0){
-            retval = true;
+            retval = false;
         }
         else if(currentConsumeCount >= totalConsumeCount)
         {
@@ -236,6 +236,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         Medicine medicine = medicineList.get(position);
         if((medicine.isReminder()) && !isConsumptionAvailable(medicine.getId()) ) {
             holder.consume.setVisibility(View.INVISIBLE);
+        }else{
+            holder.consume.setVisibility(View.VISIBLE);
         }
 
         String remainderString;
