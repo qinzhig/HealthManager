@@ -85,8 +85,10 @@ public class MainActivity extends AppCompatActivity
             String notificationContent = intentExtras.getString("notification");
             String notificationId = intentExtras.getString("Id");
 
-            //Get the Medicine reminder notification intent
+            //Get the Medicine consumption reminder notification intent
             int meidicineNumber = intentExtras.getInt("medicineId",0);
+            //Get the Medicine replenish reminder notification intent;
+            int replenishMedicineNo = intentExtras.getInt("ReplenishReminderId",0);
 
             Log.d("intent args", notificationContent + " " + notificationId);
 
@@ -100,6 +102,12 @@ public class MainActivity extends AppCompatActivity
                 showFragment("Medications", "Medicine need to be consumed now!", Integer.toString(meidicineNumber));
                 getIntent().removeExtra("medicineId");
             }
+            if(replenishMedicineNo != 0){
+
+                showFragment("Medications", "Medicine need to be replenish now!", Integer.toString(replenishMedicineNo));
+                getIntent().removeExtra("ReplenishReminderId");
+            }
+
         } else {
             loadHomeFragment();
         }

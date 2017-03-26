@@ -111,6 +111,9 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES"+ " ('Incidental', 'INC', 'inc',1)";
     public static final String INSERT_PREDEFINED_CATEGORY4 = "INSERT INTO "
             + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Complete Course', 'COM', 'com',1)";
+    public static final String INSERT_PREDEFINED_CATEGORY5 = "INSERT INTO "
+            + CATEGORY_TABLE + "("+ CATEGORY_NAME + "," + CATEGORY_CODE + "," + CATEGORY_DES + "," + CATEGORY_REMIND + ")" + " VALUES" + "('Self Apply', 'SEL', 'self',0)";
+
 
     //variables used to create reminder table query
     public static final String REMINDER_TABLE = "reminder";
@@ -215,6 +218,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
         db.execSQL(INSERT_PREDEFINED_CATEGORY2);
         db.execSQL(INSERT_PREDEFINED_CATEGORY3);
         db.execSQL(INSERT_PREDEFINED_CATEGORY4);
+        db.execSQL(INSERT_PREDEFINED_CATEGORY5);
+
     }
 
     @Override

@@ -27,8 +27,6 @@ public class IceTest extends BeforeTestSetUp {
         iceDAO.insert(ice);
 
         List<Ice> iceList = iceDAO.retrieve();
-        //assertEquals(1, iceList.size());
-
         Ice rIce = iceList.get(iceList.size() - 1);
 
         assertEquals("FT01", rIce.getName());

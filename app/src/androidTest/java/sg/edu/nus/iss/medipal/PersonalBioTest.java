@@ -14,7 +14,6 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 import static junit.framework.Assert.assertEquals;
 
-
 /**
  * Created by Divahar on 3/21/2017.
  */
