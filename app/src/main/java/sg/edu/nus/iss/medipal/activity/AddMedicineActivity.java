@@ -53,6 +53,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
     Calendar currentDate = Calendar.getInstance();
     Calendar selectedDate = Calendar.getInstance();
+    Calendar selectedDate2 = Calendar.getInstance();
     Calendar calender = Calendar.getInstance();
 
    // private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
@@ -203,7 +204,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                                 calendar.set(year, monthOfYear, dayOfMonth);
                                 selectedDate = calendar;
                                 et_date_get.setText(dateFormatter.format(calendar.getTime()));
-                                date_get=calendar.getTime();
+                                date_get=selectedDate.getTime();
 
                             }
                         };
@@ -227,9 +228,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(year, monthOfYear, dayOfMonth);
-                                selectedDate = calendar;
+                                selectedDate2 = calendar;
                                 et_date_expire.setText(dateFormatter.format(calendar.getTime()));
-                                date_expire=calendar.getTime();
                             }
                         };
                 DatePickerDialog datePickerDialog =
@@ -240,31 +240,33 @@ public class AddMedicineActivity extends AppCompatActivity {
             }
         });
 
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-
-        if(date_expire == null){
-            c1.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-        }else{
-            c1.setTime(date_expire);
-        }
-
-        if(date_get == null){
-            c2.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-        }else{
-            c2.setTime(date_get);
-        }
-
-        expire_factor = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
-
-        if(expire_factor < 0){
-            expire_factor = 0;
-        }else if(expire_factor > 23){
-            expire_factor = 24;
-        }else{
-            expire_factor = expire_factor + 1;
-        }
-        //End of computing the expireFactor
+//        Calendar c1 = Calendar.getInstance();
+//        Calendar c2 = Calendar.getInstance();
+//
+//        if(date_expire == null){
+//            c1.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+//        }else{
+//            c1.setTime(date_expire);
+//        }
+//
+//        if(date_get == null){
+//            c2.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+//        }else{
+//            c2.setTime(date_get);
+//        }
+//
+//        Log.v("DATE_TEST","XXXXXXXxxxxxxxxxxx______________----------Date Expire"+date_get);
+//
+//        expire_factor = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
+//
+//        if(expire_factor < 0){
+//            expire_factor = 0;
+//        }else if(expire_factor > 23){
+//            expire_factor = 24;
+//        }else{
+//            expire_factor = expire_factor + 1;
+//        }
+//        //End of computing the expireFactor
 
 
         //attach a listener to check for changes in state
@@ -413,6 +415,48 @@ public class AddMedicineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public int caculate_expireFactor(String date_issued,String date_expire){
+
+        String[] date1= date_issued.split(" ");
+        String[] date2= date_expire.split(" ");
+
+        int year_gap,month_gap,day_gap,expire_factor=0;
+
+        year_gap = Integer.valueOf(date2[2]) - Integer.valueOf(date1[2]);
+        month_gap = Integer.valueOf(date2[1]) - Integer.valueOf(date1[1]);
+        day_gap = Integer.valueOf(date2[0]) - Integer.valueOf(date1[0]);
+
+        if(year_gap >= 0)
+        {
+            if(month_gap >= 0)
+            {
+                if(day_gap >=0)
+                {
+                    expire_factor = year_gap*12 + month_gap;
+                    if(expire_factor > 24)
+                    {
+                        expire_factor=24;
+                    }
+                }
+                else{
+                    expire_factor = -1;
+                }
+            }else{
+                expire_factor = -1;
+            }
+        }else{
+            expire_factor = -1;
+        }
+
+        if(expire_factor == -1)
+        {
+            et_date_expire.setError("Medicine Expire Date is newer than Issued Date! ");
+        }
+
+        return expire_factor;
+
+    }
+
     public boolean input_validate_of_reminder(String frequency,String interval,String stime){
 
         boolean reminder_validate_status = true;
@@ -516,8 +560,10 @@ public class AddMedicineActivity extends AppCompatActivity {
                 //Get the reminder related input info whether match the correct format
                 no_reminder_input_invalidate = input_validate_of_reminder(et_frequency.getText().toString().trim(), et_interval.getText().toString().trim(),et_stime.getText().toString().trim());
 
+                expire_factor= caculate_expireFactor(et_date_get.getText().toString(),et_date_expire.getText().toString());
+
                 //Medicine related data matches the requirement and passed the validation
-                if(no_input_invalidate) {
+                if(no_input_invalidate && (expire_factor != -1)) {
 
                     //If the reminder is set to True and reminder related info like:interval,frequency,startime passed the validation
                     if(remind_status ){
