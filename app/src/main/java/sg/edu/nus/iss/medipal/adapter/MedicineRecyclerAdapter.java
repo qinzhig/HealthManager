@@ -33,7 +33,7 @@ import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 /**
- * Created by : Navi on 22-03-2017.
+ * Created by : Qin Zhi Guo on 18-03-2017.
  * Description : This is the recycler adapter for showing medicines
  * Modified by :
  * Reason for modification :
@@ -45,6 +45,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     private HealthManager healthManager ;
     private List<Medicine> medicineList;
     private Boolean fromHomeFragment;
+
 
     //callback listener to communicate with the parent activity
     private AdapterCallbackInterface mCallback;
@@ -61,15 +62,17 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public ImageView edit;
         public ImageView delete;
 
+        public int quantity,threshold,expirefactor;
+        public String dosage_unit,dosage_schedule="";
+
 
         ConsumptionDAO consumptionDAO;
 
         public ImageView consume;
 
-        public int quantity,threshold,expirefactor;
-        public String dosage_unit;
         //private PopupWindow cardPopUp;
         private PopupWindow cardPopUp;
+
 
         public MedicineViewHolder(View view, final View popUp) {
             super(view);
@@ -140,6 +143,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                     ((TextView)popUp.findViewById(R.id.tv_expirefactor)).setText(Integer.toString(expirefactor));
                     ((TextView)popUp.findViewById(R.id.tv_des)).setText(medicineDesc.getText());
                     ((TextView)popUp.findViewById(R.id.tv_cquantity)).setText(consumeQuantity.getText());
+                    ((TextView)popUp.findViewById(R.id.tv_dosage_schedule)).setText(dosage_schedule);
 
                     //Get the popupWindow
                     cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -153,14 +157,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                     //Popup the window for info details
                     cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
 
-                   /* if(fromHomeFragment != null && fromHomeFragment) {
-                        Medicine medicine = medicineList.get(getAdapterPosition());
-                        Intent addConsumption = new Intent(mContext, AddConsumption.class);
-                        addConsumption.putExtra("medicine_id",medicine.getId());
-                        consumptionDAO = new ConsumptionDAO(mContext);
-                        //int getCount =  consumptionDAO.getConsumptionCount(Integer.toString(medicine.getId(),)
-                        ((Activity)mContext).startActivityForResult(addConsumption,301);
-                    }*/
                 }
 
             });
@@ -246,30 +242,54 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
 
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
 
+        //Variable for popupWindow details
         holder.quantity = medicine.getQuantity();
         holder.threshold = medicine.getThreshold();
         holder.expirefactor = medicine.getExpireFactor();
+        String str="";
+        //End
+
 
         if(reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
             remainderString = "Medicine should be taken "+remainderFrequency.toString()+" times per day";
-        }
-        else
-            remainderString="No remainder set";
 
-        //populate the view elements
+
+            //Generate the Medicine consumption schedule list for everyday
+            String stime =reminder.getStartTime();
+            int interval = reminder.getInterval();
+            String[] reminder_hour_min = stime.split(":");
+            int[] hour = {0};
+
+            for(int i=0;i<remainderFrequency.intValue();i++)
+            {
+                str += ">" + Integer.toString(Integer.valueOf(reminder_hour_min[0]) + interval*i) + ":" + reminder_hour_min[1] + " ";
+            }
+
+            Log.v("TEST","--------------------------Dosage Schedule List" + str);
+            //End
+
+        }
+        else {
+            remainderString = "No remainder set";
+            str = "";
+        }
+
+            //populate the view elements
             holder.medicineName.setText(medicine.getMedicine_name());
             holder.medicineName.setTag(medicine.getId());
             holder.medicineDesc.setText(medicine.getMedicine_des());
-            String categoryName = healthManager.getCategory(medicine.getCateId(),mContext).getCategory_name();
+            String categoryName = healthManager.getCategory(medicine.getCateId(), mContext).getCategory_name();
             Integer consumeQuantity = medicine.getConsumequantity();
             String[] dosageArray = mContext.getResources().getStringArray(R.array.dosage);
             holder.medicineCategory.setText(categoryName);
             holder.dateIssued.setText("Issued Date is " + medicine.getDateIssued());
             holder.remainderFrequency.setText(remainderString);
-            holder.consumeQuantity.setText("Dosage for each consumption is "+ consumeQuantity.toString()+" "+dosageArray[medicine.getDosage()]);
+            holder.consumeQuantity.setText("Dosage for each consumption is " + consumeQuantity.toString() + " " + dosageArray[medicine.getDosage()]);
 
+            //Get the dosage Unit and schedule list
             holder.dosage_unit = dosageArray[medicine.getDosage()];
+            holder.dosage_schedule=str;
 
 
     }
