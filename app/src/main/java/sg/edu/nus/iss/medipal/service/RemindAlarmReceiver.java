@@ -74,6 +74,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
                 consumptionManager.addConsumption(0, medicineId, 0, (date+" "+time));
 
                 Intent resultIntent = new Intent(context, MainActivity.class);
+                resultIntent.putExtra("medicineId",medicineId);
 
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
@@ -85,7 +86,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
                 Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
                         .setContentText("Reminder for Consumpition")
-                        .setTicker("Notification for Appointment")
+                        .setTicker("You have a medicine to consume!")
                         .setSmallIcon(R.drawable.medicine)
                         .setAutoCancel(true)
                         .setContentIntent(medicinePendingIntent).build();

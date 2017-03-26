@@ -77,15 +77,27 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle intentExtras = getIntent().getExtras();
+
         if (intentExtras != null) {
             Log.d("Activity", "Bundle");
+            //Get Appointment reminder notification intent
             String notificationContent = intentExtras.getString("notification");
             String notificationId = intentExtras.getString("Id");
+
+            //Get the Medicine reminder notification intent
+            int meidicineNumber = intentExtras.getInt("medicineId",0);
+
             Log.d("intent args", notificationContent + " " + notificationId);
+
             if (notificationContent != null && notificationId != null) {
                 showFragment("Appointment", notificationContent, notificationId);
                 getIntent().removeExtra("notification");
                 getIntent().removeExtra("Id");
+            }
+            if(meidicineNumber != 0){
+
+                showFragment("Medications", "Medicine need to be consumed now!", Integer.toString(meidicineNumber));
+                getIntent().removeExtra("medicineId");
             }
         } else {
             loadHomeFragment();
@@ -115,6 +127,18 @@ public class MainActivity extends AppCompatActivity
             fragment.setArguments(bundle);
             //move this to outside when all other modules are implemented using fragments
             //populate the selected view(fragment) in the main page using fragment manager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }else if(fragmentType.equalsIgnoreCase("Medications"))
+        {
+            Log.v("Main Activity","Medication fragement load");
+            Fragment fragment = new MedicineFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("notification",notificationContent);
+            bundle.putInt("medicineId",Integer.valueOf(notificationId));
+            fragment.setArguments(bundle);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
