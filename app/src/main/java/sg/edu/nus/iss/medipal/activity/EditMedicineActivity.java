@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -199,22 +200,9 @@ public class EditMedicineActivity extends AppCompatActivity {
         });
 
 
-        try {
-            date_get = dateFormatter.parse(medicine.getDateIssued());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendar_tmp = Calendar.getInstance();
-
-        if(date_get != null){
-
-            calendar_tmp.setTime(date_get);
-            calendar_tmp.add(Calendar.MONTH,medicine.getExpireFactor());
-        }
-
+        String expire_date=restore_expireMonth(medicine.getDateIssued(),medicine.getExpireFactor());
         //et_date_expire.setText(medicine.getExpireFactor());
-        et_date_expire.setText(dateFormatter.format(calendar_tmp.getTime()));
+        et_date_expire.setText(expire_date);
         et_date_expire.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 DatePickerDialog.OnDateSetListener onDateSetListener =
@@ -237,30 +225,6 @@ public class EditMedicineActivity extends AppCompatActivity {
         });
 
 
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-
-        if(date_expire == null){
-            c1.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-        }else{
-            c1.setTime(date_expire);
-        }
-
-        if(date_get == null){
-            c2.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-        }else{
-            c2.setTime(date_get);
-        }
-
-        expire_factor = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
-
-        if(expire_factor < 0){
-            expire_factor = 0;
-        }else if(expire_factor > 23){
-            expire_factor = 24;
-        }else{
-            expire_factor = expire_factor + 1;
-        }
 
         m_list = App.hm.getCategoryNameList(getApplicationContext());
 
@@ -416,6 +380,73 @@ public class EditMedicineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public String restore_expireMonth(String date_issued,int expire_factor){
+
+        try {
+            date_get = dateFormatter.parse(date_issued);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar_tmp = Calendar.getInstance();
+
+        if(date_get != null){
+
+            calendar_tmp.setTime(date_get);
+            calendar_tmp.add(Calendar.MONTH,expire_factor);
+        }
+
+        String expire_date_restore = dateFormatter.format(calendar_tmp.getTime());
+
+        Log.v("TEST","--------------------------@@@@@@@@@@@@@@@ Restore Expired Date:" + expire_date_restore);
+        return expire_date_restore;
+
+
+    }
+
+    public int caculate_expireFactor(String date_issued,String date_expire){
+
+        String[] date1= date_issued.split(" ");
+        String[] date2= date_expire.split(" ");
+
+        int year_gap,month_gap,day_gap,expire_factor=0;
+
+        year_gap = Integer.valueOf(date2[2]) - Integer.valueOf(date1[2]);
+        month_gap = Integer.valueOf(date2[1]) - Integer.valueOf(date1[1]);
+        day_gap = Integer.valueOf(date2[0]) - Integer.valueOf(date1[0]);
+
+        if(year_gap >= 0)
+        {
+            if(month_gap >= 0)
+            {
+                if(day_gap >=0)
+                {
+                    expire_factor = year_gap*12 + month_gap;
+                    if(expire_factor > 24)
+                    {
+                        expire_factor=24;
+                    }
+                }
+                else{
+                    expire_factor = -1;
+                }
+            }else{
+                expire_factor = -1;
+            }
+        }else{
+            expire_factor = -1;
+        }
+
+        if(expire_factor == -1)
+        {
+            et_date_expire.setError("Medicine Expire Date is newer than Issued Date! ");
+        }
+
+        return expire_factor;
+
+    }
+
+
     public boolean input_validate_of_reminder(String frequency,String interval,String stime){
 
         boolean reminder_validate_status = true;
@@ -520,10 +551,11 @@ public class EditMedicineActivity extends AppCompatActivity {
         no_reminder_input_invalidate = input_validate_of_reminder(et_frequency.getText().toString().trim(),
                 et_interval.getText().toString().trim(),et_stime.getText().toString().trim());
 
+        expire_factor = caculate_expireFactor(et_date_get.getText().toString(),et_date_expire.getText().toString());
 
-        if( no_input_invalidate ) {
+        if( no_input_invalidate  && (expire_factor>=0)) {
 
-            if( remind_status == true){
+            if( remind_status == true ){
 
                 //If the reminder swither status is ON
 

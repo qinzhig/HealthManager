@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sg.edu.nus.iss.medipal.dao.HealthBioDAO;
+import sg.edu.nus.iss.medipal.dao.IceDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 
@@ -27,6 +28,7 @@ public class BeforeTestSetUp {
     private static Context context;
     public static HealthBioDAO healthBioDAO;
     public static PersonalBioDAO personalBioDAO;
+    public static IceDAO iceDAO;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -35,18 +37,21 @@ public class BeforeTestSetUp {
         dbManager = new DataBaseManager(context);
         healthBioDAO = new HealthBioDAO(context);
         personalBioDAO = new PersonalBioDAO(context);
+        iceDAO = new IceDAO(context);
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
         healthBioDAO.close();
         personalBioDAO.close();
+        iceDAO.close();
     }
 
     @Test
     public void testSetUp() {
         assertNotNull(healthBioDAO);
         assertNotNull(personalBioDAO);
+        assertNotNull(iceDAO);
     }
 
 }

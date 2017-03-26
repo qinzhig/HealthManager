@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private boolean refreshMedicineFragment;
     private boolean refreshHomeFragment;
     private boolean refreshMeasurement;
+    private boolean refreshICEFragment;
     private Boolean inHomeFragment;
     private PersonalBioManager personalBioManager;
 
@@ -68,8 +69,11 @@ public class MainActivity extends AppCompatActivity
         //setup listener for navigation drawer menu item clicks
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
+
         TextView name = (TextView) headerLayout.findViewById(R.id.name);
-        name.setText(personalBio.getName());
+        if(personalBio!=null)
+            name.setText(personalBio.getName());
+
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle intentExtras = getIntent().getExtras();
@@ -182,6 +186,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_ice) {
+            resetTitle("Contacts(In Case Emergency");
             fragment = new IceFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -274,7 +279,14 @@ public class MainActivity extends AppCompatActivity
             loadHomeFragment();
         }
         else if(refreshMeasurement){
+            refreshMeasurement=false;
             fragment = new MeasurementFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
+        else if(refreshICEFragment){
+            refreshICEFragment=false;
+            fragment = new IceFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
@@ -303,8 +315,11 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == 0) {
                 refreshHomeFragment = true;
             }
+        }else if(requestCode == 404){
+            if (resultCode == 0) {
+                refreshICEFragment = true;
+            }
         }
-
         else if(requestCode == 5){
             if (resultCode == 0) {
                 refreshMeasurement = true;

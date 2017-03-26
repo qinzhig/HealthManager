@@ -1,21 +1,30 @@
 package sg.edu.nus.iss.medipal.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TimePicker;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.ReportManager;
@@ -25,7 +34,7 @@ import sg.edu.nus.iss.medipal.manager.ReportManager;
  * Created by Divahar on 3/19/2017.
  */
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements View.OnClickListener{
 
     private TableLayout tableLayout;
     private View reportFragment;
@@ -38,10 +47,16 @@ public class ReportFragment extends Fragment {
     private static String[] consumptionArr = {"Medicine", "Consumed Qty", "Consumed on"};
     private static String[] unconsumptionArr = {"Medicine", "Missed Qty", "Missed Consumption Date"};
 
+    private final static String[] REPORTTYPE = {"All Measurements", "BP Measurement", "Pulse Measurement","Weight Measurement","Temperature Measurement","Consumed Medicines","Un-Consumed Medicines"};
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+    EditText toDate,
+            fromDate;
+    TextInputLayout l_toDate,l_Fromdate;
+    Spinner reportType;
 
     @Nullable
     @Override
@@ -54,6 +69,19 @@ public class ReportFragment extends Fragment {
 
         populateHealthBioTable();
 
+        toDate = (EditText) reportFragment.findViewById(R.id.fromdate);
+        fromDate = (EditText) reportFragment.findViewById(R.id.todate);
+
+        toDate.setOnClickListener(this);
+        fromDate.setOnClickListener(this);
+
+        l_Fromdate=(TextInputLayout) reportFragment.findViewById(R.id.edit_text_fromdate);
+        l_toDate=(TextInputLayout) reportFragment.findViewById(R.id.edit_text_todate);
+
+        reportType = (Spinner) reportFragment.findViewById(R.id.reporttype);
+
+        ArrayAdapter<String> spinnerAdapterOne = new ArrayAdapter<>(reportFragment.getContext(),android.R.layout.simple_dropdown_item_1line,REPORTTYPE);
+        reportType.setAdapter(spinnerAdapterOne);
 
         aFab = (FloatingActionButton) reportFragment.findViewById(R.id.fab);
         aFab.setOnClickListener(new View.OnClickListener() {
@@ -145,4 +173,40 @@ public class ReportFragment extends Fragment {
         return "";
     }
 
+    @Override
+    public void onClick(View v) {
+        final Calendar calender;
+        int day,month,year;
+        if (v == fromDate) {
+            calender = Calendar.getInstance();
+            day = calender.get(Calendar.DAY_OF_MONTH);
+            month = calender.get(Calendar.MONTH);
+            year = calender.get(Calendar.YEAR);
+
+            DatePickerDialog datePicker = new DatePickerDialog(reportFragment.getContext(), new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    fromDate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
+                }
+            }, day, month, year);
+            datePicker.updateDate(year, month, day);
+            datePicker.show();
+        }
+        else if(v == toDate)
+        {
+            calender = Calendar.getInstance();
+            day = calender.get(Calendar.DAY_OF_MONTH);
+            month = calender.get(Calendar.MONTH);
+            year = calender.get(Calendar.YEAR);
+
+            DatePickerDialog datePicker = new DatePickerDialog(reportFragment.getContext(), new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    toDate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
+                }
+            }, day, month, year);
+            datePicker.updateDate(year, month, day);
+            datePicker.show();
+        }
+    }
 }
