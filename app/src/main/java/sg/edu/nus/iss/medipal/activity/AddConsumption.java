@@ -217,29 +217,34 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             Log.d("consumed Date", consumedDate);
             int consumptionCount = consumptionDAO.getConsumptionCount(Integer.toString(medicine_id), consumedDate);
             //int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
-            int ReminderId = healthmanager.getMedicine(medicine_id, getApplicationContext()).getReminderId();
 
+
+            int ReminderId = healthmanager.getMedicine(medicine_id, getApplicationContext()).getReminderId();
+            Log.d("medicine id",Integer.toString(medicine_id));
             Reminder reminder = healthmanager.getReminder(ReminderId, getApplicationContext());
 
             if (consumptionCount == 0) {
-                if (reminder != null) {
-                    int FrequentNum = reminder.getFrequency();
+               // if (reminder != null) {
+                 //   int FrequentNum = reminder.getFrequency();
                     consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
-                    for (int i = 0; i < (FrequentNum - 1); i++) {
-                        consumptionManager.addConsumption(0, medicine_id, 0, date_time);
-                    }
-                } else {
-                    consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
-                }
+                   // for (int i = 0; i < (FrequentNum - 1); i++) {
+                   //     consumptionManager.addConsumption(0, medicine_id, 0, date_time);
+                   // }
+                //} else {
+                  //  consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
+               // }
             } else {
                 int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id), consumedDate);
-                if (MinConsumptionId == -1) {
+                Log.d("min consumption id",Integer.toString(MinConsumptionId));
+
+                if (MinConsumptionId == 0) {
                     consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
                 } else {
                     consumptionManager.updateConsumption(MinConsumptionId, medicine_id, enteredQuantity, date_time);
                 }
-
             }
+
+
 
             Medicine medicine = healthmanager.getMedicine(medicine_id, getApplicationContext());
             int newQuantity = totalQuantity - enteredQuantity;
@@ -268,14 +273,13 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                     Intent i = new Intent(getApplicationContext(), ConsumptionActivity.class);
                     i.putExtra("medicine_id", medicine_id);
                     i.putExtra("ConsumedOn", date_time);
-                    startActivity(i);
+                   // startActivity(i);
                     Toast toast = Toast.makeText(AddConsumption.this, "Consumption added Successfully!", Toast.LENGTH_SHORT);
                     toast.show();
+                    finish();
                 }
             }, 1000);
-
         }
-
     }
 
     public boolean input_validate(int quantity,int totalQuantity,String date,String time) {
@@ -284,19 +288,23 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         {
             l_Quantity.setError("please input a quantity");
             validate_status = false;
-        }else if(quantity > totalQuantity){
+        }else if(totalQuantity == 0) {
+            l_Quantity.setError("Current quantity is 0. Please replenish the medicine");
+            validate_status = false;
+        } else
+        if(quantity > totalQuantity){
             validate_status = false;
             l_Quantity.setError("Current quantity is "+totalQuantity+". Please enter within this value.");
         }
 
-     /*   if (date.isEmpty()) {
+       /* if (date.isEmpty()) {
             l_Date.setError("please select a date");
             validate_status = false;
         } else if (!MediPalUtility.isValidDate(date)) {
             etDate.setError("please select a right date");
             validate_status = false;
-        }*/
-
+        }
+*/
         if (time.isEmpty()) {
             l_Time.setError("please select a time");
             validate_status = false;

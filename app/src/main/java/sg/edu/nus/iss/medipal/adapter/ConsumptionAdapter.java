@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
@@ -37,6 +39,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
     private Context context;
     private List<Consumption>consumptions = new ArrayList<Consumption>();
     ConsumptionManager consumptionManager;
+    String showName = null;
 
 
     public ConsumptionAdapter(Context context){
@@ -50,7 +53,30 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
 
     public void refreshConsumptions() {
         consumptions.clear();
+        /*
+        final HealthManager healthManager = new HealthManager();
+        ArrayList<Consumption> getC = new ArrayList<Consumption>();
+        HashMap<Integer,String> hashMap = new HashMap<>();
+        int[] getMedicine_id = new int[50];
+        getC = consumptionManager.getConsumptions();
+        Consumption consumptionitem = new Consumption();
+        Iterator<Consumption> ite  = getC.iterator();
+        int i = 0;
+        while (ite.hasNext()) {
+            consumptionitem = ite.next();
+            getMedicine_id[i] = consumptionitem.getMedicineId();
+        }
+
+        for (i = 0; i < getMedicine_id.length; i++) {
+            if (getMedicine_id[i] == getMedicine_id[i++])
+            {
+                showName = healthManager.getMedicine(getMedicine_id[i],context).getMedicine_name();
+            }
+        }
+        */
+
         consumptions.addAll(consumptionManager.getConsumptions());
+
 
         notifyDataSetChanged();
     }
@@ -66,7 +92,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
     public View getView(final int position, View convertView, ViewGroup parent){
         final ConsumptionAdapter.ViewHolder viewHolder;
 
-        Log.v("mateng i am in just in the view","_++_+_++_+_+_+_+_+_matneg i am in  just in the view_+_+_+_+_+_+_+_+_+_+_+_+");
+        Log.v("mateng i am in just in the view","+_+_+_+_+_+_+_+_+_+_+");
 
         if (convertView == null)
         {
@@ -82,12 +108,8 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
             viewHolder = (ConsumptionAdapter.ViewHolder) convertView.getTag();
         }
         final Consumption consumption = consumptions.get(position);
-        Log.v("mateng","***********************position"+position);
-        Log.v("mateng","_+_+_+_+_+_+_++_++_+_+_+_+_+_+_+_ to string"+consumption.toString());
         final int medicine_id = consumption.getMedicineId();
         final HealthManager healthManager = new HealthManager();
-        Log.v("mateng","***********************"+healthManager.getMedicine(medicine_id,context));
-        Log.v("mateng","***********************"+medicine_id);
 
         viewHolder.tvName.setText(healthManager.getMedicine(medicine_id,context).getMedicine_name());
         viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener() {

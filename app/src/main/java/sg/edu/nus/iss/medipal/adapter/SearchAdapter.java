@@ -77,7 +77,7 @@ public class SearchAdapter<T> extends BaseAdapter implements Filterable {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.support_simple_spinner_dropdown_item, parent, false);
             viewHolder = new ViewHolder();
-        //    viewHolder.txtv = (TextView) convertView.findViewById(R.id.txtv);
+         //   viewHolder.txtv = (TextView) convertView.findViewById(R.id.txtv);
 
             convertView.setTag(viewHolder);
         } else {

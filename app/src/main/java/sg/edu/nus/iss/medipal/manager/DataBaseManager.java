@@ -46,10 +46,10 @@ public class DataBaseManager extends SQLiteOpenHelper {
     // Create query for Personal Bio table
     public static final String CREATE_PERSONALBIO_TABLE = "CREATE TABLE "
             + PERSONALBIO_TABLE + "(" + PERSONALBIO_ID + " INTEGER PRIMARY KEY, "
-            + PERSONALBIO_NAME + " TEXT, " + PERSONALBIO_DOB + " DATE, "
-            + PERSONALBIO_IDNO + " TEXT, " + PERSONALBIO_ADDRESS+ " TEXT, "
-            + PERSONALBIO_POSTALCODE + " INTEGER, " + PERSONALBIO_HEIGHT + " INTEGER, "
-            + PERSONALBIO_BLOODTYPE + " TEXT "+")";
+            + PERSONALBIO_NAME + " Varchar(100), " + PERSONALBIO_DOB + " DATE, "
+            + PERSONALBIO_IDNO + " Varchar(20), " + PERSONALBIO_ADDRESS+ " Varchar(100), "
+            + PERSONALBIO_POSTALCODE + " Varchar(10), " + PERSONALBIO_HEIGHT + " INTEGER, "
+            + PERSONALBIO_BLOODTYPE + " Varchar(10) "+")";
 
     //variables for Health Bio table
     public static final String HEALTHBIO_TABLE = "healthbio";
@@ -61,8 +61,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
     // Create query for Health Bio table
     public static final String CREATE_HEALTHBIO_TABLE = "CREATE TABLE "
             + HEALTHBIO_TABLE + "(" + HEALTHBIO_ID + " INTEGER PRIMARY KEY, "
-            + HEALTHBIO_CONDITION + " TEXT, " + HEALTHBIO_STARTDATE + " DATE, "
-            + HEALTHBIO_CONDITIONTYPE + " TEXT "+")";
+            + HEALTHBIO_CONDITION + " Varchar(255), " + HEALTHBIO_STARTDATE + " DATE, "
+            + HEALTHBIO_CONDITIONTYPE + " Varchar(1) "+")";
 
     //variables used to create medicine table query
     public static final String MEDICINE_TABLE = "medicine";
@@ -170,8 +170,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String CREATE_MEASUREMENT_TABLE = "CREATE TABLE "
             + MEASUREMENT_TABLE + "(" + MEASUREMENT_ID + " INTEGER PRIMARY KEY, "
             + MEASUREMENT_SYSTOLIC + " INTEGER, " + MEASUREMENT_DIASTOLIC + " INTEGER, "
-            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " INTEGER, "
-            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " TEXT" + ")";
+            + MEASUREMENT_PULSE + " INTEGER, " + MEASUREMENT_TEMPERATURE + " DECIMAL(5,2), "
+            + MEASUREMENT_WEIGHT + " INTEGER, "+ MEASUREMENT_MEASUREDON + " DATETIME" + ")";
 
     //To store current DB instance
     private static DataBaseManager instance;

@@ -146,7 +146,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         popUp.findViewById(R.id.appointmentremainder_one).setVisibility(View.GONE);
                         popUp.findViewById(R.id.appointmentremainder_two).setVisibility(View.GONE);
                         popUp.findViewById(R.id.title4).setVisibility(View.GONE);
-                        popUp.findViewById(R.id.title6).setVisibility(View.GONE);
+                        popUp.findViewById(R.id.title5).setVisibility(View.GONE);
                     }
 
                     cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -237,6 +237,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             holder.datetime.setText(appointment.getAppointment());
             holder.location.setText(appointment.getLocation());
             holder.description.setText(appointment.getDescription());
+            holder.description.setVisibility(View.GONE);
             if(fragmentPosition == UPCOMING_APPOINTMENTS) {
                 holder.remainderOne.setText(remainderOneDesc);
                 holder.remainderOne.setTag(remainderOne);

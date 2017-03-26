@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,9 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,11 +30,16 @@ import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 
-public class ConsumptionDetail extends AppCompatActivity {
+public class ConsumptionDetail extends AppCompatActivity implements View.OnClickListener {
 
     private PiegraphView view;
+    private PiegraphView view_un;
     private TextView text;
+    private TextView text_un;
     private TextView back;
+    private TextView back_un;
+    private EditText date_set;
+
     private float radius;
     private int strokeWidth;
     private String strokeColor = "#ffffff";
@@ -38,6 +48,9 @@ public class ConsumptionDetail extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private static final String fileName = "sharedfile";
+    private String date;
+
+    private Spinner spinner;
 
     ConsumptionDAO consumptionDAO;
 
@@ -49,13 +62,24 @@ public class ConsumptionDetail extends AppCompatActivity {
         view = (PiegraphView) findViewById(R.id.piechar_view);
         text = (TextView) findViewById(R.id.content);
         back = (TextView) findViewById(R.id.back);
+
+        view_un = (PiegraphView)findViewById(R.id.piechar_unview);
+        text_un = (TextView) findViewById(R.id.Uncontent);
+        back_un = (TextView) findViewById(R.id.Unback);
+
+        date_set = (EditText)findViewById(R.id.date_set);
+
+        date_set.setOnClickListener(this);
+        date = date_set.getText().toString();
       //  back.getBackground().setAlpha(80);
         text.setText("the first");
         radius = ScreenUtil.dip2px(this, 140);
         strokeWidth = ScreenUtil.dip2px(this, 3);
         //view.setitemsValues(new Double[] { 10d, 20d, 30d, 20d, 40d,25d,67d,87d,54d });
         ConsumptionDAO cDao = new ConsumptionDAO(this);
-        HashMap<String,Double> hm = cDao.getPieChartConsumptions("25-3-2017");
+        HashMap<String,Double> hm = cDao.getPieChartconsumption(date);
+        HashMap<String,Double> Un_hm = cDao.getPieChartUnConsumptions(date);
+        
 
         Double[] dArray = new Double[hm.size()];
         Iterator it = hm.entrySet().iterator();
@@ -74,6 +98,18 @@ public class ConsumptionDetail extends AppCompatActivity {
         // view.setRaduis(radius);// 设置饼状图半径，不包含边缘的圆环
         // view.setStrokeWidth(strokeWidth);// 设置边缘的圆环粗度
         view.setStrokeColor(strokeColor);// 设置边缘的圆环颜色
+
+        Double[] un_dArray = new Double[Un_hm.size()];
+        Iterator un_it = Un_hm.entrySet().iterator();
+        int j = 0;
+        while(un_it.hasNext()) {
+            Map.Entry unpair = (Map.Entry)un_it.next();
+            un_dArray[j]=(Double)unpair.getValue();
+            j++;
+        }
+
+        view_un.setitemsValues(un_dArray);
+        view_un.setStrokeColor(strokeColor);
         view.setItemSelectedListener(new OnPiegraphItemSelectedListener() {
             @Override
             public void onPieChartItemSelected(int position, String itemColor,
@@ -85,6 +121,30 @@ public class ConsumptionDetail extends AppCompatActivity {
 
             }
         });
+
+    }
+
+
+
+    public void onClick(View v) {
+        final Calendar calender;
+        int day, month, year, hour, minute;
+        if (v == date_set) {
+            date_set.setError(null);
+            calender = Calendar.getInstance();
+            day = calender.get(Calendar.DAY_OF_MONTH);
+            month = calender.get(Calendar.MONTH);
+            year = calender.get(Calendar.YEAR);
+
+            DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    date_set.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                }
+            }, day, month, year);
+            datePicker.updateDate(year, month, day);
+            datePicker.show();
+        }
     }
     public void OnclickConsumed(View view) {
        /*
@@ -140,5 +200,6 @@ public class ConsumptionDetail extends AppCompatActivity {
         startActivity(i);
    */
     }
+
 
 }

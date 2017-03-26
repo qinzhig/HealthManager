@@ -60,6 +60,10 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public CardView cardView;
         public ImageView edit;
         public ImageView delete;
+
+
+        ConsumptionDAO consumptionDAO;
+
         public ImageView consume;
 
         public int quantity,threshold,expirefactor;
@@ -86,7 +90,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 delete.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
             }
-
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,6 +157,8 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                         Medicine medicine = medicineList.get(getAdapterPosition());
                         Intent addConsumption = new Intent(mContext, AddConsumption.class);
                         addConsumption.putExtra("medicine_id",medicine.getId());
+                        consumptionDAO = new ConsumptionDAO(mContext);
+                        //int getCount =  consumptionDAO.getConsumptionCount(Integer.toString(medicine.getId(),)
                         ((Activity)mContext).startActivityForResult(addConsumption,301);
                     }*/
                 }
@@ -232,13 +237,13 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     public void onBindViewHolder(final MedicineViewHolder holder, int position) {
 
         //get appointment data from list using current position as index
-        int categoryId = medicineList.get(position).getCateId();
-        if(!isConsumptionAvailable(medicineList.get(position).getId()) ) {
+        Medicine medicine = medicineList.get(position);
+        if((medicine.isReminder()) && !isConsumptionAvailable(medicine.getId()) ) {
             holder.consume.setVisibility(View.INVISIBLE);
         }
 
         String remainderString;
-        Medicine medicine = medicineList.get(position);
+
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
 
         holder.quantity = medicine.getQuantity();
@@ -284,5 +289,4 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             mCallback.refreshView("No medications found");
         }
     }
-
 }

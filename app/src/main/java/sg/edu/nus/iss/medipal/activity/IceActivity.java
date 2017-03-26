@@ -30,7 +30,7 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
     private String _descriptionStr;
     private Integer _priority = null;
 
-    private static String[] CONTACT_TYPE = {"NOK", "GP"};
+    private static String[] CONTACT_TYPE = {"NOK(Next Of Kin)", "GP(General Practitioner)"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
