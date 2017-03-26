@@ -148,11 +148,22 @@
                     android:theme="@style/EditTextStyle"/>
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/bloodGrpSpinner"
+            <TextView
+                android:id="@+id/conditionTypeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Blood Type"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/colorPrimary"
+                />
+            <Spinner
+                android:id="@+id/bloodGrpSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:spinnerMode="dialog"
+                android:prompt="@string/bloodtype"
                 android:theme="@style/EditTextStyle" />
         </LinearLayout>
     </ScrollView>

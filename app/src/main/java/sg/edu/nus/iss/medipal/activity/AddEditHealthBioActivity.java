@@ -43,7 +43,7 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
     Calendar currentCal = Calendar.getInstance();
     private String conditionStr, conditionTypeStr;
     private Date startDt;
-    private static String[] CONDITION_TYPE = {"Condition", "Allergy"};
+    private static String[] CONDITION_TYPE = {"Illness", "Allergy"};
     private boolean isFirst = false;
 
     @Override

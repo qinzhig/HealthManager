@@ -74,13 +74,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Type"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 />
 
             <Spinner
                 android:id="@+id/conditionTypeSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dialog"
                 android:prompt="@string/condition"
