@@ -2,6 +2,7 @@ package sg.edu.nus.iss.medipal.manager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class ReportManager {
     private static List<Temperature> tempList = null;
     private static List<Weight> weightList = null;
     private static List<Consumption> unConsumptionList = null;
+    private static List<Consumption> consumptionList = null;
 
     public static TableRow addHeaders(String[] headerArr,
                                       Context context) {
@@ -44,9 +46,9 @@ public class ReportManager {
             TextView tv = new TextView(context);
             tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
-            //tv.setGravity(Gravity.CENTER);
-            tv.setTextSize(12);
-            //tv.setPadding(5, 5, 5, 5);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextSize(14);
+            tv.setPadding(5, 5, 5, 5);
             tv.setText(header);
             rowHeader.addView(tv);
         }
@@ -54,14 +56,16 @@ public class ReportManager {
         return rowHeader;
     }
 
-    public static TableLayout
+    public static boolean
     addBloodPressure(Context context, TableLayout tableLayout) {
 
         MeasurementManager measurementManager
                 = new MeasurementManager();
 
+        boolean isBpAvail = false;
+
         List<Object> measurementList =
-                measurementManager.getMeasurements(context);
+                measurementManager.getMeasurements(context, null, null);
 
         pulseList = new ArrayList<Pulse>();
         tempList = new ArrayList<Temperature>();
@@ -81,13 +85,14 @@ public class ReportManager {
                     TextView tv = new TextView(context);
                     tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                             TableRow.LayoutParams.WRAP_CONTENT));
-                    //tv.setGravity(Gravity.CENTER);
-                    tv.setTextSize(12);
-                    //tv.setPadding(5, 5, 5, 5);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTextSize(14);
+                    tv.setPadding(5, 5, 5, 5);
                     tv.setText(row);
                     rowData.addView(tv);
                 }
                 tableLayout.addView(rowData);
+                isBpAvail = true;
             }
             if (object instanceof Pulse) {
                 Pulse pulse =
@@ -106,12 +111,14 @@ public class ReportManager {
             }
         }
 
-        return tableLayout;
+        return isBpAvail;
 
     }
 
-    public static TableLayout addPulse(Context context,
+    public static boolean addPulse(Context context,
                                        TableLayout tableLayout) {
+
+        boolean isPulse = false;
 
         for (Pulse pulse : pulseList) {
 
@@ -124,19 +131,22 @@ public class ReportManager {
                 TextView tv = new TextView(context);
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
-                //tv.setGravity(Gravity.CENTER);
-                tv.setTextSize(12);
-                //tv.setPadding(5, 5, 5, 5);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setPadding(5, 5, 5, 5);
                 tv.setText(row);
                 rowData.addView(tv);
             }
             tableLayout.addView(rowData);
+            isPulse = true;
         }
-        return tableLayout;
+        return isPulse;
     }
 
-    public static TableLayout addTemperature(Context context,
+    public static boolean addTemperature(Context context,
                                              TableLayout tableLayout) {
+
+        boolean isTemp = false;
 
         for (Temperature temperature : tempList) {
             TableRow rowData = new TableRow(context);
@@ -147,20 +157,22 @@ public class ReportManager {
                 TextView tv = new TextView(context);
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
-                //tv.setGravity(Gravity.CENTER);
-                tv.setTextSize(12);
-                //tv.setPadding(5, 5, 5, 5);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setPadding(5, 5, 5, 5);
                 tv.setText(row);
                 rowData.addView(tv);
             }
             tableLayout.addView(rowData);
+            isTemp = true;
         }
-        return tableLayout;
+        return isTemp;
     }
 
-    public static TableLayout addWeight(Context context,
+    public static boolean addWeight(Context context,
                                         TableLayout tableLayout) {
 
+        boolean isWeight = false;
         PersonalBioDAO personalBioDAO =
                 new PersonalBioDAO(context);
         float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
@@ -194,28 +206,30 @@ public class ReportManager {
                 TextView tv = new TextView(context);
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
-                //tv.setGravity(Gravity.CENTER);
-                tv.setTextSize(12);
-                //tv.setPadding(5, 5, 5, 5);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setPadding(5, 5, 5, 5);
                 tv.setText(row);
                 rowData.addView(tv);
             }
             tableLayout.addView(rowData);
+            isWeight = true;
         }
-        return tableLayout;
+        return isWeight;
     }
 
-    public static TableLayout
+    public static boolean
     addConsumptionContent(Context context, TableLayout tableLayout) {
 
         ConsumptionManager consumptionManager
                 = new ConsumptionManager(context);
 
+        boolean isConsump = false;
 
         MedicineDAO medicineDAO
                 = new MedicineDAO(context);
 
-        List<Consumption> consumptionList =
+        consumptionList =
                 consumptionManager.getConsumptions();
 
         unConsumptionList = new ArrayList<Consumption>();
@@ -235,27 +249,30 @@ public class ReportManager {
                     TextView tv = new TextView(context);
                     tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                             TableRow.LayoutParams.WRAP_CONTENT));
-                    //tv.setGravity(Gravity.CENTER);
-                    tv.setTextSize(12);
-                    //tv.setPadding(5, 5, 5, 5);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setTextSize(14);
+                    tv.setPadding(5, 5, 5, 5);
                     tv.setText(row);
                     rowData.addView(tv);
                 }
                 tableLayout.addView(rowData);
+                isConsump = true;
             } else {
                 unConsumptionList.add(consumption);
             }
         }
 
-        return tableLayout;
+        return isConsump;
 
     }
 
-    public static TableLayout addUnconsumption(Context context,
+    public static boolean addUnconsumption(Context context,
                                                TableLayout tableLayout) {
 
         MedicineDAO medicineDAO
                 = new MedicineDAO(context);
+
+        boolean isUnconsump = false;
 
         for (Consumption consumption : unConsumptionList) {
             TableRow rowData = new TableRow(context);
@@ -270,19 +287,25 @@ public class ReportManager {
                 TextView tv = new TextView(context);
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
-                //tv.setGravity(Gravity.CENTER);
-                tv.setTextSize(12);
-                //tv.setPadding(5, 5, 5, 5);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setPadding(5, 5, 5, 5);
                 tv.setText(row);
                 rowData.addView(tv);
             }
+
+            isUnconsump = true;
+
             tableLayout.addView(rowData);
         }
-        return tableLayout;
+        return isUnconsump;
     }
 
-    public static void addConsumptionToCsv(String[] headerArr,
-                                           Context context) {
+    public static String addConsumptionToCsv(String[] headerArr,
+                                             Context context) {
+
+
+        csvStr = new StringBuilder();
 
         for (String header : headerArr) {
             csvStr.append(header);
@@ -294,15 +317,9 @@ public class ReportManager {
 
         csvStr.append("\n");
 
-        ConsumptionManager consumptionManager
-                = new ConsumptionManager(context);
-
-
         MedicineDAO medicineDAO
                 = new MedicineDAO(context);
 
-        List<Consumption> consumptionList =
-                consumptionManager.getConsumptions();
 
         for (Consumption consumption : consumptionList) {
 
@@ -312,11 +329,13 @@ public class ReportManager {
 
 
             csvStr.append(medcineName).append(",");
-            csvStr.append(consumedOn).append(",");
             csvStr.append(String.valueOf(quantity));
+            csvStr.append(consumedOn).append(",");
         }
 
         csvStr.append("\n");
+
+        return  csvStr.toString();
     }
 }
 
