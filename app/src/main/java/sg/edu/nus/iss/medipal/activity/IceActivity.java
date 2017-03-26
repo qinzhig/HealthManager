@@ -2,9 +2,11 @@ package sg.edu.nus.iss.medipal.activity;
 
 import android.app.ProgressDialog;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,22 +17,25 @@ import android.widget.Toast;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.IceManager;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class IceActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    private EditText _nameEdit;
-    private EditText _contactNoEdit;
-    private Spinner _contactTypeSpinner;
-    private EditText _descriptionEdit;
+    private EditText nameEdit;
+    private EditText contactNoEdit;
+    private Spinner contactTypeSpinner;
+    private EditText descriptionEdit;
 
-    private Integer _id = null;
-    private String _nameStr;
-    private String _contactNoStr;
-    private Integer _contactType;
-    private String _descriptionStr;
-    private Integer _priority = null;
+    private TextInputLayout l_Name,l_Contact,l_Desc;
 
-    private static String[] CONTACT_TYPE = {"NOK(Next Of Kin)", "GP(General Practitioner)"};
+    private Integer id = null;
+    private String nameStr;
+    private String contactNoStr;
+    private Integer contactType;
+    private String descriptionStr;
+    private Integer priority = null;
+
+    private static String[] CONTACT_TYPE = {"Emergency Numbers","Next Of Kin", "General Practitioner"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +47,68 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
-        _nameEdit = (EditText) findViewById(R.id.icename_edit);
-        _contactNoEdit = (EditText) findViewById(R.id.icecontactnumber_edit);
-        _contactTypeSpinner = (Spinner) findViewById(R.id.icecontacttype_spinner);
-        _descriptionEdit = (EditText) findViewById(R.id.icedescription_edit);
+        nameEdit = (EditText) findViewById(R.id.icename_edit);
+        contactNoEdit = (EditText) findViewById(R.id.icecontactnumber_edit);
+        contactTypeSpinner = (Spinner) findViewById(R.id.icecontacttype_spinner);
+        descriptionEdit = (EditText) findViewById(R.id.icedescription_edit);
+
+        l_Name = (TextInputLayout) findViewById(R.id.icename_view);
+        l_Contact = (TextInputLayout) findViewById(R.id.icecontactnumber_view);
+        l_Desc = (TextInputLayout) findViewById(R.id.icedescription_view);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, CONTACT_TYPE);
-        _contactTypeSpinner.setAdapter(spinnerAdapter);
+        contactTypeSpinner.setAdapter(spinnerAdapter);
 
         Bundle intentExtras = getIntent().getExtras();
         boolean isEdit = intentExtras.getBoolean("isEdit");
 
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
+
         if (isEdit) {
-            _id = intentExtras.getInt("id");
-            _nameEdit.setText(intentExtras.get("name").toString());
-            _contactNoEdit.setText(intentExtras.get("contactNo").toString());
+            id = intentExtras.getInt("id");
+            nameEdit.setText(intentExtras.get("name").toString());
+            contactNoEdit.setText(intentExtras.get("contactNo").toString());
 
             if (intentExtras.getInt("contactType") == 0) {
-                _contactTypeSpinner.setSelection(0);
+                contactTypeSpinner.setSelection(0);
             } else if (intentExtras.getInt("contactType") == 1) {
-                _contactTypeSpinner.setSelection(1);
+                contactTypeSpinner.setSelection(1);
+            }
+            else{
+                contactTypeSpinner.setSelection(2);
             }
 
-            _descriptionEdit.setText(intentExtras.get("description").toString());
-            _priority = intentExtras.getInt("priority");
+            descriptionEdit.setText(intentExtras.get("description").toString());
+            priority = intentExtras.getInt("priority");
         }
+    }
+
+    private void clearErrorOnTextInput() {
+
+        nameEdit.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_Name.setError(null);
+            }
+        });
+
+        contactNoEdit.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_Contact.setError(null);
+            }
+        });
+        descriptionEdit.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_Desc.setError(null);
+            }
+        });
+
     }
 
     @Override
@@ -91,21 +133,21 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        int menuId = item.getItemId();
 
-        if (id == R.id.action_close) {
+        if (menuId == R.id.action_close) {
             finish();
-        } else if (id == R.id.action_done) {
-            _nameStr = _nameEdit.getText().toString();
-            _contactNoStr = _contactNoEdit.getText().toString();
-            _contactType = _contactTypeSpinner.getSelectedItemPosition();
-            _descriptionStr = _descriptionEdit.getText().toString();
+        } else if (menuId == R.id.action_done) {
+            nameStr = nameEdit.getText().toString();
+            contactNoStr = contactNoEdit.getText().toString();
+            contactType = contactTypeSpinner.getSelectedItemPosition();
+            descriptionStr = descriptionEdit.getText().toString();
 
-            if (validateIce(_nameStr, _contactNoStr, _descriptionStr)) {
-                if(_id != null) {
-                    updateIce(_id, _nameStr, _contactNoStr, _contactType, _descriptionStr, _priority);
+            if (validateIce(nameStr, contactNoStr, descriptionStr)) {
+                if(id != null) {
+                    updateIce(id, nameStr, contactNoStr, contactType, descriptionStr, priority);
                 } else {
-                    addIce(_nameStr, _contactNoStr, _contactType, _descriptionStr);
+                    addIce(nameStr, contactNoStr, contactType, descriptionStr);
                 }
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
@@ -144,24 +186,24 @@ public class IceActivity extends AppCompatActivity implements View.OnClickListen
         boolean valid = true;
 
         if (name.isEmpty()) {
-            _nameEdit.setError("Please enter a name");
+            l_Name.setError("Please enter a name");
             valid = false;
         } else {
-            _nameEdit.setError(null);
+            l_Name.setError(null);
         }
 
         if (contactNo.isEmpty()) {
-            _contactNoEdit.setError("Please enter a contact number");
+            l_Contact.setError("Please enter a contact number");
             valid = false;
         } else {
-            _contactNoEdit.setError(null);
+            l_Contact.setError(null);
         }
 
         if (description.isEmpty()) {
-            _descriptionEdit.setError("Please enter notes about the contact");
+            l_Desc.setError("Please enter notes about the contact");
             valid = false;
         } else {
-            _descriptionEdit.setError(null);
+            l_Desc.setError(null);
         }
 
         return valid;
