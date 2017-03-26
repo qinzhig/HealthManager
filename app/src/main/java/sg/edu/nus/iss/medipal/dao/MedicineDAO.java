@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
@@ -152,18 +153,22 @@ public class MedicineDAO extends DataBaseUtility {
     }
 
     //Get Medicine name based on ID for report
-    public String getMedicineName(int medicineId) {
+    public List<String> getMedNameQty(int medicineId) {
 
-        String name = "";
+        List<String> medList = new ArrayList<>();
 
         Cursor cursor = database.query(DataBaseManager.MEDICINE_TABLE,
                 new String[]{
-                        DataBaseManager.MEDICINE_NAME,
+                        DataBaseManager.MEDICINE_NAME, DataBaseManager.MEDICINE_CQUANTITY
                 }, DataBaseManager.MEDICINE_ID + "=" + medicineId, null, null, null, null);
 
         while (cursor.moveToNext()) {
-            name = cursor.getString(0);
+            String name = cursor.getString(0);
+            String consumptionQty = String.valueOf(cursor.getInt(1));
+
+            medList.add(name);
+            medList.add(consumptionQty);
         }
-        return name;
+        return medList;
     }
 }

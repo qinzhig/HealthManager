@@ -30,8 +30,13 @@ public class ReportFragment extends Fragment {
     private TableLayout tableLayout;
     private View reportFragment;
     private TableRow rowHeader;
-    private static String[] healthBioArr = {"Condition", "Start Date", "Type"};
-    private static String[] consumptionArr = {"Medicine Name", "Quantity", "Consumed on"};
+    private static String[] bpArr = {"Systolic", "Diastolic", "Measured on","Reference Range"};
+    private static String[] pulseArr = {"Pulse", "Measured on","Reference Range"};
+    private static String[] tempArr = {"Temperature", "Measured on","Reference Range"};
+    private static String[] weightArr = {"Weight", "Measured on","BMI"};
+
+    private static String[] consumptionArr = {"Medicine", "Consumed Qty", "Consumed on"};
+    private static String[] unconsumptionArr = {"Medicine", "Missed Qty", "Missed Consumption Date"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class ReportFragment extends Fragment {
 
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Medipal - Reports");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Hi, <br><br><br> Please find the medical report attached <br><br><br> Cheers, Team - Medipal FT 01"));
+                emailIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Hi, <br><br><br> Please find the medical report attached <br><br><br> Cheers, <br> Team - Medipal FT 01"));
                 emailIntent.putExtra(Intent.EXTRA_STREAM, reportFile);
                 emailIntent.setType("text/html");
                 startActivity(Intent.createChooser(emailIntent, "Send mail:"));
@@ -85,27 +90,59 @@ public class ReportFragment extends Fragment {
 
     private void populateHealthBioTable() {
 
-         rowHeader =
-                ReportManager.addHeaders(healthBioArr, getContext());
-
+        //Blood Pressure
+        rowHeader =
+                ReportManager.addHeaders(bpArr, getContext());
         tableLayout.addView(rowHeader);
-
         tableLayout =
-                ReportManager.addHealthBioContent(getContext(), tableLayout);
+                ReportManager.addBloodPressure(getContext(), tableLayout);
 
-         rowHeader =
-                ReportManager.addHeaders(consumptionArr, getContext());
-
+        // Pulse
+        rowHeader =
+                ReportManager.addHeaders(pulseArr, getContext());
         tableLayout.addView(rowHeader);
+        tableLayout =
+                ReportManager.addPulse(getContext(), tableLayout);
 
+        // Temperature
+        rowHeader =
+                ReportManager.addHeaders(tempArr, getContext());
+        tableLayout.addView(rowHeader);
+        tableLayout =
+                ReportManager.addTemperature(getContext(), tableLayout);
+
+
+        // Weight
+        rowHeader =
+                ReportManager.addHeaders(weightArr, getContext());
+        tableLayout.addView(rowHeader);
+        tableLayout =
+                ReportManager.addWeight(getContext(), tableLayout);
+
+
+        // Consumption
+        rowHeader =
+                ReportManager.addHeaders(consumptionArr, getContext());
+        tableLayout.addView(rowHeader);
         tableLayout =
                 ReportManager.addConsumptionContent(getContext(), tableLayout);
+
+        //UnConsumption
+        rowHeader =
+                ReportManager.addHeaders(unconsumptionArr, getContext());
+        tableLayout.addView(rowHeader);
+        tableLayout =
+                ReportManager.addUnconsumption(getContext(), tableLayout);
+
+
     }
 
     private String addContentToCsv() {
 
-        return ReportManager.
-                addHealthBioToCsv(healthBioArr, getContext());
+        /*return ReportManager.
+                addConsumptionToCsv(getContext());*/
+
+        return "";
     }
 
 }
