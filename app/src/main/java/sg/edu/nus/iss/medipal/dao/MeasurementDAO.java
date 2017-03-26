@@ -73,20 +73,34 @@ public class MeasurementDAO extends DataBaseUtility {
         Pulse pulseObj = null;
         Weight weightObj = null;
         Temperature temperatureObj = null;
-        String fromCond = selectedDate+" 00:00";
-        String toCond = selectedDate+" 23:59";
+        Cursor cursor = null;
 
         try {
-            Cursor cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
-                    new String[]{
-                            DataBaseManager.MEASUREMENT_ID,
-                            DataBaseManager.MEASUREMENT_SYSTOLIC,
-                            DataBaseManager.MEASUREMENT_DIASTOLIC,
-                            DataBaseManager.MEASUREMENT_PULSE,
-                            DataBaseManager.MEASUREMENT_TEMPERATURE,
-                            DataBaseManager.MEASUREMENT_WEIGHT,
-                            DataBaseManager.MEASUREMENT_MEASUREDON}, "measuredon>= ? AND measuredon<= ?",
-                    new String[] {fromCond,toCond}, null, null, null);
+
+            if (null != selectedDate
+                    && !selectedDate.equals("")) {
+                cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
+                        new String[]{
+                                DataBaseManager.MEASUREMENT_ID,
+                                DataBaseManager.MEASUREMENT_SYSTOLIC,
+                                DataBaseManager.MEASUREMENT_DIASTOLIC,
+                                DataBaseManager.MEASUREMENT_PULSE,
+                                DataBaseManager.MEASUREMENT_TEMPERATURE,
+                                DataBaseManager.MEASUREMENT_WEIGHT,
+                                DataBaseManager.MEASUREMENT_MEASUREDON}, "measuredon>= ? AND measuredon<= ?",
+                        new String[]{selectedDate + " 00:00", selectedDate + " 23:59"}, null, null, null);
+            } else {
+                cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
+                        new String[]{
+                                DataBaseManager.MEASUREMENT_ID,
+                                DataBaseManager.MEASUREMENT_SYSTOLIC,
+                                DataBaseManager.MEASUREMENT_DIASTOLIC,
+                                DataBaseManager.MEASUREMENT_PULSE,
+                                DataBaseManager.MEASUREMENT_TEMPERATURE,
+                                DataBaseManager.MEASUREMENT_WEIGHT,
+                                DataBaseManager.MEASUREMENT_MEASUREDON}, null,
+                        null, null, null, null);
+            }
 
             while (cursor.moveToNext()) {
 
@@ -98,28 +112,28 @@ public class MeasurementDAO extends DataBaseUtility {
                 int weight = cursor.getInt(5);
                 String measuredOn = cursor.getString(6);
 
-                if(systolic>0 && diastolic>0) {
+                if (systolic > 0 && diastolic > 0) {
                     bloodPressureObj
                             = new BloodPressure(MediPalUtility.convertStringToDate(measuredOn, "yyyy MMM dd HH:mm"),
                             systolic, diastolic);
                     measurementList.add(bloodPressureObj);
                 }
 
-                if(pulse>0) {
+                if (pulse > 0) {
                     pulseObj
                             = new Pulse(MediPalUtility.convertStringToDate(measuredOn, "yyyy MMM dd HH:mm"),
                             pulse);
                     measurementList.add(pulseObj);
                 }
 
-                if(temperature>0) {
+                if (temperature > 0) {
                     temperatureObj =
                             new Temperature(MediPalUtility.convertStringToDate(measuredOn, "yyyy MMM dd HH:mm"),
                                     temperature);
                     measurementList.add(temperatureObj);
                 }
 
-                if(weight>0) {
+                if (weight > 0) {
                     weightObj =
                             new Weight(MediPalUtility.convertStringToDate(measuredOn, "yyyy MMM dd HH:mm"),
                                     weight);
