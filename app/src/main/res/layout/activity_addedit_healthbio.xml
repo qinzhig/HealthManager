@@ -51,7 +51,7 @@
                     android:ems="10"
                     android:inputType="textMultiLine"
                     android:hint="Condition/Allergies"
-                    android:maxLength="500"
+                    android:maxLength="255"
                     android:theme="@style/EditTextStyle"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -73,7 +73,7 @@
                 android:id="@+id/conditionTypeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Condition Type"
+                android:text="Type"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 />
