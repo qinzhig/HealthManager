@@ -15,7 +15,11 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import java.util.Date;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import sg.edu.nus.iss.medipal.R;
@@ -26,7 +30,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
  * Created by levis on 3/23/2017.
  */
 
-public class MeasurementActivity extends AppCompatActivity implements View.OnClickListener  {
+public class MeasurementActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText _systolicEdit;
     private EditText _diastolicEdit;
     private EditText _pulseEdit;
@@ -35,7 +39,6 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
     private EditText _dateEdit;
     private EditText _timeEdit;
 
-    private Integer _id = null;
     private String _systolicStr;
     private String _diastolicStr;
     private String _pulseStr;
@@ -62,27 +65,18 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         _dateEdit = (EditText) findViewById(R.id.measurement_edit_date);
         _timeEdit = (EditText) findViewById(R.id.measurement_edit_time);
 
+        Date day = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_KK:mm a", Locale.getDefault());
+        String dateTime = String.valueOf(sdf.format(day));
+        StringTokenizer dateTimeTokens = new StringTokenizer(dateTime, "_");
+        String currentDate = dateTimeTokens.nextToken();
+        String currentTime = dateTimeTokens.nextToken();
+        _dateEdit.setText(currentDate);
+        _timeEdit.setText(currentTime);
+
         _dateEdit.setOnClickListener(this);
         _timeEdit.setOnClickListener(this);
 
-        Bundle intentExtras = getIntent().getExtras();
-        boolean isEdit = intentExtras.getBoolean("isEdit");
-
-        if (isEdit) {
-            _id = intentExtras.getInt("id");
-            _systolicEdit.setText(intentExtras.get("systolic").toString());
-            _diastolicEdit.setText(intentExtras.get("diastolic").toString());
-            _pulseEdit.setText(intentExtras.get("pulse").toString());
-            _temperatureEdit.setText(intentExtras.get("temperature").toString());
-            _weightEdit.setText(intentExtras.get("weight").toString());
-
-            String measuredOn = intentExtras.get("measuredon").toString();
-            StringTokenizer tokens = new StringTokenizer(measuredOn, " ");
-            String date = tokens.nextToken();
-            String time = tokens.nextToken() + " " + tokens.nextToken();
-            _dateEdit.setText(date);
-            _timeEdit.setText(time);
-        }
     }
 
     @Override
@@ -103,7 +97,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         final Calendar calender;
-        int day,month,year,hour,minute;
+        int day, month, year, hour, minute;
         if (v == _dateEdit) {
             _dateEdit.setError(null);
             calender = Calendar.getInstance();
@@ -114,14 +108,12 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
             DatePickerDialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    _dateEdit.setText(dayOfMonth+"-"+(month+1)+"-"+year);
+                    _dateEdit.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                 }
             }, day, month, year);
             datePicker.updateDate(year, month, day);
             datePicker.show();
-        }
-        else if(v == _timeEdit)
-        {
+        } else if (v == _timeEdit) {
             _timeEdit.setError(null);
             calender = Calendar.getInstance();
             hour = calender.get(Calendar.HOUR_OF_DAY);
@@ -133,17 +125,17 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
                     int hour = hourOfDay % 12;
                     String period;
 
-                    if(hour == 0)
+                    if (hour == 0)
                         hour = 12;
-                    if(hourOfDay < 12)
+                    if (hourOfDay < 12)
                         period = "AM";
                     else
                         period = "PM";
 
-                    _timeEdit.setText(String.format("%02d:%02d %s",hour, minute, period));
+                    _timeEdit.setText(String.format("%02d:%02d %s", hour, minute, period));
                 }
-            }, hour,minute,false);
-            timePicker.updateTime(hour,minute);
+            }, hour, minute, false);
+            timePicker.updateTime(hour, minute);
             timePicker.show();
         }
     }
@@ -166,16 +158,8 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
             if (validateMeasurement(_systolicStr, _diastolicStr, _pulseStr, _temperatureStr, _weightStr, _dateStr, _timeStr)) {
                 _measuredOnStr = _dateStr + " " + _timeStr;
 
-                if(_id != null) {
-                    updateMeasurement(_id,
-                            Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
-                            Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
-                            Integer.parseInt(_weightStr), _measuredOnStr);
-                } else {
-                    addMeasurement(Integer.parseInt(_systolicStr), Integer.parseInt(_diastolicStr),
-                            Integer.parseInt(_pulseStr), Integer.parseInt(_temperatureStr),
-                            Integer.parseInt(_weightStr), _measuredOnStr);
-                }
+                addMeasurement(_systolicStr, _diastolicStr, _pulseStr, _temperatureStr,
+                        _weightStr, _measuredOnStr);
 
                 final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
@@ -198,54 +182,80 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    private void addMeasurement(Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String measuredOn) {
+    private void addMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String measuredOn) {
         MeasurementManager measurementManager = new MeasurementManager();
-        measurementManager.addMeasurement(systolic, diastolic, pulse, temperature, weight, measuredOn, this);
+        int systolicInt = 0, diastolicInt = 0, pulseInt = 0, weightInt = 0;
+        float temperatureFloat = 0;
+
+        if (null != systolic
+                && !"".equals(systolic)) {
+            systolicInt = Integer.parseInt(systolic);
+        }
+        if (null != diastolic
+                && !"".equals(diastolic)) {
+            diastolicInt = Integer.parseInt(diastolic);
+        }
+        if (null != pulse
+                && !"".equals(pulse)) {
+            pulseInt = Integer.parseInt(pulse);
+        }
+        if (null != temperature
+                && !"".equals(temperature)) {
+            temperatureFloat = Float.parseFloat(temperature);
+        }
+        if (null != weight
+                && !"".equals(weight)) {
+            weightInt = Integer.parseInt(weight);
+        }
+
+        measurementManager.addMeasurement(systolicInt, diastolicInt, pulseInt, temperatureFloat, weightInt, MediPalUtility
+                .convertStringToDate(measuredOn, "dd-MM-yyyy h:mm a"), this);
     }
 
-    private void updateMeasurement(Integer id, Integer systolic, Integer diastolic, Integer pulse, Integer temperature, Integer weight, String measuredOn) {
-        MeasurementManager iceManager = new MeasurementManager();
-        iceManager.updateMeasurement(id, systolic, diastolic, pulse, temperature, weight, measuredOn, this);
-    }
 
     private boolean validateMeasurement(String systolic, String diastolic, String pulse, String temperature, String weight, String date, String time) {
         boolean valid = true;
 
-        if(date.isEmpty()) {
+
+        if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
+
+            Toast.makeText(MeasurementActivity.this, "Please enter atleast one measurement", Toast.LENGTH_LONG).show();
+        }
+
+        if (date.isEmpty()) {
             _dateEdit.setError("Please enter a date.");
             valid = false;
         } else {
             _dateEdit.setError(null);
         }
 
-        if(time.isEmpty()) {
+        if (time.isEmpty()) {
             _timeEdit.setError("Please enter a date.");
             valid = false;
         } else {
             _timeEdit.setError(null);
         }
-        /*
-        String measuredOn;
-        measuredOn = date + " " + time;
-        else if (!MediPalUtility.isNotFutureDate(startDateInp)) {
-            textInputLayoutDate.setError("Start Date cannot be in future");
-            isValid = false;
-        }
-        */
         if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
             _systolicEdit.setError("Please enter a systolic.");
             _diastolicEdit.setError("Please enter a diastolic.");
             _pulseEdit.setError("Please enter a pulse.");
             _temperatureEdit.setError("Please enter a temperature.");
             _weightEdit.setError("Please enter a weight.");
+            if (!systolic.isEmpty() && diastolic.isEmpty()) {
+                _diastolicEdit.setError("Please enter a diastolic.");
+                valid = false;
+            } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
+                _systolicEdit.setError("Please enter a systolic.");
+                valid = false;
+            }
 
-            valid = false;
-        } else {
-            _systolicEdit.setError(null);
-            _diastolicEdit.setError(null);
-            _pulseEdit.setError(null);
-            _temperatureEdit.setError(null);
-            _weightEdit.setError(null);
+            if (valid) {
+                _systolicEdit.setError(null);
+                _diastolicEdit.setError(null);
+                _pulseEdit.setError(null);
+                _temperatureEdit.setError(null);
+                _weightEdit.setError(null);
+            }
         }
 
         return valid;

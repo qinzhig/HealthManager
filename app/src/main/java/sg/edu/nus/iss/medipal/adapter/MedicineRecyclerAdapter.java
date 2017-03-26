@@ -95,7 +95,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 edit.setVisibility(View.GONE);
             }
 
-
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -219,13 +218,13 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     public void onBindViewHolder(final MedicineViewHolder holder, int position) {
 
         //get appointment data from list using current position as index
-        int categoryId = medicineList.get(position).getCateId();
-        if(!isConsumptionAvailable(medicineList.get(position).getId()) ) {
+        Medicine medicine = medicineList.get(position);
+        if((medicine.isReminder()) && !isConsumptionAvailable(medicine.getId()) ) {
             holder.consume.setVisibility(View.INVISIBLE);
         }
 
         String remainderString;
-        Medicine medicine = medicineList.get(position);
+
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
         if(reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
@@ -263,5 +262,4 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             mCallback.refreshView("No medications found");
         }
     }
-
 }

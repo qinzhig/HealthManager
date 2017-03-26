@@ -542,7 +542,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
                         App.hm.setMeidicineReminder(true,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
-                                Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),getApplicationContext());
+                                Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),medicine.getId(),getApplicationContext());
 
                     }else{
                         //If the original meidicine has no reminder,then add a reminder for it
@@ -554,7 +554,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                                 et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
                         App.hm.setMeidicineReminder(true,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
-                                Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,getApplicationContext());
+                                Integer.valueOf(et_frequency.getText().toString().trim()),reminderid,medicine.getId(),getApplicationContext());
                     }
 
                     return true;
@@ -584,7 +584,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                             et_date_get.getText().toString(), expire_factor, getApplicationContext());
 
                     App.hm.setMeidicineReminder(false,et_stime.getText().toString(),Integer.valueOf(et_interval.getText().toString().trim()),
-                            Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),getApplicationContext());
+                            Integer.valueOf(et_frequency.getText().toString().trim()),medicine.getReminderId(),medicine.getId(), getApplicationContext());
 
                 }else{
                     //If the original meidicine has no reminder,then just update medicine info will be fine

@@ -42,9 +42,10 @@
                 android:maxLines="1"
                 android:ellipsize="end" />
 
+
             <TextView
-                android:id="@+id/measurementlistitem_systolic"
-                android:layout_width="wrap_content"
+                android:id="@+id/measurementlistitem_field1"
+                android:layout_width="@dimen/measurement_listitem_size"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/measurementlistitem_date"
                 android:layout_alignStart="@+id/measurementlistitem_date"
@@ -54,158 +55,24 @@
                 android:textSize="@dimen/title_size"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:hint="XXX"
+                android:layout_toEndOf="@+id/measurement_thumbnail"
                 android:gravity="center"/>
 
+
+
             <TextView
-                android:id="@+id/measurementlistitem_bpbar"
-                android:layout_width="wrap_content"
+                android:id="@+id/measurementlistitem_field2"
+                android:layout_width="@dimen/measurement_listitem_size"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/measurementlistitem_date"
-                android:layout_toEndOf="@+id/measurementlistitem_systolic"
+                android:layout_toEndOf="@+id/measurementlistitem_field1"
                 android:paddingTop="@dimen/title_padding"
                 android:textColor="@color/title"
                 android:textSize="@dimen/title_size"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:hint="-"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_diastolic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_date"
-                android:layout_toEndOf="@+id/measurementlistitem_bpbar"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="XXX"
                 android:gravity="center"/>
 
-            <TextView
-                android:id="@+id/measurementlistitem_bpunit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_date"
-                android:layout_toEndOf="@+id/measurementlistitem_diastolic"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="mmHg"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_pulse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_systolic"
-                android:layout_alignStart="@+id/measurementlistitem_date"
-                android:paddingLeft="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="XXX"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_pulseunit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_systolic"
-                android:layout_toEndOf="@+id/measurementlistitem_pulse"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="BPM"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_temperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_diastolic"
-                android:layout_toEndOf="@+id/measurementlistitem_pulseunit"
-                android:paddingLeft="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="XXX"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_temperatureunit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_systolic"
-                android:layout_toEndOf="@+id/measurementlistitem_temperature"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="°"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_diastolic"
-                android:layout_toEndOf="@+id/measurementlistitem_temperatureunit"
-                android:paddingLeft="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="XXX"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/measurementlistitem_weightunit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_systolic"
-                android:layout_toEndOf="@+id/measurementlistitem_weight"
-                android:paddingTop="@dimen/title_padding"
-                android:textColor="@color/title"
-                android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:hint="kg"/>
-<!--
-            <ImageView
-                android:id="@+id/measurement_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/edit"
-                android:clickable="true"
-                android:paddingRight="10dp"
-                android:scaleType="fitXY"
-                android:layout_marginEnd="5dp"
-                android:layout_below="@+id/measurementlistitem_temperature"
-                android:layout_toStartOf="@+id/measurement_delete" />
--->
-            <ImageView
-                android:id="@+id/measurement_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/measurementlistitem_temperature"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/delete_2"
-                android:clickable="true"
-                android:paddingRight="10dp"
-                android:scaleType="fitXY" />
 
         </RelativeLayout>
 

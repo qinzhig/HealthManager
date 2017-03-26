@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.Iterator;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Category;
@@ -95,6 +97,21 @@ public class EditCategoryActivity extends AppCompatActivity {
         if(name.isEmpty()){
             et_name.setError("Please input a Category Name!");
             validate_status = false;
+        }else{
+
+            validate_status = true;
+
+            Iterator<Category> c_list = App.hm.getCategorys(getApplicationContext()).iterator();
+
+            while(c_list.hasNext()){
+
+                //Determine whether already exist a Category shortname with current one
+                if(name.equals(c_list.next().getCategory_name())){
+                    validate_status = false;
+                    et_name.setError("Same Category Name exist,change name or Cancle!");
+                    break;
+                }
+            }
         }
 
         if(code.isEmpty() || code.length() != 3){

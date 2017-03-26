@@ -13,9 +13,12 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Calendar;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
 
@@ -43,6 +46,32 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
             Reminder reminder = App.hm.getReminder(cReminderID/100,context);
 
             if ( (reminder != null) && (cReminderID%100) <= reminder.getFrequency()) {
+                int medicineId= intent.getIntExtra("medicineid",0);
+                String dateTime = intent.getStringExtra("StartTime");
+
+                Calendar c = Calendar.getInstance();
+                int day, month, year,hour,minute;
+                day = c.get(Calendar.DAY_OF_MONTH);
+                month = c.get(Calendar.MONTH);
+                year = c.get(Calendar.YEAR);
+                String[] stime_hour_min = dateTime.split(":");
+                hour = Integer.valueOf(stime_hour_min[0]);
+                minute = Integer.valueOf(stime_hour_min[1]);
+                String date = day + "-" + (month + 1) + "-" + year;
+                int h = hour % 12;
+                String period;
+
+                if(hour == 0)
+                    hour = 12;
+                if(h < 12)
+                    period = "AM";
+                else
+                    period = "PM";
+
+                String time = String.format("%02d:%02d %s",hour, minute, period);
+
+                ConsumptionManager consumptionManager = new ConsumptionManager(context);
+                consumptionManager.addConsumption(0, medicineId, 0, (date+" "+time));
 
                 Intent resultIntent = new Intent(context, MainActivity.class);
 

@@ -92,7 +92,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
     public View getView(final int position, View convertView, ViewGroup parent){
         final ConsumptionAdapter.ViewHolder viewHolder;
 
-        Log.v("mateng i am in just in the view","_++_+_++_+_+_+_+_+_matneg i am in  just in the view_+_+_+_+_+_+_+_+_+_+_+_+");
+        Log.v("mateng i am in just in the view","+_+_+_+_+_+_+_+_+_+_+");
 
         if (convertView == null)
         {

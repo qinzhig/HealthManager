@@ -142,7 +142,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_dosage"
-                        android:layout_width="110dp"
+                        android:layout_width="90dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_toEndOf="@+id/tv_dosage" />
@@ -244,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:inputType="number"
-                            android:hint="Consumption Per Day:"
+                            android:hint="Frequency per day:"
                             android:theme="@style/EditTextStyle"/>
                     </android.support.design.widget.TextInputLayout>
 
@@ -263,7 +263,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:inputType="number"
-                            android:hint="Consume Interval:"
+                            android:hint="Interval(Hours):"
                             android:theme="@style/EditTextStyle"/>
                     </android.support.design.widget.TextInputLayout>
 

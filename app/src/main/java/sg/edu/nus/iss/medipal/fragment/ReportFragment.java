@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.MainActivity;
 import sg.edu.nus.iss.medipal.manager.ReportManager;
 
 
@@ -30,7 +29,9 @@ public class ReportFragment extends Fragment {
 
     private TableLayout tableLayout;
     private View reportFragment;
-    private static String[] healthBioArr = {"Condition", "Start Date", "Condition Type"};
+    private TableRow rowHeader;
+    private static String[] healthBioArr = {"Condition", "Start Date", "Type"};
+    private static String[] consumptionArr = {"Medicine Name", "Quantity", "Consumed on"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,13 +85,21 @@ public class ReportFragment extends Fragment {
 
     private void populateHealthBioTable() {
 
-        TableRow rowHeader =
+         rowHeader =
                 ReportManager.addHeaders(healthBioArr, getContext());
 
-        tableLayout.addView(rowHeader)  ;
+        tableLayout.addView(rowHeader);
 
         tableLayout =
-                ReportManager.addContent(getContext(), tableLayout);
+                ReportManager.addHealthBioContent(getContext(), tableLayout);
+
+         rowHeader =
+                ReportManager.addHeaders(consumptionArr, getContext());
+
+        tableLayout.addView(rowHeader);
+
+        tableLayout =
+                ReportManager.addConsumptionContent(getContext(), tableLayout);
     }
 
     private String addContentToCsv() {

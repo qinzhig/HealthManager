@@ -12,17 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.manager.MeasurementManager;
-import sg.edu.nus.iss.medipal.pojo.Measurement;
-import sg.edu.nus.iss.medipal.adapter.MeasurementAdapter;
-import sg.edu.nus.iss.medipal.activity.MeasurementActivity;
-
 import java.util.List;
+
+import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.activity.MeasurementActivity;
+import sg.edu.nus.iss.medipal.adapter.MeasurementAdapter;
+import sg.edu.nus.iss.medipal.manager.MeasurementManager;
 
 public class MeasurementFragment extends Fragment {
     private MeasurementManager _measurementManager;
-    private List<Measurement> _measurementList;
+    private List<Object> _measurementList;
     private MeasurementAdapter _measurementAdapter;
     private RecyclerView _measurementListView;
     private TextView _measurementNotification;
@@ -39,13 +38,12 @@ public class MeasurementFragment extends Fragment {
         _measurementListView = (RecyclerView) view.findViewById(R.id.measurementrecycler_view);
         _measurementNotification = (TextView) view.findViewById(R.id.measurementlist_placeholder);
 
-        FloatingActionButton aFab = (FloatingActionButton)view.findViewById(R.id.measurement_fab);
+        FloatingActionButton aFab = (FloatingActionButton) view.findViewById(R.id.measurement_fab);
         aFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent measurementIntent = new Intent(getContext(), MeasurementActivity.class);
-                measurementIntent.putExtra("isEdit", false);
-                startActivityForResult(measurementIntent, 5);
+                getActivity().startActivityForResult(measurementIntent, 5);
             }
         });
 
@@ -57,11 +55,8 @@ public class MeasurementFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-
-        _measurementList = _measurementManager.getMeasurements(getContext());
-
-        if(_measurementList.isEmpty()) {
-            _measurementNotification.setText("No Measurements found");
+        if (_measurementList.isEmpty()) {
+            _measurementNotification.setText("No Measurements found for the day");
             _measurementNotification.setVisibility(View.VISIBLE);
         } else {
             populateRecyclerView();

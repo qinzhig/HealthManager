@@ -17,10 +17,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.fragment.AppointmentFragment;
 import sg.edu.nus.iss.medipal.fragment.AppointmentsTabFragment;
+import sg.edu.nus.iss.medipal.fragment.ConsumptionFragment;
 import sg.edu.nus.iss.medipal.fragment.HealthBioFragment;
 import sg.edu.nus.iss.medipal.fragment.HomeFragment;
 import sg.edu.nus.iss.medipal.fragment.IceFragment;
@@ -28,7 +30,9 @@ import sg.edu.nus.iss.medipal.fragment.MeasurementFragment;
 import sg.edu.nus.iss.medipal.fragment.MedicineFragment;
 import sg.edu.nus.iss.medipal.fragment.PersonalBioFragment;
 import sg.edu.nus.iss.medipal.fragment.ReportFragment;
+import sg.edu.nus.iss.medipal.manager.PersonalBioManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
+import sg.edu.nus.iss.medipal.pojo.PersonalBio;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +44,9 @@ public class MainActivity extends AppCompatActivity
     private boolean refreshPersonalBioFragment;
     private boolean refreshMedicineFragment;
     private boolean refreshHomeFragment;
+    private boolean refreshMeasurement;
     private Boolean inHomeFragment;
+    private PersonalBioManager personalBioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,15 @@ public class MainActivity extends AppCompatActivity
         //set up navigation drawer for showing the menu items
         setupNavDrawer();
 
+        personalBioManager = new PersonalBioManager();
+        PersonalBio personalBio =
+                personalBioManager.getpersonalBio(this);
+
         //setup listener for navigation drawer menu item clicks
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView name = (TextView) headerLayout.findViewById(R.id.name);
+        name.setText(personalBio.getName());
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle intentExtras = getIntent().getExtras();
@@ -183,8 +196,12 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_consumption) {
-            Intent intent_consumption = new Intent(getApplicationContext(), ConsumptionActivity.class);
-            startActivity(intent_consumption);
+           // Intent intent_consumption = new Intent(getApplicationContext(), ConsumptionActivity.class);
+            //startActivity(intent_consumption);
+            resetTitle("Consumptions");
+            fragment = new ConsumptionFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
 
         if(id != R.id.nav_medicine){
@@ -256,6 +273,11 @@ public class MainActivity extends AppCompatActivity
             //  if(inHomeFragment)
             loadHomeFragment();
         }
+        else if(refreshMeasurement){
+            fragment = new MeasurementFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
+        }
     }
 
     @Override
@@ -280,6 +302,12 @@ public class MainActivity extends AppCompatActivity
         }else if(requestCode == 301){
             if (resultCode == 0) {
                 refreshHomeFragment = true;
+            }
+        }
+
+        else if(requestCode == 5){
+            if (resultCode == 0) {
+                refreshMeasurement = true;
             }
         }
 
