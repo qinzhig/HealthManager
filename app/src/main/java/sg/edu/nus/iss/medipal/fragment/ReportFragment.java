@@ -139,7 +139,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         final Calendar calender;
-        int day,month,year,hour,minute;
+        int day,month,year;
         if (v == fromDate) {
             calender = Calendar.getInstance();
             day = calender.get(Calendar.DAY_OF_MONTH);
