@@ -588,10 +588,14 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                             finish();
 
+                            return true;
+
                         }else{
 
                             Toast toast = Toast.makeText(AddMedicineActivity.this,"Reminder info incorrect!",Toast.LENGTH_SHORT);
                             toast.show();
+
+                            return false;
                         }
 
 
@@ -607,10 +611,10 @@ public class AddMedicineActivity extends AppCompatActivity {
 
 
                         finish();
+                        return true;
 
                     }
 
-                    return true;
 
                 }else{
 

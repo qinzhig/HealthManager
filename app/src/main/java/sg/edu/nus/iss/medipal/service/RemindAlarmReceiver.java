@@ -74,6 +74,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
                 consumptionManager.addConsumption(0, medicineId, 0, (date+" "+time));
 
                 Intent resultIntent = new Intent(context, MainActivity.class);
+                resultIntent.putExtra("medicineId",medicineId);
 
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
@@ -85,7 +86,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
                 Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
                         .setContentText("Reminder for Consumpition")
-                        .setTicker("Notification for Appointment")
+                        .setTicker("You have a medicine to consume!")
                         .setSmallIcon(R.drawable.medicine)
                         .setAutoCancel(true)
                         .setContentIntent(medicinePendingIntent).build();
@@ -146,6 +147,34 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
                 }
 
             }
+        }else if((intent.getIntExtra("ReplenishReminderId",0) != 0) && (!intent.getStringExtra("ReplenishNotification").isEmpty()) && (intent.getStringExtra("ReplenishNotification") != null)) {
+
+            int replenishMedicineID = intent.getIntExtra("ReplenishReminderId",0);
+            String replenishNotification = intent.getStringExtra("ReplenishNotification");
+
+            Intent resultIntent = new Intent(context, MainActivity.class);
+            resultIntent.putExtra("ReplenishReminderId",replenishMedicineID);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent replenishPendingIntent = stackBuilder.getPendingIntent(replenishMedicineID, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+            Notification replenish_notification = builder.setContentTitle("<Replenish Time>")
+                    .setContentText("Reminder for Replenish")
+                    .setTicker(replenishNotification)
+                    .setSmallIcon(R.drawable.medicine)
+                    .setAutoCancel(true)
+                    .setContentIntent(replenishPendingIntent).build();
+
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotificationManager.notify(replenishMedicineID, replenish_notification);
+
+
         }
 
     }

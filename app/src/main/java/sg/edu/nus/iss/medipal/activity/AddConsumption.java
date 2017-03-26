@@ -1,16 +1,14 @@
 package sg.edu.nus.iss.medipal.activity;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -18,29 +16,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
-import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
+import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
-
-import static java.lang.Integer.valueOf;
 
 public class AddConsumption extends AppCompatActivity implements View.OnClickListener {
 
@@ -254,11 +245,31 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
             //have to change this to notification
             if ( newQuantity <= threshold) {
-                AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-                dlg.setTitle("Notice");
-                dlg.setMessage("Dear, you need to replenish the medicine");
-                dlg.setPositiveButton("OK", null);
-                dlg.show();
+//                AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+//                dlg.setTitle("Notice");
+//                dlg.setMessage("Dear, you need to replenish the medicine");
+//                dlg.setPositiveButton("OK", null);
+//                dlg.show();
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Calendar calendar =Calendar.getInstance(Locale.getDefault());
+                calendar.setTimeInMillis(System.currentTimeMillis());
+
+                Intent intent = new Intent(getApplicationContext(), RemindAlarmReceiver.class);
+                //Set the reminderID and startTime in Intent data for scheduled repeat reminder
+                intent.putExtra("ReplenishReminderId",medicine.getId());
+                intent.putExtra("ReplenishNotification",medicine.getMedicine_name()+" need to be replenished");
+
+                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Replenish Reminder Alarm Send! ");
+
+                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
+
+                PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(),medicine.getId(), intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_CANCEL_CURRENT);
+
+                //Set up a reminder for replenish
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+
             }
 
             final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
