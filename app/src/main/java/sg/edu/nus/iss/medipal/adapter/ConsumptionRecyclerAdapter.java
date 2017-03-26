@@ -99,6 +99,7 @@ public class ConsumptionRecyclerAdapter extends RecyclerView.Adapter<Consumption
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
         if(consumption.getQuality()==0) {
             holder.cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.unconsumed));
+
             holder.consumeQuantity.setText("Dosage to be consumed is "+ consumeQuantity.toString()+" "+dosageArray[medicine.getDosage()]);
             holder.consumedDateTime.setText("Medicine needs to be consumed on "+consumption.getConsumedOn());
         }

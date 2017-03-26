@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddMedicineActivity;
+import sg.edu.nus.iss.medipal.activity.ConsumptionDetail;
 import sg.edu.nus.iss.medipal.adapter.ConsumptionRecyclerAdapter;
 import sg.edu.nus.iss.medipal.adapter.MedicineRecyclerAdapter;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
@@ -51,6 +53,7 @@ public class ConsumptionFragment extends Fragment implements AdapterCallbackInte
     private Context mContext;
     private View consumeFragment;
     private EditText date;
+    private Button button;
     int day,month,year;
     Calendar calendar;
 
@@ -84,10 +87,18 @@ public class ConsumptionFragment extends Fragment implements AdapterCallbackInte
         year = calendar.get(Calendar.YEAR);
         String dt=day+"-"+(month+1)+"-"+year;
         date.setText(dt);
+        button=(Button)consumeFragment.findViewById(R.id.button);
 
         createRecyclerView(dt);
 
         date.setOnClickListener(this);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, ConsumptionDetail.class);
+                startActivity(i);
+            }
+        });
 
         return consumeFragment;
     }
@@ -99,11 +110,15 @@ public class ConsumptionFragment extends Fragment implements AdapterCallbackInte
             //show the "no medicine" message
             refreshView("No Consumptions found");
         } else {
+
             populateConsumptionRecyclerView();
         }
     }
 
     private void populateConsumptionRecyclerView() {
+        TextView txtView = (TextView) consumeFragment.findViewById(R.id.placeholdertext);
+        txtView.setVisibility(View.GONE);
+        lv.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         lv.setLayoutManager(mLayoutManager);
         //populate the adapter with appointments lists

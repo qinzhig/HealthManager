@@ -12,6 +12,7 @@ import sg.edu.nus.iss.medipal.asynTask.AddConsumption;
 import sg.edu.nus.iss.medipal.asynTask.DeleteConsumption;
 import sg.edu.nus.iss.medipal.asynTask.ListConsumption;
 import sg.edu.nus.iss.medipal.asynTask.UpdateConsumption;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
