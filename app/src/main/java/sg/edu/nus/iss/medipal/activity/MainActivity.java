@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         //setup listener for navigation drawer menu item clicks
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
+        navigationView.setItemIconTintList(null);
 
         TextView name = (TextView) headerLayout.findViewById(R.id.name);
         if(personalBio!=null)
