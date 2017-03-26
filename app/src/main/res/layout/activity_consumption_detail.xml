@@ -15,15 +15,18 @@
         android:text="choose data"
         android:layout_marginLeft="20dp"
         android:ems="7"/>
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="200dp"
-        android:layout_marginEnd="40dp"
+    <EditText
+        android:id="@+id/date_set"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:ems="7"
+        android:focusable="false"
+        android:hint="Date"
+        android:inputType="none"
+        android:theme="@style/EditTextStyle"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="21dp" />
+        android:layout_alignParentStart="true" />
+
 
     <RelativeLayout
         android:id="@+id/piechart"

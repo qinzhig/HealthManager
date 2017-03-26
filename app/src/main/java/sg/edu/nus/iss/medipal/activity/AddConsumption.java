@@ -293,14 +293,14 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             l_Quantity.setError("Current quantity is "+totalQuantity+". Please enter within this value.");
         }
 
-     /*   if (date.isEmpty()) {
+       /* if (date.isEmpty()) {
             l_Date.setError("please select a date");
             validate_status = false;
         } else if (!MediPalUtility.isValidDate(date)) {
             etDate.setError("please select a right date");
             validate_status = false;
-        }*/
-
+        }
+*/
         if (time.isEmpty()) {
             l_Time.setError("please select a time");
             validate_status = false;
