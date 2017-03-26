@@ -79,4 +79,41 @@ public class IceTest extends BeforeTestSetUp {
         assertEquals("NUS-ISS-Team", rIce.getDescription());
         assertEquals(1, (int)rIce.getPriority());
     }
+
+    @Test
+    public void testDeleteICE() throws Exception {
+        List<Ice> iceList = iceDAO.retrieve();
+        int initListCount = iceList.size();
+
+        Ice ice0 = new Ice("FT01", "12345678", 0, "NUS-ISS-Team", 0);
+        iceDAO.insert(ice0);
+        Ice ice1 = new Ice("FT02", "23456781", 1, "NUS-ISS-Team", 1);
+        iceDAO.insert(ice1);
+        Ice ice2 = new Ice("FT03", "34567812", 2, "NUS-ISS-Team", 2);
+        iceDAO.insert(ice2);
+        Ice ice3 = new Ice("FT04", "45678123", 0, "NUS-ISS-Team", 3);
+        iceDAO.insert(ice3);
+
+        iceList = iceDAO.retrieve();
+        assertEquals(initListCount + 4, iceList.size());
+
+        Ice dIce1 = iceList.get(iceList.size() - 1);
+        iceDAO.delete(dIce1.getId().toString());
+        iceList = iceDAO.retrieve();
+        assertEquals(initListCount + 3, iceList.size());
+
+        Ice dIce2 = iceList.get(iceList.size() - 2);
+        iceDAO.delete(dIce2.getId().toString());
+        iceList = iceDAO.retrieve();
+        assertEquals(initListCount + 2, iceList.size());
+
+        iceList = iceDAO.retrieve();
+        Ice rIce = iceList.get(iceList.size() - 1);
+
+        assertEquals("FT03", rIce.getName());
+        assertEquals("34567812", rIce.getContactNo());
+        assertEquals(2, (int)rIce.getContactType());
+        assertEquals("NUS-ISS-Team", rIce.getDescription());
+        assertEquals(2, (int)rIce.getPriority());
+    }
 }
