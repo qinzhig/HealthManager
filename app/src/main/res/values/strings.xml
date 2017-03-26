@@ -52,6 +52,7 @@
     <string name="title_activity_help">activity_help</string>
 
     <string name="condition">Condition Type</string>
+    <string name="bloodtype">Blood Type</string>
 
     <string name="edit_appointment_title">Edit Appointment</string>
 
