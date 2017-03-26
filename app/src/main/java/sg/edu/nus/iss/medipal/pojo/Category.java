@@ -23,6 +23,13 @@ public class Category implements Serializable {
         this.remind=remind;
     }
 
+    public Category(String category_name,String category_code,String category_des,boolean remind) {
+        this.category_name=category_name;
+        this.category_code=category_code;
+        this.category_des=category_des;
+        this.remind=remind;
+    }
+
     public Boolean getRemind() {
         return remind;
     }

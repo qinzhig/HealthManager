@@ -1,11 +1,7 @@
 package sg.edu.nus.iss.medipal.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddConsumption;
 import sg.edu.nus.iss.medipal.activity.EditConsumptionActivity;
-import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
-import sg.edu.nus.iss.medipal.activity.MainActivity;
-import sg.edu.nus.iss.medipal.activity.UncomsumedActivity;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
-import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**
  * Created by apple on 22/03/2017.
@@ -92,7 +81,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
     public View getView(final int position, View convertView, ViewGroup parent){
         final ConsumptionAdapter.ViewHolder viewHolder;
 
-        Log.v("mateng i am in just in the view","+_+_+_+_+_+_+_+_+_+_+");
+        Log.v("TEST","+_+_+_+_+_+_+_+_+_+_+");
 
         if (convertView == null)
         {
