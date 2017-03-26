@@ -4,38 +4,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-
-
 import sg.edu.nus.iss.medipal.activity.AddConsumption;
-import sg.edu.nus.iss.medipal.activity.AddEditAppointmentActivity;
-
-
-import sg.edu.nus.iss.medipal.activity.AddConsumption;
-
 import sg.edu.nus.iss.medipal.activity.EditMedicineActivity;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
-import sg.edu.nus.iss.medipal.pojo.Consumption;
 import sg.edu.nus.iss.medipal.pojo.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
@@ -73,7 +65,11 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         ConsumptionDAO consumptionDAO;
 
         public ImageView consume;
+
+        public int quantity,threshold,expirefactor;
+        public String dosage_unit;
         //private PopupWindow cardPopUp;
+        private PopupWindow cardPopUp;
 
         public MedicineViewHolder(View view, final View popUp) {
             super(view);
@@ -135,6 +131,28 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    ((TextView)popUp.findViewById(R.id.tv_name)).setText(medicineName.getText());
+                    ((TextView)popUp.findViewById(R.id.tv_category)).setText(medicineCategory.getText());
+                    ((TextView)popUp.findViewById(R.id.tv_quantity)).setText(Integer.toString(quantity)+" "+dosage_unit);
+                    ((TextView)popUp.findViewById(R.id.tv_threshold)).setText(Integer.toString(threshold)+" "+dosage_unit);
+                    ((TextView)popUp.findViewById(R.id.tv_dateissued)).setText(dateIssued.getText());
+                    ((TextView)popUp.findViewById(R.id.tv_expirefactor)).setText(Integer.toString(expirefactor));
+                    ((TextView)popUp.findViewById(R.id.tv_des)).setText(medicineDesc.getText());
+                    ((TextView)popUp.findViewById(R.id.tv_cquantity)).setText(consumeQuantity.getText());
+
+                    //Get the popupWindow
+                    cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    //In some Android SDK version,if not set the below method the popupwindow will not dismiss either by touch ouside area or kick "Back"
+                    //Mare sure below setting proceed before call popupWindow show
+                    cardPopUp.setBackgroundDrawable(new ColorDrawable());
+                    cardPopUp.setOutsideTouchable(true);
+                    cardPopUp.setFocusable(true);
+                    cardPopUp.setTouchable(true);
+
+                    //Popup the window for info details
+                    cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
+
                    /* if(fromHomeFragment != null && fromHomeFragment) {
                         Medicine medicine = medicineList.get(getAdapterPosition());
                         Intent addConsumption = new Intent(mContext, AddConsumption.class);
@@ -207,8 +225,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     public MedicineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView  = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.medicine_card_list, parent, false);
+
         View popUp = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.medicine_consume_popup, parent, false);
+                .inflate(R.layout.popup_medicine_detail, parent, false);
 
         return new MedicineViewHolder(itemView, popUp);
     }
@@ -226,6 +245,11 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         String remainderString;
 
         Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
+
+        holder.quantity = medicine.getQuantity();
+        holder.threshold = medicine.getThreshold();
+        holder.expirefactor = medicine.getExpireFactor();
+
         if(reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
             remainderString = "Medicine should be taken "+remainderFrequency.toString()+" times per day";
@@ -244,6 +268,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             holder.dateIssued.setText("Issued Date is " + medicine.getDateIssued());
             holder.remainderFrequency.setText(remainderString);
             holder.consumeQuantity.setText("Dosage for each consumption is "+ consumeQuantity.toString()+" "+dosageArray[medicine.getDosage()]);
+
+            holder.dosage_unit = dosageArray[medicine.getDosage()];
+
 
     }
 
