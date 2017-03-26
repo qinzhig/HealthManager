@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,6 +83,8 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
             } else {
                 conditionType.setSelection(1);
             }
+
+
         }
         startDate.setOnClickListener(this);
     }
