@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
+import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.pojo.Ice;
 import sg.edu.nus.iss.medipal.activity.IceActivity;
@@ -35,6 +36,9 @@ import sg.edu.nus.iss.medipal.activity.IceActivity;
 public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
     private Context _context;
     private List<Ice> _iceList;
+
+    //callback listener to communicate with the parent activity
+    private AdapterCallbackInterface mCallback;
 
     public class IceViewHolder extends RecyclerView.ViewHolder {
         public TextView _name;
@@ -176,9 +180,10 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         }
     }
 
-    public IceAdapter(Context context, List<Ice> iceList) {
+    public IceAdapter(Context context, List<Ice> iceList, AdapterCallbackInterface mCallback) {
         this._context = context;
         this._iceList = iceList;
+        this.mCallback = mCallback;
     }
 
     @Override
@@ -198,10 +203,13 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
 
         String contactType = "";
         if(ice.getContactType()== 0){
-            contactType = "NOK";
+            contactType = "Emergency Numbers";
+        }else if(ice.getContactType()== 1){
+            contactType = "Next Of Kin";
         } else{
-            contactType = "GP";
+            contactType = "General Practitioner";
         }
+
         holder._contactType.setText(contactType);
         holder._description = ice.getDescription();
 
@@ -249,6 +257,11 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
         _iceList.remove(position);
         notifyItemRemoved(position);
         updateAllPriority();
+
+        if(_iceList.size() == 0)
+        {
+            mCallback.refreshView("No Contacts found");
+        }
     }
 
     void updateAllPriority() {

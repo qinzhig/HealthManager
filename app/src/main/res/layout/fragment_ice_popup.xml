@@ -29,7 +29,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/doctor_image" />
+                    android:src="@drawable/contact_popup" />
 
                 <TextView
                     android:id="@+id/ice_popup_nametitle"
@@ -126,8 +126,8 @@
                     android:paddingLeft="@dimen/title_padding"
                     android:paddingRight="@dimen/title_padding"
                     android:textSize="@dimen/title_size"
-                    android:maxLines="4"
-                    android:lines="4"/>
+                    android:layout_marginBottom="5dp"
+                    />
 
             </RelativeLayout>
         </ScrollView>
