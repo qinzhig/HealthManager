@@ -7,10 +7,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.dao.MedicineDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
 import sg.edu.nus.iss.medipal.pojo.BloodPressure;
@@ -181,7 +181,7 @@ public class ReportManager {
         boolean isWeight = false;
         PersonalBioDAO personalBioDAO =
                 new PersonalBioDAO(context);
-        float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
+        int height = personalBioDAO.retrieve().getHeight();
         float heightBmi = height * height;
 
         for (Weight weight : weightList) {
@@ -192,13 +192,13 @@ public class ReportManager {
 
             String bmiInd = "";
 
-            if (bmi < 18.5) {
+            if (bmi*10000 < 18.5) {
                 bmiInd = "Underweight";
-            } else if (bmi >= 18.5 &&
-                    bmi < 25) {
+            } else if (bmi*10000 >= 18.5 &&
+                    bmi*10000 < 25) {
                 bmiInd = "Normal";
-            } else if (bmi >= 25 &&
-                    bmi < 30) {
+            } else if (bmi*10000 >= 25 &&
+                    bmi*10000 < 30) {
                 bmiInd = "Overweight";
             } else {
                 bmiInd = "Obese";
@@ -206,7 +206,7 @@ public class ReportManager {
 
 
             String[] rowArr = {String.valueOf(weight.getWeight()),
-                    MediPalUtility.convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd HH:mm"), String.valueOf(bmi) + " - " + bmiInd};
+                    MediPalUtility.convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd HH:mm"), String.valueOf(new BigDecimal(bmi*10000).setScale(2,BigDecimal.ROUND_HALF_EVEN)) + " - " + bmiInd};
 
             for (String row : rowArr) {
                 TextView tv = new TextView(context);
@@ -401,7 +401,7 @@ public class ReportManager {
 
         PersonalBioDAO personalBioDAO =
                 new PersonalBioDAO(context);
-        float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
+        int height = personalBioDAO.retrieve().getHeight();
         float heightBmi = height * height;
 
         for (Weight weight : weightList) {
@@ -411,13 +411,13 @@ public class ReportManager {
 
             String bmiInd = "";
 
-            if (bmi < 18.5) {
+            if (bmi*10000 < 18.5) {
                 bmiInd = "Underweight";
-            } else if (bmi >= 18.5 &&
-                    bmi < 25) {
+            } else if (bmi*10000 >= 18.5 &&
+                    bmi*10000 < 25) {
                 bmiInd = "Normal";
-            } else if (bmi >= 25 &&
-                    bmi < 30) {
+            } else if (bmi*10000 >= 25 &&
+                    bmi*10000 < 30) {
                 bmiInd = "Overweight";
             } else {
                 bmiInd = "Obese";
@@ -426,7 +426,7 @@ public class ReportManager {
             String weightInp = String.valueOf(weight.getWeight());
             String measuredOn = MediPalUtility.
                     convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd");
-            String bmiCsv = String.valueOf(bmi) + " - " + bmiInd;
+            String bmiCsv = String.valueOf(new BigDecimal(bmi*10000).setScale(2,BigDecimal.ROUND_HALF_EVEN)) + " - " + bmiInd;
 
 
             csvStr.append(weightInp).append(",");

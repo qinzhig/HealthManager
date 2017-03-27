@@ -29,6 +29,7 @@ import sg.edu.nus.iss.medipal.manager.ReportManager;
 
 /**
  * Created by Divahar on 3/19/2017.
+ * Description: This fragment is used to display the reports based on filter conditions user selects
  */
 
 public class ReportFragment extends Fragment {
@@ -249,7 +250,6 @@ public class ReportFragment extends Fragment {
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
-                tv.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
                 tv.setGravity(Gravity.CENTER);
