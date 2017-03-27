@@ -19,30 +19,39 @@ public class HealthBioManager {
 
     public long addHealthBio(String condition, Date startDate,
                              char conditionType, Context context) {
+        long result;
         HealthBio healthBio =
                 new HealthBio(condition, startDate, conditionType);
         healthBioDAO = new HealthBioDAO(context);
-        return healthBioDAO.insert(healthBio);
+        result = healthBioDAO.insert(healthBio);
+        healthBioDAO.close();
+        return result;
     }
 
     public List<HealthBio> getHealthBio(Context context) {
-
+        List<HealthBio> healthBioList;
         healthBioDAO = new HealthBioDAO(context);
-        return healthBioDAO.retrieve();
+        healthBioList=healthBioDAO.retrieve();
+        healthBioDAO.close();
+        return healthBioList;
     }
 
     public long deleteHealthBio(String id, Context context) {
-
+        Long result;
         healthBioDAO = new HealthBioDAO(context);
-        return healthBioDAO.delete(id);
+        result=healthBioDAO.delete(id);
+        healthBioDAO.close();
+        return result;
     }
 
     public long updateHealthBio(String id,
                                 String condition, Date startDate, char conditionType, Context context) {
-
+        Long result;
         healthBioDAO = new HealthBioDAO(context);
         HealthBio healthBio =
                 new HealthBio(Integer.valueOf(id), condition, startDate, conditionType);
-        return healthBioDAO.update(healthBio);
+        result = healthBioDAO.update(healthBio);
+        healthBioDAO.close();
+        return result;
     }
 }

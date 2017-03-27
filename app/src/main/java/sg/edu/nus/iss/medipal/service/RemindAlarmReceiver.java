@@ -37,16 +37,13 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
         if( (intent.getStringExtra("ConsumptionReminderId") != null) && (!intent.getStringExtra("ConsumptionReminderId").isEmpty()))
         {
-            Log.v("MedicineReminder","---------------------->+++++++++++AlarmReminder GET!");
-            Log.v("MedicineReminder","---------------------->+++++++++++Reminder Id=" + intent.getStringExtra("ConsumptionReminderId"));
-            Log.v("MedicineReminder","---------------------->+++++++++++Reminder StartTime=" + intent.getStringExtra("StartTime"));
 
             int cReminderID = Integer.valueOf(intent.getStringExtra("ConsumptionReminderId"));
             App.hm.getReminders(context);
             Reminder reminder = App.hm.getReminder(cReminderID/100,context);
 
             if ( (reminder != null) && (cReminderID%100) <= reminder.getFrequency()) {
-                Log.d("Success","yes");
+
                 int medicineId= intent.getIntExtra("medicineid",0);
                 String dateTime = intent.getStringExtra("StartTime");
 
@@ -116,7 +113,6 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
             notificationIntent.putExtra("notification", notificationString);
             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            Log.d("ReminderReceiver", "onReceive Called");
 
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             //stackBuilder.addParentStack(MainActivity.class);
@@ -126,8 +122,6 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
             String storedString = remainderPreference.getAppointmentInfo(notificationId);
-            Log.d("Notification", notificationId);
-            Log.d("Notification string", storedString);
 
             if (storedString != null) {
                 try {
@@ -174,7 +168,6 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             mNotificationManager.notify(replenishMedicineID, replenish_notification);
-
 
         }
 

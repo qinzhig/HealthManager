@@ -99,7 +99,6 @@ public class EditMedicineActivity extends AppCompatActivity {
         lStartTime = (TextInputLayout)findViewById(R.id.tv_stime);
 
 
-
         et_name = (EditText) findViewById(R.id.et_name);
         et_des = (EditText) findViewById(R.id.et_des);
         et_quanity = (EditText) findViewById(R.id.et_quantity);
@@ -133,8 +132,6 @@ public class EditMedicineActivity extends AppCompatActivity {
             lInterval.setVisibility(View.INVISIBLE);
             lStartTime.setVisibility(View.INVISIBLE);
 
-//            et_frequency.setText("1");
-//            et_interval.setText("0");
         }
 
 
@@ -183,7 +180,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
 
         et_date_get.setText(medicine.getDateIssued());
-      //  et_date_get.setText(dateFormatter.format(selectedDate.getTime()));
         et_date_get.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 DatePickerDialog.OnDateSetListener onDateSetListener =
@@ -250,7 +246,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(EditMedicineActivity.this,"Category Selected Item"+position,Toast.LENGTH_SHORT);
                 toast.show();
-                //position= Arrays.asList(m_category).indexOf(medcine_category);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -266,7 +261,6 @@ public class EditMedicineActivity extends AppCompatActivity {
                 Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
                 startActivity(intent_list_category);
 
-               // finish();
 
             }
         });
@@ -292,7 +286,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(EditMedicineActivity.this,"Dosage Selected",Toast.LENGTH_SHORT);
                 toast.show();
-                //position= Arrays.asList(m_category).indexOf(medcine_category);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -324,20 +317,6 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
-
-        //Set the Save Button Name to Update
-//        button_update = (Button) findViewById(R.id.button_save);
-//        button_update.setText("Update");
-//
-//        button_update.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //Call the update method to update the Medicine and related reminder info
-//                update_Medicine();
-//
-//            }
-//        });
 
         //listener is added to clear error when input is given
         clearErrorOnTextInput();
@@ -418,7 +397,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         String expire_date_restore = dateFormatter.format(calendar_tmp.getTime());
 
-        Log.v("TEST","--------------------------@@@@@@@@@@@@@@@ Restore Expired Date:" + expire_date_restore);
         return expire_date_restore;
 
 
@@ -642,11 +620,6 @@ public class EditMedicineActivity extends AppCompatActivity {
 
             }
 
-            // Toast toast = Toast.makeText(EditMedicineActivity.this, "Update Medicine Successfully!", Toast.LENGTH_SHORT);
-            //toast.show();
-
-            //finish();
-
         }else{
             Toast toast_error = Toast.makeText(EditMedicineActivity.this,"Some Medicine Info incorrect,please check!",Toast.LENGTH_SHORT);
             toast_error.show();
@@ -730,8 +703,6 @@ public class EditMedicineActivity extends AppCompatActivity {
                     lGetDate.setError(null);
             }
         });
-
-
 
     }
 

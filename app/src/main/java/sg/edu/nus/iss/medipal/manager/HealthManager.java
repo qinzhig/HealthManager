@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -109,7 +108,6 @@ public class HealthManager {
             medicines = new ArrayList<Medicine>();
         }
 
-        Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
         return  medicines;
 
     }
@@ -144,7 +142,6 @@ public class HealthManager {
 
         }
 
-        Log.v("DEBUG","-------------------------HealthManager++++++++++++++++++++++ "+medicines.toString());
         return  medicineList;
 
     }
@@ -275,7 +272,6 @@ public class HealthManager {
             {
                 c_name[i]=c.getCategory_name();
 
-                Log.v("TAG","---------------HealthManager "+c_name[i]);
             }
         }
 
@@ -420,9 +416,6 @@ public class HealthManager {
                 intent.putExtra("medicineid",medicineid);
                 //intent.putExtra("StartTime",stime_hour_min[0]+":"+Integer.toString(reminder_min));
 
-                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + reminder_hour +":"+stime_hour_min[1] );
-
-                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
 
                 PendingIntent pendingIntent=PendingIntent.getBroadcast(context,repeat_reminderID, intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_CANCEL_CURRENT);
 

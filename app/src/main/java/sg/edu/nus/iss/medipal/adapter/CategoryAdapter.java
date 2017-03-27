@@ -28,10 +28,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private Context mContext;
     private List<Category> categoryList;
 
-    //callback listener to communicate with the parent activity
-   // private AdapterCallbackInterface mCallback;
-
-    private static final int UPCOMING_APPOINTMENTS = 0;
 
     //custom view holder to show the appointment details as card
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
@@ -75,12 +71,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     //constructor for adapter
-    //public CategoryAdapter(Context mContext, List<Category> categoryList, AdapterCallbackInterface mCallback) {
+
     public CategoryAdapter(Context mContext, List<Category> categoryList) {
         this.mContext = mContext;
         this.categoryList = categoryList;
-        //refreshCategorys();
-       // this.mCallback = mCallback;
+
     }
 
     //called once in beginning to load the view
@@ -95,7 +90,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     //used to populate the view elements with adapter data
     @Override
     public void onBindViewHolder(final CategoryViewHolder holder, int position) {
-        String storedStringOne,storedStringTwo, remainderOne = null,remainderTwo = null,remainderOneDesc = null, remainderTwoDesc = null,title = null;
+
         //get appointment data from list using current position as index
         Category category = categoryList.get(position);
 
@@ -125,8 +120,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         categoryList.clear();
 
         categoryList.addAll(App.hm.getCategorys(mContext));
-
-        Log.v("DEBUG",".............CategoryAdapter+++++++++++++++++++++++++++++++++++++++++++++ Size = "+categoryList.size());
 
         notifyDataSetChanged();
     }

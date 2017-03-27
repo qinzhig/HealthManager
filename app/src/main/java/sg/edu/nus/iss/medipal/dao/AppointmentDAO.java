@@ -52,7 +52,6 @@ public class AppointmentDAO extends DataBaseUtility {
             retCode = -1; //set return value to error code so that caller can handle error
         }
 
-        Log.d("insert","Insert Successfull");
         return retCode;
     }
 
@@ -72,7 +71,6 @@ public class AppointmentDAO extends DataBaseUtility {
             values.put(DataBaseManager.APPMNT_DATETIME,appointment.getAppointment());
         if(appointment.getDescription() != null)
             values.put(DataBaseManager.APPMNT_DESCRIPTION, appointment.getDescription());
-Log.d("id in dao",String.valueOf(appointment.getId()));
         //method returns number of rows affected. so if it is zero some error handling needs to be done by caller
         retCode = database.update(DataBaseManager.APPOINTMENT_TABLE, values,
                 WHERE_ID_EQUALS,
@@ -95,13 +93,11 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
                         DataBaseManager.APPMNT_DESCRIPTION }, null, null, null,
                 null, DataBaseManager.APPMNT_ID);
         String currentDate = MediPalUtility.convertDateToString(Calendar.getInstance().getTime(),"yyyyMddHHmm");
-        Log.d("currentdateTime",currentDate);
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
 
             String datetime = cursor.getString(2);
             Long storedTime = MediPalUtility.convertDateTimeToNumber(datetime);
-            Log.d("dateTime",storedTime.toString() );
             if(deciderFlag)
             {
                 check = deciderFlag & (Long.valueOf(currentDate) <= storedTime);
@@ -111,7 +107,6 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
                 check =  deciderFlag | (Long.valueOf(currentDate) > storedTime);
             }
             if(check){
-                Log.d("Inside getAppDao", "Inside");
                 int id = cursor.getInt(0);
                 String location = cursor.getString(1);
                 String desc = cursor.getString(3);
@@ -133,7 +128,7 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
         String[] whereArgs = new String[] {
                 Id,
         };
-        Log.d("Inside getAppDao-single", "Oitside "+ Id);
+
         //similiar to query "select * from appointments"
         Cursor cursor = database.query(DataBaseManager.APPOINTMENT_TABLE,
                 new String[] {
@@ -145,10 +140,8 @@ Log.d("id in dao",String.valueOf(appointment.getId()));
 
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
-            Log.d("Inside getAppDao-single", "Inside");
             String datetime = cursor.getString(2);
             Long storedTime = MediPalUtility.convertDateTimeToNumber(datetime);
-            Log.d("dateTime",storedTime.toString() );
             int id = cursor.getInt(0);
             String location = cursor.getString(1);
             String desc = cursor.getString(3);

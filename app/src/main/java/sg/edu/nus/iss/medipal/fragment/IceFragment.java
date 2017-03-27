@@ -72,14 +72,6 @@ public class IceFragment extends Fragment implements AdapterCallbackInterface {
     public void onResume() {
         super.onResume();
 
-      /*  _iceList = _iceManager.getIces(getContext());
-
-        if(_iceList.isEmpty()) {
-            _iceNotification.setText("No Contact(ICE)s found");
-            _iceNotification.setVisibility(View.VISIBLE);
-        } else {
-            populateRecyclerView();
-        }*/
     }
 
     private void populateRecyclerView() {

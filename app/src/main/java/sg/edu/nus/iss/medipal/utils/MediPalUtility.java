@@ -112,7 +112,6 @@ public class MediPalUtility {
         String convertedDate = dateSplit[2] + dateSplit[1] + dateSplit[0];
 
         String currentDate = convertDateToString(Calendar.getInstance().getTime(), "yyyyMdd");
-        Log.d("dates", currentDate + " " + convertedDate);
         retVal = (Long.valueOf(currentDate) <= Long.valueOf(convertedDate));
 
         return retVal;
@@ -150,8 +149,7 @@ public class MediPalUtility {
                 hourString = hour.toString();
 
             convertedTime = hourString + timeSubSplit[1];
-            Log.d("CurrentTime", currentTime);
-            Log.d("CoonvertTime", convertedTime);
+
             retVal = (Long.valueOf(currentTime) < Long.valueOf(convertedTime));
         } else if (Long.valueOf(currentDate) < Long.valueOf(convertedDate)) {
             convertedDate = convertedDate + convertedTime;
@@ -165,19 +163,19 @@ public class MediPalUtility {
 
     //method to get the date and time on which a remainder needs to be set
     public static Calendar determineReminderTime(String remainderInterval, String appointmentDate) {
-        //Log.d("date:",appointment);
+
         Integer interval = decodeRemainderInterval(remainderInterval);
-        //Log.d("interval:",interval.toString());
+
         Calendar c = null;
         if (interval != 0) {
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
             try {
                 c = Calendar.getInstance();
                 Date date = df.parse(appointmentDate);
-                //Log.d("date", df.format(date));
+
                 c.setTime(date);
                 c.add(Calendar.MINUTE, -interval);
-                //Log.d("c date", df.format(c.getTime()));
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }

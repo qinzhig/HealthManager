@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,7 +32,6 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class AppointmentManager {
     private Appointment appointment;
-    private AppointmentDAO appointmentDAO;
     private String appointmentTitle;
     private String[] remainderIntervals;
     private Context context;
@@ -50,14 +48,12 @@ public class AppointmentManager {
         this.remainderIntervals[1] = remainderIntervals[1];
         this.appointmentTitle = title;
         appointment = new Appointment(null, location, datetime, description);
-        appointmentDAO = new AppointmentDAO(context);
         appointmentPreference = new PreferenceManager(context);
     }
 
     //constructor 2 for setting only context value. Used for delete operations
     public AppointmentManager(Context context) {
         this.context = context;
-        appointmentDAO = new AppointmentDAO(context);
         appointmentPreference = new PreferenceManager(context);
     }
 
@@ -70,7 +66,6 @@ public class AppointmentManager {
             @Override
             public void dbOperationStatus(boolean resultStatus, Long resultValue) {
                 Integer resultIntValue = resultValue.intValue();
-                Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
 
                 if (resultStatus && remainderIntervals != null) {
                     int newId = resultIntValue + REMAINDER_ID_OFFSET;
@@ -110,10 +105,6 @@ public class AppointmentManager {
         alertIntent.putExtra("notification", notificationText);
 
         PendingIntent broadcast = PendingIntent.getBroadcast(context, resultValue, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //Log.d("check",Long.toString(date.getTime()));
-        Log.d("check",
-                Long.toString(remainderDate.get(Calendar.DAY_OF_MONTH)) + " " + Long.toString(remainderDate.get(Calendar.MONTH)) + " " + Long.toString(remainderDate.get(Calendar.YEAR)) + " " + Long.toString(remainderDate.get(Calendar.HOUR_OF_DAY)) + " " + Long.toString(remainderDate.get(Calendar.MINUTE)));
-        Log.d("doublecheck", Long.toString(new GregorianCalendar().getTimeInMillis() + (60 * 1000)));
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, remainderDate.getTimeInMillis(), broadcast);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, new GregorianCalendar().getTimeInMillis() +(5*1000), broadcast);
     }
@@ -134,8 +125,6 @@ public class AppointmentManager {
             //using AsyncTaskCallbacks interface as a listener to execute the post tasks of creating and storing remainder
             @Override
             public void dbOperationStatus(boolean resultStatus, Long resultValue) {
-                Integer resultIntValue = resultValue.intValue();
-                Log.d("status,result", Boolean.toString(resultStatus) + " " + Long.toString(resultValue));
 
                 if (resultStatus && remainderIntervals != null) {
                     int newId = appointmentID + REMAINDER_ID_OFFSET;

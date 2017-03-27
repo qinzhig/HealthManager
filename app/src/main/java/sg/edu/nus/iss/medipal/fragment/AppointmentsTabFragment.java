@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,6 @@ public class AppointmentsTabFragment extends Fragment implements AdapterCallback
         if((notificationContent != null) && (notificationId != null)){
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Appointment");
             aFab.setVisibility(View.GONE);
-            Log.d("Fragment tab ","before get");
             //get the appointment details from the appointment table
             //appointmentList = appointmentManager.getAppointment(notificationId);
             appointmentList = appointmentManager.getAppointment(notificationId);

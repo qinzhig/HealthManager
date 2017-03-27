@@ -113,13 +113,8 @@ public class ConsumptionManager {
 
     public void deleteConsumption(int id){
 
-       // Consumption m = getConsumption(id);
-
-        //if(m != null)
-        //{
             deleteConsumption = new DeleteConsumption(context);
             deleteConsumption.execute(id);
-        //}
 
     }
 
