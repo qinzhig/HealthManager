@@ -36,9 +36,9 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 public class AddConsumption extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etDate, etTime;
-    TextInputLayout l_Quantity,l_Date,l_Time;
+    TextInputLayout l_Date,l_Time;
     private TextView view_Medicine;
-    private EditText view_Quantity;
+    private TextView view_Quantity;
     HealthManager healthmanager = new HealthManager();
     private int quantity;
     private int medicine_id;
@@ -55,7 +55,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
         etDate = (EditText)findViewById(R.id.et_select_date);
         etTime = (EditText)findViewById(R.id.et_select_time);
-        l_Quantity = (TextInputLayout)findViewById(R.id.Quantity);
         l_Date = (TextInputLayout)findViewById(R.id.tv_date);
         l_Time = (TextInputLayout)findViewById(R.id.tv_time);
 
@@ -71,7 +70,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setTitle(null);
 
         view_Medicine = (TextView)findViewById(R.id.view_medicine);
-        view_Quantity = (EditText) findViewById(R.id.Dosage);
+        view_Quantity = (TextView) findViewById(R.id.Dosage);
         etTime.setOnClickListener(this);
 
 
@@ -99,13 +98,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
     private void clearErrorOnTextInput() {
 
-        view_Quantity.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length() > 0)
-                    l_Quantity.setError(null);
-            }
-        });
 
         etTime.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
@@ -286,27 +278,20 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
     public boolean input_validate(int quantity,int totalQuantity,String date,String time) {
         boolean validate_status = true;
-        if (quantity == 0)
-        {
-            l_Quantity.setError("please input a quantity");
+        if(totalQuantity == 0) {
+            l_Time.setError("Current quantity is 0. Please replenish the medicine");
             validate_status = false;
-        }else if(totalQuantity == 0) {
-            l_Quantity.setError("Current quantity is 0. Please replenish the medicine");
-            validate_status = false;
+            Toast toast = Toast.makeText(AddConsumption.this, "Please Replenish Medicine", Toast.LENGTH_SHORT);
+            toast.show();
         } else
         if(quantity > totalQuantity){
             validate_status = false;
-            l_Quantity.setError("Current quantity is "+totalQuantity+". Please enter within this value.");
+            l_Time.setError("Current quantity is "+totalQuantity+". . Please replenish the medicine.");
+            Toast toast = Toast.makeText(AddConsumption.this, "Please Replenish Medicine", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
-       /* if (date.isEmpty()) {
-            l_Date.setError("please select a date");
-            validate_status = false;
-        } else if (!MediPalUtility.isValidDate(date)) {
-            etDate.setError("please select a right date");
-            validate_status = false;
-        }
-*/
+
         if (time.isEmpty()) {
             l_Time.setError("please select a time");
             validate_status = false;

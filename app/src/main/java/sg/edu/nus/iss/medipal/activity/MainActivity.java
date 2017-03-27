@@ -210,11 +210,8 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_medicine) {
-            toolbar.findViewById(R.id.sv_medicine).setVisibility(View.VISIBLE);
-           // Intent intent_medicine = new Intent(getApplicationContext(), MedicineFragment.class);
-            //startActivity(intent_medicine);
             resetTitle("Medications");
-            //use the appointment view to show in the main page
+            //use the view to show in the main page
             fragment = new MedicineFragment();
             //move this to outside when all other modules are implemented using fragments
             //populate the selected view(fragment) in the main page using fragment manager
@@ -244,9 +241,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
 
-        if(id != R.id.nav_medicine){
-            toolbar.findViewById(R.id.sv_medicine).setVisibility(View.GONE);
-        }
 
         //close drawer when an item is clicked.
         drawer.closeDrawer(GravityCompat.START);
@@ -260,7 +254,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        toolbar.findViewById(R.id.sv_medicine).setVisibility(View.GONE);
         //super.onBackPressed();
         if (inHomeFragment == true) {
             new AlertDialog.Builder(this)

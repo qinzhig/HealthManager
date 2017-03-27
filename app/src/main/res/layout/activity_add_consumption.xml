@@ -39,7 +39,7 @@
             android:layout_marginRight="10dp"
             >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medicine name"
                 android:layout_marginStart="10dp"
@@ -59,21 +59,26 @@
                 android:textSize="18sp"
                 >
             </TextView>
-            <android.support.design.widget.TextInputLayout
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:layout_marginStart="10dp"
                 android:id="@+id/Quantity"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"
+                />
+            <TextView
+                android:id="@+id/Dosage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextInputLayout.hint">
-                <EditText
-                    android:id="@+id/Dosage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textMultiLine"
-                    android:hint="Quantity"
-                    android:maxLength="500"
-                    android:theme="@style/EditTextStyle"/>
-            </android.support.design.widget.TextInputLayout>
+                android:layout_below="@id/medicine_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
+                />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

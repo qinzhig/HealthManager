@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -93,6 +95,8 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
         _measurementList = _measurementManager.getMeasurements(getContext(), strDate, endDate);
 
         if (_measurementList.isEmpty()) {
+            LinearLayout linearLayout = (LinearLayout) measurementFragment.findViewById(R.id.measurement_layout);
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             _measurementNotification.setText("No Measurements found for the day");
             _measurementNotification.setVisibility(View.VISIBLE);
         } else {
@@ -164,8 +168,11 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
             }
             populateRecyclerView();
         } else {
+
             _measurementAdapter = new MeasurementAdapter(getContext(), _measurementList);
             _measurementListView.setAdapter(_measurementAdapter);
+            LinearLayout linearLayout = (LinearLayout) measurementFragment.findViewById(R.id.measurement_layout);
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             _measurementNotification.setText("No Measurements found for the day");
             _measurementNotification.setVisibility(View.VISIBLE);
         }
