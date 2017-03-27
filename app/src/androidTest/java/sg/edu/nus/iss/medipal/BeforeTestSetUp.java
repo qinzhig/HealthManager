@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import sg.edu.nus.iss.medipal.dao.AppointmentDAO;
 import sg.edu.nus.iss.medipal.dao.CategoryDAO;
+import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.dao.HealthBioDAO;
 import sg.edu.nus.iss.medipal.dao.IceDAO;
 import sg.edu.nus.iss.medipal.dao.MeasurementDAO;
@@ -37,6 +38,7 @@ public class BeforeTestSetUp {
     public static AppointmentDAO appointmentDAO;
     public static CategoryDAO categoryDAO;
     public static ReminderDAO reminderDAO;
+    public static ConsumptionDAO consumptionDAO;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -50,6 +52,7 @@ public class BeforeTestSetUp {
         measurementDAO = new MeasurementDAO(context);
         appointmentDAO = new AppointmentDAO(context);
         reminderDAO = new ReminderDAO(context);
+        consumptionDAO = new ConsumptionDAO(context);
     }
 
     @AfterClass
@@ -60,6 +63,7 @@ public class BeforeTestSetUp {
         measurementDAO.close();
         appointmentDAO.close();
         reminderDAO.close();
+        consumptionDAO.close();
     }
 
     @Test
@@ -70,6 +74,7 @@ public class BeforeTestSetUp {
         assertNotNull(measurementDAO);
         assertNotNull(appointmentDAO);
         assertNotNull(reminderDAO);
+        assertNotNull(consumptionDAO);
     }
 
 }
