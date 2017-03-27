@@ -27,25 +27,14 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         _contactAddressView = (TextView) findViewById(R.id.about_contactaddress);
         _contactAddressView.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_action_close, menu);
-
-        final MenuItem menuItem = menu.findItem(R.id.action_close);
-        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        return true;
-    }
 
     @Override
     public void onClick(View view) {
