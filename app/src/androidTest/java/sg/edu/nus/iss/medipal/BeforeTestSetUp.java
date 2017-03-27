@@ -3,7 +3,6 @@ package sg.edu.nus.iss.medipal;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,6 +15,7 @@ import sg.edu.nus.iss.medipal.dao.HealthBioDAO;
 import sg.edu.nus.iss.medipal.dao.IceDAO;
 import sg.edu.nus.iss.medipal.dao.MeasurementDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
+import sg.edu.nus.iss.medipal.dao.ReminderDAO;
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
 
 import static junit.framework.Assert.assertNotNull;
@@ -36,6 +36,7 @@ public class BeforeTestSetUp {
     public static MeasurementDAO measurementDAO;
     public static AppointmentDAO appointmentDAO;
     public static CategoryDAO categoryDAO;
+    public static ReminderDAO reminderDAO;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -48,6 +49,7 @@ public class BeforeTestSetUp {
         iceDAO = new IceDAO(context);
         measurementDAO = new MeasurementDAO(context);
         appointmentDAO = new AppointmentDAO(context);
+        reminderDAO = new ReminderDAO(context);
     }
 
     @AfterClass
@@ -57,6 +59,7 @@ public class BeforeTestSetUp {
         iceDAO.close();
         measurementDAO.close();
         appointmentDAO.close();
+        reminderDAO.close();
     }
 
     @Test
@@ -66,6 +69,7 @@ public class BeforeTestSetUp {
         assertNotNull(iceDAO);
         assertNotNull(measurementDAO);
         assertNotNull(appointmentDAO);
+        assertNotNull(reminderDAO);
     }
 
 }
