@@ -93,6 +93,9 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                 delete.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
             }
+            else{
+                dateIssued.setVisibility(view.GONE);
+            }
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -234,64 +237,77 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
 
         //get appointment data from list using current position as index
         Medicine medicine = medicineList.get(position);
-        if((medicine.isReminder()) && !isConsumptionAvailable(medicine.getId()) ) {
-            holder.consume.setVisibility(View.INVISIBLE);
-        }else{
+        if ((medicine.isReminder()) && !isConsumptionAvailable(medicine.getId())) {
+            holder.consume.setVisibility(View.GONE);
+        } else {
             holder.consume.setVisibility(View.VISIBLE);
         }
 
         String remainderString;
 
-        Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
+        Reminder reminder = healthManager.getReminder(medicine.getReminderId(), mContext);
 
         //Variable for popupWindow details
         holder.quantity = medicine.getQuantity();
         holder.threshold = medicine.getThreshold();
         holder.expirefactor = medicine.getExpireFactor();
-        String str="";
+        String str = "";
         //End
 
 
-        if(reminder != null) {
+        if (reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
-            remainderString = "Medicine should be taken "+remainderFrequency.toString()+" times per day";
+            remainderString = "Medicine should be taken " + remainderFrequency.toString() + " times per day";
 
 
             //Generate the Medicine consumption schedule list for everyday
-            String stime =reminder.getStartTime();
+            String stime = reminder.getStartTime();
             int interval = reminder.getInterval();
             String[] reminder_hour_min = stime.split(":");
             int[] hour = {0};
 
-            for(int i=0;i<remainderFrequency.intValue();i++)
-            {
-                str += ">" + Integer.toString(Integer.valueOf(reminder_hour_min[0]) + interval*i) + ":" + reminder_hour_min[1] + " ";
+            for (int i = 0; i < remainderFrequency.intValue(); i++) {
+                str += ", " + Integer.toString(Integer.valueOf(reminder_hour_min[0]) + interval * i) + ":" + reminder_hour_min[1] + " ";
             }
+            str="> "+str.substring(2);
 
-            Log.v("TEST","--------------------------Dosage Schedule List" + str);
+            Log.v("TEST", "--------------------------Dosage Schedule List" + str);
             //End
 
-        }
-        else {
+        } else {
             remainderString = "No remainder set";
             str = "";
         }
 
-            //populate the view elements
-            holder.medicineName.setText(medicine.getMedicine_name());
-            holder.medicineName.setTag(medicine.getId());
-            holder.medicineDesc.setText(medicine.getMedicine_des());
-            String categoryName = healthManager.getCategory(medicine.getCateId(), mContext).getCategory_name();
-            Integer consumeQuantity = medicine.getConsumequantity();
-            String[] dosageArray = mContext.getResources().getStringArray(R.array.dosage);
-            holder.medicineCategory.setText(categoryName);
-            holder.dateIssued.setText("Issued Date is " + medicine.getDateIssued());
-            holder.remainderFrequency.setText(remainderString);
-            holder.consumeQuantity.setText("Dosage for each consumption is " + consumeQuantity.toString() + " " + dosageArray[medicine.getDosage()]);
+        ConsumptionDAO consumptionDAO = new ConsumptionDAO(mContext);
+        Calendar c = Calendar.getInstance();
+        int day, month, year;
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
+        String consumedDate = day + "-" + (month + 1) + "-" + year;
+        int consumeCount = consumptionDAO.getCurrentConsumptionCount(Integer.toString(medicine.getId()), consumedDate);
+        String consumeInfo = "Medicine not consumed today.";
+        if(consumeCount > 0)
+        {
+            consumeInfo =  "Medicine consumed "+consumeCount+" times today";
+        }
 
-            //Get the dosage Unit and schedule list
-            holder.dosage_unit = dosageArray[medicine.getDosage()];
-            holder.dosage_schedule=str;
+        //populate the view elements
+        holder.medicineName.setText(medicine.getMedicine_name());
+        holder.medicineName.setTag(medicine.getId());
+        holder.medicineDesc.setText(medicine.getMedicine_des());
+        String categoryName = healthManager.getCategory(medicine.getCateId(), mContext).getCategory_name();
+        Integer consumeQuantity = medicine.getConsumequantity();
+        String[] dosageArray = mContext.getResources().getStringArray(R.array.dosage);
+        holder.medicineCategory.setText(categoryName);
+        holder.dateIssued.setText(consumeInfo);
+        holder.remainderFrequency.setText(remainderString);
+        holder.consumeQuantity.setText("Dosage for each consumption is " + consumeQuantity.toString() + " " + dosageArray[medicine.getDosage()]);
+
+        //Get the dosage Unit and schedule list
+        holder.dosage_unit = dosageArray[medicine.getDosage()];
+        holder.dosage_schedule = str;
 
 
     }
