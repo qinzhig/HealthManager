@@ -2,7 +2,7 @@ package sg.edu.nus.iss.medipal.application;
 
 import android.app.Application;
 
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.manager.HealthManager;
 
 /**
  * Created by zhiguo on 15/3/17.

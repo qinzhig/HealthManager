@@ -28,7 +28,7 @@ import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.manager.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
 
@@ -309,7 +309,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         holder.dosage_unit = dosageArray[medicine.getDosage()];
         holder.dosage_schedule = str;
 
-
+        consumptionDAO.close();
     }
 
     @Override
