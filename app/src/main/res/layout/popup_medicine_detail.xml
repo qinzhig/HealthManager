@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryLight">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_margin"
+        android:elevation="3dp"
+        app:cardCornerRadius="@dimen/card_corner_radius">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/medicine" />
+
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/thumbnail"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Name:"
+                    android:textStyle="bold"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/title1"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+                <TextView
+                    android:id="@+id/title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_name"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:textStyle="bold"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Category:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title2"
+                    android:paddingBottom="@dimen/datetime_bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_category"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Consume Instruction:"
+                    android:textStyle="bold"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_cquantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title0"
+                    android:paddingBottom="@dimen/datetime_bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_cquantity"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Remaining Quantity:"
+                    android:textStyle="bold"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+
+                <TextView
+                    android:id="@+id/tv_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title3"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_quantity"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:textStyle="bold"
+                    android:text="Threshold:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_threshold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title4"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_threshold"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:textStyle="bold"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Date Issued:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_dateissued"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title5"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/right_padding"
+
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_dateissued"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:textStyle="bold"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Months remaining before Expiration:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_expirefactor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title6"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_expirefactor"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:textStyle="bold"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Description:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title7"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+                <TextView
+                    android:id="@+id/title8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_des"
+                    android:paddingLeft="@dimen/left_padding"
+                    android:textStyle="bold"
+                    android:paddingRight="@dimen/title_padding"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="Each Day Consumption Schedule:"
+                    android:textColor="@color/title"
+                    android:textSize="@dimen/desc_size" />
+
+                <TextView
+                    android:id="@+id/tv_dosage_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title8"
+                    android:paddingBottom="@dimen/bottom_padding"
+                    android:paddingLeft="@dimen/title_padding"
+                    android:paddingRight="@dimen/title_padding"
+                    android:textSize="@dimen/title_size" />
+
+            </RelativeLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -1,3 +1,85 @@
 <resources>
-    <string name="app_name">MediPal_FT01</string>
+    <string name="app_name">MediPal-FT01</string>
+    <string name="home">Home</string>
+    <string name="personalBio">Personal Bio</string>
+    <string name="ice">Contacts(ICE)</string>
+    <string name="healthBio">Health Bio</string>
+    <string name="medication">Medications</string>
+    <string name="appointments">Appointments</string>
+    <string name="notifications">Notifications</string>
+    <string name="reports">Reports</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+    <string name="title_activity_medicine">MedicineActivity</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_setting">Setting Application</string>
+    <string name="spinner_medicine_hint"> Category</string>
+
+    <dimen name="img_width_height">120dp</dimen>
+    <dimen name="slide_title">30dp</dimen>
+    <dimen name="slide_desc">16dp</dimen>
+    <dimen name="desc_padding">40dp</dimen>
+    <dimen name="dots_height">30dp</dimen>
+    <dimen name="dots_margin_bottom">20dp</dimen>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="settings_about">About</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_startup">Help at StartUp</string>
+
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Personal Bio and Health Bio!</string>
+    <string name="slide_1_desc">MediPal..!!!</string>
+
+    <string name="slide_2_title">Medicines and Reminders</string>
+    <string name="slide_2_desc">MediPal..!!!</string>
+
+    <string name="slide_3_title">Appointments and Reminders</string>
+    <string name="slide_3_desc">MediPal..!!!</string>
+
+    <string name="slide_4_title">ICE and Measurements</string>
+    <string name="slide_4_desc">MediPal..!!!</string>
+    <string name="title_activity_help">activity_help</string>
+
+    <string name="condition">Condition Type</string>
+    <string name="bloodtype">Blood Type</string>
+    <string name="contacttype">Contact Type</string>
+    <string name="medicinecategory">Category</string>
+    <string name="dosage">Dosage</string>
+
+    <string name="edit_appointment_title">Edit Appointment</string>
+
+    <!--Dosage units item list -->
+    <string-array name="dosage">
+        <item>pills</item>
+        <item>cc</item>
+        <item>ml</item>
+        <item>gr</item>
+        <item>mg</item>
+        <item>drops</item>
+        <item>pieces</item>
+        <item>puffs</item>
+        <item>units</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+        <item>patch</item>
+        <item>mcg</item>
+        <item>l</item>
+        <item>meq</item>
+        <item>spray</item>
+    </string-array>
+
 </resources>
+
+
+
