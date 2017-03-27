@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Divahar on 3/25/2017.
+ * * Description: This class has the fields related to pulse measurement
  */
 
 public class Pulse extends Measurement{

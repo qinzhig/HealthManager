@@ -3,7 +3,8 @@ package sg.edu.nus.iss.medipal.pojo;
 import java.util.Date;
 
 /**
- * Created by divah on 3/25/2017.
+ * Created by Divahar on 3/25/2017.
+ * Description: This class has all the fields related to blood pressure
  */
 
 public class BloodPressure extends Measurement{

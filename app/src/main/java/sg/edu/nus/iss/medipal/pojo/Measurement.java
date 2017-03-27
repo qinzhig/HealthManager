@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Divahar on 3/25/2017.
+ * Description: This class is the parent of all measurements
  */
 
 public class Measurement {

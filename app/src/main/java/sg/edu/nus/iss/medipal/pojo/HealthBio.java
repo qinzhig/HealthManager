@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Divahar on 3/15/2017.
+ * Description: This class has all the fields related to healthbio table
  */
 
 public class HealthBio {

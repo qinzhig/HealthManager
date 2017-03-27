@@ -19,6 +19,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/19/2017.
+ * Description: This fragment takes care of the view of Personal Bio
  */
 
 public class PersonalBioFragment extends Fragment{

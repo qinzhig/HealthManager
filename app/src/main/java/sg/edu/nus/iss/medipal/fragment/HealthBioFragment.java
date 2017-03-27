@@ -25,6 +25,7 @@ import sg.edu.nus.iss.medipal.pojo.HealthBio;
 
 /**
  * Created by Divahar on 3/16/2017.
+ * Description: This fragment takes care of the view of Health bio through Recycler view
  */
 
 public class HealthBioFragment extends Fragment implements AdapterCallbackInterface {

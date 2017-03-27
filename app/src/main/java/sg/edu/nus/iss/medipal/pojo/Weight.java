@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by Divahar on 3/25/2017.
+ *  Description: This class has the fields related to weight measurement
  */
 
 public class Weight extends Measurement{
