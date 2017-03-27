@@ -407,6 +407,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.settings_help) {
             Intent aboutIntent = new Intent(MainActivity.this, HelpActivity.class);
+            aboutIntent.putExtra("isHelp",true);
             startActivity(aboutIntent);
         }
 

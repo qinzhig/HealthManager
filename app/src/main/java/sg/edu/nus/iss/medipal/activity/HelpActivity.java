@@ -37,9 +37,17 @@ public class HelpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        boolean isHelp = false;
+        Bundle bundleVal = getIntent().getExtras();
+
+        if(null!=bundleVal) {
+            isHelp = bundleVal.getBoolean("isHelp");
+        }
+
         prefManager = new PreferenceManager(getApplicationContext());
 
-        if (null != prefManager.getSplashScreenPref()
+        if (!isHelp && null != prefManager.getSplashScreenPref()
                 && prefManager.getSplashScreenPref().equals("false")) {
             launchHomeScreen();
         } else {
