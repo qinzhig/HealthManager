@@ -221,6 +221,7 @@ public class ReportManager {
             tableLayout.addView(rowData);
             isWeight = true;
         }
+        personalBioDAO.close();
         return isWeight;
     }
 
@@ -267,7 +268,7 @@ public class ReportManager {
                 unConsumptionList.add(consumption);
             }
         }
-
+        medicineDAO.close();
         return isConsump;
 
     }
@@ -304,6 +305,7 @@ public class ReportManager {
 
             tableLayout.addView(rowData);
         }
+        medicineDAO.close();
         return isUnconsump;
     }
 
@@ -435,13 +437,12 @@ public class ReportManager {
         }
 
         csvStr.append("\n").append("\n");
-
+        personalBioDAO.close();
         return csvStr.toString();
     }
 
     public static String addTemperatureToCsv(String[] headerArr,
                                              Context context) {
-
 
         csvStr = new StringBuilder();
 
@@ -510,7 +511,7 @@ public class ReportManager {
         }
 
         csvStr.append("\n").append("\n");
-
+        medicineDAO.close();
         return csvStr.toString();
     }
 
@@ -551,7 +552,7 @@ public class ReportManager {
         }
 
         csvStr.append("\n").append("\n");
-
+        medicineDAO.close();
         return csvStr.toString();
     }
 }

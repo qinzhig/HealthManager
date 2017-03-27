@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.medipal.manager;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MeasurementManager {
     private Weight weightObj = null;
 
     public long addMeasurement(int systolic, int diastolic, int pulse, float temperature, int weight, Date measuredOn, Context context) {
+        Long result;
         measurementDAO = new MeasurementDAO(context);
         if(systolic>0 &&
                 diastolic>0) {
@@ -38,14 +40,20 @@ public class MeasurementManager {
             weightObj = new Weight(measuredOn, weight);
         }
 
-        return measurementDAO.insert(bloodPressureObj,
+        result = measurementDAO.insert(bloodPressureObj,
                 pulseObj, weightObj, temperatureObj);
+
+        measurementDAO.close();
+
+        return result;
     }
 
     public List<Object> getMeasurements(Context context,String strtDate,
                                         String endDate) {
+        List<Object> objectList;
         measurementDAO = new MeasurementDAO(context);
-        Date currDate = new Date();
-        return measurementDAO.retrieve(strtDate,endDate);
+        objectList=measurementDAO.retrieve(strtDate,endDate);
+        measurementDAO.close();
+        return objectList;
     }
 }

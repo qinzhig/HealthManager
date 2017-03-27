@@ -130,7 +130,6 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
             remainderOne = intentExtras.getString("remainderOne");
             remainderTwo = intentExtras.getString("remainderTwo");
 
-            Log.d("rem 1 and 2",remainderOne+remainderTwo);
 
             if(!remainderOne.equalsIgnoreCase("No Pre-Test Remainders set.")) {
                 switchOne.setChecked(true);
@@ -399,6 +398,5 @@ public class AddEditAppointmentActivity extends AppCompatActivity  implements Vi
 
         return valid;
     }
-
 
 }

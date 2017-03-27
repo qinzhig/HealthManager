@@ -85,7 +85,7 @@ public class ConsumptionRecyclerAdapter extends RecyclerView.Adapter<Consumption
 
         Integer consumeQuantity = medicine.getConsumequantity();
         String[] dosageArray = mContext.getResources().getStringArray(R.array.dosage);
-        Reminder reminder = healthManager.getReminder(medicine.getReminderId(),mContext);
+
         if(consumption.getQuality()==0) {
             holder.cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.unconsumed));
 
@@ -100,7 +100,6 @@ public class ConsumptionRecyclerAdapter extends RecyclerView.Adapter<Consumption
 
         //populate the view elements
             holder.medicineName.setText(medicine.getMedicine_name());
-            //holder.medicineName.setTag(medicine.getId());
             String categoryName = healthManager.getCategory(medicine.getCateId(),mContext).getCategory_name();
 
             holder.medicineCategory.setText(categoryName);

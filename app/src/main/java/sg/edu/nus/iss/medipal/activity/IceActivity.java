@@ -19,6 +19,10 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.IceManager;
 import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
+/**
+ * Created by levis on 25/3/17.
+ */
+
 public class IceActivity extends AppCompatActivity implements View.OnClickListener  {
 
     private EditText nameEdit;

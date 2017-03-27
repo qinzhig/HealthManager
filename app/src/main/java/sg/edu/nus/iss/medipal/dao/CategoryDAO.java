@@ -49,16 +49,6 @@ public class CategoryDAO extends DataBaseUtility {
         return retCode;
     }
 
-    //Category  are not allowed to deleted after added in database
-//    public long delete(Category category) throws SQLException
-//    {
-//        long retCode=0;
-//
-//        //Delete the medicine from SQLite
-//        retCode =   database.delete(DataBaseManager.MEDICINE_TABLE,WHERE_ID_EQUALS,new String[] { String.valueOf(category.getId()) });
-//
-//        return retCode;
-//    }
 
     //method to update the category table
     public long update(Category category) {

@@ -63,14 +63,12 @@ public class AddMedicineActivity extends AppCompatActivity {
     Calendar selectedDate2 = Calendar.getInstance();
     Calendar calender = Calendar.getInstance();
 
-   // private static final String[] m_category = {"Supplement","Chronic","Incidental","Complete Course","Self Apply"};
 
     ArrayAdapter array_adpater;
     int position=0,dosage_position=0,expire_factor;
-    String medcine_category;
-    Date date_get,date_expire;
+
+    Date date_get;
     String[] m_list;
-    private int hour,minute;
 
 
     @Override
@@ -104,8 +102,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         array_adpater = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_list);
         spinner.setAdapter(array_adpater);
 
-        //Reminder setting for medicine
-       // tv_reminder_sw = (TextView) findViewById(R.id.tv_reminder_sw);
 
         et_frequency = (EditText) findViewById(R.id.et_frequency);
         et_interval = (EditText) findViewById(R.id.et_interval);
@@ -119,7 +115,6 @@ public class AddMedicineActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                //medcine_category = m_list[arg2];
                 arg0.setVisibility(View.VISIBLE);
 
                 position=arg2;
@@ -161,7 +156,6 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(AddMedicineActivity.this,"Category Selected Item"+position,Toast.LENGTH_SHORT);
                 toast.show();
-                //position= Arrays.asList(m_category).indexOf(medcine_category);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -248,34 +242,6 @@ public class AddMedicineActivity extends AppCompatActivity {
             }
         });
 
-//        Calendar c1 = Calendar.getInstance();
-//        Calendar c2 = Calendar.getInstance();
-//
-//        if(date_expire == null){
-//            c1.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-//        }else{
-//            c1.setTime(date_expire);
-//        }
-//
-//        if(date_get == null){
-//            c2.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
-//        }else{
-//            c2.setTime(date_get);
-//        }
-//
-//        Log.v("DATE_TEST","XXXXXXXxxxxxxxxxxx______________----------Date Expire"+date_get);
-//
-//        expire_factor = c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
-//
-//        if(expire_factor < 0){
-//            expire_factor = 0;
-//        }else if(expire_factor > 23){
-//            expire_factor = 24;
-//        }else{
-//            expire_factor = expire_factor + 1;
-//        }
-//        //End of computing the expireFactor
-
 
         //attach a listener to check for changes in state
         switch_remind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -355,8 +321,6 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                 Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
                 startActivity(intent_list_category);
-
-                //finish();
 
             }
         });
@@ -626,18 +590,15 @@ public class AddMedicineActivity extends AppCompatActivity {
 
 
                         retVal=true;
-                       // finish();
 
                     }
 
-                    //return true;
 
                 }else{
 
                     Toast toast_error = Toast.makeText(AddMedicineActivity.this,"Some Medicine info is incorrect,please check!",Toast.LENGTH_SHORT);
                     toast_error.show();
                     retVal=false;
-                    //return false;
                 }
         return retVal;
     }
@@ -718,8 +679,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     lGetDate.setError(null);
             }
         });
-
-
 
     }
 }

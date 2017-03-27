@@ -144,7 +144,7 @@ public class MedicineDAO extends DataBaseUtility {
 
             Medicine medicinenode = new Medicine(id, name, des, catid, remid, rem, quantity, dosage, cquantity, threshold, date, expirefactor);
 
-            Log.v("DEBUG", "-------------------------DAO++++++++++++++++++++++ " + medicinenode.toString());
+
 
             medicines.add(medicinenode);
 

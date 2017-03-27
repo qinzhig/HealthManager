@@ -33,7 +33,6 @@ public class DataBaseUtility {
         if(dbManager == null)
             dbManager = DataBaseManager.getDBInstance(mContext);
         database = dbManager.getWritableDatabase();
-        Log.d("inside open",Boolean.toString(database==null));
     }
 
     //close the connection

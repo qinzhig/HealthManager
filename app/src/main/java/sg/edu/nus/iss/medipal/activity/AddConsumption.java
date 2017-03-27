@@ -87,13 +87,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         //listener is added to clear error when input is given
         clearErrorOnTextInput();
 
-        //Log.v("MT","------------------------Cquantity="+medicine.getConsumequantity());
-
-        Log.v("mateng","***************************name"+medicine_name);
-        Log.v("mateng","***************************quantity"+quantity);
-        Log.v("mateng","***************************bundle"+bundleMedicine);
-
-        //view_Quantity.setText(Integer.toString(medicine.getConsumequantity()));
     }
 
     private void clearErrorOnTextInput() {
@@ -111,7 +104,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
     public void onClick(View v) {
         final Calendar calender;
-        int day,month,year,hour,minute;
+        int hour,minute;
 
         if(v == etTime)
         {
@@ -174,7 +167,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         int threshold = healthmanager.getMedicine(medicine_id,getApplicationContext()).getThreshold();
         int enteredQuantity = Integer.valueOf(view_Quantity.getText().toString());
         int totalQuantity = healthmanager.getMedicine(medicine_id, getApplicationContext()).getQuantity();
-        Log.v("MATENG ADDCONSUMPTION","_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+"+medicine_id);
 
         if (input_validate(enteredQuantity,totalQuantity,date,time)) {
 
@@ -191,29 +183,13 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
 
             ConsumptionManager consumptionManager = new ConsumptionManager(this);
 
-            Log.d("consumed Date", consumedDate);
             int consumptionCount = consumptionDAO.getConsumptionCount(Integer.toString(medicine_id), consumedDate);
-            //int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id),consumedDate);
-
-
-            int ReminderId = healthmanager.getMedicine(medicine_id, getApplicationContext()).getReminderId();
-            Log.d("medicine id",Integer.toString(medicine_id));
-            Reminder reminder = healthmanager.getReminder(ReminderId, getApplicationContext());
 
             if (consumptionCount == 0) {
-               // if (reminder != null) {
-                 //   int FrequentNum = reminder.getFrequency();
                     consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
-                   // for (int i = 0; i < (FrequentNum - 1); i++) {
-                   //     consumptionManager.addConsumption(0, medicine_id, 0, date_time);
-                   // }
-                //} else {
-                  //  consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
-               // }
             } else {
                 int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id), consumedDate);
                 consumptionDAO.close();
-                Log.d("min consumption id",Integer.toString(MinConsumptionId));
 
                 if (MinConsumptionId == 0) {
                     consumptionManager.addConsumption(0, medicine_id, enteredQuantity, date_time);
@@ -223,20 +199,13 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
             }
 
 
-
             Medicine medicine = healthmanager.getMedicine(medicine_id, getApplicationContext());
             int newQuantity = totalQuantity - enteredQuantity;
             medicine.setQuantity((newQuantity));
 
             healthmanager.updateMedicineQuantity(medicine,getApplicationContext());
 
-            //have to change this to notification
             if ( newQuantity <= threshold) {
-//                AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-//                dlg.setTitle("Notice");
-//                dlg.setMessage("Dear, you need to replenish the medicine");
-//                dlg.setPositiveButton("OK", null);
-//                dlg.show();
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Calendar calendar =Calendar.getInstance(Locale.getDefault());
@@ -247,15 +216,11 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("ReplenishReminderId",medicine.getId());
                 intent.putExtra("ReplenishNotification",medicine.getMedicine_name()+" need to be replenished");
 
-                Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Replenish Reminder Alarm Send! ");
-
-                //Log.v("Reminder","-------------------<<<<<<<<<<<<<<<< Reminder Alarm Send!  + Start Time = " + stime_hour_min[0] +":"+reminder_min );
 
                 PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(),medicine.getId(), intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_CANCEL_CURRENT);
 
                 //Set up a reminder for replenish
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
 
             }
 
@@ -281,16 +246,15 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         if(totalQuantity == 0) {
             l_Time.setError("Current quantity is 0. Please replenish the medicine");
             validate_status = false;
-            Toast toast = Toast.makeText(AddConsumption.this, "Please Replenish Medicine", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(AddConsumption.this, "Please Reo", Toast.LENGTH_SHORT);
             toast.show();
         } else
         if(quantity > totalQuantity){
             validate_status = false;
             l_Time.setError("Current quantity is "+totalQuantity+". . Please replenish the medicine.");
-            Toast toast = Toast.makeText(AddConsumption.this, "Please Replenish Medicine", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(AddConsumption.this, "Consumption added Successfully!", Toast.LENGTH_SHORT);
             toast.show();
         }
-
 
         if (time.isEmpty()) {
             l_Time.setError("please select a time");
@@ -301,6 +265,5 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         }
         return validate_status;
     }
-
 
 }

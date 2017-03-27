@@ -34,6 +34,12 @@ import sg.edu.nus.iss.medipal.manager.PersonalBioManager;
 import sg.edu.nus.iss.medipal.manager.PreferenceManager;
 import sg.edu.nus.iss.medipal.pojo.PersonalBio;
 
+/**
+ * Created by : Navi on 04-03-2017.
+ * Description : Mother of all activities
+ * Modified by :
+ * Reason for modification :
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -54,7 +60,6 @@ public class MainActivity extends AppCompatActivity
         inHomeFragment = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        Log.d("Activity", "started");
         //setup toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +96,6 @@ public class MainActivity extends AppCompatActivity
             //Get the Medicine replenish reminder notification intent;
             int replenishMedicineNo = intentExtras.getInt("ReplenishReminderId",0);
 
-            Log.d("intent args", notificationContent + " " + notificationId);
 
             if (notificationContent != null && notificationId != null) {
                 showFragment("Appointment", notificationContent, notificationId);
@@ -115,12 +119,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadHomeFragment() {
-        Log.d("Activity", "fragment home load");
+
         //use the appointment view to show in the main page
         resetTitle("Home");
         Fragment fragment = new HomeFragment();
         inHomeFragment = true;
-        //move this to outside when all other modules are implemented using fragments
         //populate the selected view(fragment) in the main page using fragment manager
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -129,20 +132,19 @@ public class MainActivity extends AppCompatActivity
     private void showFragment(String fragmentType, String notificationContent, String notificationId) {
         inHomeFragment = false;
         if (fragmentType.equalsIgnoreCase("Appointment")) {
-            Log.d("Activity", "fragment load");
+
             //use the appointment view to show in the main page
             Fragment fragment = new AppointmentsTabFragment();
             Bundle bundle = new Bundle();
             bundle.putString("notification", notificationContent);
             bundle.putString("Id", notificationId);
             fragment.setArguments(bundle);
-            //move this to outside when all other modules are implemented using fragments
+
             //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }else if(fragmentType.equalsIgnoreCase("Medications"))
         {
-            Log.v("Main Activity","Medication fragement load");
             Fragment fragment = new MedicineFragment();
 
             Bundle bundle = new Bundle();
@@ -213,7 +215,6 @@ public class MainActivity extends AppCompatActivity
             resetTitle("Medications");
             //use the view to show in the main page
             fragment = new MedicineFragment();
-            //move this to outside when all other modules are implemented using fragments
             //populate the selected view(fragment) in the main page using fragment manager
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
@@ -303,6 +304,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         }
         else if(refreshHomeFragment){
+            refreshHomeFragment=false;
             //  if(inHomeFragment)
             loadHomeFragment();
         }

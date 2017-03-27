@@ -40,7 +40,7 @@ import sg.edu.nus.iss.medipal.pojo.Reminder;
  */
 
 public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecyclerAdapter.MedicineViewHolder> {
-    private PreferenceManager medicinePreference;
+
     private Context mContext;
     private HealthManager healthManager ;
     private List<Medicine> medicineList;
@@ -65,8 +65,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         public int quantity,threshold,expirefactor;
         public String dosage_unit,dosage_schedule="";
 
-
-        ConsumptionDAO consumptionDAO;
 
         public ImageView consume;
 
@@ -103,12 +101,12 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
                     //passing the current information to the activity for showing in view
                     Intent updateMedicine = new Intent(mContext, EditMedicineActivity.class);
                     Medicine medicine = medicineList.get(getAdapterPosition());
-                    Log.v("Tag","_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_"+updateMedicine);
+
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("medicineInfo",medicine);
                     updateMedicine.setClass(mContext,EditMedicineActivity.class);
                     updateMedicine.putExtras(bundle);
-                    Log.v("TAG","--------------------MedicineAdapter Update   Object " + medicine.toString());
+
                     ((Activity)mContext).startActivityForResult(updateMedicine,202);
                 }
             });
@@ -212,7 +210,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
     public MedicineRecyclerAdapter(Context mContext, HealthManager healthManager,List<Medicine> medicineList,Boolean fromHomeFragment, AdapterCallbackInterface mCallback) {
         this.mContext = mContext;
         this.healthManager = healthManager;
-        medicinePreference = new PreferenceManager(mContext);
         this.mCallback = mCallback;
         this.medicineList = medicineList;
         this.fromHomeFragment = fromHomeFragment;
@@ -254,7 +251,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         String str = "";
         //End
 
-
         if (reminder != null) {
             Integer remainderFrequency = reminder.getFrequency();
             remainderString = "Medicine should be taken " + remainderFrequency.toString() + " times per day";
@@ -271,7 +267,6 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
             }
             str="> "+str.substring(2);
 
-            Log.v("TEST", "--------------------------Dosage Schedule List" + str);
             //End
 
         } else {

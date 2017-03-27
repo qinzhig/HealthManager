@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -182,7 +181,7 @@ public class ConsumptionDAO extends DataBaseUtility {
                         "min(id)",
                         },selection,selectionArgs,null,null,null);
         int id=-1;
-        Log.d("count",Integer.toString(cursor.getCount()));
+
         //loop through each result set to populate the appointment pojo and add to the list each time
         while (cursor.moveToNext()) {
             id = cursor.getInt(0);
