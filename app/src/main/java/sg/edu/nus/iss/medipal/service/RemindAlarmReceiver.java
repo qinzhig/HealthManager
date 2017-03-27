@@ -42,10 +42,11 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
             Log.v("MedicineReminder","---------------------->+++++++++++Reminder StartTime=" + intent.getStringExtra("StartTime"));
 
             int cReminderID = Integer.valueOf(intent.getStringExtra("ConsumptionReminderId"));
-
+            App.hm.getReminders(context);
             Reminder reminder = App.hm.getReminder(cReminderID/100,context);
 
             if ( (reminder != null) && (cReminderID%100) <= reminder.getFrequency()) {
+                Log.d("Success","yes");
                 int medicineId= intent.getIntExtra("medicineid",0);
                 String dateTime = intent.getStringExtra("StartTime");
 
