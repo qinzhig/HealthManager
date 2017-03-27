@@ -309,7 +309,7 @@ public class MedicineRecyclerAdapter extends RecyclerView.Adapter<MedicineRecycl
         holder.dosage_unit = dosageArray[medicine.getDosage()];
         holder.dosage_schedule = str;
 
-
+        consumptionDAO.close();
     }
 
     @Override
