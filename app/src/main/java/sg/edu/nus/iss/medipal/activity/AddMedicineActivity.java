@@ -454,7 +454,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         if(expire_factor < 1)
         {
             expire_factor = 0;
-            lExpireDate.setError("Medicine Expire Date Month is newer than Issued Date! ");
+            lExpireDate.setError("Expire Month is more than Issue date month");
         }else if(expire_factor>24){
             expire_factor= 24;
 
@@ -548,6 +548,13 @@ public class AddMedicineActivity extends AppCompatActivity {
             validate_status=false;
         }
 
+        if(et_date_get.getText().toString() != null ) {
+            if (!MediPalUtility.isNotFutureDate(et_date_get.getText().toString().trim(),"yyyyMMdd")){
+                lGetDate.setError("Future Date is entered ");
+                validate_status=false;
+            }
+        }
+
         return validate_status;
 
     }
@@ -627,7 +634,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                 }else{
 
-                    Toast toast_error = Toast.makeText(AddMedicineActivity.this,"Some Medicine info incorrect,please check!",Toast.LENGTH_SHORT);
+                    Toast toast_error = Toast.makeText(AddMedicineActivity.this,"Some Medicine info is incorrect,please check!",Toast.LENGTH_SHORT);
                     toast_error.show();
                     retVal=false;
                     //return false;
@@ -702,6 +709,13 @@ public class AddMedicineActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if(s.length() > 0)
                     lExpireDate.setError(null);
+            }
+        });
+        et_date_get.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lGetDate.setError(null);
             }
         });
 

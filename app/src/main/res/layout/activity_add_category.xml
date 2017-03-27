@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    android:maxLength="100"
+                    android:maxLength="3"
                     android:hint="Code(3 letter)"
                     android:theme="@style/EditTextStyle"/>
             </android.support.design.widget.TextInputLayout>

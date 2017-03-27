@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +42,8 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
     private EditText _dateEdit;
     private EditText _timeEdit;
 
+    private TextInputLayout l_sys,l_dys;
+
     private String _systolicStr;
     private String _diastolicStr;
     private String _pulseStr;
@@ -66,6 +70,9 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         _dateEdit = (EditText) findViewById(R.id.measurement_edit_date);
         _timeEdit = (EditText) findViewById(R.id.measurement_edit_time);
 
+        l_sys =(TextInputLayout) findViewById(R.id.measurementsystolic_view) ;
+        l_dys =(TextInputLayout) findViewById(R.id.measurementdiastolic_view) ;
+
         Date day = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_KK:mm a", Locale.getDefault());
         String dateTime = String.valueOf(sdf.format(day));
@@ -78,6 +85,26 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         _dateEdit.setOnClickListener(this);
         _timeEdit.setOnClickListener(this);
 
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
+
+    }
+
+    private void clearErrorOnTextInput() {
+        _systolicEdit.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    l_sys.setError(null);
+            }
+        });
+        _diastolicEdit.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0)
+                    l_dys.setError(null);
+            }
+        });
     }
 
     @Override
@@ -220,7 +247,7 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
 
         if (systolic.isEmpty() && diastolic.isEmpty() && pulse.isEmpty() && temperature.isEmpty() && weight.isEmpty()) {
 
-            Toast.makeText(MeasurementActivity.this, "Please enter atleast one measurement", Toast.LENGTH_LONG).show();
+            Toast.makeText(MeasurementActivity.this, "Please enter at-least one measurement for selected date", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -239,10 +266,10 @@ public class MeasurementActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (!systolic.isEmpty() && diastolic.isEmpty()) {
-            _diastolicEdit.setError("Please enter a diastolic.");
+            l_dys.setError("Please enter a diastolic.");
             valid = false;
         } else if (!diastolic.isEmpty() && systolic.isEmpty()) {
-            _systolicEdit.setError("Please enter a systolic.");
+            l_sys.setError("Please enter a systolic.");
             valid = false;
         }
 

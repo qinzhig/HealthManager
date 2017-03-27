@@ -231,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:ems="7"
                             android:focusable="false"
-                            android:hint="Produce Date"
+                            android:hint="Issue Date"
                             android:inputType="datetime"
                             android:theme="@style/EditTextStyle"
                             android:layout_alignParentTop="true"

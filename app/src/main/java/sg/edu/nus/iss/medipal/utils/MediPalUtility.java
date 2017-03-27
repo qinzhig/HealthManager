@@ -61,6 +61,25 @@ public class MediPalUtility {
         return isValid;
     }
 
+    public static boolean isNotFutureDate(String date,String format) {
+
+        boolean isValid = false;
+
+        try {
+            String dateSplit[] = date.split(" ");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+            Date varDate = dateFormat.parse(dateSplit[2] + dateSplit[1] + dateSplit[0]);
+            dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String convertedDate = dateFormat.format(varDate);
+            String currentDate = convertDateToString(Calendar.getInstance().getTime(), "yyyyMMdd");
+            isValid = (Long.valueOf(currentDate) >= Long.valueOf(convertedDate));
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+
+        return isValid;
+    }
+
     public static Long convertDateTimeToNumber(String DateTime) {
         String dateTimeSplit[] = DateTime.split(" ", 2);
 

@@ -1,14 +1,17 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,12 +40,13 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 public class EditMedicineActivity extends AppCompatActivity {
 
     private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_cquantity,et_threshold,et_frequency,et_interval,et_stime;
     private Spinner spinner,spinner_dosage;
-    Button button_update;
+
     TextView add_category;
     TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
@@ -262,7 +266,7 @@ public class EditMedicineActivity extends AppCompatActivity {
                 Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
                 startActivity(intent_list_category);
 
-                finish();
+               // finish();
 
             }
         });
@@ -335,6 +339,9 @@ public class EditMedicineActivity extends AppCompatActivity {
 //            }
 //        });
 
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
+
     }
 
     @Override
@@ -373,7 +380,18 @@ public class EditMedicineActivity extends AppCompatActivity {
             boolean update_result = update_Medicine();
 
             if(update_result){
-                finish();
+                final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        finish();
+                    }
+                }, 1000);
             }
 
 
@@ -422,7 +440,7 @@ public class EditMedicineActivity extends AppCompatActivity {
         if(expire_factor < 1)
         {
             expire_factor = 0;
-            et_date_expire.setError("Medicine Expire Date Month is newer than Issued Date! ");
+            lExpireDate.setError("Expire Month is more than Issue date month");
         }else if(expire_factor>24){
             expire_factor= 24;
 
@@ -441,21 +459,21 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(frequency.isEmpty())
         {
-            et_frequency.setError("Frequency is empty!");
+            lFrequency.setError("Frequency is empty!");
             reminder_validate_status =false;
         }else if( (!frequency.isEmpty() && (Integer.valueOf(frequency) >24)))
         {
-            et_frequency.setError("Frequency overlap than 24 per day !");
+            lFrequency.setError("Frequency overlap than 24 per day !");
             reminder_validate_status =false;
         }
 
         if(interval.isEmpty())
         {
-            et_interval.setError("Interval is empty!");
+            lInterval.setError("Interval is empty!");
             reminder_validate_status =false;
         }else if( (!interval.isEmpty() && (Integer.valueOf(interval) >24)))
         {
-            et_interval.setError("Interval overlap than 24 per day !");
+            lInterval.setError("Interval overlap than 24 per day !");
             reminder_validate_status =false;
         }
 
@@ -467,9 +485,9 @@ public class EditMedicineActivity extends AppCompatActivity {
         }else if( (!stime.isEmpty()) && (!interval.isEmpty()) && (!stime.isEmpty()) &&
                 ((Integer.valueOf(interval) * Integer.valueOf(frequency) +Integer.valueOf(stime_hour_min[0]) >24) ) ){
 
-            et_interval.setError("Daily Consumption schedule exceed than 24 hours!");
-            et_frequency.setError("Daily Consumption schedule exceed than 24 hours!");
-            et_stime.setError("Daily Consumption schedule exceed than 24 hours!");
+            lInterval.setError("Daily Consumption schedule exceed than 24 hours!");
+            lFrequency.setError("Daily Consumption schedule exceed than 24 hours!");
+            lStartTime.setError("Daily Consumption schedule exceed than 24 hours!");
 
             reminder_validate_status = false;
         }
@@ -484,37 +502,44 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         if(name.isEmpty()){
             //lName.setError("Input a medicine name!");
-            et_name.setError("Name is empty");
+            lName.setError("Name is empty");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            et_des.setError("Description is empty!");
+            lDesc.setError("Description is empty!");
             validate_status = false;
         }
 
         if(quantity.isEmpty() ){
-            et_quanity.setError("Quantity is empty!");
+            lQuantity.setError("Quantity is empty!");
             validate_status = false;
         }
 
         if(cquantity.isEmpty())
         {
-            et_cquantity.setError("Consumption is empty!");
+            lCQuantity.setError("Consumption is empty!");
             validate_status = false;
         }else if( (!cquantity.isEmpty()) && (!quantity.isEmpty()) && (Integer.valueOf(cquantity) > Integer.valueOf(quantity)))
         {
-            et_threshold.setError("Threshold overlap Quantity");
+            lThreshold.setError("Threshold overlap Quantity");
             validate_status=false;
         }
 
         if(threshold.isEmpty()){
-            et_threshold.setError("Threshold is empty!");
+            lThreshold.setError("Threshold is empty!");
             validate_status = false;
         }else if( (!threshold.isEmpty()) && (!quantity.isEmpty()) && (Integer.valueOf(threshold) > Integer.valueOf(quantity)))
         {
-            et_threshold.setError("Threshold overlap Quantity");
+            lThreshold.setError("Threshold overlap Quantity");
             validate_status=false;
+        }
+
+        if(et_date_get.getText().toString() != null ) {
+            if (!MediPalUtility.isNotFutureDate(et_date_get.getText().toString().trim(),"yyyyMMdd")){
+                lGetDate.setError("Future Date is entered ");
+                validate_status=false;
+            }
         }
 
         return validate_status;
@@ -628,6 +653,85 @@ public class EditMedicineActivity extends AppCompatActivity {
 
             return false;
         }
+
+    }
+    private void clearErrorOnTextInput() {
+
+
+        et_name.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lName.setError(null);
+            }
+        });
+
+        et_des.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lDesc.setError(null);
+            }
+        });
+
+        et_quanity.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lQuantity.setError(null);
+            }
+        });
+        et_cquantity.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lCQuantity.setError(null);
+            }
+        });
+        et_threshold.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lThreshold.setError(null);
+            }
+        });
+        et_frequency.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lFrequency.setError(null);
+            }
+        });
+        et_interval.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lInterval.setError(null);
+            }
+        });
+        et_stime.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lStartTime.setError(null);
+            }
+        });
+        et_date_expire.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lExpireDate.setError(null);
+            }
+        });
+        et_date_get.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lGetDate.setError(null);
+            }
+        });
+
+
 
     }
 
