@@ -79,13 +79,13 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                     final String phoneNumber = _contactNo.getText().toString();
                     if(!phoneNumber.isEmpty()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                        builder.setTitle("tel : " + phoneNumber);
+                        builder.setTitle("Tel : " + phoneNumber);
                         builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                             public void onClick(DialogInterface dialog, int i) {
                                 if (i == 0) {
                                     Intent intent = new Intent(Intent.ACTION_CALL);
-                                    intent.setData(Uri.parse("Tel:" + Uri.encode(phoneNumber)));
+                                    intent.setData(Uri.parse("tel:" + Uri.encode(phoneNumber)));
 
                                     if (ContextCompat.checkSelfPermission(((Activity)_context), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                         ActivityCompat.requestPermissions(((Activity)_context), new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
