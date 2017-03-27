@@ -1,9 +1,6 @@
 package sg.edu.nus.iss.medipal.activity;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +8,6 @@ import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -39,6 +35,8 @@ public class EditCategoryActivity  extends AppCompatActivity{
     private boolean remind_status;
     private Category category;
 
+    String old_category_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,14 +57,15 @@ public class EditCategoryActivity  extends AppCompatActivity{
         et_des = (EditText) findViewById(R.id.et_des);
         switch_remind = (Switch) findViewById(R.id.switch_remind);
 
+        //Store the old_category_name
+        old_category_name = category.getCategory_name();
 
+        //Restore the old category info in the edit category view
         et_name.setText(category.getCategory_name());
         et_code.setText(category.getCategory_code());
         et_des.setText(category.getCategory_des());
         switch_remind.setChecked(category.getRemind());
 
-        //set the switch to ON
-        switch_remind.setChecked(true);
         //attach a listener to check for changes in state
         switch_remind.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -126,21 +125,6 @@ public class EditCategoryActivity  extends AppCompatActivity{
         if(name.isEmpty()){
             l_name.setError("Please input a Category Name!");
             validate_status = false;
-        }else{
-
-            validate_status = true;
-
-            Iterator<Category> c_list = App.hm.getCategorys(getApplicationContext()).iterator();
-
-            while(c_list.hasNext()){
-
-                //Determine whether already exist a Category shortname with current one
-                if(name.equals(c_list.next().getCategory_name())){
-                    validate_status = false;
-                    l_name.setError("Already Exist a same Category Name!");
-                    break;
-                }
-            }
         }
 
         if(code.isEmpty() || code.length() != 3){
@@ -153,6 +137,26 @@ public class EditCategoryActivity  extends AppCompatActivity{
             validate_status = false;
         }
 
+
+        return validate_status;
+
+    }
+
+    public boolean duplicate_check(String name){
+
+        boolean validate_status = false;
+
+        Iterator<Category> c_list = App.hm.getCategorys(getApplicationContext()).iterator();
+
+        while(c_list.hasNext()) {
+
+            //Determine whether already exist a Category name same with new input one
+            if (name.equals(c_list.next().getCategory_name())) {
+                validate_status = true;
+                l_name.setError("Already Exist a same Category Name!");
+                break;
+            }
+        }
 
         return validate_status;
 
@@ -180,26 +184,41 @@ public class EditCategoryActivity  extends AppCompatActivity{
         }
         if (id == R.id.action_done) {
 
-            if(input_validate(et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim())){
-                App.hm.updateCategory(category.getId(),et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
+            boolean validate_status = input_validate(et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim());
 
-                final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Saving...");
-                progressDialog.show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        Toast toast = Toast.makeText(EditCategoryActivity.this,"Category Updated Successfully!",Toast.LENGTH_SHORT);
+            //Check and validate the input info
+            if(validate_status) {
+
+                //If the the unique category name not Changed and input all validate,just update the current category info in DB
+                if(old_category_name.equals(et_name.getText().toString().trim())){
+                    App.hm.updateCategory(category.getId(),et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
+
+                    Toast toast = Toast.makeText(EditCategoryActivity.this,"update category successfully!",Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    finish();
+
+                }else{
+                    //If the new category name already exist
+                    if(duplicate_check(et_name.getText().toString().trim())){
+
+                        Toast toast = Toast.makeText(EditCategoryActivity.this,"Same category already exist,change a new Name!",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else{
+                        //If the new category not find in the db,update the same record with name and also update the other properties in the same time
+                        App.hm.updateCategory(category.getId(),et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
+
+                        Toast toast = Toast.makeText(EditCategoryActivity.this,"Update category successfully!",Toast.LENGTH_SHORT);
                         toast.show();
 
                         finish();
                     }
-                }, 1000);
+                }
 
 
+            }else{
+                Toast toast = Toast.makeText(EditCategoryActivity.this,"Some input incorrect,pls Check!",Toast.LENGTH_SHORT);
+                toast.show();
             }
 
         }

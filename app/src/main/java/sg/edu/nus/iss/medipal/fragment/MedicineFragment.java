@@ -23,7 +23,7 @@ import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.AddMedicineActivity;
 import sg.edu.nus.iss.medipal.adapter.MedicineRecyclerAdapter;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.manager.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 
 /**

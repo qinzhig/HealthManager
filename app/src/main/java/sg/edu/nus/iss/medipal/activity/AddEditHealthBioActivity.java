@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +31,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/15/2017.
+ * Description: This class handles the Add and Edit Health bio functions
  */
 
 public class AddEditHealthBioActivity extends AppCompatActivity implements View.OnClickListener {
@@ -44,7 +44,7 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
     Calendar currentCal = Calendar.getInstance();
     private String conditionStr, conditionTypeStr;
     private Date startDt;
-    private static String[] CONDITION_TYPE = {"Illness", "Allergy"};
+    private static String[] CONDITION_TYPE = {"Condition", "Allergy"};
     private boolean isFirst = false;
 
     @Override

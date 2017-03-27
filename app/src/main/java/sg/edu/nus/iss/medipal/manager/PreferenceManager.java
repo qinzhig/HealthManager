@@ -7,8 +7,8 @@ import android.content.SharedPreferences.Editor;
 /**
  * Created by : Navi on 04-03-2017.
  * Description : This is the container for shared preferences
- * Modified by :
- * Reason for modification :
+ * Modified by : Divahar on 3/21/2017
+ * Reason for modification : Added shared preference for help screens
  */
 public class PreferenceManager {
 

@@ -5,7 +5,6 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import sg.edu.nus.iss.medipal.asynTask.AddConsumption;
@@ -14,9 +13,6 @@ import sg.edu.nus.iss.medipal.asynTask.ListConsumption;
 import sg.edu.nus.iss.medipal.asynTask.UpdateConsumption;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
-import sg.edu.nus.iss.medipal.pojo.Medicine;
-import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 /**
  * Created by : Ma teng on 07-03-2017.

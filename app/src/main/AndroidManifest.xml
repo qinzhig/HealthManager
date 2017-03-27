@@ -64,18 +64,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ConsumptionActivity"
-            android:label="Consumption"
-            android:parentActivityName=".activity.MainActivity" />
-        <activity
-            android:name=".activity.ConsumptionDetail"
-            android:label="consumption data"
-            android:parentActivityName=".activity.ConsumptionActivity" />
-        <activity
-            android:name=".activity.UncomsumedActivity"
-            android:label="Unconsumed History"
-            android:parentActivityName=".activity.ConsumptionDetail" />
-        <activity
             android:name=".activity.AddConsumption"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -89,9 +77,6 @@
             android:label="MeasurementDetail"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.EditConsumptionActivity"
-            android:parentActivityName=".activity.ConsumptionActivity"/>
         <activity
             android:name=".activity.EditCategoryActivity"
             android:label="EditCategory"
