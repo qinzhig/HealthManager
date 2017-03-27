@@ -250,7 +250,6 @@ public class ReportFragment extends Fragment {
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
-                tv.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
                 tv.setGravity(Gravity.CENTER);
