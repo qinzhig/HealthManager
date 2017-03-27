@@ -1,13 +1,17 @@
 package sg.edu.nus.iss.medipal.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -31,6 +36,7 @@ import java.util.Locale;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by : Qin Zhi Guo on 10-03-2017.
@@ -44,7 +50,8 @@ public class AddMedicineActivity extends AppCompatActivity {
     private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_frequency,et_interval,et_stime,et_cquantity,et_threshold;
     private Spinner spinner,spinner_dosage;
 
-    ImageButton button_add_category;
+    //ImageButton button_add_category;
+    TextView add_category;
     TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
     private Switch switch_remind;
@@ -108,6 +115,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         switch_remind = (Switch) findViewById(R.id.switch_remind);
 
 
+
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -119,7 +127,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 if(position>0 && position <4){
 
                     switch_remind.setChecked(true);
-                    switch_remind.setVisibility(View.INVISIBLE);
+                    switch_remind.setVisibility(View.GONE);
 
 
                     lFrequency.setVisibility(View.VISIBLE);
@@ -338,9 +346,9 @@ public class AddMedicineActivity extends AppCompatActivity {
 
 
         //If doesn't found the category in the List,choose to add a new one
-        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
-
-        button_add_category.setOnClickListener(new View.OnClickListener() {
+        add_category = (TextView) findViewById(R.id.button_add_category);
+        add_category.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        add_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -348,10 +356,13 @@ public class AddMedicineActivity extends AppCompatActivity {
                 Intent intent_list_category= new Intent(getApplicationContext(), ListCategory.class);
                 startActivity(intent_list_category);
 
-                finish();
+                //finish();
 
             }
         });
+
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
     }
 
     @Override
@@ -406,7 +417,19 @@ public class AddMedicineActivity extends AppCompatActivity {
             boolean update_result = saveMedicine();
 
             if(update_result){
-                finish();
+                final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        finish();
+                    }
+                }, 1000);
+
             }
 
 
@@ -420,37 +443,21 @@ public class AddMedicineActivity extends AppCompatActivity {
         String[] date1= date_issued.split(" ");
         String[] date2= date_expire.split(" ");
 
-        int year_gap,month_gap,day_gap,expire_factor=0;
+        int year2=Integer.valueOf(date2[2]);
+        int year1=Integer.valueOf(date1[2]);
+        int month2=Integer.valueOf(date2[1]);
+        int month1=Integer.valueOf(date1[1]);
 
-        year_gap = Integer.valueOf(date2[2]) - Integer.valueOf(date1[2]);
-        month_gap = Integer.valueOf(date2[1]) - Integer.valueOf(date1[1]);
-        day_gap = Integer.valueOf(date2[0]) - Integer.valueOf(date1[0]);
+        expire_factor= (year2*12+month2) - (year1*12+month1);
 
-        if(year_gap >= 0)
+
+        if(expire_factor < 1)
         {
-            if(month_gap >= 0)
-            {
-                if(day_gap >=0)
-                {
-                    expire_factor = year_gap*12 + month_gap;
-                    if(expire_factor > 24)
-                    {
-                        expire_factor=24;
-                    }
-                }
-                else{
-                    expire_factor = -1;
-                }
-            }else{
-                expire_factor = -1;
-            }
-        }else{
-            expire_factor = -1;
-        }
+            expire_factor = 0;
+            lExpireDate.setError("Medicine Expire Date Month is newer than Issued Date! ");
+        }else if(expire_factor>24){
+            expire_factor= 24;
 
-        if(expire_factor == -1)
-        {
-            et_date_expire.setError("Medicine Expire Date is newer than Issued Date! ");
         }
 
         return expire_factor;
@@ -465,35 +472,35 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(frequency.isEmpty())
         {
-            et_frequency.setError("Frequency is empty!");
+            lFrequency.setError("Frequency is empty!");
             reminder_validate_status =false;
         }else if( (!frequency.isEmpty() && (Integer.valueOf(frequency) >24)))
         {
-            et_frequency.setError("Frequency overlap than 24 per day !");
+            lFrequency.setError("Frequency overlap than 24 per day !");
             reminder_validate_status =false;
         }
 
         if(interval.isEmpty())
         {
-            et_interval.setError("Interval is empty!");
+            lInterval.setError("Interval is empty!");
             reminder_validate_status =false;
         }else if( (!interval.isEmpty() && (Integer.valueOf(interval) >24)))
         {
-            et_interval.setError("Interval overlap than 24 per day !");
+            lInterval.setError("Interval overlap than 24 per day !");
             reminder_validate_status =false;
         }
 
 
         if(stime.isEmpty())
         {
-            et_stime.setError("Consumption Reminder StartTime is empty!");
+            lStartTime.setError("Consumption Reminder StartTime is empty!");
             reminder_validate_status = false;
         }else if( (!stime.isEmpty()) && (!interval.isEmpty()) && (!stime.isEmpty()) &&
                 ((Integer.valueOf(interval) * Integer.valueOf(frequency) +Integer.valueOf(stime_hour_min[0]) >24) ) ){
 
-            et_interval.setError("Daily Consumption schedule exceed than 24 hours!");
-            et_frequency.setError("Daily Consumption schedule exceed than 24 hours!");
-            et_stime.setError("Daily Consumption schedule exceed than 24 hours!");
+            lInterval.setError("Daily Consumption schedule exceed than 24 hours!");
+            lFrequency.setError("Daily Consumption schedule exceed than 24 hours!");
+            lStartTime.setError("Daily Consumption schedule exceed than 24 hours!");
 
             reminder_validate_status = false;
         }
@@ -508,36 +515,36 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(name.isEmpty()){
             //lName.setError("Input a medicine name!");
-            et_name.setError("Name is empty");
+            lName.setError("Name is empty");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            et_des.setError("Description is empty!");
+            lDesc.setError("Description is empty!");
             validate_status = false;
         }
 
         if(quantity.isEmpty() ){
-            et_quanity.setError("Quantity is empty!");
+            lQuantity.setError("Quantity is empty!");
             validate_status = false;
         }
 
         if(cquantity.isEmpty())
         {
-            et_cquantity.setError("Consumption is empty!");
+            lCQuantity.setError("Consumption is empty!");
             validate_status = false;
         }else if( (!cquantity.isEmpty()) && (!quantity.isEmpty()) && (Integer.valueOf(cquantity) > Integer.valueOf(quantity)))
         {
-            et_threshold.setError("Threshold overlap Quantity");
+            lThreshold.setError("Threshold overlap Quantity");
             validate_status=false;
         }
 
         if(threshold.isEmpty()){
-            et_threshold.setError("Threshold is empty!");
+            lThreshold.setError("Threshold is empty!");
             validate_status = false;
         }else if( (!threshold.isEmpty()) && (!quantity.isEmpty()) && (Integer.valueOf(threshold) > Integer.valueOf(quantity)))
         {
-            et_threshold.setError("Threshold overlap Quantity");
+            lThreshold.setError("Threshold overlap Quantity");
             validate_status=false;
         }
 
@@ -563,7 +570,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 expire_factor= caculate_expireFactor(et_date_get.getText().toString(),et_date_expire.getText().toString());
 
                 //Medicine related data matches the requirement and passed the validation
-                if(no_input_invalidate && (expire_factor != -1)) {
+                if(no_input_invalidate && (expire_factor > 0)) {
 
                     //If the reminder is set to True and reminder related info like:interval,frequency,startime passed the validation
                     if(remind_status ){
@@ -589,14 +596,14 @@ public class AddMedicineActivity extends AppCompatActivity {
                             //finish();
                             retVal = true;
 
-                            return true;
+                          //  return true;
 
                         }else{
 
                             Toast toast = Toast.makeText(AddMedicineActivity.this,"Reminder info incorrect!",Toast.LENGTH_SHORT);
                             toast.show();
 
-                            return false;
+                           // return false;
                         }
 
 
@@ -628,4 +635,77 @@ public class AddMedicineActivity extends AppCompatActivity {
         return retVal;
     }
 
+
+    private void clearErrorOnTextInput() {
+
+
+        et_name.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lName.setError(null);
+            }
+        });
+
+        et_des.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lDesc.setError(null);
+            }
+        });
+
+        et_quanity.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lQuantity.setError(null);
+            }
+        });
+        et_cquantity.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lCQuantity.setError(null);
+            }
+        });
+        et_threshold.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lThreshold.setError(null);
+            }
+        });
+        et_frequency.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lFrequency.setError(null);
+            }
+        });
+        et_interval.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lInterval.setError(null);
+            }
+        });
+        et_stime.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lStartTime.setError(null);
+            }
+        });
+        et_date_expire.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    lExpireDate.setError(null);
+            }
+        });
+
+
+
+    }
 }

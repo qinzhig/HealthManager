@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +43,7 @@ public class EditMedicineActivity extends AppCompatActivity {
     private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_cquantity,et_threshold,et_frequency,et_interval,et_stime;
     private Spinner spinner,spinner_dosage;
     Button button_update;
-    ImageButton button_add_category;
+    TextView add_category;
     TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
@@ -251,9 +253,9 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
-        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
-
-        button_add_category.setOnClickListener(new View.OnClickListener() {
+        add_category = (TextView) findViewById(R.id.button_add_category);
+        add_category.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        add_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -409,37 +411,21 @@ public class EditMedicineActivity extends AppCompatActivity {
         String[] date1= date_issued.split(" ");
         String[] date2= date_expire.split(" ");
 
-        int year_gap,month_gap,day_gap,expire_factor=0;
+        int year2=Integer.valueOf(date2[2]);
+        int year1=Integer.valueOf(date1[2]);
+        int month2=Integer.valueOf(date2[1]);
+        int month1=Integer.valueOf(date1[1]);
 
-        year_gap = Integer.valueOf(date2[2]) - Integer.valueOf(date1[2]);
-        month_gap = Integer.valueOf(date2[1]) - Integer.valueOf(date1[1]);
-        day_gap = Integer.valueOf(date2[0]) - Integer.valueOf(date1[0]);
+        expire_factor= (year2*12+month2) - (year1*12+month1);
 
-        if(year_gap >= 0)
+
+        if(expire_factor < 1)
         {
-            if(month_gap >= 0)
-            {
-                if(day_gap >=0)
-                {
-                    expire_factor = year_gap*12 + month_gap;
-                    if(expire_factor > 24)
-                    {
-                        expire_factor=24;
-                    }
-                }
-                else{
-                    expire_factor = -1;
-                }
-            }else{
-                expire_factor = -1;
-            }
-        }else{
-            expire_factor = -1;
-        }
+            expire_factor = 0;
+            et_date_expire.setError("Medicine Expire Date Month is newer than Issued Date! ");
+        }else if(expire_factor>24){
+            expire_factor= 24;
 
-        if(expire_factor == -1)
-        {
-            et_date_expire.setError("Medicine Expire Date is newer than Issued Date! ");
         }
 
         return expire_factor;
@@ -553,7 +539,7 @@ public class EditMedicineActivity extends AppCompatActivity {
 
         expire_factor = caculate_expireFactor(et_date_get.getText().toString(),et_date_expire.getText().toString());
 
-        if( no_input_invalidate  && (expire_factor>=0)) {
+        if( no_input_invalidate  && (expire_factor > 0 )) {
 
             if( remind_status == true ){
 

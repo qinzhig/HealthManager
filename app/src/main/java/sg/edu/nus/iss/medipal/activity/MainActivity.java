@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         //setup toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(null);
 
         //set up navigation drawer for showing the menu items
         setupNavDrawer();
