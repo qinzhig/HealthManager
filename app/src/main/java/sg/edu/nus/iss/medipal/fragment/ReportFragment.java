@@ -29,6 +29,7 @@ import sg.edu.nus.iss.medipal.manager.ReportManager;
 
 /**
  * Created by Divahar on 3/19/2017.
+ * Description: This fragment is used to display the reports based on filter conditions user selects
  */
 
 public class ReportFragment extends Fragment {

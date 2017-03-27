@@ -180,7 +180,7 @@ public class ReportManager {
         boolean isWeight = false;
         PersonalBioDAO personalBioDAO =
                 new PersonalBioDAO(context);
-        float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
+        int height = personalBioDAO.retrieve().getHeight();
         float heightBmi = height * height;
 
         for (Weight weight : weightList) {
@@ -205,7 +205,7 @@ public class ReportManager {
 
 
             String[] rowArr = {String.valueOf(weight.getWeight()),
-                    MediPalUtility.convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd HH:mm"), String.valueOf(bmi) + " - " + bmiInd};
+                    MediPalUtility.convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd HH:mm"), String.valueOf(bmi/10000) + " - " + bmiInd};
 
             for (String row : rowArr) {
                 TextView tv = new TextView(context);
@@ -400,7 +400,7 @@ public class ReportManager {
 
         PersonalBioDAO personalBioDAO =
                 new PersonalBioDAO(context);
-        float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
+        int height = personalBioDAO.retrieve().getHeight();
         float heightBmi = height * height;
 
         for (Weight weight : weightList) {
@@ -425,7 +425,7 @@ public class ReportManager {
             String weightInp = String.valueOf(weight.getWeight());
             String measuredOn = MediPalUtility.
                     convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd");
-            String bmiCsv = String.valueOf(bmi) + " - " + bmiInd;
+            String bmiCsv = String.valueOf(bmi/10000) + " - " + bmiInd;
 
 
             csvStr.append(weightInp).append(",");

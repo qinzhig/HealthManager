@@ -40,6 +40,7 @@ import sg.edu.nus.iss.medipal.pojo.Weight;
 
 /**
  * Created by Divahar on 3/25/2017.
+ * Description: This fragment is used to display all or different measurements based on filter conditions
  */
 
 public class MeasurementFragment extends Fragment implements View.OnClickListener {
@@ -101,7 +102,7 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
         if (_measurementList.isEmpty()) {
             LinearLayout linearLayout = (LinearLayout) measurementFragment.findViewById(R.id.measurement_layout);
             linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            _measurementNotification.setText("No Measurements found for the day");
+            _measurementNotification.setText("No Measurements found");
             _measurementNotification.setVisibility(View.VISIBLE);
         } else {
             populateRecyclerView();
@@ -173,7 +174,7 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
             populateRecyclerView();
 
             if (isChange && refinedList.size() == 0) {
-                _measurementNotification.setText("No Measurements found for the day");
+                _measurementNotification.setText("No Measurements found");
                 _measurementNotification.setVisibility(View.VISIBLE);
             }
         } else {
@@ -183,7 +184,7 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
             _measurementListView.setAdapter(_measurementAdapter);
             LinearLayout linearLayout = (LinearLayout) measurementFragment.findViewById(R.id.measurement_layout);
             linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            _measurementNotification.setText("No Measurements found for the day");
+            _measurementNotification.setText("No Measurements found");
             _measurementNotification.setVisibility(View.VISIBLE);
         }
     }
