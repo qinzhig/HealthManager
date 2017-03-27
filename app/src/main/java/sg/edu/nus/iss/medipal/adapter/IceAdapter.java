@@ -85,7 +85,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                             public void onClick(DialogInterface dialog, int i) {
                                 if (i == 0) {
                                     Intent intent = new Intent(Intent.ACTION_CALL);
-                                    intent.setData(Uri.parse("Tel:" + Uri.encode(phoneNumber)));
+                                    intent.setData(Uri.parse("tel:" + Uri.encode(phoneNumber)));
 
                                     if (ContextCompat.checkSelfPermission(((Activity)_context), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                         ActivityCompat.requestPermissions(((Activity)_context), new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
