@@ -443,37 +443,21 @@ public class AddMedicineActivity extends AppCompatActivity {
         String[] date1= date_issued.split(" ");
         String[] date2= date_expire.split(" ");
 
-        int year_gap,month_gap,day_gap,expire_factor=0;
+        int year2=Integer.valueOf(date2[2]);
+        int year1=Integer.valueOf(date1[2]);
+        int month2=Integer.valueOf(date2[1]);
+        int month1=Integer.valueOf(date1[1]);
 
-        year_gap = Integer.valueOf(date2[2]) - Integer.valueOf(date1[2]);
-        month_gap = Integer.valueOf(date2[1]) - Integer.valueOf(date1[1]);
-        day_gap = Integer.valueOf(date2[0]) - Integer.valueOf(date1[0]);
+        expire_factor= (year2*12+month2) - (year1*12+month1);
 
-        if(year_gap >= 0)
+
+        if(expire_factor < 1)
         {
-            if(month_gap >= 0)
-            {
-                if(day_gap >=0)
-                {
-                    expire_factor = year_gap*12 + month_gap;
-                    if(expire_factor > 24)
-                    {
-                        expire_factor=24;
-                    }
-                }
-                else{
-                    expire_factor = -1;
-                }
-            }else{
-                expire_factor = -1;
-            }
-        }else{
-            expire_factor = -1;
-        }
+            expire_factor = 0;
+            lExpireDate.setError("Medicine Expire Date Month is newer than Issued Date! ");
+        }else if(expire_factor>24){
+            expire_factor= 24;
 
-        if(expire_factor == -1)
-        {
-            lExpireDate.setError("Medicine Expire Date is newer than Issued Date! ");
         }
 
         return expire_factor;
@@ -586,7 +570,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 expire_factor= caculate_expireFactor(et_date_get.getText().toString(),et_date_expire.getText().toString());
 
                 //Medicine related data matches the requirement and passed the validation
-                if(no_input_invalidate && (expire_factor != -1)) {
+                if(no_input_invalidate && (expire_factor > 0)) {
 
                     //If the reminder is set to True and reminder related info like:interval,frequency,startime passed the validation
                     if(remind_status ){

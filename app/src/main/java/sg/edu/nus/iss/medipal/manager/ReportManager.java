@@ -33,6 +33,7 @@ public class ReportManager {
     private static List<Weight> weightList = null;
     private static List<Consumption> unConsumptionList = null;
     private static List<Consumption> consumptionList = null;
+    private static List<BloodPressure> bpList = null;
 
     public static TableRow addHeaders(String[] headerArr,
                                       Context context) {
@@ -70,6 +71,7 @@ public class ReportManager {
         pulseList = new ArrayList<Pulse>();
         tempList = new ArrayList<Temperature>();
         weightList = new ArrayList<Weight>();
+        bpList = new ArrayList<BloodPressure>();
 
         for (Object object : measurementList) {
 
@@ -77,6 +79,9 @@ public class ReportManager {
             if (object instanceof BloodPressure) {
                 BloodPressure pressure =
                         (BloodPressure) object;
+
+                bpList.add(pressure);
+
                 String[] rowArr = {String.valueOf(pressure.getSystolic()),
                         String.valueOf(pressure.getDiastolic()), MediPalUtility.
                         convertDateToString(pressure.getMeasuredOn(), "yyyy MMM dd HH:mm"), "120/80 to 140/90"};
@@ -116,7 +121,7 @@ public class ReportManager {
     }
 
     public static boolean addPulse(Context context,
-                                       TableLayout tableLayout) {
+                                   TableLayout tableLayout) {
 
         boolean isPulse = false;
 
@@ -144,7 +149,7 @@ public class ReportManager {
     }
 
     public static boolean addTemperature(Context context,
-                                             TableLayout tableLayout) {
+                                         TableLayout tableLayout) {
 
         boolean isTemp = false;
 
@@ -170,7 +175,7 @@ public class ReportManager {
     }
 
     public static boolean addWeight(Context context,
-                                        TableLayout tableLayout) {
+                                    TableLayout tableLayout) {
 
         boolean isWeight = false;
         PersonalBioDAO personalBioDAO =
@@ -267,7 +272,7 @@ public class ReportManager {
     }
 
     public static boolean addUnconsumption(Context context,
-                                               TableLayout tableLayout) {
+                                           TableLayout tableLayout) {
 
         MedicineDAO medicineDAO
                 = new MedicineDAO(context);
@@ -301,11 +306,181 @@ public class ReportManager {
         return isUnconsump;
     }
 
+    public static String addBptoCsv(String[] headerArr,
+                                    Context context) {
+
+
+        csvStr = new StringBuilder();
+
+        csvStr.append("Blood Pressure").append("\n");
+
+        for (String header : headerArr) {
+            csvStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                csvStr.append(",");
+            }
+        }
+
+        csvStr.append("\n");
+
+        for (BloodPressure pressure : bpList) {
+
+            String systolic = String.valueOf(pressure.getSystolic());
+            String diastolic = String.valueOf(pressure.getDiastolic());
+            String measuredOn = MediPalUtility.
+                    convertDateToString(pressure.getMeasuredOn(), "yyyy MMM dd");
+            String refRange = "120/80 to 140/90";
+
+
+            csvStr.append(systolic).append(",");
+            csvStr.append(diastolic).append(",");
+            csvStr.append(measuredOn).append(",");
+            csvStr.append(refRange);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
+    }
+
+    public static String addPulseToCsv(String[] headerArr,
+                                       Context context) {
+
+
+        csvStr = new StringBuilder();
+
+        csvStr.append("Pulse").append("\n");
+
+        for (String header : headerArr) {
+            csvStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                csvStr.append(",");
+            }
+        }
+
+        csvStr.append("\n");
+
+        for (Pulse pulse : pulseList) {
+
+            String pulseInp = String.valueOf(pulse.getPulse());
+            String measuredOn = MediPalUtility.
+                    convertDateToString(pulse.getMeasuredOn(), "yyyy MMM dd");
+            String refRange = "60 to 100";
+
+
+            csvStr.append(pulseInp).append(",");
+            csvStr.append(measuredOn).append(",");
+            csvStr.append(refRange);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
+    }
+
+    public static String addWeightToCsv(String[] headerArr,
+                                        Context context) {
+
+
+        csvStr = new StringBuilder();
+
+        csvStr.append("Weight").append("\n");
+
+        for (String header : headerArr) {
+            csvStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                csvStr.append(",");
+            }
+        }
+
+        csvStr.append("\n");
+
+        PersonalBioDAO personalBioDAO =
+                new PersonalBioDAO(context);
+        float height = (float) (personalBioDAO.retrieve().getHeight() / 100);
+        float heightBmi = height * height;
+
+        for (Weight weight : weightList) {
+
+            float weightBmi = weight.getWeight();
+            float bmi = weightBmi / heightBmi;
+
+            String bmiInd = "";
+
+            if (bmi < 18.5) {
+                bmiInd = "Underweight";
+            } else if (bmi >= 18.5 &&
+                    bmi < 25) {
+                bmiInd = "Normal";
+            } else if (bmi >= 25 &&
+                    bmi < 30) {
+                bmiInd = "Overweight";
+            } else {
+                bmiInd = "Obese";
+            }
+
+            String weightInp = String.valueOf(weight.getWeight());
+            String measuredOn = MediPalUtility.
+                    convertDateToString(weight.getMeasuredOn(), "yyyy MMM dd");
+            String bmiCsv = String.valueOf(bmi) + " - " + bmiInd;
+
+
+            csvStr.append(weightInp).append(",");
+            csvStr.append(measuredOn).append(",");
+            csvStr.append(bmiCsv);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
+    }
+
+    public static String addTemperatureToCsv(String[] headerArr,
+                                             Context context) {
+
+
+        csvStr = new StringBuilder();
+
+        csvStr.append("Temperature").append("\n");
+
+        for (String header : headerArr) {
+            csvStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                csvStr.append(",");
+            }
+        }
+
+        csvStr.append("\n");
+
+        for (Temperature temperature : tempList) {
+
+            String tempInp = String.valueOf(temperature.getTemperature());
+            String measuredOn = MediPalUtility.
+                    convertDateToString(temperature.getMeasuredOn(), "yyyy MMM dd");
+            String refRange = "97 to 99";
+
+
+            csvStr.append(tempInp).append(",");
+            csvStr.append(measuredOn).append(",");
+            csvStr.append(refRange);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
+    }
+
     public static String addConsumptionToCsv(String[] headerArr,
                                              Context context) {
 
 
         csvStr = new StringBuilder();
+
+        csvStr.append("Consumption").append("\n");
 
         for (String header : headerArr) {
             csvStr.append(header);
@@ -329,13 +504,54 @@ public class ReportManager {
 
 
             csvStr.append(medcineName).append(",");
-            csvStr.append(String.valueOf(quantity));
-            csvStr.append(consumedOn).append(",");
+            csvStr.append(String.valueOf(quantity)).append(",");
+            csvStr.append(consumedOn);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
+    }
+
+    public static String addUnconsumpToCsv(String[] headerArr,
+                                           Context context) {
+
+
+        csvStr = new StringBuilder();
+
+        csvStr.append("Unconsumption").append("\n");
+
+        for (String header : headerArr) {
+            csvStr.append(header);
+
+            if (!header.equals(headerArr[headerArr.length - 1])) {
+                csvStr.append(",");
+            }
         }
 
         csvStr.append("\n");
 
-        return  csvStr.toString();
+        MedicineDAO medicineDAO
+                = new MedicineDAO(context);
+
+
+        for (Consumption consumption : unConsumptionList) {
+
+            List<String> medList = medicineDAO.
+                    getMedNameQty(consumption.getMedicineId());
+            String medName = medList.get(0);
+            String missConsump = consumption.getConsumedOn();
+            String missQty = medList.get(1);
+
+
+            csvStr.append(medName).append(",");
+            csvStr.append(missQty).append(",");
+            csvStr.append(missConsump);
+        }
+
+        csvStr.append("\n").append("\n");
+
+        return csvStr.toString();
     }
 }
 
