@@ -272,9 +272,42 @@ public class ReportFragment extends Fragment {
 
     private String addContentToCsv() {
 
-        return ReportManager.
-                addConsumptionToCsv(consumptionArr, getContext());
+        String toCsvStr = "";
 
+        if (report.equals("BP Measurement") ||
+                report.equals("All Measurements")) {
+            String bp = ReportManager.
+                    addBptoCsv(bpArr, getContext());
+            toCsvStr = toCsvStr + bp;
+        }
+
+        if (report.equals("Pulse Measurement")
+                || report.equals("All Measurements")) {
+            String pulse = ReportManager.addPulseToCsv(pulseArr, getContext());
+            toCsvStr = toCsvStr + pulse;
+        }
+
+        if (report.equals("Temperature Measurement")
+                || report.equals("All Measurements")) {
+            String temperature = ReportManager.addTemperatureToCsv(tempArr, getContext());
+            toCsvStr = toCsvStr + temperature;
+        }
+
+        if (report.equals("Weight Measurement")
+                || report.equals("All Measurements")) {
+            String weight = ReportManager.addWeightToCsv(weightArr, getContext());
+            toCsvStr = toCsvStr + weight;
+        }
+
+        if (report.equals("Consumed and Unconsumed Medicines")
+                || report.equals("All Measurements")) {
+            String consumption = ReportManager.addConsumptionToCsv(consumptionArr, getContext());
+            String unConsump = ReportManager.addUnconsumpToCsv(unconsumptionArr, getContext());
+
+            toCsvStr = toCsvStr + consumption;
+            toCsvStr = toCsvStr + unConsump;
+        }
+        return toCsvStr;
     }
 
 }
