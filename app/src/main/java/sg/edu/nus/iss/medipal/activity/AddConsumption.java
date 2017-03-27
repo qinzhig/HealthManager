@@ -27,7 +27,7 @@ import java.util.Locale;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.manager.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
 import sg.edu.nus.iss.medipal.pojo.Reminder;
 import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
@@ -78,10 +78,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         Bundle bundleMedicine = getIntent().getExtras();
         medicine_id = bundleMedicine.getInt("medicine_id");
 
-        Intent transferMedicineId = new Intent(getApplicationContext(),ConsumptionDetail.class);
-        transferMedicineId.putExtra("medicine_id",medicine_id);
-        Intent transferMedicineIdtoUnconsumption = new Intent(getApplicationContext(),UncomsumedActivity.class);
-        transferMedicineIdtoUnconsumption.putExtra("medicine_id",medicine_id);
 
         medicine_name = healthmanager.getMedicine(medicine_id,getApplicationContext()).getMedicine_name();
         quantity = healthmanager.getMedicine(medicine_id,getApplicationContext()).getConsumequantity();
@@ -191,8 +187,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
         if (input_validate(enteredQuantity,totalQuantity,date,time)) {
 
             final String date_time = date + " " + time;
-            Intent transferDate_time = new Intent(getApplicationContext(), ConsumptionDetail.class);
-            transferDate_time.putExtra("ConsumedOn", date_time);
 
             ConsumptionDAO consumptionDAO = new ConsumptionDAO(this);
 
@@ -282,10 +276,6 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 public void run() {
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
-                    Intent i = new Intent(getApplicationContext(), ConsumptionActivity.class);
-                    i.putExtra("medicine_id", medicine_id);
-                    i.putExtra("ConsumedOn", date_time);
-                   // startActivity(i);
                     Toast toast = Toast.makeText(AddConsumption.this, "Consumption added Successfully!", Toast.LENGTH_SHORT);
                     toast.show();
                     finish();

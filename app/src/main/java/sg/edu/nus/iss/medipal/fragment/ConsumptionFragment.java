@@ -2,10 +2,8 @@ package sg.edu.nus.iss.medipal.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,16 +20,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.activity.AddMedicineActivity;
-import sg.edu.nus.iss.medipal.activity.ConsumptionDetail;
 import sg.edu.nus.iss.medipal.adapter.ConsumptionRecyclerAdapter;
-import sg.edu.nus.iss.medipal.adapter.MedicineRecyclerAdapter;
 import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.manager.ConsumptionManager;
 import sg.edu.nus.iss.medipal.pojo.Consumption;
-import sg.edu.nus.iss.medipal.pojo.HealthManager;
+import sg.edu.nus.iss.medipal.manager.HealthManager;
 import sg.edu.nus.iss.medipal.pojo.Medicine;
-import sg.edu.nus.iss.medipal.pojo.Reminder;
 
 /**
  * Created by : Naval on 25-03-2017.
