@@ -14,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            >
             <TextView
             android:id="@+id/reporttype_view"
             android:layout_width="wrap_content"
@@ -23,8 +24,8 @@
             android:text="Report Type:"
             android:textSize="16sp"
             android:layout_marginTop="5dp"
+            android:layout_gravity="center"
             android:textColor="@color/colorPrimary"
-
             />
             <Spinner
                 android:id="@+id/reporttype"
@@ -34,23 +35,56 @@
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/datelayout"
                 android:spinnerMode="dialog"
+                android:layout_gravity="center"
                 android:theme="@style/EditTextStyle" />
         </LinearLayout>
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fitsSystemWindows="false"
-        >
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="false"
+                >
+        <HorizontalScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+            <View
+                android:id="@+id/View01"
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryDark"/>
+            <View
+                android:id="@+id/View02"
+                android:layout_height="match_parent"
+                android:layout_width="2dp"
+                android:background="@color/colorPrimaryDark"/>
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/reportable"
+            android:layout_toStartOf="@+id/View02"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:stretchColumns="*"></TableLayout>
-
-
-    </ScrollView>
+            android:stretchColumns="*"/>
+                <View
+                    android:id="@+id/View03"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/reportable"
+                    android:layout_width="2dp"
+                    android:background="@color/colorPrimaryDark"/>
+                <View
+                    android:id="@+id/View04"
+                    android:layout_below="@+id/View03"
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryDark"/>
+            </RelativeLayout>
+        </HorizontalScrollView>
+            </ScrollView>
 
 </LinearLayout>
     <android.support.design.widget.FloatingActionButton
