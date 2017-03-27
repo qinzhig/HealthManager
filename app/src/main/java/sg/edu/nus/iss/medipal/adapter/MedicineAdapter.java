@@ -73,7 +73,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
             viewHolder.btnUpdate = (Button) convertView.findViewById(R.id.btn_update);
-            viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_remove);
+          //  viewHolder.btnRemove = (Button) convertView.findViewById(R.id.btn_remove);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

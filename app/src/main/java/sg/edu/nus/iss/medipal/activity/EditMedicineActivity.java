@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +43,7 @@ public class EditMedicineActivity extends AppCompatActivity {
     private EditText et_name,et_des,et_quanity,et_date_get,et_date_expire,et_cquantity,et_threshold,et_frequency,et_interval,et_stime;
     private Spinner spinner,spinner_dosage;
     Button button_update;
-    ImageButton button_add_category;
+    TextView add_category;
     TextInputLayout lName,lDesc,lQuantity,lCQuantity,lThreshold,lGetDate,lExpireDate,lFrequency,lInterval,lStartTime;
 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
@@ -251,9 +253,9 @@ public class EditMedicineActivity extends AppCompatActivity {
             }
         });
 
-        button_add_category = (ImageButton) findViewById(R.id.button_add_category);
-
-        button_add_category.setOnClickListener(new View.OnClickListener() {
+        add_category = (TextView) findViewById(R.id.button_add_category);
+        add_category.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        add_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

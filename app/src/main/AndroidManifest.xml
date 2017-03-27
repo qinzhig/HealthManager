@@ -25,12 +25,12 @@
         <activity
             android:name=".activity.AddEditPersonalBioActivity"
             android:label="Personal Bio"
-            android:parentActivityName=".activity.AddEditPersonalBioActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddEditHealthBioActivity"
             android:label="Health Bio"
-            android:parentActivityName=".activity.AddEditHealthBioActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AddMedicineActivity"
@@ -69,7 +69,7 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.ConsumptionDetail"
-            android:label="consummption data"
+            android:label="consumption data"
             android:parentActivityName=".activity.ConsumptionActivity" />
         <activity
             android:name=".activity.UncomsumedActivity"
@@ -99,7 +99,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.ListCategory"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.AddCategoryActivity"/>
 
     </application>
 

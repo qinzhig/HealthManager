@@ -1,8 +1,15 @@
 package sg.edu.nus.iss.medipal.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -15,6 +22,7 @@ import java.util.Iterator;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.application.App;
 import sg.edu.nus.iss.medipal.pojo.Category;
+import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by : Qin Zhi Guo on 12-03-2017.
@@ -26,7 +34,7 @@ import sg.edu.nus.iss.medipal.pojo.Category;
 public class AddCategoryActivity extends AppCompatActivity{
 
     private EditText et_name,et_code,et_des;
-    private Button button_save;
+    private TextInputLayout l_name,l_code,l_desc;
     private Switch switch_remind;
     private boolean remind_status;
 
@@ -35,11 +43,13 @@ public class AddCategoryActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        l_name = (TextInputLayout) findViewById(R.id.textView);
+        l_code = (TextInputLayout) findViewById(R.id.textView2);
+        l_desc = (TextInputLayout) findViewById(R.id.textView3);
 
 
         et_name = (EditText) findViewById(R.id.et_name);
@@ -57,10 +67,10 @@ public class AddCategoryActivity extends AppCompatActivity{
                                          boolean isChecked) {
 
                 if(isChecked){
-                    switch_remind.setText(" ON ");
+                    switch_remind.setText("Turn On/Off Reminder - ON ");
                     remind_status = true;
                 }else{
-                    switch_remind.setText(" OFF ");
+                    switch_remind.setText("Turn On/Off Reminder - OFF");
                     remind_status = false;
                 }
 
@@ -68,25 +78,35 @@ public class AddCategoryActivity extends AppCompatActivity{
         });
 
 
-        button_save = (Button)findViewById(R.id.button_save);
+        //listener is added to clear error when input is given
+        clearErrorOnTextInput();
 
-        button_save.setOnClickListener(new View.OnClickListener() {
+
+    }
+
+    private void clearErrorOnTextInput() {
+
+        et_name.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_name.setError(null);
+            }
+        });
 
-                if(input_validate(et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim())){
-                    App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
+        et_code.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_code.setError(null);
+            }
+        });
 
-                    Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
-                    toast.show();
-
-                    finish();
-                }else{
-                    Toast toast = Toast.makeText(AddCategoryActivity.this,"Something incorrect with your input,please have a check!",Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-
+        et_des.addTextChangedListener(new MediPalUtility.CustomTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0)
+                    l_desc.setError(null);
             }
         });
     }
@@ -96,7 +116,7 @@ public class AddCategoryActivity extends AppCompatActivity{
         boolean validate_status =true;
 
         if(name.isEmpty()){
-            et_name.setError("Please input a Category Name!");
+            l_name.setError("Please input a Category Name!");
             validate_status = false;
         }else{
 
@@ -109,25 +129,73 @@ public class AddCategoryActivity extends AppCompatActivity{
                 //Determine whether already exist a Category shortname with current one
                 if(name.equals(c_list.next().getCategory_name())){
                     validate_status = false;
-                    et_name.setError("Already Exist a same Category Name!");
+                    l_name.setError("Already Exist a same Category Name!");
                     break;
                 }
             }
         }
 
         if(code.isEmpty() || code.length() != 3){
-            et_code.setError("Please input a 3  letter as Category Code!");
+            l_code.setError("Please input a 3  letter as Category Code!");
             validate_status = false;
         }
 
         if(des.isEmpty()){
-            et_des.setError("Please input a Category Description!");
+            l_desc.setError("Please input a Category Description!");
             validate_status = false;
         }
 
 
         return validate_status;
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_action_items, menu);
+        MenuItem menuItem;
+        menuItem = menu.findItem(R.id.action_close);
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_close) {
+            finish();
+
+        }
+        if (id == R.id.action_done) {
+
+            if(input_validate(et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim())){
+                App.hm.addCategory(0,et_name.getText().toString().trim(),et_code.getText().toString().trim(),et_des.getText().toString().trim(),remind_status,getApplicationContext());
+
+                final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        Toast toast = Toast.makeText(AddCategoryActivity.this,"Add Category Successfully!",Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        finish();
+                    }
+                }, 1000);
+
+
+            }
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

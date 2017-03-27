@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_appointment"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/Search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sg.edu.nus.iss.medipal.activity.ListCategory">
 
-
-    <ListView
-        android:id="@+id/lv_category"
+    <LinearLayout
+        android:id="@+id/category_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryLight"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            >
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:focusableInTouchMode="true"
+                >
+                <TextView
+                    android:id="@+id/tb_app_title"
+                    style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
+                    android:text="Categories"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fab"
-        android:src="@android:drawable/ic_input_add"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        app:backgroundTint="@color/colorPrimary"
-        android:tint="@android:color/white"
-        />
-</RelativeLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus" />
+
+</android.support.design.widget.CoordinatorLayout>
+

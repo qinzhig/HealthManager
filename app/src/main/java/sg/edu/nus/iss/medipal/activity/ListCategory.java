@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.List;
+
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.adapter.CategoryAdapter;
+import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.pojo.Category;
 
 /**
  * Created by zhiguo on 25/3/17.
@@ -16,8 +23,9 @@ import sg.edu.nus.iss.medipal.adapter.CategoryAdapter;
 
 public class ListCategory extends AppCompatActivity {
 
-    private ListView lv_category;
+    private RecyclerView lv_category;
     private CategoryAdapter categoryAdapter;
+    private List<Category> categoryList;
     private FloatingActionButton fab;
 
     @Override
@@ -25,8 +33,16 @@ public class ListCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
 
-        lv_category= (ListView) findViewById(R.id.lv_category);
-        categoryAdapter = new CategoryAdapter(getApplicationContext());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        lv_category= (RecyclerView) findViewById(R.id.lv_category);
+        categoryList = App.hm.getCategorys(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        lv_category.setLayoutManager(mLayoutManager);
+        categoryAdapter = new CategoryAdapter(getApplicationContext(),categoryList);
         lv_category.setAdapter(categoryAdapter);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -50,11 +66,11 @@ public class ListCategory extends AppCompatActivity {
 
         super.onResume();
 
-        if(categoryAdapter != null)
+       /* if(categoryAdapter != null)
         {
             categoryAdapter.notifyDataSetChanged();
 
 
-        }
+        }*/
     }
 }

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,97 +21,107 @@ import java.util.List;
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.activity.EditCategoryActivity;
 import sg.edu.nus.iss.medipal.application.App;
+import sg.edu.nus.iss.medipal.interfaces.AdapterCallbackInterface;
 import sg.edu.nus.iss.medipal.pojo.Category;
 
 /**
  * Created by zhiguo on 15/3/17.
  */
 
-public class CategoryAdapter extends ArrayAdapter<Category>{
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
-    private Context context;
-    private List<Category> categorys = new ArrayList<>();
+    private Context mContext;
+    private List<Category> categoryList;
 
-    public CategoryAdapter(Context context){
+    //callback listener to communicate with the parent activity
+   // private AdapterCallbackInterface mCallback;
 
-        super(context, R.layout.medicine_category_row_layout);
-        this.context=context;
-        refreshCategorys();
-    }
+    private static final int UPCOMING_APPOINTMENTS = 0;
 
-    public void refreshCategorys() {
+    //custom view holder to show the appointment details as card
+    public class CategoryViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public TextView code;
+        public TextView remainder;
+        public TextView description;
+        public ImageView edit;
 
-        categorys.clear();
-        categorys.addAll(App.hm.getCategorys(this.context));
+        public CardView cardView;
 
-        notifyDataSetChanged();
-    }
 
-    public int getCount(){
-        return  categorys.size();
-    }
+        public CategoryViewHolder(View view) {
+            super(view);
+            //get reference to the card view elements
+            cardView = (CardView)view.findViewById(R.id.card_view);
+            name = (TextView) view.findViewById(R.id.categoryname);
+            description = (TextView) view.findViewById(R.id.categorydescription);
+            edit = (ImageView) view.findViewById(R.id.edit);
+            remainder = (TextView) view.findViewById(R.id.categoryremainder);
+            code = (TextView) view.findViewById(R.id.categorycode);
 
-    static class ViewHolder{
-        TextView tvName;
-        Button btnUpdate;
 
-    }
 
-    public View getView(final int position, View convertView, ViewGroup parent){
-        ViewHolder viewHolder;
+                edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent EditCategory = new Intent(mContext,EditCategoryActivity.class);
+                        Category category = categoryList.get(getAdapterPosition());
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("category",category);
 
-        if (convertView == null) {
-            LayoutInflater inflater =
-                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.category_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.btnUpdate = (Button) convertView.findViewById(R.id.btn_update);
+                        //EditCategory.setClass(context,EditCategoryActivity.class);
+                        EditCategory.putExtras(bundle);
+                        EditCategory.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+                        mContext.startActivity(EditCategory);
+                    }
+                });
         }
+    }
 
-        final Category category = categorys.get(position);
+    //constructor for adapter
+    //public CategoryAdapter(Context mContext, List<Category> categoryList, AdapterCallbackInterface mCallback) {
+    public CategoryAdapter(Context mContext, List<Category> categoryList) {
+        this.mContext = mContext;
+        this.categoryList = categoryList;
+       // this.mCallback = mCallback;
+    }
 
-        String reminder_status;
-        if(category.getRemind()) {reminder_status = "Remind_ON";}else {reminder_status = "Remind_OFF";}
+    //called once in beginning to load the view
+    @Override
+    public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView  = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.medicine_category_row_layout, parent, false);
 
-        String out_name = String.format("%-12s\t|%-3s\t|%-20s",reminder_status,category.getCategory_code(),category.getCategory_name());
-        viewHolder.tvName.setText(out_name);
-        viewHolder.tvName.setTextColor(Color.rgb(0, 0, 0));
+        return new CategoryViewHolder(itemView);
+    }
 
-        viewHolder.btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    //used to populate the view elements with adapter data
+    @Override
+    public void onBindViewHolder(final CategoryViewHolder holder, int position) {
+        String storedStringOne,storedStringTwo, remainderOne = null,remainderTwo = null,remainderOneDesc = null, remainderTwoDesc = null,title = null;
+        //get appointment data from list using current position as index
+        Category category = categoryList.get(position);
 
+        //populate the view elements
+        holder.name.setText(category.getCategory_name());
+        holder.code.setText("Code: "+category.getCategory_code());
+        holder.description.setText(category.getCategory_des());
+        if((category.getId() > 1) && (category.getId() <=4)){
+            holder.edit.setVisibility(View.GONE);
+        }
+        String reminderStatus;
+        if(category.getRemind())
+        {reminderStatus = "Reminder is ON";}
+        else {reminderStatus = "Reminder is OFF";}
 
-                if((category.getId() ==1) || (category.getId() >4) )
-                {
-                    Intent EditCategory = new Intent(context,EditCategoryActivity.class);
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("category",category);
-
-                    //EditCategory.setClass(context,EditCategoryActivity.class);
-                    EditCategory.putExtras(bundle);
-                    EditCategory.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    context.startActivity(EditCategory);
-                }else{
-                    //Can't edit the pre-defined Category:<Chronic,Incidental,Complete Course>
-                    Toast toast = Toast.makeText(context,"Pre-defined Category Not allowed to Modify",Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-
-            }
-        });
-
-        return convertView;
+        holder.remainder.setText(reminderStatus);
 
     }
 
+    @Override
+    public int getItemCount() {
+        return categoryList.size();
+    }
 
 }
