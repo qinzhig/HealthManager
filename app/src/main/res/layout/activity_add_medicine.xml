@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="start|center"
-                android:text="Add Medicine"
+                android:text="Medicine"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="2dp"
-                    android:layout_gravity="center">
+                    >
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tv_quantity"
                         android:layout_width="match_parent"
@@ -169,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_gravity="center">
+                    >
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tv_dosage"
                     android:layout_width="wrap_content"
@@ -218,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:layout_gravity="center">
+                    >
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tv_date_get"
                         android:layout_width="wrap_content"
@@ -264,7 +264,7 @@
                     android:layout_width="250dp"
                     android:paddingTop="15dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimary"
                     android:text="Turn On/Off Reminder:"
