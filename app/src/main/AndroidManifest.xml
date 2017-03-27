@@ -86,6 +86,11 @@
             android:name=".activity.ListCategory"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activity.AddCategoryActivity"/>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="About"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 
