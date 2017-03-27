@@ -15,6 +15,7 @@ import sg.edu.nus.iss.medipal.dao.ConsumptionDAO;
 import sg.edu.nus.iss.medipal.dao.HealthBioDAO;
 import sg.edu.nus.iss.medipal.dao.IceDAO;
 import sg.edu.nus.iss.medipal.dao.MeasurementDAO;
+import sg.edu.nus.iss.medipal.dao.MedicineDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
 import sg.edu.nus.iss.medipal.dao.ReminderDAO;
 import sg.edu.nus.iss.medipal.manager.DataBaseManager;
@@ -39,6 +40,7 @@ public class BeforeTestSetUp {
     public static CategoryDAO categoryDAO;
     public static ReminderDAO reminderDAO;
     public static ConsumptionDAO consumptionDAO;
+    public static MedicineDAO medicineDAO;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -53,6 +55,7 @@ public class BeforeTestSetUp {
         appointmentDAO = new AppointmentDAO(context);
         reminderDAO = new ReminderDAO(context);
         consumptionDAO = new ConsumptionDAO(context);
+        medicineDAO = new MedicineDAO(context);
     }
 
     @AfterClass
@@ -64,6 +67,7 @@ public class BeforeTestSetUp {
         appointmentDAO.close();
         reminderDAO.close();
         consumptionDAO.close();
+        medicineDAO.close();
     }
 
     @Test
@@ -75,6 +79,7 @@ public class BeforeTestSetUp {
         assertNotNull(appointmentDAO);
         assertNotNull(reminderDAO);
         assertNotNull(consumptionDAO);
+        assertNotNull(medicineDAO);
     }
 
 }
