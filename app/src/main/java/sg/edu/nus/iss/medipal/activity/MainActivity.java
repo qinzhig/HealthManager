@@ -192,12 +192,12 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_personalBio) {
-            resetTitle("Personal Bio");
+            resetTitle("personal Bio");
             fragment = new PersonalBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();
         } else if (id == R.id.nav_healthBio) {
-            resetTitle("Health Bio");
+            resetTitle("health Bio");
             fragment = new HealthBioFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.viewplaceholder, fragment).commit();

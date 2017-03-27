@@ -53,7 +53,7 @@ public class HealthBioFragment extends Fragment implements AdapterCallbackInterf
 
         if(healthBioList.isEmpty())
         {
-            refreshView("No Health Bio found");
+            refreshView("No health Bio found");
         }
         else {
 

@@ -18,8 +18,8 @@
     <string name="menu_setting">Setting Application</string>
     <string name="spinner_medicine_hint"> Category</string>
 
-    <dimen name="img_width_height">120dp</dimen>
-    <dimen name="slide_title">30dp</dimen>
+    <dimen name="img_width_height">500dp</dimen>
+    <dimen name="slide_title">16dp</dimen>
     <dimen name="slide_desc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="dots_height">30dp</dimen>
@@ -38,17 +38,13 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
-    <string name="slide_1_title">Personal Bio and Health Bio!</string>
-    <string name="slide_1_desc">MediPal..!!!</string>
-
-    <string name="slide_2_title">Medicines and Reminders</string>
-    <string name="slide_2_desc">MediPal..!!!</string>
-
-    <string name="slide_3_title">Appointments and Reminders</string>
-    <string name="slide_3_desc">MediPal..!!!</string>
-
-    <string name="slide_4_title">ICE and Measurements</string>
-    <string name="slide_4_desc">MediPal..!!!</string>
+    <string name="personal_desc">Manage your Personal Bio on the go</string>
+    <string name="health_desc">Manage your Health Bio on the go</string>
+    <string name="medicine_desc">Manage your Medications with Reminders on the go</string>
+    <string name="consumption_desc">Manage your Medications consumptions on the go</string>
+    <string name="appointment_desc">Manage your Appointments with Reminders on the go</string>
+    <string name="measure_desc">Manage your Measurements on the go</string>
+    <string name="ice_desc">Manage your Emergency contacts on the go</string>
     <string name="title_activity_help">activity_help</string>
 
     <string name="condition">Condition Type</string>

@@ -48,12 +48,18 @@ public class HelpActivity extends AppCompatActivity {
             helpDotsLayout = (LinearLayout) findViewById(R.id.helpLayoutDots);
             btnSkip = (Button) findViewById(R.id.skip);
             btnNext = (Button) findViewById(R.id.next);
+            btnNext.setTextColor(getResources().getColor(R.color.colorPrimaryText));
+            btnSkip.setTextColor(getResources().getColor(R.color.colorPrimaryText));
+
 
             helpLayoutPos = new int[]{
                     R.layout.help_screen_1,
                     R.layout.help_screen_2,
                     R.layout.help_screen_3,
-                    R.layout.help_screen_4};
+                    R.layout.help_screen_4,
+                    R.layout.help_screen_5,
+                    R.layout.help_screen_6,
+                    R.layout.help_screen_7};
 
             addDots(0);
 
@@ -126,10 +132,14 @@ public class HelpActivity extends AppCompatActivity {
 
             if (position == helpLayoutPos.length - 1) {
                 btnNext.setText(getString(R.string.start));
+                btnNext.setTextColor(getResources().getColor(R.color.colorPrimaryText));
                 btnSkip.setVisibility(View.GONE);
+                btnSkip.setTextColor(getResources().getColor(R.color.colorPrimaryText));
             } else {
+                btnNext.setTextColor(getResources().getColor(R.color.colorPrimaryText));
                 btnNext.setText(getString(R.string.next));
                 btnSkip.setVisibility(View.VISIBLE);
+                btnSkip.setTextColor(getResources().getColor(R.color.colorPrimaryText));
             }
         }
 

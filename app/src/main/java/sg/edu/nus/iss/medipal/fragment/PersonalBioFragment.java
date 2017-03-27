@@ -61,7 +61,7 @@ public class PersonalBioFragment extends Fragment{
             height.setText(String.valueOf(personalBio.getHeight()));
             bloodType.setText(personalBio.getBloodType());
 
-            ((MainActivity) getActivity()).setActionBarTitle("Personal Bio");
+            ((MainActivity) getActivity()).setActionBarTitle("personal Bio");
         }
 
         aFab = (FloatingActionButton)personalBioFragment.findViewById(R.id.fab);
