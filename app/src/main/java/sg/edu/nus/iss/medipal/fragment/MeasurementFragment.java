@@ -36,6 +36,10 @@ import sg.edu.nus.iss.medipal.pojo.Pulse;
 import sg.edu.nus.iss.medipal.pojo.Temperature;
 import sg.edu.nus.iss.medipal.pojo.Weight;
 
+/**
+ * Created by Divahar on 3/25/2017.
+ */
+
 public class MeasurementFragment extends Fragment implements View.OnClickListener {
     private MeasurementManager _measurementManager;
     private List<Object> _measurementList;
@@ -104,7 +108,7 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
                 int item = measureType.getSelectedItemPosition();
                 measureCategory = Arrays.asList(MEASURETYPE).get(item);
-                    dynamicGeneration(strDate, endDate);
+                dynamicGeneration(strDate, endDate);
             }
 
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -131,29 +135,29 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
 
             for (Object object : _measurementList) {
                 if (measureCategory.equalsIgnoreCase("Blood Pressure")) {
+                    isChange = true;
                     if (object instanceof BloodPressure) {
                         refinedList.add(object);
-                        isChange = true;
                     }
                 }
                 if (measureCategory.equalsIgnoreCase("Pulse")) {
+                    isChange = true;
                     if (object instanceof Pulse) {
                         refinedList.add(object);
-                        isChange = true;
                     }
                 }
 
                 if (measureCategory.equalsIgnoreCase("Weight")) {
+                    isChange = true;
                     if (object instanceof Weight) {
                         refinedList.add(object);
-                        isChange = true;
                     }
                 }
 
                 if (measureCategory.equalsIgnoreCase("Temperature")) {
+                    isChange = true;
                     if (object instanceof Temperature) {
                         refinedList.add(object);
-                        isChange = true;
                     }
                 }
             }
@@ -163,7 +167,13 @@ public class MeasurementFragment extends Fragment implements View.OnClickListene
                 _measurementList.addAll(refinedList);
             }
             populateRecyclerView();
+
+            if (isChange && refinedList.size() == 0) {
+                _measurementNotification.setText("No Measurements found for the day");
+                _measurementNotification.setVisibility(View.VISIBLE);
+            }
         } else {
+            _measurementList.clear();
             _measurementAdapter = new MeasurementAdapter(getContext(), _measurementList);
             _measurementListView.setAdapter(_measurementAdapter);
             _measurementNotification.setText("No Measurements found for the day");
