@@ -79,7 +79,7 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                     final String phoneNumber = _contactNo.getText().toString();
                     if(!phoneNumber.isEmpty()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                        builder.setTitle("tel : " + phoneNumber);
+                        builder.setTitle("Tel : " + phoneNumber);
                         builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
                             public void onClick(DialogInterface dialog, int i) {
