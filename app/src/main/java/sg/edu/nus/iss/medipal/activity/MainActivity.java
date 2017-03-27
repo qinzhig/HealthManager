@@ -391,7 +391,6 @@ public class MainActivity extends AppCompatActivity
                 PreferenceManager(getApplicationContext());
 
         if (id == R.id.settings_togglehelp) {
-
             if (null != prefManager.getSplashScreenPref() &&
                     prefManager.getSplashScreenPref().equals("true")) {
                 item.setChecked(false);
@@ -400,6 +399,9 @@ public class MainActivity extends AppCompatActivity
                 item.setChecked(true);
                 prefManager.setSplashScreenPref("true");
             }
+        } else if (id == R.id.settings_about) {
+            Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(aboutIntent);
         }
 
         return super.onOptionsItemSelected(item);
