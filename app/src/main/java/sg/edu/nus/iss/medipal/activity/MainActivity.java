@@ -405,6 +405,10 @@ public class MainActivity extends AppCompatActivity
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
         }
+        else if (id == R.id.settings_help) {
+            Intent aboutIntent = new Intent(MainActivity.this, HelpActivity.class);
+            startActivity(aboutIntent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
