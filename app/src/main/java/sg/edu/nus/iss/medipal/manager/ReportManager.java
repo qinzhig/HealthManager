@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.dao.MedicineDAO;
 import sg.edu.nus.iss.medipal.dao.PersonalBioDAO;
 import sg.edu.nus.iss.medipal.pojo.BloodPressure;

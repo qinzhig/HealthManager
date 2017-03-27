@@ -85,7 +85,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-                Notification consumption_notification = builder.setContentTitle("<MedicineTime>")
+                Notification consumption_notification = builder.setContentTitle("MedicineTime")
                         .setContentText("Reminder for Consumpition")
                         .setTicker("You have a medicine to consume!")
                         .setSmallIcon(R.drawable.medicine)
@@ -136,7 +136,7 @@ public class RemindAlarmReceiver extends BroadcastReceiver {
                     Notification notification = builder.setContentTitle(jsonArray.getString(0))
                             .setContentText(notificationString)
                             .setTicker("Notification for Appointment")
-                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setSmallIcon(R.drawable.doctor_image)
                             .setAutoCancel(true)
                             .setContentIntent(pendingIntent).build();
 

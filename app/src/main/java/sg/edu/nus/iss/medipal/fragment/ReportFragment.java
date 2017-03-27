@@ -125,12 +125,14 @@ public class ReportFragment extends Fragment {
                 report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(bpArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean isBpAvail =
                     ReportManager.addBloodPressure(getContext(), tableLayout);
             if (!isBpAvail) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
@@ -140,6 +142,7 @@ public class ReportFragment extends Fragment {
                 tv.setTextSize(14);
                 tv.setText("No data available");
                 rowHeader.addView(tv);
+
                 tableLayout.addView(rowHeader);
             }
         }
@@ -149,6 +152,7 @@ public class ReportFragment extends Fragment {
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(pulseArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean isPulseAvail =
                     ReportManager.addPulse(getContext(), tableLayout);
@@ -156,6 +160,7 @@ public class ReportFragment extends Fragment {
             if (!isPulseAvail) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
@@ -165,6 +170,7 @@ public class ReportFragment extends Fragment {
                 tv.setTextSize(14);
                 tv.setText("No data available");
                 rowHeader.addView(tv);
+
                 tableLayout.addView(rowHeader);
             }
         }
@@ -174,6 +180,7 @@ public class ReportFragment extends Fragment {
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(tempArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean isTempAvail =
                     ReportManager.addTemperature(getContext(), tableLayout);
@@ -181,6 +188,7 @@ public class ReportFragment extends Fragment {
             if (!isTempAvail) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
@@ -190,6 +198,7 @@ public class ReportFragment extends Fragment {
                 tv.setTextSize(14);
                 tv.setText("No data available");
                 rowHeader.addView(tv);
+
                 tableLayout.addView(rowHeader);
             }
         }
@@ -200,6 +209,7 @@ public class ReportFragment extends Fragment {
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(weightArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean isWeightAvail =
                     ReportManager.addWeight(getContext(), tableLayout);
@@ -207,6 +217,7 @@ public class ReportFragment extends Fragment {
             if (!isWeightAvail) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
@@ -216,6 +227,7 @@ public class ReportFragment extends Fragment {
                 tv.setTextSize(14);
                 tv.setText("No data available");
                 rowHeader.addView(tv);
+
                 tableLayout.addView(rowHeader);
             }
         }
@@ -226,6 +238,7 @@ public class ReportFragment extends Fragment {
             // Consumption
             rowHeader =
                     ReportManager.addHeaders(consumptionArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean isConsumpAvail =
                     ReportManager.addConsumptionContent(getContext(), tableLayout);
@@ -233,9 +246,11 @@ public class ReportFragment extends Fragment {
             if (!isConsumpAvail) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
+                tv.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
                 tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
                 tv.setGravity(Gravity.CENTER);
@@ -248,6 +263,7 @@ public class ReportFragment extends Fragment {
             //UnConsumption
             rowHeader =
                     ReportManager.addHeaders(unconsumptionArr, getContext());
+            rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
             tableLayout.addView(rowHeader);
             boolean unConsump =
                     ReportManager.addUnconsumption(getContext(), tableLayout);
@@ -255,6 +271,7 @@ public class ReportFragment extends Fragment {
             if (!unConsump) {
 
                 TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
                 rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                         TableLayout.LayoutParams.WRAP_CONTENT));
                 TextView tv = new TextView(getContext());
