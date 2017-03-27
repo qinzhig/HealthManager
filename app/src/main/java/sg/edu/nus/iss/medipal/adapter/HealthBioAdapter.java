@@ -21,6 +21,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/16/2017.
+ * Description: This is the adapter class to show the health bio in recycler view
  */
 
 public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.HealthBioViewHolder>{

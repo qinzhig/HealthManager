@@ -3,7 +3,7 @@ package sg.edu.nus.iss.medipal.pojo;
 import java.util.Date;
 
 /**
- * Created by divah on 3/25/2017.
+ * Created by Divahar on 3/25/2017.
  */
 
 public class Pulse extends Measurement{
@@ -15,11 +15,6 @@ public class Pulse extends Measurement{
     }
 
     public void setPulse(int pulse) {
-        this.pulse = pulse;
-    }
-
-    public Pulse(int id, Date measuredOn, int pulse) {
-        super(id, measuredOn);
         this.pulse = pulse;
     }
 

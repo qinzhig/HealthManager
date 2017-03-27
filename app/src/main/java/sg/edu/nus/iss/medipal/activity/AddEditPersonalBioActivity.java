@@ -33,6 +33,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/13/2017.
+ * Description: This class handles the addition of personal bio at startup and edit personal bio
  */
 
 public class AddEditPersonalBioActivity extends AppCompatActivity implements View.OnClickListener {

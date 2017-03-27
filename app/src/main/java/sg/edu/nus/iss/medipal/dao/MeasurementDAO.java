@@ -18,6 +18,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by levis on 3/23/2017.
+ * Modified by Divahar on 3/25/2017 - Take list of objects and check instance of and categorise - For inheritance
  */
 
 public class MeasurementDAO extends DataBaseUtility {
