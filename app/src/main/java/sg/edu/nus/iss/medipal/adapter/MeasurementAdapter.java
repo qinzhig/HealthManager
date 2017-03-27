@@ -2,6 +2,7 @@ package sg.edu.nus.iss.medipal.adapter;
 
 /**
  * Created by levis on 3/23/2017.
+ * Modified by: Divahar on 3/25/2017 - Get any combination of inputs for measurement, handling inheritance
  */
 
 import android.content.Context;

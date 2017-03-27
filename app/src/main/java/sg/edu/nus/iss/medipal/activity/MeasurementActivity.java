@@ -28,6 +28,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by levis on 3/23/2017.
+ * Modified by: Divahar on 3/25/2017 - Generate dynamic measurements based on filter
  */
 
 public class MeasurementActivity extends AppCompatActivity implements View.OnClickListener {
