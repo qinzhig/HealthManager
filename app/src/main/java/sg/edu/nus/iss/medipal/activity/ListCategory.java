@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -65,12 +64,10 @@ public class ListCategory extends AppCompatActivity {
         //This activity get focus again and refresh the category List
 
         super.onResume();
+        //Refresh the category List
+       if(categoryAdapter != null){
+           categoryAdapter.refreshCategorys();
+       }
 
-       /* if(categoryAdapter != null)
-        {
-            categoryAdapter.notifyDataSetChanged();
-
-
-        }*/
     }
 }

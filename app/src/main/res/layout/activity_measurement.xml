@@ -103,8 +103,9 @@
                     android:layout_height="wrap_content"
                     android:ems="8"
                     android:hint="Temperature"
-                    android:inputType="number"
-                    android:maxLength="30"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:digits="0123456789."
                     android:theme="@style/EditTextStyle"/>
             </android.support.design.widget.TextInputLayout>
 

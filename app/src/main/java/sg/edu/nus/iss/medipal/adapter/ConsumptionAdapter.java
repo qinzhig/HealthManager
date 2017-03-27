@@ -36,7 +36,7 @@ public class ConsumptionAdapter extends ArrayAdapter<Consumption> {
         super(context,R.layout.medicine_category_row_layout);
         this.context=context;
         consumptionManager = new ConsumptionManager(context);
-        refreshConsumptions();
+       // refreshConsumptions();
 
     }
 
