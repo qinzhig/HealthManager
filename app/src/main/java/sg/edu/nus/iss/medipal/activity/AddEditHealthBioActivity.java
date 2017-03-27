@@ -31,7 +31,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/15/2017.
- * Description: This class handles the Add and Edit Health bio functions
+ * Description: This class handles the Add and Edit health bio functions
  */
 
 public class AddEditHealthBioActivity extends AppCompatActivity implements View.OnClickListener {
@@ -165,7 +165,7 @@ public class AddEditHealthBioActivity extends AppCompatActivity implements View.
 
             if (isAdded) {
                 new AlertDialog.Builder(this)
-                        .setMessage("Do you want to add more Health Bio?")
+                        .setMessage("Do you want to add more health Bio?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

@@ -60,7 +60,7 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(view.getContext())
-                            .setMessage("Are you sure you want to delete this Health Bio?")
+                            .setMessage("Are you sure you want to delete this health Bio?")
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -122,7 +122,7 @@ public class HealthBioAdapter extends RecyclerView.Adapter<HealthBioAdapter.Heal
 
         if(healthBioList.size() == 0)
         {
-            mCallback.refreshView("No Health Bio found");
+            mCallback.refreshView("No health Bio found");
         }
     }
 }

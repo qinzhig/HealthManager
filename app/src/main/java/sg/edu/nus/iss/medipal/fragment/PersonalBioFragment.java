@@ -19,6 +19,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/19/2017.
+ * Description: This fragment takes care of the view of Personal Bio
  */
 
 public class PersonalBioFragment extends Fragment{
@@ -61,7 +62,7 @@ public class PersonalBioFragment extends Fragment{
             height.setText(String.valueOf(personalBio.getHeight()));
             bloodType.setText(personalBio.getBloodType());
 
-            ((MainActivity) getActivity()).setActionBarTitle("Personal Bio");
+            ((MainActivity) getActivity()).setActionBarTitle("personal Bio");
         }
 
         aFab = (FloatingActionButton)personalBioFragment.findViewById(R.id.fab);

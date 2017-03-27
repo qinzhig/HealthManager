@@ -482,7 +482,7 @@ public class ReportManager {
 
         csvStr = new StringBuilder();
 
-        csvStr.append("Consumption").append("\n");
+        csvStr.append("consumption").append("\n");
 
         for (String header : headerArr) {
             csvStr.append(header);

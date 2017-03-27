@@ -32,7 +32,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + CONSUMEDON + " DATE" + ")";
 
 
-    //variables for Personal Bio table
+    //variables for personal Bio table
     public static final String PERSONALBIO_TABLE = "personalbio";
     public static final String PERSONALBIO_ID = "id";
     public static final String PERSONALBIO_NAME = "name";
@@ -43,7 +43,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
     public static final String PERSONALBIO_HEIGHT = "height";
     public static final String PERSONALBIO_BLOODTYPE = "bloodtype";
 
-    // Create query for Personal Bio table
+    // Create query for personal Bio table
     public static final String CREATE_PERSONALBIO_TABLE = "CREATE TABLE "
             + PERSONALBIO_TABLE + "(" + PERSONALBIO_ID + " INTEGER PRIMARY KEY, "
             + PERSONALBIO_NAME + " Varchar(100), " + PERSONALBIO_DOB + " DATE, "
@@ -51,14 +51,14 @@ public class DataBaseManager extends SQLiteOpenHelper {
             + PERSONALBIO_POSTALCODE + " Varchar(10), " + PERSONALBIO_HEIGHT + " INTEGER, "
             + PERSONALBIO_BLOODTYPE + " Varchar(10) "+")";
 
-    //variables for Health Bio table
+    //variables for health Bio table
     public static final String HEALTHBIO_TABLE = "healthbio";
     public static final String HEALTHBIO_ID = "id";
     public static final String HEALTHBIO_CONDITION = "condition";
     public static final String HEALTHBIO_STARTDATE = "startdate";
     public static final String HEALTHBIO_CONDITIONTYPE = "conditiontype";
 
-    // Create query for Health Bio table
+    // Create query for health Bio table
     public static final String CREATE_HEALTHBIO_TABLE = "CREATE TABLE "
             + HEALTHBIO_TABLE + "(" + HEALTHBIO_ID + " INTEGER PRIMARY KEY, "
             + HEALTHBIO_CONDITION + " Varchar(255), " + HEALTHBIO_STARTDATE + " DATE, "

@@ -457,14 +457,14 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(stime.isEmpty())
         {
-            lStartTime.setError("Consumption Reminder StartTime is empty!");
+            lStartTime.setError("consumption Reminder StartTime is empty!");
             reminder_validate_status = false;
         }else if( (!stime.isEmpty()) && (!interval.isEmpty()) && (!stime.isEmpty()) &&
                 ((Integer.valueOf(interval) * Integer.valueOf(frequency) +Integer.valueOf(stime_hour_min[0]) >24) ) ){
 
-            lInterval.setError("Daily Consumption schedule exceed than 24 hours!");
-            lFrequency.setError("Daily Consumption schedule exceed than 24 hours!");
-            lStartTime.setError("Daily Consumption schedule exceed than 24 hours!");
+            lInterval.setError("Daily consumption schedule exceed than 24 hours!");
+            lFrequency.setError("Daily consumption schedule exceed than 24 hours!");
+            lStartTime.setError("Daily consumption schedule exceed than 24 hours!");
 
             reminder_validate_status = false;
         }
@@ -495,7 +495,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         if(cquantity.isEmpty())
         {
-            lCQuantity.setError("Consumption is empty!");
+            lCQuantity.setError("consumption is empty!");
             validate_status = false;
         }else if( (!cquantity.isEmpty()) && (!quantity.isEmpty()) && (Integer.valueOf(cquantity) > Integer.valueOf(quantity)))
         {

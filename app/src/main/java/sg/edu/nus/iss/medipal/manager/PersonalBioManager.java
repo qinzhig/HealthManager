@@ -9,7 +9,7 @@ import sg.edu.nus.iss.medipal.pojo.PersonalBio;
 
 /**
  * Created by Divahar on 3/17/2017.
- * Description: This manager class takes care of all the operations between Activity and DAO for Personal Bio
+ * Description: This manager class takes care of all the operations between Activity and DAO for personal Bio
  */
 
 public class PersonalBioManager {

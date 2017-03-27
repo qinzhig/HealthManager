@@ -28,7 +28,7 @@ public class DeleteConsumption extends AsyncTask<Object,Void,Long> {
     protected void onPostExecute(Long result) {
         if (result != -1)
         {
-            Log.v("DBSave","____________________-------------------Delete Consumption successfully!");
+            Log.v("DBSave","____________________-------------------Delete consumption successfully!");
         }
 
         if (consumptionDAO != null)

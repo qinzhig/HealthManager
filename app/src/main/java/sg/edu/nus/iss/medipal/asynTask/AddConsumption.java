@@ -27,7 +27,7 @@ public class AddConsumption extends AsyncTask<Consumption,Void,Long> {
 
     protected void onPostExecute(Long result) {
         if (result != -1) {
-            Log.v("DBSave","____________________++++++++++++++++++++Add Consumption successfully!");
+            Log.v("DBSave","____________________++++++++++++++++++++Add consumption successfully!");
         }
         if (consumptionDAO != null) {
             consumptionDAO.close();

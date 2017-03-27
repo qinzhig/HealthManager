@@ -43,8 +43,8 @@ public class ReportFragment extends Fragment {
     private static String[] tempArr = {"Temperature", "Measured on", "Reference Range"};
     private static String[] weightArr = {"Weight", "Measured on", "BMI"};
     private static String[] consumptionArr = {"Medicine", "Consumed Qty", "Consumed on"};
-    private static String[] unconsumptionArr = {"Medicine", "Missed Qty", "Missed Consumption Date"};
-    private final static String[] REPORTTYPE = {"All Measurements", "BP Measurement", "Pulse Measurement", "Weight Measurement", "Temperature Measurement", "Consumed and Unconsumed Medicines"};
+    private static String[] unconsumptionArr = {"Medicine", "Missed Qty", "Missed consumption Date"};
+    private final static String[] REPORTTYPE = {"All Measurements", "BP measurement", "Pulse measurement", "Weight measurement", "Temperature measurement", "Consumed and Unconsumed Medicines"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class ReportFragment extends Fragment {
 
         tableLayout.removeAllViews();
         //Blood Pressure
-        if (report.equals("BP Measurement") ||
+        if (report.equals("BP measurement") ||
                 report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(bpArr, getContext());
@@ -148,7 +148,7 @@ public class ReportFragment extends Fragment {
         }
 
         // Pulse
-        if (report.equals("Pulse Measurement")
+        if (report.equals("Pulse measurement")
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(pulseArr, getContext());
@@ -176,7 +176,7 @@ public class ReportFragment extends Fragment {
         }
 
         // Temperature
-        if (report.equals("Temperature Measurement")
+        if (report.equals("Temperature measurement")
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(tempArr, getContext());
@@ -205,7 +205,7 @@ public class ReportFragment extends Fragment {
 
 
         // Weight
-        if (report.equals("Weight Measurement")
+        if (report.equals("Weight measurement")
                 || report.equals("All Measurements")) {
             rowHeader =
                     ReportManager.addHeaders(weightArr, getContext());
@@ -235,7 +235,7 @@ public class ReportFragment extends Fragment {
 
         if (report.equals("Consumed and Unconsumed Medicines")
                 || report.equals("All Measurements")) {
-            // Consumption
+            // consumption
             rowHeader =
                     ReportManager.addHeaders(consumptionArr, getContext());
             rowHeader.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
@@ -291,26 +291,26 @@ public class ReportFragment extends Fragment {
 
         String toCsvStr = "";
 
-        if (report.equals("BP Measurement") ||
+        if (report.equals("BP measurement") ||
                 report.equals("All Measurements")) {
             String bp = ReportManager.
                     addBptoCsv(bpArr, getContext());
             toCsvStr = toCsvStr + bp;
         }
 
-        if (report.equals("Pulse Measurement")
+        if (report.equals("Pulse measurement")
                 || report.equals("All Measurements")) {
             String pulse = ReportManager.addPulseToCsv(pulseArr, getContext());
             toCsvStr = toCsvStr + pulse;
         }
 
-        if (report.equals("Temperature Measurement")
+        if (report.equals("Temperature measurement")
                 || report.equals("All Measurements")) {
             String temperature = ReportManager.addTemperatureToCsv(tempArr, getContext());
             toCsvStr = toCsvStr + temperature;
         }
 
-        if (report.equals("Weight Measurement")
+        if (report.equals("Weight measurement")
                 || report.equals("All Measurements")) {
             String weight = ReportManager.addWeightToCsv(weightArr, getContext());
             toCsvStr = toCsvStr + weight;

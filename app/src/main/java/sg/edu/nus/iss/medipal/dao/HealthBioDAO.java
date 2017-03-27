@@ -16,7 +16,7 @@ import sg.edu.nus.iss.medipal.utils.MediPalUtility;
 
 /**
  * Created by Divahar on 3/15/2017.
- * Description: This class has all the methods to perform DB operation for Health Bio
+ * Description: This class has all the methods to perform DB operation for health Bio
  */
 
 public class HealthBioDAO extends DataBaseUtility {

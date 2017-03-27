@@ -233,7 +233,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                 public void run() {
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
-                    Toast toast = Toast.makeText(AddConsumption.this, "Consumption added Successfully!", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(AddConsumption.this, "consumption added Successfully!", Toast.LENGTH_SHORT);
                     toast.show();
                     finish();
                 }
