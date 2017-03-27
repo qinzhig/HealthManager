@@ -1,30 +1,27 @@
 package sg.edu.nus.iss.medipal.fragment;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TimePicker;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
+import java.util.Arrays;
 
 import sg.edu.nus.iss.medipal.R;
 import sg.edu.nus.iss.medipal.manager.ReportManager;
@@ -34,28 +31,25 @@ import sg.edu.nus.iss.medipal.manager.ReportManager;
  * Created by Divahar on 3/19/2017.
  */
 
-public class ReportFragment extends Fragment implements View.OnClickListener{
+public class ReportFragment extends Fragment {
 
     private TableLayout tableLayout;
     private View reportFragment;
     private TableRow rowHeader;
-    private static String[] bpArr = {"Systolic", "Diastolic", "Measured on","Reference Range"};
-    private static String[] pulseArr = {"Pulse", "Measured on","Reference Range"};
-    private static String[] tempArr = {"Temperature", "Measured on","Reference Range"};
-    private static String[] weightArr = {"Weight", "Measured on","BMI"};
-
+    private String report;
+    private static String[] bpArr = {"Systolic", "Diastolic", "Measured on", "Reference Range"};
+    private static String[] pulseArr = {"Pulse", "Measured on", "Reference Range"};
+    private static String[] tempArr = {"Temperature", "Measured on", "Reference Range"};
+    private static String[] weightArr = {"Weight", "Measured on", "BMI"};
     private static String[] consumptionArr = {"Medicine", "Consumed Qty", "Consumed on"};
     private static String[] unconsumptionArr = {"Medicine", "Missed Qty", "Missed Consumption Date"};
-
-    private final static String[] REPORTTYPE = {"All Measurements", "BP Measurement", "Pulse Measurement","Weight Measurement","Temperature Measurement","Consumed Medicines","Un-Consumed Medicines"};
+    private final static String[] REPORTTYPE = {"All Measurements", "BP Measurement", "Pulse Measurement", "Weight Measurement", "Temperature Measurement", "Consumed and Unconsumed Medicines"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    EditText toDate,
-            fromDate;
-    TextInputLayout l_toDate,l_Fromdate;
+
     Spinner reportType;
 
     @Nullable
@@ -67,20 +61,11 @@ public class ReportFragment extends Fragment implements View.OnClickListener{
         // Reference to TableLayout
         tableLayout = (TableLayout) reportFragment.findViewById(R.id.reportable);
 
-        populateHealthBioTable();
-
-        toDate = (EditText) reportFragment.findViewById(R.id.fromdate);
-        fromDate = (EditText) reportFragment.findViewById(R.id.todate);
-
-        toDate.setOnClickListener(this);
-        fromDate.setOnClickListener(this);
-
-        l_Fromdate=(TextInputLayout) reportFragment.findViewById(R.id.edit_text_fromdate);
-        l_toDate=(TextInputLayout) reportFragment.findViewById(R.id.edit_text_todate);
+        populateContent("All Measurements");
 
         reportType = (Spinner) reportFragment.findViewById(R.id.reporttype);
 
-        ArrayAdapter<String> spinnerAdapterOne = new ArrayAdapter<>(reportFragment.getContext(),android.R.layout.simple_dropdown_item_1line,REPORTTYPE);
+        ArrayAdapter<String> spinnerAdapterOne = new ArrayAdapter<>(reportFragment.getContext(), android.R.layout.simple_dropdown_item_1line, REPORTTYPE);
         reportType.setAdapter(spinnerAdapterOne);
 
         aFab = (FloatingActionButton) reportFragment.findViewById(R.id.fab);
@@ -113,100 +98,216 @@ public class ReportFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+        reportType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+                int item = reportType.getSelectedItemPosition();
+                report = Arrays.asList(REPORTTYPE).get(item);
+                populateContent(report);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                report = "";
+            }
+        });
+
+
         return reportFragment;
     }
 
-    private void populateHealthBioTable() {
+    private void populateContent(String report) {
 
+
+        tableLayout.removeAllViews();
         //Blood Pressure
-        rowHeader =
-                ReportManager.addHeaders(bpArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addBloodPressure(getContext(), tableLayout);
+        if (report.equals("BP Measurement") ||
+                report.equals("All Measurements")) {
+            rowHeader =
+                    ReportManager.addHeaders(bpArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean isBpAvail =
+                    ReportManager.addBloodPressure(getContext(), tableLayout);
+            if (!isBpAvail) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+        }
 
         // Pulse
-        rowHeader =
-                ReportManager.addHeaders(pulseArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addPulse(getContext(), tableLayout);
+        if (report.equals("Pulse Measurement")
+                || report.equals("All Measurements")) {
+            rowHeader =
+                    ReportManager.addHeaders(pulseArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean isPulseAvail =
+                    ReportManager.addPulse(getContext(), tableLayout);
+
+            if (!isPulseAvail) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+        }
 
         // Temperature
-        rowHeader =
-                ReportManager.addHeaders(tempArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addTemperature(getContext(), tableLayout);
+        if (report.equals("Temperature Measurement")
+                || report.equals("All Measurements")) {
+            rowHeader =
+                    ReportManager.addHeaders(tempArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean isTempAvail =
+                    ReportManager.addTemperature(getContext(), tableLayout);
+
+            if (!isTempAvail) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+        }
 
 
         // Weight
-        rowHeader =
-                ReportManager.addHeaders(weightArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addWeight(getContext(), tableLayout);
+        if (report.equals("Weight Measurement")
+                || report.equals("All Measurements")) {
+            rowHeader =
+                    ReportManager.addHeaders(weightArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean isWeightAvail =
+                    ReportManager.addWeight(getContext(), tableLayout);
+
+            if (!isWeightAvail) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+        }
 
 
-        // Consumption
-        rowHeader =
-                ReportManager.addHeaders(consumptionArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addConsumptionContent(getContext(), tableLayout);
+        if (report.equals("Consumed and Unconsumed Medicines")
+                || report.equals("All Measurements")) {
+            // Consumption
+            rowHeader =
+                    ReportManager.addHeaders(consumptionArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean isConsumpAvail =
+                    ReportManager.addConsumptionContent(getContext(), tableLayout);
 
-        //UnConsumption
-        rowHeader =
-                ReportManager.addHeaders(unconsumptionArr, getContext());
-        tableLayout.addView(rowHeader);
-        tableLayout =
-                ReportManager.addUnconsumption(getContext(), tableLayout);
+            if (!isConsumpAvail) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+
+            //UnConsumption
+            rowHeader =
+                    ReportManager.addHeaders(unconsumptionArr, getContext());
+            tableLayout.addView(rowHeader);
+            boolean unConsump =
+                    ReportManager.addUnconsumption(getContext(), tableLayout);
+
+            if (!unConsump) {
+
+                TableRow rowHeader = new TableRow(getContext());
+                rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(14);
+                tv.setText("No data available");
+                rowHeader.addView(tv);
+                tableLayout.addView(rowHeader);
+            }
+        }
 
 
     }
 
     private String addContentToCsv() {
 
-        /*return ReportManager.
-                addConsumptionToCsv(getContext());*/
+        String toCsvStr = "";
 
-        return "";
+        if (report.equals("BP Measurement") ||
+                report.equals("All Measurements")) {
+            String bp = ReportManager.
+                    addBptoCsv(bpArr, getContext());
+            toCsvStr = toCsvStr + bp;
+        }
+
+        if (report.equals("Pulse Measurement")
+                || report.equals("All Measurements")) {
+            String pulse = ReportManager.addPulseToCsv(pulseArr, getContext());
+            toCsvStr = toCsvStr + pulse;
+        }
+
+        if (report.equals("Temperature Measurement")
+                || report.equals("All Measurements")) {
+            String temperature = ReportManager.addTemperatureToCsv(tempArr, getContext());
+            toCsvStr = toCsvStr + temperature;
+        }
+
+        if (report.equals("Weight Measurement")
+                || report.equals("All Measurements")) {
+            String weight = ReportManager.addWeightToCsv(weightArr, getContext());
+            toCsvStr = toCsvStr + weight;
+        }
+
+        if (report.equals("Consumed and Unconsumed Medicines")
+                || report.equals("All Measurements")) {
+            String consumption = ReportManager.addConsumptionToCsv(consumptionArr, getContext());
+            String unConsump = ReportManager.addUnconsumpToCsv(unconsumptionArr, getContext());
+
+            toCsvStr = toCsvStr + consumption;
+            toCsvStr = toCsvStr + unConsump;
+        }
+        return toCsvStr;
     }
 
-    @Override
-    public void onClick(View v) {
-        final Calendar calender;
-        int day,month,year;
-        if (v == fromDate) {
-            calender = Calendar.getInstance();
-            day = calender.get(Calendar.DAY_OF_MONTH);
-            month = calender.get(Calendar.MONTH);
-            year = calender.get(Calendar.YEAR);
-
-            DatePickerDialog datePicker = new DatePickerDialog(reportFragment.getContext(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    fromDate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
-                }
-            }, day, month, year);
-            datePicker.updateDate(year, month, day);
-            datePicker.show();
-        }
-        else if(v == toDate)
-        {
-            calender = Calendar.getInstance();
-            day = calender.get(Calendar.DAY_OF_MONTH);
-            month = calender.get(Calendar.MONTH);
-            year = calender.get(Calendar.YEAR);
-
-            DatePickerDialog datePicker = new DatePickerDialog(reportFragment.getContext(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    toDate.setText(dayOfMonth+"-"+(month+1)+"-"+year);
-                }
-            }, day, month, year);
-            datePicker.updateDate(year, month, day);
-            datePicker.show();
-        }
-    }
 }

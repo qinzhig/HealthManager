@@ -35,7 +35,7 @@ public class MeasurementTest extends BeforeTestSetUp {
 
         measurementDAO.insert(bloodPressure, pulse, weight, temperature);
 
-        List<Object> measurementList = measurementDAO.retrieve(null);
+        List<Object> measurementList = measurementDAO.retrieve(null,null);
 
         for(int i = measurementList.size() - 4; i < measurementList.size(); i++) {
             Object measurement = measurementList.get(i);
@@ -79,7 +79,7 @@ public class MeasurementTest extends BeforeTestSetUp {
 
         measurementDAO.insert(bloodPressure2, pulse2, weight2, temperature2);
 
-        List<Object> measurementList = measurementDAO.retrieve(null);
+        List<Object> measurementList = measurementDAO.retrieve(null,null);
 
         for(int i = measurementList.size() - 4; i < measurementList.size(); i++) {
             Object measurement = measurementList.get(i);

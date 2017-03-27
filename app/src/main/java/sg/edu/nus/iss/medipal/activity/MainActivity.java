@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         //setup listener for navigation drawer menu item clicks
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
+        navigationView.setItemIconTintList(null);
 
         TextView name = (TextView) headerLayout.findViewById(R.id.name);
         if(personalBio!=null)
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity
     private void loadHomeFragment() {
         Log.d("Activity", "fragment home load");
         //use the appointment view to show in the main page
+        resetTitle("Home");
         Fragment fragment = new HomeFragment();
         inHomeFragment = true;
         //move this to outside when all other modules are implemented using fragments

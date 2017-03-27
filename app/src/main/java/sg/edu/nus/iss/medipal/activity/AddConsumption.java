@@ -226,6 +226,7 @@ public class AddConsumption extends AppCompatActivity implements View.OnClickLis
                // }
             } else {
                 int MinConsumptionId = consumptionDAO.getMinConsumptionId(Integer.toString(medicine_id), consumedDate);
+                consumptionDAO.close();
                 Log.d("min consumption id",Integer.toString(MinConsumptionId));
 
                 if (MinConsumptionId == 0) {

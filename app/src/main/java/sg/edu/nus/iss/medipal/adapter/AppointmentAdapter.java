@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -150,6 +151,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     }
 
                     cardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    cardPopUp.setBackgroundDrawable(new ColorDrawable());
+                    cardPopUp.setOutsideTouchable(true);
+                    cardPopUp.setFocusable(true);
+                    cardPopUp.setTouchable(true);
                     cardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
                 }
             });

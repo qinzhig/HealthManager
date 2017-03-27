@@ -66,7 +66,8 @@ public class MeasurementDAO extends DataBaseUtility {
         return retCode;
     }
 
-    public List<Object> retrieve(String selectedDate) {
+    public List<Object> retrieve(String strtDate,
+                                 String endDate) {
         List<Object>
                 measurementList = new ArrayList<Object>();
         BloodPressure bloodPressureObj = null;
@@ -74,11 +75,14 @@ public class MeasurementDAO extends DataBaseUtility {
         Weight weightObj = null;
         Temperature temperatureObj = null;
         Cursor cursor = null;
+        String strtQuery = strtDate + " 00:00";
+        String endQuery = endDate + " 23:59";
 
         try {
 
-            if (null != selectedDate
-                    && !selectedDate.equals("")) {
+            if (null != strtDate
+                    && !strtDate.equals("") && null != endDate
+                    && !endDate.equals("")) {
                 cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
                         new String[]{
                                 DataBaseManager.MEASUREMENT_ID,
@@ -88,7 +92,7 @@ public class MeasurementDAO extends DataBaseUtility {
                                 DataBaseManager.MEASUREMENT_TEMPERATURE,
                                 DataBaseManager.MEASUREMENT_WEIGHT,
                                 DataBaseManager.MEASUREMENT_MEASUREDON}, "measuredon>= ? AND measuredon<= ?",
-                        new String[]{selectedDate + " 00:00", selectedDate + " 23:59"}, null, null, null);
+                        new String[]{strtQuery, endQuery}, null, null, null);
             } else {
                 cursor = database.query(DataBaseManager.MEASUREMENT_TABLE,
                         new String[]{

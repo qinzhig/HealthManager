@@ -5,45 +5,56 @@
         <item
             android:orderInCategory="0"
             android:id="@+id/nav_home"
-            android:title="@string/home" />
+            android:title="@string/home"
+            android:icon="@drawable/home"/>
         <item
             android:orderInCategory="0"
             android:id="@+id/nav_personalBio"
-            android:title="@string/personalBio" />
+            android:title="@string/personalBio"
+            android:icon="@drawable/personalbio"/>
 
         <item
             android:orderInCategory="0"
             android:id="@+id/nav_healthBio"
-            android:title="@string/healthBio" />
+            android:title="@string/healthBio"
+            android:icon="@drawable/medicalbio"/>
 
         <item
             android:orderInCategory="0"
             android:id="@+id/nav_ice"
-            android:title="@string/ice" />
+            android:title="@string/ice"
+            android:icon="@drawable/ice"/>
     </group>
     <group android:id="@+id/group2" android:checkableBehavior="single">
         <item
             android:orderInCategory="1"
             android:id="@+id/nav_medicine"
-            android:title="@string/medication" />
+            android:title="@string/medication"
+            android:icon="@drawable/medicine_small"/>
         <item
             android:orderInCategory="1"
             android:id="@+id/nav_appointments"
-            android:title="@string/appointments" />
+            android:title="@string/appointments"
+            android:icon="@drawable/appointment_2"/>
         <item
             android:orderInCategory="1"
-            android:id="@+id/nav_measurement"
-            android:title="Measurements" />
+            android:id="@+id/nav_consumption"
+            android:title="Consumption"
+            android:icon="@drawable/consume"/>
+
     </group>
     <group android:id="@+id/group3" android:checkableBehavior="single">
-
+        <item
+            android:orderInCategory="2"
+            android:id="@+id/nav_measurement"
+            android:title="Measurements"
+            android:icon="@drawable/measure"/>
         <item
             android:orderInCategory="2"
             android:id="@+id/nav_reports"
-            android:title="@string/reports" />
-        <item
-            android:id="@+id/nav_consumption"
-            android:title="consumption"/>
+            android:title="@string/reports"
+            android:icon="@drawable/reports"/>
+
     </group>
 
 </menu>

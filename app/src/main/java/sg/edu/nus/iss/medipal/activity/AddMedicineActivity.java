@@ -531,7 +531,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     private boolean saveMedicine(){
         //Save the medicine Infomation to SQLite
-
+        boolean retVal = false;
                 //Generate a 5 digtal number as the reminderID
                 int reminderid = (int)( (Math.random()*9 + 1) * 10000);
 
@@ -570,7 +570,8 @@ public class AddMedicineActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(AddMedicineActivity.this,"Add Medicine with a reminder Successfully!",Toast.LENGTH_SHORT);
                             toast.show();
 
-                            finish();
+                            //finish();
+                            retVal = true;
 
                             return true;
 
@@ -594,20 +595,21 @@ public class AddMedicineActivity extends AppCompatActivity {
                         toast.show();
 
 
-                        finish();
-                        return true;
+                        retVal=true;
+                       // finish();
 
                     }
 
+                    //return true;
 
                 }else{
 
                     Toast toast_error = Toast.makeText(AddMedicineActivity.this,"Some Medicine info incorrect,please check!",Toast.LENGTH_SHORT);
                     toast_error.show();
-
-                    return false;
+                    retVal=false;
+                    //return false;
                 }
-
+        return retVal;
     }
 
 }

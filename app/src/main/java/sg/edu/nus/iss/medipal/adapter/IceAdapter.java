@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -114,6 +115,10 @@ public class IceAdapter extends RecyclerView.Adapter<IceAdapter.IceViewHolder>{
                     ((TextView)popUp.findViewById(R.id.ice_popup_descriptionview)).setText(_description);
 
                     _iceCardPopUp = new PopupWindow(popUp, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    _iceCardPopUp.setBackgroundDrawable(new ColorDrawable());
+                    _iceCardPopUp.setOutsideTouchable(true);
+                    _iceCardPopUp.setFocusable(true);
+                    _iceCardPopUp.setTouchable(true);
                     _iceCardPopUp.showAtLocation(popUp, Gravity.CENTER, 0, 0);
                 }
             });

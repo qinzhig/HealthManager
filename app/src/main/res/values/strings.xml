@@ -53,6 +53,7 @@
 
     <string name="condition">Condition Type</string>
     <string name="bloodtype">Blood Type</string>
+    <string name="contacttype">Contact Type</string>
 
     <string name="edit_appointment_title">Edit Appointment</string>
 
