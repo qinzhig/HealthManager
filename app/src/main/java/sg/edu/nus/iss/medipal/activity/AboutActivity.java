@@ -17,7 +17,6 @@ import sg.edu.nus.iss.medipal.R;
  */
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener  {
-    private TextView _contactAddressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,28 +28,10 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        _contactAddressView = (TextView) findViewById(R.id.about_contactaddress);
-        _contactAddressView.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View view) {
-        if (view == _contactAddressView) {
-
-            String contactAddress = _contactAddressView.getText().toString();
-            String subject = "";
-            String body  = "";
-
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(contactAddress));
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-            emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-
-            emailIntent.setType("message/rfc822");
-
-            startActivity(Intent.createChooser(emailIntent, "Choose an Email client :"));
-        }
     }
 }

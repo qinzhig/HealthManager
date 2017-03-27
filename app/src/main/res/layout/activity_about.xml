@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/about_thumbnail"
-                    android:paddingTop="@dimen/title_padding"
+                    android:paddingTop="20dp"
                     android:text="MediPal-FT01"
                     android:textStyle="bold"
                     android:textColor="@color/title"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/about_appname"
-                    android:paddingTop="@dimen/title_padding"
+                    android:paddingTop="30dp"
                     android:text="Team Members (SE25 – FT01)"
                     android:textStyle="bold"
                     android:textColor="@color/title"
@@ -134,7 +134,6 @@
                     android:id="@+id/about_teammember5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_below="@+id/about_teammember4"
                     android:paddingTop="@dimen/title_padding"
                     android:text="5. Qin Zhi Guo (A0163406L)"
@@ -143,28 +142,16 @@
                     android:gravity="center"/>
 
                 <TextView
-                    android:id="@+id/about_contactaddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/about_teammember5"
-                    android:paddingTop="30dp"
-                    android:text="mailto:e0146855@u.nus.edu"
-                    android:textColor="@color/title"
-                    android:textSize="15dp"
-                    android:gravity="center"/>
-
-                <TextView
                     android:id="@+id/about_version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/about_contactaddress"
-                    android:paddingLeft="@dimen/title_padding"
-                    android:paddingTop="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/about_teammember5"
+                    android:paddingTop="50dp"
                     android:text="ver 1.0.0"
                     android:textColor="@color/title"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:gravity="center"/>
 
             </RelativeLayout>
         </ScrollView>
