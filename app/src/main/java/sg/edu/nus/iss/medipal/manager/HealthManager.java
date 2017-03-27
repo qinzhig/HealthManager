@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.medipal.pojo;
+package sg.edu.nus.iss.medipal.manager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -24,6 +24,9 @@ import sg.edu.nus.iss.medipal.asynTask.ListReminder;
 import sg.edu.nus.iss.medipal.asynTask.UpdateCategory;
 import sg.edu.nus.iss.medipal.asynTask.UpdateMedicine;
 import sg.edu.nus.iss.medipal.asynTask.UpdateReminder;
+import sg.edu.nus.iss.medipal.pojo.Category;
+import sg.edu.nus.iss.medipal.pojo.Medicine;
+import sg.edu.nus.iss.medipal.pojo.Reminder;
 import sg.edu.nus.iss.medipal.service.RemindAlarmReceiver;
 
 /**

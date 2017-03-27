@@ -20,7 +20,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sg.edu.nus.iss.medipal.R;
-import sg.edu.nus.iss.medipal.fragment.ConsumedFragment;
 
 
 public class SearchAdapter<T> extends BaseAdapter implements Filterable {
@@ -43,9 +42,9 @@ public class SearchAdapter<T> extends BaseAdapter implements Filterable {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public SearchAdapter(ConsumedFragment consumedActivity, List<String> list) {
+/*    public SearchAdapter(ConsumedFragment consumedActivity, List<String> list) {
 
-    }
+    }*/
 
     @Override
     public int getCount() {

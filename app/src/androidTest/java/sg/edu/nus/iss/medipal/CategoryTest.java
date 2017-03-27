@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertEquals;
 public class CategoryTest extends BeforeTestSetUp {
 
 
-    public void testInsert()throws SQLException{
+    public void testInsert() throws SQLException{
 
         Category category_original = new Category("Test","TST","des",false);
 
@@ -32,6 +32,22 @@ public class CategoryTest extends BeforeTestSetUp {
         assertEquals("des", category_result.getCategory_des());
         assertEquals(false, (boolean)category_result.getRemind());
 
+    }
+
+    public void testUpdate() throws SQLException{
+        Category category1 = new Category("Test","TST","des",false);
+        categoryDAO.insert(category1);
+
+        ArrayList<Category> category_list = categoryDAO.getCategorys();
+        Category category2 = category_list.get(category_list.size()-1);
+        
+
+        Category category_result= category_list.get(4);
+
+        assertEquals("Test", category_result.getCategory_name());
+        assertEquals("TST", category_result.getCategory_code());
+        assertEquals("des", category_result.getCategory_des());
+        assertEquals(false, (boolean)category_result.getRemind());
     }
 
 }
