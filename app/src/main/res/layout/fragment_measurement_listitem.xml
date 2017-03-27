@@ -26,13 +26,17 @@
                 android:src="@drawable/measurement_image"
                 android:clickable="true"
                 android:scaleType="fitXY" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/measurement_thumbnail">
 
             <TextView
                 android:id="@+id/measurementlistitem_date"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/measurement_thumbnail"
                 android:layout_marginStart="11dp"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingRight="@dimen/title_padding"
@@ -42,38 +46,34 @@
                 android:maxLines="1"
                 android:ellipsize="end" />
 
-
+                <RelativeLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/measurementlistitem_date"
+                 android:layout_centerHorizontal="true">
             <TextView
                 android:id="@+id/measurementlistitem_field1"
-                android:layout_width="@dimen/measurement_listitem_size"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_date"
-                android:layout_alignStart="@+id/measurementlistitem_date"
                 android:paddingLeft="@dimen/title_padding"
                 android:paddingTop="@dimen/title_padding"
                 android:textColor="@color/title"
                 android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_toEndOf="@+id/measurement_thumbnail"
-                android:gravity="center"/>
-
+                android:gravity="center"
+                android:paddingRight="15dp"/>
 
 
             <TextView
                 android:id="@+id/measurementlistitem_field2"
-                android:layout_width="@dimen/measurement_listitem_size"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/measurementlistitem_date"
                 android:layout_toEndOf="@+id/measurementlistitem_field1"
                 android:paddingTop="@dimen/title_padding"
                 android:textColor="@color/title"
                 android:textSize="@dimen/title_size"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:gravity="center"/>
-
-
+                </RelativeLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
