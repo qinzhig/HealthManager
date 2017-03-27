@@ -18,7 +18,7 @@
     <string name="menu_setting">Setting Application</string>
     <string name="spinner_medicine_hint"> Category</string>
 
-    <dimen name="img_width_height">500dp</dimen>
+    <dimen name="img_width_height">400dp</dimen>
     <dimen name="slide_title">16dp</dimen>
     <dimen name="slide_desc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
