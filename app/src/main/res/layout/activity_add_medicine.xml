@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:focusableInTouchMode="true"
+            >
+            <TextView
+                android:id="@+id/tb_app_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="Medicine"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                >
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.hint">
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:hint="Medicine Name"
+                        android:maxLength="75"
+                        android:theme="@style/EditTextStyle"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.hint">
+                    <EditText
+                        android:id="@+id/et_des"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:hint="Medicine Description"
+                        android:theme="@style/EditTextStyle"/>
+                </android.support.design.widget.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="2dp">
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/spinner_medicine_hint" />
+                    <Spinner
+                        android:id="@+id/spinner_category"
+                        android:layout_width="200dp"
+                        android:theme="@style/EditTextStyle"
+                        android:prompt="@string/medicinecategory"
+                        android:spinnerMode="dialog"
+                        android:layout_below="@+id/tv_category"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/button_add_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:layout_toEndOf="@+id/spinner_category"
+                        android:text="Not Found?" />
+
+                 <!-->   <ImageButton
+                        android:id="@+id/button_add_category"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:srcCompat="@drawable/cat_add"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/spinner_category" /><-->
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/colorPrimaryLight"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp"
+                    >
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayout.hint"
+                        android:layout_marginRight="5dp">
+                        <EditText
+                            android:id="@+id/et_quantity"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:hint="Total Quantity"
+                            android:theme="@style/EditTextStyle"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_threshold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayout.hint"
+                       >
+                        <EditText
+                            android:id="@+id/et_threshold"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:hint="Threshold"
+                            android:theme="@style/EditTextStyle"/>
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    >
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_dosage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.hint"
+                    android:layout_marginRight="5dp">
+                    <EditText
+                        android:id="@+id/et_cquantity"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:ems="9"
+                        android:inputType="number"
+                        android:hint="Consume Quantity"
+                        android:theme="@style/EditTextStyle"/>
+
+                </android.support.design.widget.TextInputLayout>
+                    <TextView
+                        android:id="@+id/tv_pertime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Dosage"
+                        android:layout_alignStart="@+id/spinner_dosage"
+                        android:layout_toEndOf="@+id/spinner_dosage"
+                        />
+                    <Spinner
+                        android:id="@+id/spinner_dosage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:theme="@style/EditTextStyle"
+                        android:prompt="@string/dosage"
+                        android:spinnerMode="dialog"
+                        android:layout_toEndOf="@+id/tv_dosage" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/colorPrimaryLight"
+                   />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    >
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_date_get"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        app:hintTextAppearance="@style/TextInputLayout.hint">
+                        <EditText
+                            android:id="@+id/et_date_get"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="7"
+                            android:focusable="false"
+                            android:hint="Issue Date"
+                            android:inputType="datetime"
+                            android:theme="@style/EditTextStyle"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_date_expire"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        app:hintTextAppearance="@style/TextInputLayout.hint">
+                        <EditText
+                            android:id="@+id/et_date_expire"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+
+                            android:ems="7"
+                            android:focusable="false"
+                            android:hint="Expire Date"
+                            android:inputType="datetime"
+                            android:theme="@style/EditTextStyle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+                <Switch
+                    android:id="@+id/switch_remind"
+                    android:layout_width="250dp"
+                    android:paddingTop="15dp"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Turn On/Off Reminder:"
+                    android:checked="false"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/colorPrimaryLight"
+                        android:layout_marginBottom="5dp"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_frequency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="5dp"
+                        app:hintTextAppearance="@style/TextInputLayout.hint">
+                        <EditText
+                            android:id="@+id/et_frequency"
+                            android:layout_width="190dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:hint="Frequency per day:"
+                            android:theme="@style/EditTextStyle"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_interval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:hintTextAppearance="@style/TextInputLayout.hint"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/tv_frequency"
+                        >
+                        <EditText
+                            android:id="@+id/et_interval"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:hint="Interval(Hours):"
+                            android:theme="@style/EditTextStyle"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_stime"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayout.hint"
+                        android:layout_below="@+id/tv_frequency">
+                        <EditText
+                            android:id="@+id/et_stime"
+                            android:layout_width="190dp"
+                            android:layout_height="wrap_content"
+
+                            android:ems="7"
+                            android:focusable="false"
+                            android:hint="Interval Start Time:"
+                            android:inputType="datetime"
+                            android:theme="@style/EditTextStyle"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+</LinearLayout>

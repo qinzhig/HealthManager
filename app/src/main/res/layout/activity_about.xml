@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
+    android:orientation= "vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/about_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:focusableInTouchMode="true"
+            >
+            <TextView
+                android:id="@+id/about_toolbartitle"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="About Us"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/about_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_margin"
+        android:elevation="3dp"
+        app:cardCornerRadius="@dimen/card_corner_radius">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/about_thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/nus_iss" />
+
+                <TextView
+                    android:id="@+id/about_appname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_thumbnail"
+                    android:paddingTop="20dp"
+                    android:text="MediPal-FT01"
+                    android:textStyle="bold"
+                    android:textColor="@color/title"
+                    android:textSize="30dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_appname"
+                    android:paddingTop="30dp"
+                    android:text="Team Members (SE25 – FT01)"
+                    android:textStyle="bold"
+                    android:textColor="@color/title"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_teammember1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_team"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="1. Divahar Sethuraman (A0163306M)"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_teammember2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_teammember1"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="2. Hyuntae Kim (A0163280L)"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_teammember3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_teammember2"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="3. Ma Teng (A0163375B)"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_teammember4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/about_teammember3"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="4. Naval Kumar Nanjappa (A0163256E)"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_teammember5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/about_teammember4"
+                    android:paddingTop="@dimen/title_padding"
+                    android:text="5. Qin Zhi Guo (A0163406L)"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/about_version"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/about_teammember5"
+                    android:paddingTop="50dp"
+                    android:text="ver 1.0.0"
+                    android:textColor="@color/title"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

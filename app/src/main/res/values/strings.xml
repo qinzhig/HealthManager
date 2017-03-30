@@ -1,3 +1,81 @@
 <resources>
-    <string name="app_name">MediPal_FT01</string>
+    <string name="app_name">MediPal-FT01</string>
+    <string name="home">Home</string>
+    <string name="personalBio">Personal Bio</string>
+    <string name="ice">Contacts(ICE)</string>
+    <string name="healthBio">Health Bio</string>
+    <string name="medication">Medications</string>
+    <string name="appointments">Appointments</string>
+    <string name="notifications">Notifications</string>
+    <string name="reports">Reports</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+    <string name="title_activity_medicine">MedicineActivity</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_setting">Setting Application</string>
+    <string name="spinner_medicine_hint"> Category</string>
+
+    <dimen name="img_width_height">400dp</dimen>
+    <dimen name="slide_title">16dp</dimen>
+    <dimen name="slide_desc">16dp</dimen>
+    <dimen name="desc_padding">40dp</dimen>
+    <dimen name="dots_height">30dp</dimen>
+    <dimen name="dots_margin_bottom">20dp</dimen>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="settings_about">About</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_startup">Help at StartUp</string>
+
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="personal_desc">Manage your Personal Bio on the go</string>
+    <string name="health_desc">Manage your Health Bio on the go</string>
+    <string name="medicine_desc">Manage your Medications with Reminders on the go</string>
+    <string name="consumption_desc">Manage your Medications consumptions on the go</string>
+    <string name="appointment_desc">Manage your Appointments with Reminders on the go</string>
+    <string name="measure_desc">Manage your Measurements on the go</string>
+    <string name="ice_desc">Manage your Emergency contacts on the go</string>
+    <string name="title_activity_help">activity_help</string>
+
+    <string name="condition">Condition Type</string>
+    <string name="bloodtype">Blood Type</string>
+    <string name="contacttype">Contact Type</string>
+    <string name="medicinecategory">Category</string>
+    <string name="dosage">Dosage</string>
+
+    <string name="edit_appointment_title">Edit Appointment</string>
+
+    <!--Dosage units item list -->
+    <string-array name="dosage">
+        <item>pills</item>
+        <item>cc</item>
+        <item>ml</item>
+        <item>gr</item>
+        <item>mg</item>
+        <item>drops</item>
+        <item>pieces</item>
+        <item>puffs</item>
+        <item>units</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+        <item>patch</item>
+        <item>mcg</item>
+        <item>l</item>
+        <item>meq</item>
+        <item>spray</item>
+    </string-array>
+
 </resources>
+
+
+
